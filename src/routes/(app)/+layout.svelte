@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from '../$types';
+    import Hamburger from '$lib/icons/Hamburger.svelte';
 
 	//export let data: LayoutData;
 
@@ -19,18 +20,13 @@
 </script>
 
 <div class="flex flex-col">
-    <header class="w-full bg-orange-200">
+    <header class="hidden max-md:block w-full bg-orange-200">
         <div class="flex justify-between items-center max-w-5xl mx-auto">
             <h1 class="text-4xl font-semibold ml-5">
                 モバイルヘッダー
             </h1>
             <button class="mr-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M4 6l16 0"></path>
-                    <path d="M4 12l16 0"></path>
-                    <path d="M4 18l16 0"></path>
-                 </svg>
+                <Hamburger/>
             </button>    
         </div>
     </header>    
