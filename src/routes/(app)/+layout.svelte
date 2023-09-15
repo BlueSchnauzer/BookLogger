@@ -35,12 +35,12 @@
 		</div>
 	</header>
 	<div class="flex w-full h-full">
-		<nav class=" w-[250px] bg-teal-500 overflow-y-auto">
+		<nav class="m-2 w-[250px] rounded-xl shadow-xl bg-stone-200">
 			<div class="flex p-3">
 				<LeanBooks />
-				<p class="ml-2.5 text-xl text-white">BookLogger</p>
+				<p class="ml-2.5 text-xl text-black">BookLogger</p>
 			</div>
-			<div class="mx-3 my-2 bg-white h-[1px]" />
+			<div class="mx-3 my-2 bg-black h-[1px]" />
 			<ul>
 				{#each listItemDatas as data (data.name)}
 					<ListItem listItemData={data} />
