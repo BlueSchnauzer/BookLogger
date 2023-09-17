@@ -1,3 +1,9 @@
+<script lang="ts">
+	export let width = 24;
+	export let height = 24;
+	export let color = "#000000";
+</script>
+
 <svg
 	version="1.1"
 	id="_x32_"
@@ -6,7 +12,9 @@
 	x="0px"
 	y="0px"
 	viewBox="0 0 512 512"
-	style="width: 24px; height: 24px; opacity: 1;"
+	width={width}
+	height={height}
+	style="fill: {color};"
 	xml:space="preserve"
 >
 	<g>
