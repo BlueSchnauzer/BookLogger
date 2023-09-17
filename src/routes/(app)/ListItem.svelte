@@ -1,25 +1,28 @@
 <script lang="ts">
 	import ArrowDown from '$lib/icons/ArrowDown.svelte';
-	import Shelf from '$lib/icons/Shelf.svelte';
+	import BookStand from '$lib/icons/BookStand.svelte';
 	import type { ListItemData } from '$lib/customTypes';
 
 	export let listItemData: ListItemData;
+	export let iconColor = "#000000";
+
 </script>
 
-{#if listItemData.icon === Shelf}
+
+{#if listItemData.icon === BookStand}
 	<div class="mx-3 my-0 bg-stone-200 h-[1px]" />
 {/if}
 
 <li class="p-2">
 	<a
 		href={listItemData.ref}
-		class="p-2.5 flex items-center rounded-md duration-200 hover:bg-stone-300"
+		class="p-2.5 flex items-center rounded-md duration-200 hover:bg-stone-600"
 	>
-		<svelte:component this={listItemData.icon} />
-		{#if listItemData.icon === Shelf}
+		<svelte:component this={listItemData.icon} color={iconColor}/>
+		{#if listItemData.icon === BookStand}
 			<div class="ml-2.5 flex flex-1 justify-between">
 				<span class=" text-stone-200">{listItemData.name}</span>
-				<ArrowDown />
+				<ArrowDown color={iconColor}/>
 			</div>
 		{:else}
 			<span class="ml-2.5 text-stone-200">{listItemData.name}</span>

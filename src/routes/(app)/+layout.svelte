@@ -5,22 +5,24 @@
 	import Hamburger from '$lib/icons/Hamburger.svelte';
 	import LeanBooks from '$lib/icons/LeanBooks.svelte';
 	import Dashboard from '$lib/icons/Dashboard.svelte';
-	import AllBooks from '$lib/icons/AllBooks.svelte';
+	import BookCase from '$lib/icons/BookCase.svelte';
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
-	import Shelf from '$lib/icons/Shelf.svelte';
+	import BookStand from '$lib/icons/BookStand.svelte';
 
 	//export let data: LayoutData;
 
 	const listItemDatas: ListItemData[] = [
 		{ icon: Dashboard, ref: '/dashboard', name: 'ダッシュボード' },
-		{ icon: AllBooks, ref: '/books', name: '登録した本' },
+		{ icon: BookCase, ref: '/books', name: '登録した本' },
 		{ icon: PileOfBooks, ref: '/books/wish', name: '読みたい本' },
 		{ icon: Openingbook, ref: '/books/reading', name: '読んでいる本' },
 		{ icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' },
-		{ icon: Shelf, ref: '/shelfs', name: '本棚' }
+		{ icon: BookStand, ref: '/shelfs', name: '本棚' }
 	];
+	const colorStone200 = '#E7E5E4';
+
 </script>
 
 <div class="flex flex-col w-screen h-screen">
@@ -37,13 +39,13 @@
 	<div class="flex w-full h-full">
 		<nav class="m-2 w-[250px] rounded-xl shadow-2xl bg-stone-700">
 			<div class="flex p-3">
-				<LeanBooks />
+				<LeanBooks color={colorStone200}/>
 				<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
 			</div>
 			<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
 			<ul>
 				{#each listItemDatas as data (data.name)}
-					<ListItem listItemData={data} />
+					<ListItem listItemData={data} iconColor={colorStone200}/>
 				{/each}
 			</ul>
 		</nav>
