@@ -35,12 +35,12 @@
 		</div>
 	</header>
 	<div class="flex w-full h-full">
-		<nav class="m-2 w-[250px] rounded-xl shadow-xl bg-stone-200">
+		<nav class="m-2 w-[250px] rounded-xl shadow-2xl bg-stone-700">
 			<div class="flex p-3">
 				<LeanBooks />
-				<p class="ml-2.5 text-xl text-black">BookLogger</p>
+				<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
 			</div>
-			<div class="mx-3 my-2 bg-black h-[1px]" />
+			<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
 			<ul>
 				{#each listItemDatas as data (data.name)}
 					<ListItem listItemData={data} />
@@ -52,3 +52,9 @@
 		</div>
 	</div>
 </div>
+
+<style lang="postcss">
+	:global(body) {
+		background-color: theme(colors.vellum);
+	}
+</style>

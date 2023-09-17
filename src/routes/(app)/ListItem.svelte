@@ -7,7 +7,7 @@
 </script>
 
 {#if listItemData.icon === Shelf}
-	<div class="mx-3 my-0 bg-black h-[1px]" />
+	<div class="mx-3 my-0 bg-stone-200 h-[1px]" />
 {/if}
 
 <li class="p-2">
@@ -18,11 +18,11 @@
 		<svelte:component this={listItemData.icon} />
 		{#if listItemData.icon === Shelf}
 			<div class="ml-2.5 flex flex-1 justify-between">
-				<span class=" text-black">{listItemData.name}</span>
+				<span class=" text-stone-200">{listItemData.name}</span>
 				<ArrowDown />
 			</div>
 		{:else}
-			<span class="ml-2.5 text-black">{listItemData.name}</span>
+			<span class="ml-2.5 text-stone-200">{listItemData.name}</span>
 		{/if}
 	</a>
 </li>
