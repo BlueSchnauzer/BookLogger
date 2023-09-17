@@ -9,7 +9,7 @@
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
-	import BookStand from '$lib/icons/BookStand.svelte';
+	import BookShelf from '$lib/icons/BookShelf.svelte';
 
 	//export let data: LayoutData;
 
@@ -19,7 +19,7 @@
 		{ icon: PileOfBooks, ref: '/books/wish', name: '読みたい本' },
 		{ icon: Openingbook, ref: '/books/reading', name: '読んでいる本' },
 		{ icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' },
-		{ icon: BookStand, ref: '/shelfs', name: '本棚' }
+		{ icon: BookShelf, ref: '/shelfs', name: '本棚' }
 	];
 	const colorStone200 = '#E7E5E4';
 
