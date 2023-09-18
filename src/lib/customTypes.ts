@@ -1,7 +1,8 @@
 import type { ComponentType } from "svelte"
 
-export interface ListItemData {
+export interface MenuItemData {
     icon: ComponentType,
     ref: string,
-    name: string
+    jpName: string,
+    enName: string
 }
