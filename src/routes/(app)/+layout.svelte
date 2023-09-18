@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from '../$types';
-	import SidemenuItem from './SidemenuItem.svelte';
+	import SideMenuItem from './SideMenuItem.svelte';
 	import type { ListItemData } from '$lib/customTypes';
 	import Hamburger from '$lib/icons/Hamburger.svelte';
 	import LeanBooks from '$lib/icons/LeanBooks.svelte';
@@ -35,7 +35,7 @@
 			<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
 			<ul>
 				{#each listItemDatas as data (data.name)}
-					<SidemenuItem listItemData={data} iconColor={colorStone200}/>
+					<SideMenuItem listItemData={data} iconColor={colorStone200}/>
 				{/each}
 			</ul>
 		</nav>
