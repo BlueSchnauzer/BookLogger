@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from '../$types';
-	import ListItem from './ListItem.svelte';
+	import SidemenuItem from './SidemenuItem.svelte';
 	import type { ListItemData } from '$lib/customTypes';
 	import Hamburger from '$lib/icons/Hamburger.svelte';
 	import LeanBooks from '$lib/icons/LeanBooks.svelte';
@@ -26,18 +26,8 @@
 </script>
 
 <div class="flex flex-col w-screen h-screen">
-	<header class="hidden max-md:block w-full bg-orange-200">
-		<div class="flex justify-between items-center max-w-5xl mx-auto">
-			<button class="ml-5">
-				<LeanBooks />
-			</button>
-			<button class="mr-5">
-				<Hamburger />
-			</button>
-		</div>
-	</header>
 	<div class="flex w-full h-full">
-		<nav class="m-2 w-[250px] rounded-xl shadow-2xl bg-stone-700">
+		<nav class="max-md:hidden m-2 w-[250px] rounded-xl shadow-2xl bg-stone-700">
 			<div class="flex p-3">
 				<LeanBooks color={colorStone200}/>
 				<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
@@ -45,7 +35,7 @@
 			<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
 			<ul>
 				{#each listItemDatas as data (data.name)}
-					<ListItem listItemData={data} iconColor={colorStone200}/>
+					<SidemenuItem listItemData={data} iconColor={colorStone200}/>
 				{/each}
 			</ul>
 		</nav>
@@ -53,6 +43,10 @@
 			<slot />
 		</div>
 	</div>
+	<nav class="hidden max-md:block w-full fixed bottom-0 h-16 bg-stone-700">
+		<ul>
+		</ul>
+	</nav>
 </div>
 
 <style lang="postcss">
