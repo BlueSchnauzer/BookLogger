@@ -2,8 +2,13 @@
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        vellum: '#eeeae3'
+      }  
+    },
   },
+
   plugins: [],
 }
 
