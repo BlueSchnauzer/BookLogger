@@ -24,6 +24,8 @@
 				</li>
 			{/if}
 
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<li
 				on:click={() => currentMenu = data.icon}
 				class="p-2 pr-6 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600
