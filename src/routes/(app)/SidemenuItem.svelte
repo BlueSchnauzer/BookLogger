@@ -28,15 +28,15 @@
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<li
 				on:click={() => currentMenu = data.icon}
-				class="p-2 pr-6 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600
-				{data.icon === currentMenu ? 'border-x-lime-600 bg-stone-600' : ''}"
+				class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600 
+				{data.icon === currentMenu ? 'border-x-lime-600 bg-stone-600 ' : ''}"
 			>
-				<a href={data.ref} class="flex group items-center rounded-md">
+				<a href={data.ref} class="flex flex-1 group items-center rounded-md">
 					<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 						<svelte:component this={data.icon} color={iconColor} />
 					</div>
 					{#if data.icon === BookShelf}
-						<div class="ml-2.5 flex flex-1 justify-between">
+						<div class="ml-2.5 mr-3 flex flex-1 justify-between">
 							<span class=" text-stone-200">{data.jpName}</span>
 							<ArrowDown color={iconColor} />
 						</div>
