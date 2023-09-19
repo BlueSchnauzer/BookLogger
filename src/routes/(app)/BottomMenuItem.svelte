@@ -13,12 +13,12 @@
         {#each MenuItemDatas as data (data.icon)}
             <li 
                 on:touchend={() => currentMenu = data.icon}
-                class="flex flex-1 items-center border-b-4 border-transparent
+                class="flex flex-1 border-b-4 border-transparent
 				{data.icon === currentMenu ? 'border-y-lime-600 bg-stone-600' : ''}"
             >
-                <a href="{data.ref}" class="flex flex-1 flex-col items-center">
+                <a href="{data.ref}" class="flex flex-1 flex-col items-center justify-evenly">
                     <svelte:component this={data.icon} color={iconColor}/>
-                    <span class="text-sm text-stone-200">{data.enName}</span>
+                    <span class="text-xs text-stone-200">{data.enName}</span>
                 </a>
             </li>
         {/each}
