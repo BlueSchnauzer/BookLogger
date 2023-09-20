@@ -29,11 +29,9 @@
 
 <div class="flex w-screen h-screen">
 	<SideMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
-	<div class="flex-1 m-4">
-		<slot />
-	</div>
+	<slot/>
 	<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
-	<!-- <nav class="max-md:hidden m-2 w-[200px] rounded-xl shadow-2xl bg-stone-700">ダミー</nav> -->
+	<!-- <nav class="max-md:hidden m-2 w-[250px] h-4/5 rounded-xl shadow-2xl bg-stone-700">ダミー</nav> -->
 </div>
 
 <style lang="postcss">
