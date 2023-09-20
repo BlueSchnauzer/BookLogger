@@ -9,7 +9,7 @@
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import BookShelf from '$lib/icons/BookShelf.svelte';
-	import { onMount, type ComponentType } from 'svelte';
+	import type {ComponentType } from 'svelte';
 
 	//export let data: LayoutData;
 
@@ -22,23 +22,18 @@
 		{ icon: BookShelf, ref: '/shelfs', jpName: '本棚', enName: 'Shelfs' }
 	];
 	const colorStone200 = '#E7E5E4';
-	let currentMenu: ComponentType;
-	$: currentMenu = Dashboard;
-
-	onMount(() => {
-		
-	});
+	let currentMenu: ComponentType = Dashboard;
+	//$: currentMenu = Dashboard;
 
 </script>
 
-<div class="flex flex-col w-screen h-screen">
-	<div class="flex w-full h-full">
-		<SideMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
-		<div class="flex-1">
-			<slot />
-		</div>
-		<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
+<div class="flex w-screen h-screen">
+	<SideMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
+	<div class="flex-1 m-4">
+		<slot />
 	</div>
+	<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
+	<!-- <nav class="max-md:hidden m-2 w-[200px] rounded-xl shadow-2xl bg-stone-700">ダミー</nav> -->
 </div>
 
 <style lang="postcss">
