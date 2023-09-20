@@ -5,7 +5,11 @@ export default {
     extend: {
       colors: {
         vellum: '#eeeae3'
-      }  
+      },
+      gridTemplateColumns: {
+        smBookContentAutoFit: 'repeat(auto-fit, minmax(128px, 1fr))',
+        BookContentAutoFill: 'repeat(auto-fill, minmax(200px, 1fr))'
+      }
     },
   },
 
