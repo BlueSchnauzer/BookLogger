@@ -91,7 +91,7 @@ export const load = (async () => {
         },
         {
             isbn_13: '',
-            title: 'ダミー',
+            title: 'ちょっと長めのテキスト　〜サブタイトルもつけて〜',
             imageUrl: '',
             registrationDate: new Date,
             updateDate: new Date,
@@ -105,7 +105,7 @@ export const load = (async () => {
         },
         {
             isbn_13: '',
-            title: 'ダミー',
+            title: 'あ１２３４５６７８９い１２３４５６７８９う１２３４５６７８９え１２３４５',
             imageUrl: '',
             registrationDate: new Date,
             updateDate: new Date,
@@ -119,7 +119,7 @@ export const load = (async () => {
         },
         {
             isbn_13: '',
-            title: 'ダミー',
+            title: 'A123456789B123456789C1234',
             imageUrl: '',
             registrationDate: new Date,
             updateDate: new Date,
