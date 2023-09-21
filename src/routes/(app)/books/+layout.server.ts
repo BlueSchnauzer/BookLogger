@@ -133,7 +133,7 @@ export const load = (async () => {
         },
         {
             isbn_13: '',
-            title: 'ダミー',
+            title: 'あ１２３４５６７８９い１２３４５６７８９う１２３４５６７８９え１２３４５６７８９お１２３４５６７８９',
             imageUrl: '',
             registrationDate: new Date,
             updateDate: new Date,
