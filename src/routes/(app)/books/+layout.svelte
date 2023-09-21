@@ -15,7 +15,7 @@
             >
                 <div class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300">No Image</div>
                 <div class="max-sm:hidden">
-                    <p class=" px-2 text-sm collapseTitle">{bookInfo.title}</p>
+                    <p class="px-2 break-all collapseTitle">{bookInfo.title}</p>
                 </div>
                 <div class="self-center flex justify-between max-sm:hidden">
                     <span class="pl-2 text-xs">登録日</span>

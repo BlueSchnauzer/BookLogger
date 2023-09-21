@@ -119,7 +119,7 @@ export const load = (async () => {
         },
         {
             isbn_13: '',
-            title: 'A123456789B123456789C1234',
+            title: 'A123456789B123456789C123456789ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
             imageUrl: '',
             registrationDate: new Date,
             updateDate: new Date,
