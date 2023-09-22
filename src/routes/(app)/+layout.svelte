@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from '../$types';
+	import { page } from '$app/stores';
 	import SideMenuItem from './SideMenuItem.svelte';
 	import BottomMenuItem from './BottomMenuItem.svelte';
 	import type { MenuItemData } from '$lib/customTypes';
@@ -9,7 +10,7 @@
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import BookShelf from '$lib/icons/BookShelf.svelte';
-	import type {ComponentType } from 'svelte';
+	import {onMount, type ComponentType } from 'svelte';
 
 	//export let data: LayoutData;
 
@@ -23,7 +24,10 @@
 	];
 	const colorStone200 = '#E7E5E4';
 	let currentMenu: ComponentType = Dashboard;
-	//$: currentMenu = Dashboard;
+	
+	onMount(() => {
+		currentMenu = MenuItemDatas.find(data => data.ref === $page.url.pathname)?.icon!;
+	});
 
 </script>
 
