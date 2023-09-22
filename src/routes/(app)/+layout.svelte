@@ -27,11 +27,11 @@
 
 </script>
 
-<div class="flex w-screen h-screen">
+<div class="flex w-screen h-screen overflow-hidden">
 	<SideMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
 	<slot/>
 	<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
-	<!-- <nav class="max-md:hidden m-2 w-[250px] h-4/5 rounded-xl shadow-2xl bg-stone-700">ダミー</nav> -->
+	<aside class="max-lg:hidden m-2 w-[200px] h-4/5 rounded-xl shadow-2xl bg-stone-700"></aside>
 </div>
 
 <style lang="postcss">
