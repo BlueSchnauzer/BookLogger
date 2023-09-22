@@ -34,8 +34,8 @@
 <div class="flex w-screen h-screen overflow-hidden">
 	<SideMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
 	<slot/>
-	<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
 	<aside class="max-lg:hidden m-2 w-[200px] h-4/5 rounded-xl shadow-2xl bg-stone-700"></aside>
+	<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
 </div>
 
 <style lang="postcss">
