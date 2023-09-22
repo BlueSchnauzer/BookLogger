@@ -4,4 +4,4 @@
     //export let data: PageData;
 </script>
 
-<h1>Books</h1>
+<h1>登録した本</h1>
