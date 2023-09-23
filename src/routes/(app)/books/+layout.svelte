@@ -4,18 +4,26 @@
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加
     import ResizeObserver from 'resize-observer-polyfill';
-    //window.ResizeObserver = ResizeObserver;
+	import { onMount } from 'svelte';
     
     export let data: LayoutData;
 
     //ISBNで書誌情報を取得し、書影とページ数を取る。
+    //→ここじゃなくて、タグの方でawaitロジックを使った方がよさそう
+
+    onMount(() => {
+        //SSR時のエラー回避のためDOM生成後に実行
+        window.ResizeObserver = ResizeObserver;
+        const mainContent = window.document.querySelector<HTMLElement>('#mainContent');
+        if (mainContent) { new SimpleBar(mainContent); }
+    });
+
 </script>
 
-<div class="flex-1 my-2 max-md:pb-16 flexWidth">
-    <div class="h-24">
-        <slot />
-    </div>
-    <div data-simplebar class="contentHeight">
+<main class="flex-1 my-2 max-md:pb-16 flexWidth">
+    <slot />
+    <div class="mx-2 my-1 bg-stone-400 h-[1px]" />
+    <div id="mainContent" class="contentHeight">
         <ul class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center">
             {#each data.BookInfos as bookInfo}
                 <li class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md "
@@ -33,7 +41,7 @@
             {/each}
         </ul>
     </div>
-</div>
+</main>
 
 <style>
     .collapseTitle {
