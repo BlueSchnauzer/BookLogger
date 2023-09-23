@@ -42,6 +42,7 @@
         </ul>
     </div>
 </main>
+<div class="max-lg:hidden mx-1 mt-5 mb-3 bg-stone-400 w-[1px]" />
 
 <style>
     .collapseTitle {
