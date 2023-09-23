@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { PageData } from './$types';
+    import type { filterToggleItem } from '$lib/customTypes';
     import Icon from '@iconify/svelte';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
@@ -12,12 +13,16 @@
     //export let data: PageData;
 
     const colorStone700 = '#44403C';
-    const labelList = [
-        {id: 1, text: 'お気に入り', checked: false},
-        {id: 2, text: '読みたい', checked: false},
-        {id: 3, text: '読んでいる', checked: false},
-        {id: 4, text: '読み終わった', checked: false}
+    let filterToggleItems: filterToggleItem[] = [
+        {id: 1, text: 'お気に入り', isChecked: false},
+        {id: 2, text: '読みたい', isChecked: false},
+        {id: 3, text: '読んでいる', isChecked: false},
+        {id: 4, text: '読み終わった', isChecked: false}
     ]
+    const removeAllToggleCheck = () : void => {
+        filterToggleItems.forEach(item => item.isChecked = false);
+        filterToggleItems = [...filterToggleItems];
+    }
 
     onMount(() => {
         //SSR時のエラー回避のためDOM生成後に実行
@@ -38,13 +43,19 @@
             <Icon icon="ph:plus" width="36" height="36" color={colorStone700}/>
         </div>
     </div>
-    <div id="labelContainer" class="px-2 pb-2">
-        <ul class="flex">
-            {#each labelList as label (label.id)}
-                <li>
-                    <ToggleSwitch id={label.id} text={label.text} bind:isChecked={label.checked}/>
-                </li>
-            {/each}
-        </ul>
-    </div>
+    <div id="labelContainer" class="pb-2">
+        <div class="flex items-center">
+            {#if filterToggleItems.some(item => item.isChecked)}
+                <button on:click={removeAllToggleCheck}>
+                    <Icon icon="ph:x" width="24" height="24" />
+                </button>                
+            {/if}
+            <ul class="flex items-center">
+                {#each filterToggleItems as item (item.id)}
+                    <li>
+                        <ToggleSwitch id={item.id} text={item.text} bind:isChecked={item.isChecked}/>
+                    </li>
+                {/each}
+            </ul>
+        </div>
 </div>
