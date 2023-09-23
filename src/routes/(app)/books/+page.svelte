@@ -39,9 +39,9 @@
             <BookCase width={30} height={30} />
             <h1 class="text-xl pl-2">登録した本</h1>
         </div>
-        <div class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300">
+        <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300">
             <Icon icon="ph:plus" width="36" height="36" color={colorStone700}/>
-        </div>
+        </button>
     </div>
     <div id="labelContainer" class="pb-2">
         <div class="flex items-center">
@@ -58,4 +58,12 @@
                 {/each}
             </ul>
         </div>
+    </div>
+    <!-- <div>
+        {#each filterToggleItems as item (item.id)}
+            <span>
+                {item.isChecked? `checked ${item.text}` : 'unchecked'}
+            </span>
+        {/each}
+    </div> -->
 </div>
