@@ -26,7 +26,7 @@
     <div id="mainContent" class="p-1 contentHeight">
         <ul class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center">
             {#each data.BookInfos as bookInfo}
-                <li class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md "
+                <li class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
                     title="{bookInfo.title}"
                 >
                     <div class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300">No Image</div>
@@ -51,7 +51,7 @@
         -webkit-line-clamp: 3;
     }
     .flexWidth{
-        width: calc(100% - 450px);
+        width: calc(100% - (224px + 208px));
     }
     .contentHeight {
         height: calc(100% - 96px);

@@ -10,7 +10,7 @@
 	export let iconColor = '#000000';
 </script>
 
-<nav class="max-md:hidden m-2 w-[250px] rounded-xl shadow-2xl bg-stone-700">
+<nav class="max-md:hidden m-2 w-56 rounded-xl shadow-2xl bg-stone-700">
 	<div class="flex p-3">
 		<LeanBooks color={iconColor} />
 		<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
