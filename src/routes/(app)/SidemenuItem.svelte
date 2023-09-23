@@ -1,6 +1,5 @@
 <script lang="ts">
-	import LeanBooks from '$lib/icons/LeanBooks.svelte';
-	import ArrowDown from '$lib/icons/ArrowDown.svelte';
+    import Icon from '@iconify/svelte';
 	import BookShelf from '$lib/icons/BookShelf.svelte';
 	import type { MenuItemData } from '$lib/customTypes';
 	import type { ComponentType } from 'svelte';
@@ -12,7 +11,7 @@
 
 <nav class="max-md:hidden m-2 w-56 rounded-xl shadow-2xl bg-stone-700">
 	<div class="flex p-3">
-		<LeanBooks color={iconColor} />
+		<Icon icon="ph:books-light" width="36" height="36" color={iconColor}/>
 		<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
 	</div>
 	<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
@@ -38,7 +37,7 @@
 					{#if data.icon === BookShelf}
 						<div class="ml-2.5 mr-3 flex flex-1 justify-between">
 							<span class=" text-stone-200">{data.jpName}</span>
-							<ArrowDown color={iconColor} />
+							<Icon icon="ph:arrow-down" width="24" height="24" color={iconColor}/>
 						</div>
 					{:else}
 						<span class="ml-2.5 text-stone-200">{data.jpName}</span>
