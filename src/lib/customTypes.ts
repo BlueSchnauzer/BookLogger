@@ -1,5 +1,6 @@
 import type { ComponentType } from "svelte"
 
+/**メニューの項目データ */
 export type MenuItemData = {
     icon: ComponentType,
     ref: string,
@@ -7,6 +8,14 @@ export type MenuItemData = {
     enName: string
 }
 
+/**ラベルフィルター(トグル) */
+export type filterToggleItem = {
+    id: number,
+    text: string,
+    isChecked: boolean
+}
+
+/**書誌情報 */
 export type BookInfo = {
     isbn_13: string,
     isbn_10?: string,
