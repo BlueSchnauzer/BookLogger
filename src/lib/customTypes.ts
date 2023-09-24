@@ -12,7 +12,9 @@ export type MenuItemData = {
 export type filterToggleItem = {
     id: number,
     text: string,
-    isChecked: boolean
+    type: 'favorite'|'status',
+    isChecked: boolean,
+    isVisible: boolean
 }
 
 /**書誌情報 */
