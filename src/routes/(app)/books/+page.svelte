@@ -68,14 +68,14 @@
 			<Icon icon="ph:plus" width="36" height="36" color={colorStone700} />
 		</button>
 	</div>
-	<div id="labelContainer" class="pb-2">
-		<div class="flex items-center">
-			{#if filterToggleItems.some((item) => item.isChecked)}
-				<button on:click={removeAllToggleCheck}>
-					<Icon icon="ph:x" width="24" height="24" />
-				</button>
-			{/if}
+	<div>
+		<div id="labelContainer" class="pb-2 flex items-center">
 			<ul class="flex items-center">
+                <li class="flex">
+                    <button on:click={removeAllToggleCheck} class="{filterToggleItems.some((item) => item.isChecked) ? '' : 'hidden'}">
+                        <Icon icon="ph:x" width="24" height="24" />
+                    </button>        
+                </li>
 				{#each filterToggleItems as item (item.id)}
 					<li>
 						<ToggleSwitch
@@ -87,6 +87,9 @@
 				{/each}
 			</ul>
 		</div>
+        <div>
+            
+        </div>
 	</div>
 	<!-- <div>
         {#each filterToggleItems as item (item.id)}
