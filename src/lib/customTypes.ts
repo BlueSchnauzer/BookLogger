@@ -9,7 +9,7 @@ export type MenuItemData = {
 }
 
 /**ラベルフィルター(トグル) */
-export type filterToggleItem = {
+export type toggleFilterItem = {
     id: number,
     text: string,
     type: 'favorite'|'status',

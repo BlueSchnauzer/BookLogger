@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { filterToggleItem } from '$lib/customTypes';
+	import type { toggleFilterItem } from '$lib/customTypes';
 	import Icon from '@iconify/svelte';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';
@@ -9,32 +9,41 @@
 	import { onMount } from 'svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
 	import ToggleSwitch from '$lib/parts/ToggleSwitch.svelte';
+	type selectFilterItem = { id: number; text: string };
 
 	//export let data: PageData;
 
 	const colorStone700 = '#44403C';
-	let filterToggleItems: filterToggleItem[] = [
+	let isDisplayInput: boolean = false;
+	let inputValue: string;
+	let selectValue: selectFilterItem;
+
+	let togglerFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
 		{ id: 2, text: '読みたい', type: 'status', isChecked: false, isVisible: true },
 		{ id: 3, text: '読んでいる', type: 'status', isChecked: false, isVisible: true },
 		{ id: 4, text: '読み終わった', type: 'status', isChecked: false, isVisible: true }
 	];
+	let selectFilterItems: selectFilterItem[] = [
+		{ id: 1, text: '最近追加した順' },
+		{ id: 2, text: '最近読み終わった順' }
+	];
 
-	/**全てのフィルターのチェックを外す*/
+	/**トグルフィルターのチェックを外す*/
 	const removeAllToggleCheck = (): void => {
-		filterToggleItems.forEach((item) => {
+		togglerFilterItems.forEach((item) => {
 			item.isChecked = false;
 			item.isVisible = true;
 		});
-		filterToggleItems = [...filterToggleItems];
+		togglerFilterItems = [...togglerFilterItems];
 	};
 	/**statusタイプのフィルター選択時に、他のstatusフィルターを非表示にする*/
 	const changeOtherStatusVisibility = (event: CustomEvent): void => {
-		const clickItem = filterToggleItems.find((item) => item.id === event.detail.id);
+		const clickItem = togglerFilterItems.find((item) => item.id === event.detail.id);
 		if (clickItem?.type === 'favorite') {
 			return;
 		}
-		filterToggleItems.forEach((item) => {
+		togglerFilterItems.forEach((item) => {
 			if (item.type === 'favorite' || item === clickItem) {
 				return;
 			}
@@ -45,7 +54,7 @@
 				item.isVisible = true;
 			}
 		});
-		filterToggleItems = [...filterToggleItems];
+		togglerFilterItems = [...togglerFilterItems];
 	};
 
 	onMount(() => {
@@ -68,18 +77,23 @@
 			<Icon icon="ph:plus" width="36" height="36" color={colorStone700} />
 		</button>
 	</div>
-	<div>
-		<div id="labelContainer" class="pb-2 flex items-center">
+	<div class="flex justify-between items-center">
+		<div class="pb-2 flex items-center">
 			<ul class="flex items-center">
-                <li class="flex">
-                    <button on:click={removeAllToggleCheck} class="{filterToggleItems.some((item) => item.isChecked) ? '' : 'hidden'}">
-                        <Icon icon="ph:x" width="24" height="24" />
-                    </button>        
-                </li>
-				{#each filterToggleItems as item (item.id)}
+				<li class="flex">
+					<button
+						on:click={removeAllToggleCheck}
+						class={togglerFilterItems.some((item) => item.isChecked) ? '' : 'hidden'}
+					>
+						<Icon icon="ph:x" width="24" height="24" />
+					</button>
+				</li>
+				{#each togglerFilterItems as item (item.id)}
 					<li>
 						<ToggleSwitch
-							id={item.id} text={item.text} isVisible={item.isVisible}
+							id={item.id}
+							text={item.text}
+							isVisible={item.isVisible}
 							bind:isChecked={item.isChecked}
 							on:change={changeOtherStatusVisibility}
 						/>
@@ -87,9 +101,37 @@
 				{/each}
 			</ul>
 		</div>
-        <div>
-            
-        </div>
+		<div class="pb-2 flex items-center">
+			<div class="flex items-center px-2 overflow-hidden">
+				<input
+					name="filter"
+					type="text"
+                    size="20"
+					placeholder="書名、作者名..."
+					bind:value={inputValue}
+					class="px-2 py-1 rounded-lg duration-300 transition-all {isDisplayInput ? 'animate-scale-in-right' : 'hidden'}"
+				/>
+				<button
+					class="ml-2 h-8 w-8 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
+                        duration-150 hover:bg-stone-200"
+					on:click={() => (isDisplayInput = !isDisplayInput)}
+				>
+					<Icon icon="ph:magnifying-glass" width="20" height="20" color={colorStone700} />
+				</button>
+			</div>
+			<select
+				name="filter"
+				bind:value={selectValue}
+				on:change={() => console.log(selectValue)}
+				class="text-sm px-2 py-1 rounded-lg text-stone-700 bg-stone-300 border border-stone-400 
+                    duration-150 focus:bg-stone-200 hover:bg-stone-200"
+			>
+				<option value="" selected>並べ替え</option>
+				{#each selectFilterItems as item}
+					<option value={item}>{item.text}</option>
+				{/each}
+			</select>
+		</div>
 	</div>
 	<!-- <div>
         {#each filterToggleItems as item (item.id)}

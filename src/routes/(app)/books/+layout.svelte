@@ -22,7 +22,7 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
     <slot />
-    <div class="mx-2 my-1 bg-stone-400 h-[1px]" />
+    <div class="hidden mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
     <div id="mainContent" class="p-1 contentHeight">
         <ul class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center">
             {#each data.BookInfos as bookInfo}
