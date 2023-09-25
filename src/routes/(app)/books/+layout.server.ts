@@ -4,7 +4,7 @@ import type { BookInfo } from '$lib/customTypes';
 //保存した書籍の情報を取得する(APIへのリクエストはフロントで実行)
 export const load = (async () => {
     //DBへアクセスして、ユーザーの書誌情報を取得する。
-    const bookInfos : BookInfo[] = [
+    let bookInfos : BookInfo[] = [
         {
             isbn_13: '978-4-15-031316-6',
             title: 'エピローグ',
@@ -189,5 +189,5 @@ export const load = (async () => {
         }
     ];
 
-    return { BookInfos: bookInfos};
+    return { bookInfos};
 }) satisfies LayoutServerLoad;

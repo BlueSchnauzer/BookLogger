@@ -25,7 +25,7 @@
     <div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
     <div id="mainContent" class="p-1 contentHeight">
         <ul class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center">
-            {#each data.BookInfos as bookInfo}
+            {#each data.bookInfos as bookInfo}
                 <li class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
                     title="{bookInfo.title}"
                 >
