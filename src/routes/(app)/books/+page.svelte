@@ -9,14 +9,20 @@
 	import { onMount } from 'svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
 	import ToggleSwitch from '$lib/parts/ToggleSwitch.svelte';
+	import FullCoverZindex10 from '$lib/parts/FullCoverZindex10.svelte';
 	type selectFilterItem = { id: number; text: string };
 
 	//export let data: PageData;
 
 	const colorStone700 = '#44403C';
-	let isDisplayInput: boolean = false;
+	let isDisplayInput = false;
 	let inputValue: string;
-	let selectValue: selectFilterItem;
+	let isDisplaySelect = false;
+	let selectValue: number;
+	const setSelectValue = (id:number) : void => {
+		selectValue = id;
+		isDisplaySelect = false;
+	}
 
 	let togglerFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
@@ -78,8 +84,8 @@
 		</button>
 	</div>
 	<div class="flex justify-between items-center">
-		<div class="pb-2 flex items-center">
-			<ul class="flex items-center">
+		<div id="labelContainer" class="flex items-center w-96 max-lg:w-60">
+			<ul class="w-96 flex items-center">
 				<li class="flex">
 					<button
 						on:click={removeAllToggleCheck}
@@ -101,43 +107,41 @@
 				{/each}
 			</ul>
 		</div>
-		<div class="pb-2 flex items-center">
-			<div class="flex items-center px-2 overflow-hidden">
+		<div class="flex items-center">
+			<div class="pl-2 flex items-center">
 				<input
 					name="filter"
 					type="text"
-                    size="20"
+                    size="15"
 					placeholder="書名、作者名..."
 					bind:value={inputValue}
-					class="px-2 py-1 rounded-lg duration-300 transition-all {isDisplayInput ? 'animate-scale-in-right' : 'hidden'}"
+					class="absolute -ml-40 px-2 py-1 rounded-lg duration-300 transition-all {isDisplayInput ? 'animate-scale-in-right' : 'hidden'}"
 				/>
 				<button
-					class="ml-2 h-8 w-8 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
+					class="ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
                         duration-150 hover:bg-stone-200"
-					on:click={() => (isDisplayInput = !isDisplayInput)}
+					on:click={() => isDisplayInput = !isDisplayInput}
 				>
-					<Icon icon="ph:magnifying-glass" width="20" height="20" color={colorStone700} />
+					<Icon icon="ph:magnifying-glass" width="28" height="28" color={colorStone700} />
 				</button>
 			</div>
-			<select
-				name="filter"
-				bind:value={selectValue}
-				on:change={() => console.log(selectValue)}
-				class="text-sm px-2 py-1 rounded-lg text-stone-700 bg-stone-300 border border-stone-400 
-                    duration-150 focus:bg-stone-200 hover:bg-stone-200"
-			>
-				<option value="" selected>並べ替え</option>
-				{#each selectFilterItems as item}
-					<option value={item}>{item.text}</option>
-				{/each}
-			</select>
+			<div>
+				<button
+					class="z-20 relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
+                        duration-150 hover:bg-stone-200"
+						on:click={() => isDisplaySelect = !isDisplaySelect}
+				>
+					<Icon icon="ph:list-magnifying-glass" width="28" height="28" color={colorStone700} />
+				</button>
+				<ul class="z-30 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect ? '' : 'hidden'}">
+					{#each selectFilterItems as item (item.id) }
+						<li class="flex duration-150 hover:bg-stone-300">
+							<button class="flex flex-1 px-2 py-1" on:click={() => setSelectValue(item.id)}>{item.text}</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
+			<FullCoverZindex10 bind:isDisplay={isDisplaySelect} isHiddenByOnclick={true} />
 		</div>
 	</div>
-	<!-- <div>
-        {#each filterToggleItems as item (item.id)}
-            <span>
-                {item.isChecked? `checked ${item.text}` : 'unchecked'}
-            </span>
-        {/each}
-    </div> -->
 </div>
