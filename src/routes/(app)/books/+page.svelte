@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { toggleFilterItem } from '$lib/customTypes';
+	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
 	import Icon from '@iconify/svelte';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';
@@ -12,7 +13,8 @@
 	import FullCoverZindex10 from '$lib/parts/FullCoverZindex10.svelte';
 	type selectFilterItem = { id: number; text: string };
 
-	//export let data: PageData;
+	export let data: PageData;
+
 
 	const colorStone700 = '#44403C';
 	let isDisplayInput = false;
@@ -76,15 +78,7 @@
 </script>
 
 <div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-	<div class="flex items-center justify-between">
-		<div class="flex">
-			<BookCase width={30} height={30} />
-			<h1 class="text-xl pl-2">登録した本</h1>
-		</div>
-		<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300">
-			<Icon icon="ph:plus" width="36" height="36" color={colorStone700} />
-		</button>
-	</div>
+	<ContentHeader headerIcon={BookCase} headerText="登録した本" isDisplayAddButton={true}/>
 	<div class="flex justify-between items-center">
 		<div id="labelContainer" class="flex items-center w-96 max-lg:w-60 edgeGradiation">
 			<ul class="w-96 flex items-center">
