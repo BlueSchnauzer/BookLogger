@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { MenuItemData } from '$lib/customTypes';
+    import type { menuItemData } from '$lib/customTypes';
 	import type { ComponentType } from 'svelte';
 
-    export let MenuItemDatas: MenuItemData[];
+    export let MenuItemDatas: menuItemData[];
 	export let currentMenu: ComponentType;
     export let iconColor = '#000000';
 
