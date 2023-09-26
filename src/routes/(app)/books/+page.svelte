@@ -16,8 +16,10 @@
 
 	const colorStone700 = '#44403C';
 	let isDisplayInput = false;
+	/**インプットの値*/
 	let inputValue: string;
 	let isDisplaySelect = false;
+	/**リストの値*/
 	let selectValue: number;
 	const setSelectValue = (id:number) : void => {
 		selectValue = id;
@@ -84,7 +86,7 @@
 		</button>
 	</div>
 	<div class="flex justify-between items-center">
-		<div id="labelContainer" class="flex items-center w-96 max-lg:w-60">
+		<div id="labelContainer" class="flex items-center w-96 max-lg:w-60 edgeGradiation">
 			<ul class="w-96 flex items-center">
 				<li class="flex">
 					<button
@@ -145,3 +147,18 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* ウィンドウサイズが小さい時にトグルメニューの右端を半透明にする(tailwindcssだと長くなりすぎるのでクラス化) */
+	@media not all and (min-width: 1024px){
+		.edgeGradiation::after {
+		content: "";
+		position: absolute;
+		width: 20px;
+		height: 100%;
+		right: 0;
+		background: linear-gradient(to left, #eeeae3 0%, rgba(255,255,255,0) 100%);
+		pointer-events: none;
+		}
+	}
+</style>
