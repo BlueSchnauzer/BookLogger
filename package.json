@@ -38,6 +38,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"mongodb": "^6.1.0",
+		"mongoose": "^7.5.3",
 		"resize-observer-polyfill": "^1.5.1",
 		"simplebar": "^6.2.5"
 	}
