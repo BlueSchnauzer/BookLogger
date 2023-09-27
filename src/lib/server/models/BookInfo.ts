@@ -47,4 +47,4 @@ const bookInfoSchema = new Schema<IBookInfo>({
 });
 
 /**書誌情報のモデル */
-export const BookInfo = model<IBookInfo>('BookInfo', bookInfoSchema);
+export const BookInfoModel = model<IBookInfo>('BookInfo', bookInfoSchema);
