@@ -20,7 +20,7 @@ export interface IBookInfo {
 	isCompleted: boolean;
     isFavorite: boolean;
 	memorandum: string;
-	isVisible: boolean; //DBでは管理しない
+	isVisible: boolean;
 	isbn_10?: string;
 }
 
@@ -35,7 +35,6 @@ const bookInfoSchema = new Schema<IBookInfo>({
 	pageCount: { type: Number, default: -1 },
 	history: [
 		{
-			required: false,
 			date: { type: Date, required: true },
 			currentPage: { type: Number, required: true }
 		}
@@ -43,6 +42,7 @@ const bookInfoSchema = new Schema<IBookInfo>({
 	isCompleted: { type: Boolean, required: true },
     isFavorite: { type: Boolean, required: true, default: false},
 	memorandum: { type: String, default: '' },
+    isVisible: { type: Boolean, required: true, default: true},
 	isbn_10: { type: String, default: '' }
 });
 

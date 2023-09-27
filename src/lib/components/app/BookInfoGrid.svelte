@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { bookInfo } from '$lib/customTypes';
+    import type { IBookInfo } from '$lib/server/models/BookInfo';
 
-    export let bookInfos: bookInfo[];
+    export let bookInfos: IBookInfo[];
 </script>
 
 <ul class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center">
