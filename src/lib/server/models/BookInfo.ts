@@ -3,6 +3,7 @@ import { Schema, model } from 'mongoose';
 
 /**書誌情報 */
 export interface IBookInfo {
+	_id: ObjectId;
 	//userId: ObjectId; //User用のスキーマが完成した際に入れ替える。
 	userId: number;
 	isbn_13: string;
@@ -25,6 +26,7 @@ export interface IBookInfo {
 }
 
 const bookInfoSchema = new Schema<IBookInfo>({
+	_id: {type: ObjectId},
 	//userId: { type: ObjectId, required: true, ref: User }, //User用のモデルが完成した際に入れ替える。
 	userId: {type: Number, required: true},
 	isbn_13: { type: String, required: true },
