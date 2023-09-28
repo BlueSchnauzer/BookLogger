@@ -2,7 +2,8 @@
     export let id:number;
     export let text:string;
     export let isVisible = true;
-    export let isChecked = false;</script>
+    export let isChecked = false;
+</script>
 
 <div class="flex { isVisible ? '' : 'hidden' }">
     <input type="checkbox" id="toggle-{id}" class="peer opacity-0 absolute left-0" bind:checked={isChecked}>
