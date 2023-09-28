@@ -4,8 +4,14 @@
 	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/app/ContentFilters.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
+	import BookInfoGrid from '$lib/components/app/BookInfoGrid.svelte';
+    import SimpleBar from 'simplebar';
+    import 'simplebar/dist/simplebar.css';
+    //iOS Safariなど用に追加
+    import ResizeObserver from 'resize-observer-polyfill';
+	import { onMount } from 'svelte';
 
-	//export let data: PageData;
+	export let data: PageData;
 
 	/**インプットの値*/
 	let inputValue: string;
@@ -46,9 +52,30 @@
 		console.log(toggleFilterItems);
 	}
 
+	//ISBNで書誌情報を取得し、書影とページ数を取る。
+    //→ここじゃなくて、タグの方でawaitロジックを使った方がよさそう
+
+    onMount(() => {
+        //SSR時のエラー回避のためDOM生成後に実行
+        window.ResizeObserver = ResizeObserver;
+        const mainContent = window.document.querySelector<HTMLElement>('#mainContent');
+        if (mainContent) { new SimpleBar(mainContent); }
+    });
+
 </script>
 
 <div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
 	<ContentHeader headerIcon={BookCase} headerText="登録した本" isDisplayAddButton={true} />
 	<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
 </div>
+<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
+<div id="mainContent" class="p-1 contentHeight">
+	<BookInfoGrid bind:bookInfos={data.bookInfos}/>
+</div>
+
+<style>
+	.contentHeight {
+        height: calc(100% - 96px);
+    }
+
+</style>
