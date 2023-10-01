@@ -1,4 +1,5 @@
-import { defineConfig, devices } from '@playwright/experimental-ct-svelte';
+import { PlaywrightTestConfig, defineConfig, devices } from '@playwright/experimental-ct-svelte';
+import { resolve } from 'node:path';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
