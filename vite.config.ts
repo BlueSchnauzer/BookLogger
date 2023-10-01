@@ -5,6 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
+		setupFiles: './src/lib/vitest-setup.ts',
 		globals: true,
 		environment: 'jsdom'
 	}
