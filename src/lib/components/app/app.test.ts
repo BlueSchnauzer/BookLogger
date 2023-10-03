@@ -28,21 +28,54 @@ describe('ContentHeader', () => {
 });
 
 describe('ContentFilters', () => {
-    let toggleFilterItems: customTypes.toggleFilterItem[] = [{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }];
-    let selectFilterItems: customTypes.selectFilterItem[] = [{ id: 1, text: '最近追加した順' }];
+    //データ作成
+    let toggleFilterItems: customTypes.toggleFilterItem[] = [
+        { id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
+		{ id: 2, text: '読みたい', type: 'status', isChecked: false, isVisible: true },
+    ];
+    let selectFilterItems: customTypes.selectFilterItem[] = [
+		{ id: 1, text: '最近追加した順' },
+		{ id: 2, text: '最近読み終わった順' }
+	];
     let inputValue = "";
     let selectValue = -1;
 
     it('レンダリング', () => {
         render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
 
-        expect(() => screen.getByText(toggleFilterItems[0].text)).not.toThrow();
-        expect(() => screen.getByText(selectFilterItems[0].text)).not.toThrow();
-        expect(() => screen.getByPlaceholderText('書名、作者名...')).not.toThrow();
+        expect(screen.getByText(toggleFilterItems[0].text)).toBeInTheDocument();
+        expect(screen.getByText(selectFilterItems[0].text)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('書名、作者名...')).toBeInTheDocument();
     });
 
-    it('トグルボタンの状態をバインドできるか', () => {
-        render(ContentFilters, { toggleFilterItems, inputValue, selectFilterItems, selectValue});
+    it('トグルフィルターボタンのクリック時に、フラグがオンになること', () => {
+        render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
 
+        const toggleButton = screen.getByText(toggleFilterItems[0].text);
+        fireEvent.click(toggleButton);
+        expect(toggleFilterItems[0].isChecked).toBeTruthy();
     });
+
+    it('テキストフィルターの表示を切り替えられること', () => {
+        const { container } = render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
+
+        const btnDisplay = container.querySelector<HTMLElement>('#btnDisplayFilterText')!;
+        fireEvent.click(btnDisplay);
+        expect(screen.getByPlaceholderText('書名、作者名...')).toBeVisible();
+       
+        fireEvent.click(btnDisplay);
+        //TailWindCss利用時は単に`.not.toBeVisible()`では検知できなかった。
+        expect(screen.getByPlaceholderText('書名、作者名...')).toHaveClass('hidden');
+    });
+
+    it('リストフィルターの表示と、リスト選択時に変数が更新されること', () => {
+        // const { container } = render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
+
+        // const filterButton = container.querySelector<HTMLElement>('#btnDisplayFIlter')!;
+        // fireEvent.click(filterButton);
+        
+    });
+
+    //バインドはテストできないので別途テストする
+    //it('トグルボタンの状態をバインドできるか', () => { });
 });
