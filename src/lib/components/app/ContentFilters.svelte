@@ -80,7 +80,7 @@
 					? 'animate-scale-in-right'
 					: 'hidden'}"
 			/>
-			<button
+			<button data-testid="btnDisplayFilterText"
 				class="ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
                     duration-150 hover:bg-stone-200"
 				on:click={() => (isDisplayInput = !isDisplayInput)}
@@ -89,14 +89,14 @@
 			</button>
 		</div>
 		<div>
-			<button
+			<button data-testid="btnDisplayFilterOptions"
 				class="z-20 relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
                     duration-150 hover:bg-stone-200"
 				on:click={() => (isDisplaySelect = !isDisplaySelect)}
 			>
 				<Icon icon="ph:list-magnifying-glass" width="28" height="28" color={colorStone700} />
 			</button>
-			<ul
+			<ul data-testid="filterOptions"
 				class="z-30 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect
 					? ''
 					: 'hidden'}"

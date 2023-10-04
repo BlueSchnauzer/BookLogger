@@ -59,7 +59,7 @@ describe('ContentFilters', () => {
     it('テキストフィルターの表示を切り替えられること', () => {
         const { container } = render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
 
-        const btnDisplay = container.querySelector<HTMLElement>('#btnDisplayFilterText')!;
+        const btnDisplay = screen.getByTestId('btnDisplayFilterText');
         fireEvent.click(btnDisplay);
         expect(screen.getByPlaceholderText('書名、作者名...')).toBeVisible();
        
@@ -69,11 +69,16 @@ describe('ContentFilters', () => {
     });
 
     it('リストフィルターの表示と、リスト選択時に変数が更新されること', () => {
-        // const { container } = render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
+        const { container } = render(ContentFilters, {toggleFilterItems, inputValue, selectFilterItems, selectValue});
 
-        // const filterButton = container.querySelector<HTMLElement>('#btnDisplayFIlter')!;
-        // fireEvent.click(filterButton);
+        const btnDisplay = screen.getByTestId('btnDisplayFilterOptions');
+        fireEvent.click(btnDisplay);
         
+        const options = screen.getByTestId('filterOptions');
+        expect(options).toBeVisible();
+
+        fireEvent.click(btnDisplay);
+        expect(options).toHaveClass('hidden');
     });
 
     //バインドはテストできないので別途テストする
