@@ -8,8 +8,11 @@ import Dashboard from '$lib/icons/Dashboard.svelte';
 import BookCase from '$lib/icons/BookCase.svelte';
 import CompleteBook from '$lib/icons/CompleteBook.svelte';
 import BookShelf from '$lib/icons/BookShelf.svelte';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vitest } from 'vitest';
 import type { ComponentType } from 'svelte';
+import type { IBookInfo } from '$lib/server/models/BookInfo';
+import { ObjectId } from 'mongodb';
+import BookInfoGrid from './BookInfoGrid.svelte';
 
 describe('SideMenuItem', () => {
     //データ作成
@@ -32,11 +35,15 @@ describe('SideMenuItem', () => {
         expect(BookShelf).toBeInTheDocument();
     });
 
-    it('propsに応じてCSSクラスが付与されること', () => {
+    it('クリックに応じてCSSクラスが付与されること', async () => {
         const {container} = render(SideMenuItem, { MenuItemDatas, currentMenu, iconColor: colorStone200 });
 
         const firstItem = container.querySelector<HTMLElement>(`li:nth-child(1)`)!;
         expect(firstItem).toHaveClass('border-x-lime-600');
+
+        const secondItem = container.querySelector<HTMLElement>(`li:nth-child(2)`)!;
+        await fireEvent.click(secondItem);
+        expect(secondItem).toHaveClass('border-x-lime-600');
     });
 });
 
@@ -61,11 +68,15 @@ describe('BottomMenuItem', () => {
         expect(BookShelf).toBeInTheDocument();
     });
 
-    it('propsに応じてCSSクラスが付与されること', () => {
+    it('クリックに応じてCSSクラスが付与されること', async () => {
         const {container} = render(BottomMenuItem, { MenuItemDatas, currentMenu, iconColor: colorStone200 });
 
         const firstItem = container.querySelector<HTMLElement>(`li:nth-child(1)`)!;
         expect(firstItem).toHaveClass('border-y-lime-600');
+
+        const secondItem = container.querySelector<HTMLElement>(`li:nth-child(2)`)!;
+        await fireEvent.touchEnd(secondItem);
+        expect(secondItem).toHaveClass('border-y-lime-600');
     });
 });
 
@@ -112,11 +123,11 @@ describe('ContentFilters', () => {
         expect(screen.getByPlaceholderText('書名、作者名...')).toBeInTheDocument();
     });
 
-    it('トグルフィルターボタンのクリック時に、フラグがオンになること', () => {
+    it('トグルフィルターボタンのクリック時に、フラグがオンになること', async () => {
         render(ContentFilters, { toggleFilterItems, inputValue, selectFilterItems, selectValue });
 
         const toggleButton = screen.getByText(toggleFilterItems[0].text);
-        fireEvent.click(toggleButton);
+        await fireEvent.click(toggleButton);
         expect(toggleFilterItems[0].isChecked).toBeTruthy();
     });
 
@@ -132,19 +143,99 @@ describe('ContentFilters', () => {
         expect(screen.getByPlaceholderText('書名、作者名...')).toHaveClass('hidden');
     });
 
-    it('リストフィルターの表示と、リスト選択時に変数が更新されること', () => {
-        const { container } = render(ContentFilters, { toggleFilterItems, inputValue, selectFilterItems, selectValue });
+    it('リストフィルターの表示を切り替えられること', async () => {
+        render(ContentFilters, { toggleFilterItems, inputValue, selectFilterItems, selectValue });
 
         const btnDisplay = screen.getByTestId('btnDisplayFilterOptions');
-        fireEvent.click(btnDisplay);
+        await fireEvent.click(btnDisplay);
 
         const options = screen.getByTestId('filterOptions');
         expect(options).toBeVisible();
 
-        fireEvent.click(btnDisplay);
+        await fireEvent.click(btnDisplay);
         expect(options).toHaveClass('hidden');
     });
 
     //バインドはテストできないので別途テストする
     //it('トグルボタンの状態をバインドできるか', () => { });
+});
+
+describe('BookInfoGrid', () => {
+    let bookInfos : IBookInfo[] = [
+        {
+            _id: new ObjectId('651451ed67241f439ce8a1af'),
+            userId: 1,
+            isVisible: true,
+            isbn_13: '978-4-15-031316-6',
+            title: 'エピローグ',
+            imageUrl: '',
+            createDate: new Date,
+            updateDate: new Date,
+            pageCount: -1,
+            history: [{
+                date: new Date,
+                currentPage: 0
+            }],
+            isFavorite: false,
+            isCompleted: false,
+            memorandum: 'メモです1'
+        },
+        {
+            _id: new ObjectId('651451ed67241f439ce8a1af'),
+            userId: 1,
+            isVisible: true,
+            isbn_13: '978-4-16-791019-8',
+            title: 'プロローグ',
+            imageUrl: '',
+            createDate: new Date,
+            updateDate: new Date,
+            pageCount: -1,
+            history: [{
+                date: new Date,
+                currentPage: 0
+            }],
+            isFavorite: false,
+            isCompleted: false,
+            memorandum: 'メモです2'
+        },
+    ];
+
+    it('レンダリング', () => {
+        render(BookInfoGrid, {bookInfos});
+
+        expect(screen.getByTitle(bookInfos[0].title)).toBeInTheDocument();
+        expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
+    });
+
+    it('Propsに応じて書誌情報を非表示にできること', async () =>{
+        const { component } = render(BookInfoGrid, {bookInfos});
+
+        expect(screen.queryByTitle(bookInfos[0].title)).toBeInTheDocument();
+        
+        bookInfos[0].isVisible = false;
+        await component.$set({bookInfos});
+
+        expect(screen.queryByTitle(bookInfos[0].title)).not.toBeInTheDocument();
+        expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
+    });
+
+    it('グリッドアイテムクリックでサブメニュー用のデータと、クリックイベントを検知できること', () => {
+    });
+    
+    it('タイトルクリックでページ移動と、クリックイベントを検知できること', () => {
+        
+    });
+
+    it('ボタンクリックでお気に入りを切り替えられ、クリックイベントを検知できること', async () => {
+        const { component } = render(BookInfoGrid, {bookInfos});
+
+        const favorite = screen.getByRole('button');
+        const mock = vitest.fn();
+
+        component.$on('click', mock);
+        await fireEvent.click(favorite);
+
+        expect(bookInfos[0].isFavorite).toBeFalsy();
+        expect(mock).toHaveBeenCalled();
+    });
 });
