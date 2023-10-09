@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Schema, model } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
 /**書誌情報 */
 export interface IBookInfo {
@@ -49,4 +49,4 @@ const bookInfoSchema = new Schema<IBookInfo>({
 });
 
 /**書誌情報のモデル */
-export const BookInfoModel = model<IBookInfo>('BookInfo', bookInfoSchema);
+export default models['BookInfo'] || model<IBookInfo>('BookInfo', bookInfoSchema);
