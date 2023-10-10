@@ -1,30 +1,9 @@
 <script lang="ts">
 	import type { IBookInfo } from '$lib/server/models/BookInfo';
-	import { PUBLIC_BOOKSAPI_LIST } from '$env/static/public';
-	import type { books_v1 } from 'googleapis';
+    import { getBookInfo } from '$lib/GoogleBooksAPI/clientManage';
 
 	export let bookInfos: IBookInfo[];
 
-	async function requestBookInfo(query: string): Promise<books_v1.Schema$Volumes> {
-		const response = await gapi.client.request({
-			path: PUBLIC_BOOKSAPI_LIST,
-			params: {
-				q: query
-			}
-		});
-		// レスポンスのボディをbooks_v1.Schema$Volumes型として返す
-		return response.result as books_v1.Schema$Volumes;
-	}
-    /**GoogleBooksAPIに書影をリクエストする*/
-	async function getImage(query: string): Promise<string> {
-		const result = await requestBookInfo(`isbn:${query}`);
-		if (result.items?.length === 0 || !result.items) { throw new Error('This books image was not found in GoogleBooksAPI'); }
-
-		const thumbnail = result.items[0].volumeInfo?.imageLinks?.thumbnail;
-        if (!thumbnail) { throw new Error('This books image was not found in GoogleBooksAPI'); }
-        
-        return thumbnail;
-	}
 </script>
 
 <ul
@@ -36,9 +15,9 @@
 				class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
 				title={bookInfo.title}
 			>
-				{#await getImage(bookInfo.isbn_13)}
-					<div class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300">
-						Loading!
+				{#await getBookInfo(bookInfo)}
+					<div class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] border border-slate-300">
+                        <span class="animate-spin w-10 h-10 border-4 border-blue-500 rounded-full border-t-transparent"></span>
 					</div>
 				{:then thumbnail}
 					<img
@@ -47,8 +26,8 @@
 						alt="test"
 					/>
 				{:catch}
-					<div class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300">
-						No Image
+					<div class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] bg-slate-300">
+						<span>No Image</span>
 					</div>
 				{/await}
 				<div class="max-sm:hidden">

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
     import type { LayoutData } from './$types';    
+    import { preparingGapi } from '$lib/GoogleBooksAPI/clientManage';
+    export let data: LayoutData;
+
+    //data.preparingGapi();
 
     onMount(async () => {
-		//JavaScript用のGoogleAPIライブラリをロードする
-		await gapi.load('client', () => {});
-		//GoogleBooksAPI v1を使用する
-		await gapi.client.init({'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/books/v1/rest']});
-	});
-
+        await preparingGapi();
+    });
 </script>
 
 <svelte:head>
