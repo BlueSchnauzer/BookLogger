@@ -47,6 +47,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/gapi": "^0.0.45",
     "googleapis": "^126.0.1",
     "mongodb": "^6.1.0",
     "mongoose": "^7.5.3",
