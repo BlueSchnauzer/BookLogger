@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 import type * as customTypes from '$lib/customTypes';
-import ToggleSwitch from '$lib/parts/ToggleSwitch.svelte';
+import ToggleSwitch from '$lib/components/parts/ToggleSwitch.svelte';
 
 describe('ToggleSwitch', () => {
 	//データ作成
