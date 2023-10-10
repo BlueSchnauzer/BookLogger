@@ -18,16 +18,12 @@
     /**GoogleBooksAPIに書影をリクエストする*/
 	async function getImage(query: string): Promise<string> {
 		const result = await requestBookInfo(`isbn:${query}`);
-		if (result.items?.length === 0 || !result.items) {
-			throw new Error('This books image was not found in GoogleBooksAPI');
-		}
+		if (result.items?.length === 0 || !result.items) { throw new Error('This books image was not found in GoogleBooksAPI'); }
 
 		const thumbnail = result.items[0].volumeInfo?.imageLinks?.thumbnail;
-		if (thumbnail) {
-			return thumbnail;
-		} else {
-			throw new Error('This books image was not found in GoogleBooksAPI');
-		}
+        if (!thumbnail) { throw new Error('This books image was not found in GoogleBooksAPI'); }
+        
+        return thumbnail;
 	}
 </script>
 
