@@ -26,8 +26,11 @@
 						alt="test"
 					/>
 				{:catch}
-					<div class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] bg-slate-300">
+					<div class="max-sm:hidden justify-self-center self-center flex flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300">
 						<span>No Image</span>
+					</div>
+					<div class="hidden max-sm:flex justify-self-center self-center flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300">
+						<span class="p-1 break-all collapseTitle">{bookInfo.title}</span>
 					</div>
 				{/await}
 				<div class="max-sm:hidden">
