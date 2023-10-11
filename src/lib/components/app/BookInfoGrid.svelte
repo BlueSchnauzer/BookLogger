@@ -17,7 +17,7 @@
 			>
 				{#await getBookInfo(bookInfo)}
 					<div class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] border border-slate-300">
-                        <span class="animate-spin w-10 h-10 border-4 border-blue-500 rounded-full border-t-transparent"></span>
+                        <span class="animate-spin w-10 h-10 border-4 border-lime-600 rounded-full border-t-transparent"></span>
 					</div>
 				{:then thumbnail}
 					<img
