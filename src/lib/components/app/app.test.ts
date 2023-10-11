@@ -219,11 +219,28 @@ describe('BookInfoGrid', () => {
         expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
     });
 
-    it('グリッドアイテムクリックでサブメニュー用のデータと、クリックイベントを検知できること', () => {
+    it('グリッドアイテムクリックでサブメニュー用のデータと、クリックイベントを検知できること', async () => {
+      const { component } = render(BookInfoGrid, {bookInfos});
+
+      const gridItem = screen.queryByTitle(bookInfos[0].title)!;
+      const mock = vitest.fn();
+
+      component.$on('click', mock);
+      await fireEvent.click(gridItem);
+
+      expect(mock).toHaveBeenCalled();
     });
     
-    it('タイトルクリックでページ移動と、クリックイベントを検知できること', () => {
-        
+    it('タイトルクリックでページ移動と、クリックイベントを検知できること', async () => {
+      const { component } = render(BookInfoGrid, {bookInfos});
+      
+      const link = screen.getByRole('link');
+      const mock = vitest.fn();
+
+      component.$on('click', mock);
+      await fireEvent.click(link);
+
+      expect(mock).toHaveBeenCalled();
     });
 
     it('ボタンクリックでお気に入りを切り替えられ、クリックイベントを検知できること', async () => {
