@@ -3,7 +3,6 @@ import { ServerBooksGAPI } from "./serverManage";
 import type { IBookInfo } from "../models/BookInfo";
 import { ObjectId } from "mongodb";
 
-
 describe('requestBookInfo', () => {
   const booksGapi = new ServerBooksGAPI();
   const bookInfo: IBookInfo = {
@@ -76,4 +75,5 @@ describe('setBookInfoByISBN', () => {
     expect(bookInfo.pageCount).not.toBe(-1);
   });
 
+  //他の観点はServer側でテスト済み
 });

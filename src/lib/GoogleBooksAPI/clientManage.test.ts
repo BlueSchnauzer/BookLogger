@@ -50,7 +50,7 @@ describe('requestBookInfo', () => {
 
 describe('setBookInfoByISBN', () => {
   const booksGapi = new ClientBooksGAPI();
-  const bookInfo: IBookInfo = {
+  const bookInfos: IBookInfo[] = [{
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
@@ -67,13 +67,62 @@ describe('setBookInfoByISBN', () => {
     isFavorite: false,
     isCompleted: false,
     memorandum: 'メモです1'
-  }
+  },
+  {
+      _id: new ObjectId('651451ed67241f439ce8a1af'),
+      userId: 1,
+      isVisible: true,
+      isbn_13: '',
+      title: 'タイトル無し',
+      imageUrl: '',
+      createDate: new Date,
+      updateDate: new Date,
+      pageCount: -1,
+      history: [{
+          date: new Date,
+          currentPage: 0
+      }],
+      isFavorite: false,
+      isCompleted: false,
+      memorandum: ''
+  },
+  {
+      _id: new ObjectId('651451ed67241f439ce8a1af'),
+      userId: 1,
+      isVisible: true,
+      isbn_13: '0000',
+      title: 'タイトル無し',
+      imageUrl: '',
+      createDate: new Date,
+      updateDate: new Date,
+      pageCount: -1,
+      history: [{
+          date: new Date,
+          currentPage: 0
+      }],
+      isFavorite: false,
+      isCompleted: false,
+      memorandum: ''
+  }]
 
   it('bookInfoが持つISBNを条件にして書誌データの取得と、設定ができること', async () => {
-    await booksGapi.setBookInfoByISBN(bookInfo);
+    await booksGapi.setBookInfoByISBN(bookInfos[0]);
 
-    expect(bookInfo.imageUrl).toBeTruthy();
-    expect(bookInfo.pageCount).not.toBe(-1);
+    expect(bookInfos[0].imageUrl).toBeTruthy();
+    expect(bookInfos[0].pageCount).not.toBe(-1);
   });
 
+  it('ISBNを持っていない場合にRejectされること', async () => {
+    await booksGapi.setBookInfoByISBN(bookInfos[1])
+    .catch((e: Error) => {
+      expect(e.message).toEqual('ISBN is empty');
+    });
+  });
+
+  it('リクエスト結果が0件の際にRejectされること', async () => {
+    await booksGapi.setBookInfoByISBN(bookInfos[2])
+    .catch((e: Error) => {
+      expect(e.message).toEqual('This book\'s information was not found in GoogleBooksAPI');
+    });
+  });
 });
