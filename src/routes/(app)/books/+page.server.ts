@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { connect } from '$lib/server/DB/connection';
-import { BookInfoModel, type IBookInfo } from '$lib/server/models/BookInfo';
+import BookInfoModel, { type IBookInfo } from '$lib/server/models/BookInfo';
 
 export const load = (async () => {
     let bookInfos: IBookInfo[] = [];

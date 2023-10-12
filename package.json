@@ -47,6 +47,7 @@
   },
   "type": "module",
   "dependencies": {
+    "googleapis": "^126.0.1",
     "mongodb": "^6.1.0",
     "mongoose": "^7.5.3",
     "resize-observer-polyfill": "^1.5.1",
