@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { IBookInfo } from '$lib/server/models/BookInfo';
-    import { ClientBooksGAPI } from '$lib/GoogleBooksAPI/clientManage';
+    import { BooksGAPI } from '$lib/GoogleBooksAPI/RequestManage';
 
 	export let bookInfos: IBookInfo[];
 
-	const clientGapi = new ClientBooksGAPI();
+	const booksGapi = new BooksGAPI();
 
 </script>
 
@@ -17,7 +17,7 @@
 				class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
 				title={bookInfo.title}
 			>
-				{#await clientGapi.setBookInfoByISBN(bookInfo)}
+				{#await booksGapi.setBookInfoByISBN(bookInfo)}
 					<div class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] border border-slate-300">
 						<span class="animate-spin w-10 h-10 border-4 border-lime-600 rounded-full border-t-transparent"></span>
 					</div>

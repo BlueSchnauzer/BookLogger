@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { ClientBooksGAPI } from "./clientManage";
+import { BooksGAPI } from "./RequestManage";
 import type { IBookInfo } from "$lib/server/models/BookInfo";
 import { ObjectId } from "mongodb";
 
 
 describe('requestBookInfo', () => {
-  const booksGapi = new ClientBooksGAPI();
+  const booksGapi = new BooksGAPI();
   const bookInfo: IBookInfo = {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
@@ -26,30 +26,36 @@ describe('requestBookInfo', () => {
   }
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await booksGapi.requestBookInfo(`isbn:${bookInfo.isbn_13}`);
+    const result = await booksGapi.requestBookInfo([`isbn:${bookInfo.isbn_13}`]);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
   });
   
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const result = await booksGapi.requestBookInfo(`intitle:${bookInfo.title}`);
+    const result = await booksGapi.requestBookInfo([`intitle:${bookInfo.title}`]);
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const result = await booksGapi.requestBookInfo('inauthor:イシグロカズオ');
+    const result = await booksGapi.requestBookInfo(['inauthor:イシグロカズオ']);
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
+  it('複数条件で書誌データを取得できるか', async () => {
+    const result = await booksGapi.requestBookInfo([`isbn:${bookInfo.isbn_13}`, `intitle:${bookInfo.title}`, 'inauthor:イシグロカズオ']);
+
+    expect(result.items).toBeDefined();
+    expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
+  });
 });
 
 describe('setBookInfoByISBN', () => {
-  const booksGapi = new ClientBooksGAPI();
+  const booksGapi = new BooksGAPI();
   const bookInfos: IBookInfo[] = [{
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
