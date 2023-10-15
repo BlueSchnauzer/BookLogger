@@ -90,14 +90,14 @@
 		</div>
 		<div>
 			<button data-testid="btnDisplayFilterOptions"
-				class="z-20 relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
+				class="relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
                     duration-150 hover:bg-stone-200"
 				on:click={() => (isDisplaySelect = !isDisplaySelect)}
 			>
 				<Icon icon="ph:list-magnifying-glass" width="28" height="28" color={colorStone700} />
 			</button>
 			<ul data-testid="filterOptions"
-				class="z-30 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect
+				class="z-10 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect
 					? ''
 					: 'hidden'}"
 			>
@@ -110,7 +110,6 @@
 				{/each}
 			</ul>
 		</div>
-		<FullCoverZindex10 bind:isDisplay={isDisplaySelect} isHiddenByOnclick={true} />
 	</div>
 </div>
 
