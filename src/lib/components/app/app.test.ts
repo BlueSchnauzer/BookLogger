@@ -120,7 +120,7 @@ describe('ContentFilters', () => {
 
         expect(screen.getByText(toggleFilterItems[0].text)).toBeInTheDocument();
         expect(screen.getByText(selectFilterItems[0].text)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('書名、作者名...')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('タイトル、著者名...')).toBeInTheDocument();
     });
 
     it('トグルフィルターボタンのクリック時に、フラグがオンになること', async () => {
@@ -136,11 +136,11 @@ describe('ContentFilters', () => {
 
         const btnDisplay = screen.getByTestId('btnDisplayFilterText');
         fireEvent.click(btnDisplay);
-        expect(screen.getByPlaceholderText('書名、作者名...')).toBeVisible();
+        expect(screen.getByPlaceholderText('タイトル、著者名...')).toBeVisible();
 
         fireEvent.click(btnDisplay);
         //TailWindCss利用時は単に`.not.toBeVisible()`では検知できなかった。
-        expect(screen.getByPlaceholderText('書名、作者名...')).toHaveClass('hidden');
+        expect(screen.getByPlaceholderText('タイトル、著者名...')).toHaveClass('hidden');
     });
 
     it('リストフィルターの表示を切り替えられること', async () => {
@@ -156,7 +156,7 @@ describe('ContentFilters', () => {
         expect(options).toHaveClass('hidden');
     });
 
-    //バインドはテストできないので別途テストする
+    //バインドはテストできない
     //it('トグルボタンの状態をバインドできるか', () => { });
 });
 
