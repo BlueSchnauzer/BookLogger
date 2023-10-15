@@ -74,7 +74,7 @@
 				name="filter"
 				type="text"
 				size="15"
-				placeholder="書名、作者名..."
+				placeholder="タイトル、著者名..."
 				bind:value={inputValue}
 				class="absolute -ml-40 px-2 py-1 rounded-lg duration-300 transition-all {isDisplayInput
 					? 'animate-scale-in-right'
@@ -115,7 +115,7 @@
 </div>
 
 <style>
-	/* ウィンドウサイズが小さい時にトグルメニューの右端を半透明にする(tailwindcssだと長くなりすぎるのでクラス化) */
+	/* ウィンドウサイズが小さい時にトグルメニューの右端を半透明にする。 */
 	@media not all and (min-width: 1024px) {
 		.edgeGradiation::after {
 			content: '';
