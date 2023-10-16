@@ -1,4 +1,5 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
+import userEvent from '@testing-library/user-event';
 import SideMenuItem from '$lib/components/app/SideMenuItem.svelte';
 import BottomMenuItem from '$lib/components/app/BottomMenuItem.svelte';
 import ContentHeader from '$lib/components/app/ContentHeader.svelte';
@@ -13,6 +14,8 @@ import type { ComponentType } from 'svelte';
 import type { IBookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
 import BookInfoGrid from './BookInfoGrid.svelte';
+import SearchModal from './SearchModal.svelte';
+import { goto } from '$app/navigation';
 
 describe('SideMenuItem', () => {
     //データ作成
@@ -87,7 +90,7 @@ describe('ContentHeader', () => {
 
         expect(container.querySelector('.flex > #Layer_1')).toBeInTheDocument();
         expect(screen.getByRole('heading')).toBeInTheDocument();
-        expect(container.querySelector('button.invisible')).toBeInTheDocument();
+        expect(screen.getByTestId('btnDisplaySearch')).toHaveClass('invisible');
     });
 
     it('ボタンを表示状態でレンダリング', () => {
@@ -95,11 +98,21 @@ describe('ContentHeader', () => {
 
         expect(container.querySelector('.flex > #Layer_1')).toBeInTheDocument();
         expect(screen.getByRole('heading')).toBeInTheDocument();
-        expect(screen.getByRole('button', { hidden: false })).toBeInTheDocument();
+        expect(screen.getByTestId('btnDisplaySearch')).toBeInTheDocument();
     });
 
     //ボタンクリックイベントを検知
+    it('ボタンクリックで検索モーダルを表示できること', async () => {
+        const { container } = render(ContentHeader, { headerIcon: BookCase, headerText: 'テスト', isDisplayAddButton: true });
 
+        const btnDisplaySearch = screen.getByTestId('btnDisplaySearch');
+
+        await fireEvent.click(btnDisplaySearch);
+        expect(screen.getByTestId('fullCoverZ10')).not.toHaveClass('hidden');
+
+        await fireEvent.click(btnDisplaySearch);
+        expect(screen.getByTestId('fullCoverZ10')).toHaveClass('hidden');
+    });
 });
 
 describe('ContentFilters', () => {
@@ -254,5 +267,32 @@ describe('BookInfoGrid', () => {
 
         expect(bookInfos[0].isFavorite).toBeFalsy();
         expect(mock).toHaveBeenCalled();
+    });
+});
+
+//ページ遷移をテストできていない
+describe('SearchModal', () => {
+    vitest.mock('$app/navigation', () => ({
+        goto: vitest.fn(),
+    }))
+
+    it('検索条件入力時、検索ボタンをクリックした際にページ遷移すること', async () => {
+        render(SearchModal, { isDisplay: true });
+
+        const inputTitle = screen.getByRole('textbox', { name: 'author'});
+        const btnSearch = screen.getByText('検索');
+
+        await userEvent.type(inputTitle, 'イシグロカズオ');
+        await userEvent.click(btnSearch);
+
+        expect(goto).toHaveBeenCalledWith('books/searchresult');
+    });
+
+    it('検索条件未入力時、検索ボタンをクリックしてもページ遷移しないこと', () => {
+
+    });
+
+    it('閉じる・キャンセルボタンクリック時、モーダルが非表示になること', () => {
+
     });
 });
