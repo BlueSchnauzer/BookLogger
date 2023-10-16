@@ -6,6 +6,9 @@
 	const colorStone700 = '#44403C';
 
     const closeModal = () => isDisplay = !isDisplay;
+    const preventSubmit = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') { e.preventDefault(); }
+    }
 </script>
 
 <FullCoverZindex10 bind:isDisplay={isDisplay} isUseBackGroundColor={true}>
@@ -24,15 +27,15 @@
                 <ul class="p-2">
                     <li class="flex justify-between items-center mb-2">
                         <span>タイトル</span>
-                        <input class="px-2 py-1 rounded-lg" name="booktitle" type="text" size="20">
+                        <input class="px-2 py-1 rounded-lg" name="booktitle" type="text" size="20" on:keypress={e => preventSubmit(e)}>
                     </li>
                     <li class="flex justify-between items-center mb-2">
                         <span>著者名</span>
-                        <input class="px-2 py-1 rounded-lg" name="author" type="text" size="20">
+                        <input class="px-2 py-1 rounded-lg" name="author" type="text" size="20" on:keypress={e => preventSubmit(e)}>
                     </li>
                     <li class="flex justify-between items-center mb-2">
                         <span>ISBN(13桁)</span>
-                        <input class="px-2 py-1 rounded-lg" name="isbn" type="text" size="20">
+                        <input class="px-2 py-1 rounded-lg" name="isbn" type="text" size="20" on:keypress={e => preventSubmit(e)}>
                     </li>
                 </ul>
             </div>
