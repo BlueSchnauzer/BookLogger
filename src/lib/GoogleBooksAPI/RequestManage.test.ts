@@ -11,7 +11,8 @@ describe('requestBookInfo', () => {
     isVisible: true,
     isbn_13: '978-4-15-120051-9',
     title: 'わたしを離さないで',
-    imageUrl: '',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
     createDate: new Date,
     updateDate: new Date,
     pageCount: -1,
@@ -39,7 +40,7 @@ describe('requestBookInfo', () => {
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const result = await requestBookInfo(['inauthor:イシグロカズオ']);
+    const result = await requestBookInfo([`inauthor:${bookInfo.author[0]}`]);
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
@@ -60,7 +61,8 @@ describe('setBookInfoByISBN', () => {
     isVisible: true,
     isbn_13: '978-4-15-120051-9',
     title: 'わたしを離さないで',
-    imageUrl: '',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
     createDate: new Date,
     updateDate: new Date,
     pageCount: -1,
@@ -78,7 +80,8 @@ describe('setBookInfoByISBN', () => {
       isVisible: true,
       isbn_13: '',
       title: 'タイトル無し',
-      imageUrl: '',
+      author: [''],
+      thumbnail: '',
       createDate: new Date,
       updateDate: new Date,
       pageCount: -1,
@@ -96,7 +99,8 @@ describe('setBookInfoByISBN', () => {
       isVisible: true,
       isbn_13: '0000',
       title: 'タイトル無し',
-      imageUrl: '',
+      author: [''],
+      thumbnail: '',
       createDate: new Date,
       updateDate: new Date,
       pageCount: -1,
@@ -112,7 +116,7 @@ describe('setBookInfoByISBN', () => {
   it('bookInfoが持つISBNを条件にして書誌データの取得と、設定ができること', async () => {
     await setBookInfoByISBN(bookInfos[0]);
 
-    expect(bookInfos[0].imageUrl).toBeTruthy();
+    expect(bookInfos[0].thumbnail).toBeTruthy();
     expect(bookInfos[0].pageCount).not.toBe(-1);
   });
 

@@ -20,10 +20,10 @@
 						<span class="animate-spin w-10 h-10 border-4 border-lime-600 rounded-full border-t-transparent"></span>
 					</div>
 				{:then}
-					{#if bookInfo.imageUrl}
+					{#if bookInfo.thumbnail}
 						<img
 							class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300"
-							src={bookInfo.imageUrl}
+							src={bookInfo.thumbnail}
 							alt="test"
 						/>						
 					{:else}

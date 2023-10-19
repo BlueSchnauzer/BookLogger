@@ -8,7 +8,8 @@ export interface IBookInfo {
 	userId: number;
 	isbn_13: string;
 	title: string;
-	imageUrl: string;
+	author: string[];
+	thumbnail: string;
 	createDate: Date;
 	updateDate: Date;
 	pageCount: number;
@@ -22,16 +23,17 @@ export interface IBookInfo {
     isFavorite: boolean;
 	memorandum: string;
 	isVisible: boolean;
+	shelfCategory?: ObjectId[];
 	isbn_10?: string;
 }
 
-const bookInfoSchema = new Schema<IBookInfo>({
-	_id: {type: ObjectId},
+	_id: { type: ObjectId },
 	//userId: { type: ObjectId, required: true, ref: User }, //User用のモデルが完成した際に入れ替える。
-	userId: {type: Number, required: true},
+	userId: { type: Number, required: true },
 	isbn_13: { type: String, required: true },
 	title: { type: String, required: true },
-	imageUrl: { type: String, default: '' },
+	author: [{ type: String, required: true }],
+	thumbnail: { type: String, default: '' },
 	createDate: { type: Date, required: true },
 	updateDate: { type: Date, required: true },
 	pageCount: { type: Number, default: -1 },
@@ -42,9 +44,10 @@ const bookInfoSchema = new Schema<IBookInfo>({
 		}
 	],
 	isCompleted: { type: Boolean, required: true },
-    isFavorite: { type: Boolean, required: true, default: false},
+	isFavorite: { type: Boolean, required: true, default: false },
 	memorandum: { type: String, default: '' },
-    isVisible: { type: Boolean, required: true, default: true},
+	isVisible: { type: Boolean, required: true, default: true },
+	shelfCategory: [{ type: ObjectId}], //bookshelf用のモデルが完成した際にrefを修正する。
 	isbn_10: { type: String, default: '' }
 });
 

@@ -18,6 +18,7 @@ export async function setBookInfoByISBN(bookInfo: IBookInfo): Promise<void> {
   if (result.items?.length === 0 || !result.items) { throw new Error('This book\'s information was not found in GoogleBooksAPI'); }
 
   const volumeInfo = result.items[0].volumeInfo;
-  bookInfo.imageUrl = volumeInfo?.imageLinks?.thumbnail!;
+  bookInfo.thumbnail = volumeInfo?.imageLinks?.thumbnail!;
   bookInfo.pageCount = volumeInfo?.pageCount!;
 }
+
