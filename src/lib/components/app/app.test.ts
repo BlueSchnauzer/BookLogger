@@ -11,7 +11,7 @@ import CompleteBook from '$lib/icons/CompleteBook.svelte';
 import BookShelf from '$lib/icons/BookShelf.svelte';
 import { describe, expect, it, vitest } from 'vitest';
 import type { ComponentType } from 'svelte';
-import type { IBookInfo } from '$lib/server/models/BookInfo';
+import type { BookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
 import BookInfoGrid from './BookInfoGrid.svelte';
 import SearchModal from './SearchModal.svelte';
@@ -174,7 +174,7 @@ describe('ContentFilters', () => {
 });
 
 describe('BookInfoGrid', () => {
-    let bookInfos : IBookInfo[] = [
+    let bookInfos : BookInfo[] = [
         {
             _id: new ObjectId('651451ed67241f439ce8a1af'),
             userId: 1,
