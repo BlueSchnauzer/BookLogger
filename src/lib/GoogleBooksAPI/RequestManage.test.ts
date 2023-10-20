@@ -51,6 +51,36 @@ describe('requestBookInfo', () => {
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
+  });  
+});
+
+describe('requestBookInfo(resource)', () => {
+  const bookInfo: BookInfo = {
+    _id: new ObjectId('651451ed67241f439ce8a1af'),
+    userId: 1,
+    isVisible: true,
+    isbn_13: '978-4-15-120051-9',
+    title: 'わたしを離さないで',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: -1,
+    history: [{
+        date: new Date,
+        currentPage: 0
+    }],
+    isFavorite: false,
+    isCompleted: false,
+    memorandum: 'メモです1'
+  }
+
+  it('リソースを指定して取得できるか', async () => {
+    const result = await requestBookInfo([`isbn:${bookInfo.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
+    
+    expect(result.items).toBeDefined();
+    expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
+    expect(result.items![0].volumeInfo?.imageLinks?.smallThumbnail).not.toBeDefined();
   });
 });
 
