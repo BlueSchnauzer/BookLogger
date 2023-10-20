@@ -7,21 +7,15 @@ export function requestBookInfo(queries: string[]): Promise<books_v1.Schema$Volu
 export function requestBookInfo(queries: string[], resource: string): Promise<books_v1.Schema$Volumes>;
 
 export async function requestBookInfo(queries: string[], resource?: string): Promise<books_v1.Schema$Volumes> {
-  let response: Response;
+  let fields = resource ? `&fields=${resource}` : '';
   
-  if (!resource){
-    response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}`);
-  }
-  else {
-    response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}&fields=${resource}`);
-  }
-
+  const response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}${fields}`);
   const result: books_v1.Schema$Volumes = await response.json();
   
   return result;
 }
 
-/**GoogleBooksAPIにISBNでリクエストして書影データを取得、設定する。*/
+/**GoogleBooksAPIにISBNでリクエストして書影データを取得する。*/
 export async function getThumbnailByIsbn(isbn_13: string): Promise<string> {
   if (!isbn_13) { throw new Error('ISBN is empty'); }
 
