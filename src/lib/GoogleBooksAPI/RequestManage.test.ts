@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { requestBookInfo, setBookInfoByISBN } from "./RequestManage";
-import type { IBookInfo } from "$lib/server/models/BookInfo";
+import { requestBookInfo, getThumbnailByIsbn } from "./RequestManage";
+import type { BookInfo } from "$lib/server/models/BookInfo";
 import { ObjectId } from "mongodb";
 
 
 describe('requestBookInfo', () => {
-  const bookInfo: IBookInfo = {
+  const bookInfo: BookInfo = {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
@@ -54,8 +54,8 @@ describe('requestBookInfo', () => {
   });
 });
 
-describe('setBookInfoByISBN', () => {
-  const bookInfos: IBookInfo[] = [{
+describe('getThumbnailByIsbn', () => {
+  const bookInfos: BookInfo[] = [{
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
@@ -113,22 +113,21 @@ describe('setBookInfoByISBN', () => {
       memorandum: ''
   }]
 
-  it('bookInfoが持つISBNを条件にして書誌データの取得と、設定ができること', async () => {
-    await setBookInfoByISBN(bookInfos[0]);
+  it('ISBNを条件にして書影を取得できること', async () => {
+    const thumbnail = await getThumbnailByIsbn(bookInfos[0].isbn_13);
 
-    expect(bookInfos[0].thumbnail).toBeTruthy();
-    expect(bookInfos[0].pageCount).not.toBe(-1);
+    expect(thumbnail).toBeTruthy();
   });
 
   it('ISBNを持っていない場合にRejectされること', async () => {
-    await setBookInfoByISBN(bookInfos[1])
+    await getThumbnailByIsbn(bookInfos[1].isbn_13)
     .catch((e: Error) => {
       expect(e.message).toEqual('ISBN is empty');
     });
   });
 
   it('リクエスト結果が0件の際にRejectされること', async () => {
-    await setBookInfoByISBN(bookInfos[2])
+    await getThumbnailByIsbn(bookInfos[2].isbn_13)
     .catch((e: Error) => {
       expect(e.message).toEqual('This book\'s information was not found in GoogleBooksAPI');
     });

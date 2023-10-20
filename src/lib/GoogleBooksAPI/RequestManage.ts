@@ -1,5 +1,5 @@
 import { PUBLIC_BOOKSAPI_LIST } from "$env/static/public";
-import type { IBookInfo } from "$lib/server/models/BookInfo";
+import type { BookInfo } from "$lib/server/models/BookInfo";
 import type { books_v1 } from "googleapis";
 
 /**指定した検索条件でGoogleBooksAPIにリクエストする */
@@ -11,14 +11,12 @@ export async function requestBookInfo(queries: string[]): Promise<books_v1.Schem
 }
 
 /**GoogleBooksAPIにISBNでリクエストして書誌データを取得、設定する。*/
-export async function setBookInfoByISBN(bookInfo: IBookInfo): Promise<void> {
-  if (!bookInfo.isbn_13) { throw new Error('ISBN is empty'); }
+export async function getThumbnailByIsbn(isbn_13: string): Promise<string> {
+  if (!isbn_13) { throw new Error('ISBN is empty'); }
 
-  const result = await requestBookInfo([`isbn:${bookInfo.isbn_13}`]);
+  const result = await requestBookInfo([`isbn:${isbn_13}`]);
   if (result.items?.length === 0 || !result.items) { throw new Error('This book\'s information was not found in GoogleBooksAPI'); }
 
-  const volumeInfo = result.items[0].volumeInfo;
-  bookInfo.thumbnail = volumeInfo?.imageLinks?.thumbnail!;
-  bookInfo.pageCount = volumeInfo?.pageCount!;
+  return result.items[0].volumeInfo?.imageLinks?.thumbnail!;
 }
 
