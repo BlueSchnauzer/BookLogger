@@ -34,7 +34,6 @@
 <div class="flex w-screen h-screen overflow-hidden">
 	<SideMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
 	<slot/>
-	<aside class="max-lg:hidden m-2 mt-28 w-52 rounded-xl shadow-2xl bg-stone-700"></aside>
 	<BottomMenuItem MenuItemDatas={MenuItemDatas} bind:currentMenu={currentMenu} iconColor={colorStone200}/>
 </div>
 

@@ -59,7 +59,7 @@
         //SSR時のエラー回避のためDOM生成後に実行
         window.ResizeObserver = ResizeObserver;
         const mainContent = window.document.querySelector<HTMLElement>('#mainContent');
-        if (mainContent) { new SimpleBar(mainContent); }
+        if (mainContent) { new SimpleBar(mainContent, {autoHide: false}); }
     });
 
 </script>
