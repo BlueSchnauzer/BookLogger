@@ -141,14 +141,14 @@ describe('getBookInfosByQueries', () => {
   it('queriesが無い場合にRejectされること', () => {
     getBookInfosByQueries('', '', '')
     .catch((e: Error) => {
-      expect(e.message).toEqual('Queries are empty');
+      expect(e.message).toEqual('検索条件が入力されていません。');
     });
   });
 
   it('リクエスト結果が0件の際にRejectされること', () => {
     getBookInfosByQueries('', '', '0000')
     .catch((e: Error) => {
-      expect(e.message).toEqual('This book\'s information was not found in GoogleBooksAPI');
+      expect(e.message).toEqual('検索条件に合う書誌情報が見つかりませんでした。');
     });
   })
 
@@ -222,14 +222,14 @@ describe('getThumbnailByIsbn', () => {
   it('ISBNを持っていない場合にRejectされること', async () => {
     await getThumbnailByIsbn(bookInfos[1].isbn_13)
     .catch((e: Error) => {
-      expect(e.message).toEqual('ISBN is empty');
+      expect(e.message).toEqual('ISBNが設定されていません。');
     });
   });
 
   it('リクエスト結果が0件の際にRejectされること', async () => {
     await getThumbnailByIsbn(bookInfos[2].isbn_13)
     .catch((e: Error) => {
-      expect(e.message).toEqual('This book\'s information was not found in GoogleBooksAPI');
+      expect(e.message).toEqual('検索条件に合う書影が見つかりませんでした。');
     });
   });
 });

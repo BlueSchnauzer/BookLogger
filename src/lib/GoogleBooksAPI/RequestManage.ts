@@ -22,22 +22,22 @@ export async function getBookInfosByQueries(booktitle: string, author: string, i
   if (author) { queries.push(`inauthor:${author}`); }
   if (isbn_13) { queries.push(`isbn:${isbn_13}`); }
 
-  if (queries.length === 0) { throw new Error('Queries are empty'); }
+  if (queries.length === 0) { throw new Error('検索条件が入力されていません。'); }
 
   const result = await requestBookInfo(queries);
-  if (result.totalItems === 0 || !result.items) { throw new Error('This book\'s information was not found in GoogleBooksAPI'); }
+  if (result.totalItems === 0 || !result.items) { throw new Error('検索条件に合う書誌情報が見つかりませんでした。'); }
 
   return result;
 }
 
 /**GoogleBooksAPIにISBNでリクエストして書影データを取得する */
 export async function getThumbnailByIsbn(isbn_13: string): Promise<string> {
-  if (!isbn_13) { throw new Error('ISBN is empty'); }
+  if (!isbn_13) { throw new Error('ISBNが設定されていません。'); }
 
   //サムネイル以外は不要なのでリソースを指定
   const resource = 'items(volumeInfo/imageLinks/thumbnail)';
   const result = await requestBookInfo([`isbn:${isbn_13}`], resource);
-  if (!result.items) { throw new Error('This book\'s information was not found in GoogleBooksAPI'); }
+  if (!result.items) { throw new Error('検索条件に合う書影が見つかりませんでした。'); }
 
   return result.items[0].volumeInfo?.imageLinks?.thumbnail!;
 }
