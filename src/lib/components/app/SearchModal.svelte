@@ -5,10 +5,11 @@
     import FullCoverZindex10 from "../parts/FullCoverZindex10.svelte";
 
     export let isDisplay = false;
-	const colorStone700 = '#44403C';
+    export let action = 'books/searchresult';
     let bookTitle = '';
     let author = '';
     let isbn = '';
+	const colorStone700 = '#44403C';
     let formError = false;
 
     const closeModal = () => {
@@ -27,12 +28,13 @@
             e.preventDefault();
             formError = true;
         }
+        isDisplay = !isDisplay;
     }
 
 </script>
 
 <FullCoverZindex10 bind:isDisplay={isDisplay} isUseBackGroundColor={true}>
-    <form action="books/searchresult" on:submit={e => validateSubmit(e)}>
+    <form action={action} on:submit={e => validateSubmit(e)}>
         <div class="z-20 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg">
             <div class="h-14 flex flex-row justify-between items-center">
                 <span class="text-xl">書籍追加</span>
@@ -66,8 +68,8 @@
             </div>
             <span class="bg-stone-400 h-[1px]"></span>
             <div class="h-14 flex flex-row justify-end items-center">
-                <PrimalyButton type='submit' text='検索'></PrimalyButton>
-                <SecondaryButton type='button' text='キャンセル' on:click={closeModal}></SecondaryButton>
+                <PrimalyButton type='submit' text='検索'/>
+                <SecondaryButton type='button' text='キャンセル' on:click={closeModal}/>
             </div>
         </div>    
     </form>
