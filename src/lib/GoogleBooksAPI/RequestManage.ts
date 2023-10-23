@@ -2,13 +2,17 @@ import { PUBLIC_BOOKSAPI_LIST } from "$env/static/public";
 import type { books_v1 } from "googleapis";
 
 /**指定した検索条件でGoogleBooksAPIにリクエストする */
-export function requestBookInfo(queries: string[]): Promise<books_v1.Schema$Volumes>;
-/**指定した検索条件でリクエストし、リソースを限定して取得する */
-export function requestBookInfo(queries: string[], resource: string): Promise<books_v1.Schema$Volumes>;
-
-export async function requestBookInfo(queries: string[], resource?: string): Promise<books_v1.Schema$Volumes> {
-  let fields = resource ? `&fields=${resource}` : '';
+export async function requestBookInfo(queries: string[], maxResults = 10, startIndex = 0): Promise<books_v1.Schema$Volumes> {
+  const response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}&maxResults=${maxResults}&startIndex=${startIndex}`);
+  const result: books_v1.Schema$Volumes = await response.json();
   
+  return result;
+}
+
+/**指定した検索条件でリクエストし、リソースを限定して取得する */
+export async function requestBookInfoWithPartialResource(queries: string[], resource?: string): Promise<books_v1.Schema$Volumes>{
+  const fields = resource ? `&fields=${resource}` : '';
+
   const response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}${fields}`);
   const result: books_v1.Schema$Volumes = await response.json();
   
@@ -36,7 +40,7 @@ export async function getThumbnailByIsbn(isbn_13: string): Promise<string> {
 
   //サムネイル以外は不要なのでリソースを指定
   const resource = 'items(volumeInfo/imageLinks/thumbnail)';
-  const result = await requestBookInfo([`isbn:${isbn_13}`], resource);
+  const result = await requestBookInfoWithPartialResource([`isbn:${isbn_13}`], resource);
   if (!result.items) { throw new Error('検索条件に合う書影が見つかりませんでした。'); }
 
   return result.items[0].volumeInfo?.imageLinks?.thumbnail!;
