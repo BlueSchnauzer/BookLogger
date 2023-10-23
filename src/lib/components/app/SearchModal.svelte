@@ -12,21 +12,27 @@
 	const colorStone700 = '#44403C';
     let formError = false;
 
+    /**モーダルを閉じて初期化*/
     const closeModal = () => {
         isDisplay = !isDisplay;
         formError = false;
-        //入力値はそのままにしておく
+        bookTitle = '';
+        author = '';
+        isbn = '';
     };
 
+    /**インプットタグでのEnterを無効化*/
     const preventSubmit = (e: KeyboardEvent) => {
         formError = false;
         if (e.key === 'Enter') { e.preventDefault(); }
     }
 
+    /**バリデーションとsubmit処理*/
     const validateSubmit = (e: SubmitEvent) => {
         if (!(bookTitle || author || isbn)){
             e.preventDefault();
             formError = true;
+            return;
         }
         isDisplay = !isDisplay;
     }
