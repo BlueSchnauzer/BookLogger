@@ -44,8 +44,8 @@
                 return;
             }
             startIndex -= 10;
-            isLoading = true;
             runPromise = async (): Promise<books_v1.Schema$Volumes> => {
+                isLoading = true;
                 const result = await data.getBookInfo(startIndex);
                 isLoading = false;
                 return result;
@@ -62,8 +62,8 @@
                 return;
             }
             startIndex += 10;
-            isLoading = true;
             runPromise = async (): Promise<books_v1.Schema$Volumes> => {
+                isLoading = true;
                 const result = await data.getBookInfo(startIndex);
                 isLoading = false;
                 return result;
