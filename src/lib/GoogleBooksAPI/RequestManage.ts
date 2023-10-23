@@ -24,7 +24,7 @@ export async function requestBookInfoWithPartialResource(queries: string[], reso
 }
 
 /**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する */
-export async function getBookInfosByQueries(booktitle: string, author: string, isbn_13: string): Promise<books_v1.Schema$Volumes>{
+export async function getBookInfosByQueries(booktitle: string, author: string, isbn_13: string, maxResults = 10, startIndex = 0): Promise<books_v1.Schema$Volumes>{
   const queries: string[] = [];
   if (booktitle) { queries.push(`intitle:${booktitle}`); }
   if (author) { queries.push(`inauthor:${author}`); }
@@ -32,7 +32,7 @@ export async function getBookInfosByQueries(booktitle: string, author: string, i
 
   if (queries.length === 0) { throw new Error('検索条件が入力されていません。'); }
 
-  const result = await requestBookInfo(queries);
+  const result = await requestBookInfo(queries, maxResults, startIndex);
   if (result.totalItems === 0 || !result.items) { throw new Error('検索条件に合う書誌情報が見つかりませんでした。'); }
 
   return result;
