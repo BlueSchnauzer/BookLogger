@@ -1,4 +1,6 @@
 <script lang="ts">
+    import PrimalyButton from '../parts/PrimalyButton.svelte';
+    import SecondaryButton from '../parts/SecondaryButton.svelte';
 	import Icon from "@iconify/svelte";
     import FullCoverZindex10 from "../parts/FullCoverZindex10.svelte";
 
@@ -64,8 +66,8 @@
             </div>
             <span class="bg-stone-400 h-[1px]"></span>
             <div class="h-14 flex flex-row justify-end items-center">
-                <button type="submit" class="w-24 h-8 mr-1 bg-lime-700 text-gray-50 rounded duration-150 hover:bg-lime-600">検索</button>
-                <button type="button" class="w-24 h-8 bg-gray-50 text-lime-700 border border-lime-700 rounded duration-150 hover:bg-gray-100" on:click={closeModal}>キャンセル</button>
+                <PrimalyButton type='submit' text='検索'></PrimalyButton>
+                <SecondaryButton type='button' text='キャンセル' on:click={closeModal}></SecondaryButton>
             </div>
         </div>    
     </form>
