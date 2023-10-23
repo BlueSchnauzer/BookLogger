@@ -1,7 +1,11 @@
 import { PUBLIC_BOOKSAPI_LIST } from "$env/static/public";
 import type { books_v1 } from "googleapis";
 
-/**指定した検索条件でGoogleBooksAPIにリクエストする */
+/**指定した検索条件でGoogleBooksAPIにリクエストする 
+ * @param queries 検索条件
+ * @param [maxResults=10] 取得するアイテム数
+ * @param [startIndex=0] 取得を開始するインデックス
+*/
 export async function requestBookInfo(queries: string[], maxResults = 10, startIndex = 0): Promise<books_v1.Schema$Volumes> {
   const response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}&maxResults=${maxResults}&startIndex=${startIndex}`);
   const result: books_v1.Schema$Volumes = await response.json();
