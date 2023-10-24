@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import SideMenuItem from '$lib/components/app/SideMenuItem.svelte';
-import BottomMenuItem from '$lib/components/app/BottomMenuItem.svelte';
+import SideMenuItem from '$lib/components/app/SideMenu.svelte';
+import BottomMenuItem from '$lib/components/app/BottomMenu.svelte';
 import ContentHeader from '$lib/components/app/ContentHeader.svelte';
 import ContentFilters from '$lib/components/app/ContentFilters.svelte';
 import type * as customTypes from '$lib/customTypes';
