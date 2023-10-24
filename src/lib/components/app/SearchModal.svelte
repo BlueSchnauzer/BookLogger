@@ -5,7 +5,7 @@
     import FullCoverZindex10 from "../parts/FullCoverZindex10.svelte";
 
     export let isDisplay = false;
-    export let action = 'books/searchresult';
+    export let action = 'books/search';
     let bookTitle = '';
     let author = '';
     let isbn = '';

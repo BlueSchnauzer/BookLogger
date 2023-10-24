@@ -12,7 +12,7 @@
     let resultCount = 0;
     let startIndex = 0;
     let isLoading = false;
-    const colorStone700 = '#44403C';
+    const colorLime800 = '#3F6212';
 
     let runPromise = async (): Promise<books_v1.Schema$Volumes> => {
         isLoading = true;
@@ -77,12 +77,12 @@
     <div class="flex justify-between">
         <PrimalyButton type='button' text='再検索' isUseMargin={false} on:click={() => isDisplaySearchModal = !isDisplaySearchModal}/>
         <div class="flex">      
-            <button type="button" on:click={e => pagingBackward(e)} disabled={isLoading}>
-                <Icon icon="ph:caret-circle-left-light" width="32" height="32" color={colorStone700} />
+            <button class="hover:bg-stone-300 rounded" type="button" on:click={e => pagingBackward(e)} disabled={isLoading}>
+                <Icon icon="ph:caret-left" width="32" height="32" color={colorLime800} />
             </button>   
             <span class="m-auto px-2">{`${resultCount? startIndex + 1 : 0 }～${(startIndex + 10) >= resultCount ? resultCount : (startIndex + 10)}/${resultCount}`}件</span>
-            <button type="button" on:click={e => pagingForward(e)} disabled={isLoading}>
-                <Icon icon="ph:caret-circle-right-light" width="32" height="32" color={colorStone700} />
+            <button class="hover:bg-stone-300 rounded" type="button" on:click={e => pagingForward(e)} disabled={isLoading}>
+                <Icon icon="ph:caret-right" width="32" height="32" color={colorLime800} />
             </button>
         </div>        
     </div>
