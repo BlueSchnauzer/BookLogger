@@ -67,7 +67,7 @@
                         <input class="px-2 py-1 rounded-lg" bind:value={author} name="author" aria-label="author" type="text" size="30" on:keypress={e => preventSubmit(e)}>
                     </li>
                     <li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
-                        <span class="max-sm:mb-2">ISBN(13桁)</span>
+                        <span class="max-sm:mb-2">ISBN(ハイフン無し13桁)</span>
                         <input class="px-2 py-1 rounded-lg" bind:value={isbn} name="isbn" aria-label="isbn" type="text" size="30" on:keypress={e => preventSubmit(e)}>
                     </li>
                 </ul>
