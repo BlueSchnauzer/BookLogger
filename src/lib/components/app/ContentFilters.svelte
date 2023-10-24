@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-	import FullCoverZindex10 from '$lib/components/parts/FullCoverZindex10.svelte';
 	import ToggleSwitch from '$lib/components/parts/ToggleSwitch.svelte';
 	import Icon from '@iconify/svelte';
 	import SimpleBar from 'simplebar';
