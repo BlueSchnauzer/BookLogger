@@ -1,7 +1,9 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vitest } from 'vitest';
 import type * as customTypes from '$lib/customTypes';
 import ToggleSwitch from '$lib/components/parts/ToggleSwitch.svelte';
+import PrimalyButton from './PrimalyButton.svelte';
+import SecondaryButton from './SecondaryButton.svelte';
 
 describe('ToggleSwitch', () => {
 	//データ作成
@@ -54,5 +56,49 @@ describe('ToggleSwitch', () => {
 		});
 
 		expect(container.querySelector('div.hidden')).toBeInTheDocument();
+	});
+});
+
+describe('PrimaryButton', () =>{
+	it('レンダリング', () => {
+		const component = render(PrimalyButton, { type:'button', text:'button'});
+		expect(screen.getByText('button')).toBeInTheDocument();
+		component.unmount();
+
+		render(PrimalyButton, {type: 'submit', text: 'submit'});
+		expect(screen.getByText('submit')).toBeInTheDocument();
+	});
+
+	it('クリックイベントを検知できること', () => {
+		const { component } = render(PrimalyButton, { type:'button', text:'button'});
+		const btn = screen.getByText('button');
+		const mock = vitest.fn();
+
+		component.$on('click', mock);
+		fireEvent.click(btn);
+
+		expect(mock).toHaveBeenCalled();
+	});
+});
+
+describe('SecondaryButton', () => {
+	it('レンダリング', () => {
+		const component = render(SecondaryButton, { type:'button', text:'button'});
+		expect(screen.getByText('button')).toBeInTheDocument();
+		component.unmount();
+
+		render(SecondaryButton, {type: 'submit', text: 'submit'});
+		expect(screen.getByText('submit')).toBeInTheDocument();
+	});
+
+	it('クリックイベントを検知できること', () => {
+		const { component } = render(SecondaryButton, { type:'button', text:'button'});
+		const btn = screen.getByText('button');
+		const mock = vitest.fn();
+
+		component.$on('click', mock);
+		fireEvent.click(btn);
+
+		expect(mock).toHaveBeenCalled();
 	});
 });
