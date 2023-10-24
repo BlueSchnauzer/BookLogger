@@ -4,9 +4,11 @@
     export let labelFunction: () => string | undefined;
 </script>
 
-<span class="font-medium">{categoryText} : </span>
-{#if condition}
-    <span>{labelFunction()}</span>
-{:else}
-    <span class="text-gray-400">データ無し</span>
-{/if}
+<div>
+    <span class="font-medium">{categoryText} : </span>
+    {#if condition}
+        <span>{labelFunction()}</span>
+    {:else}
+        <span class="text-gray-400">データ無し</span>
+    {/if}    
+</div>
