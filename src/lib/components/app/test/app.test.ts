@@ -13,8 +13,8 @@ import { describe, expect, it, vitest } from 'vitest';
 import type { ComponentType } from 'svelte';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
-import BookInfoGrid from './BookInfoGrid.svelte';
-import SearchModal from './SearchModal.svelte';
+import BookInfoGrid from '../BookInfoGrid.svelte';
+import SearchModal from '../SearchModal.svelte';
 import { goto } from '$app/navigation';
 
 describe('SideMenuItem', () => {
