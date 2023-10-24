@@ -8,6 +8,6 @@ export const load = (async (params) => {
     const isbn = params.url.searchParams.get('isbn');
 
     //formで受け取った値で検索を行う関数を作成し、クライアント側に渡して実行
-    const getBookInfo = (startIndex = 0) => getBookInfosByQueries(bookTitle!, author!, isbn!, 10, startIndex) as books_v1.Schema$Volumes;
+    const getBookInfo = async (startIndex = 0) => getBookInfosByQueries(bookTitle!, author!, isbn!, 10, startIndex) as books_v1.Schema$Volumes;
     return { getBookInfo, bookTitle, author, isbn};
 }) satisfies PageLoad;
