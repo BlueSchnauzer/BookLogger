@@ -8,6 +8,7 @@
 	import SearchModal from '$lib/components/app/SearchModal.svelte';
     import SearchResult from '../../../../lib/components/app/SearchResult.svelte';
 	import BookInfoDetail from '$lib/components/app/BookInfoDetail.svelte';
+	import PagingLabel from '$lib/components/parts/PagingLabel.svelte';
    
     export let data: PageData;
     let isDisplaySearchModal = false;
@@ -41,11 +42,10 @@
     }
 
     /**後方にページング*/
-    let pagingBackward = (e: MouseEvent) => {};
+    let pagingBackward = () => {};
     $: {
-        pagingBackward = (e: MouseEvent) => {
+        pagingBackward = () => {
             if (startIndex === 0){
-                e.preventDefault();
                 return;
             }
             startIndex -= 10;
@@ -59,11 +59,10 @@
     }
 
     /**前方にページング*/
-    let pagingForward = (e: MouseEvent) => {};
+    let pagingForward = () => {};
     $: {
-        pagingForward = (e: MouseEvent) => {
+        pagingForward = () => {
             if ((startIndex + 10) >= resultCount){
-                e.preventDefault();
                 return;
             }
             startIndex += 10;
@@ -86,21 +85,16 @@
 	<ContentHeader headerIcon={BookAdd} headerText="書籍検索" isDisplayAddButton={false} />
     <div class="flex justify-between">
         <PrimalyButton type='button' text='再検索' isUseMargin={false} on:click={() => isDisplaySearchModal = !isDisplaySearchModal}/>
-        <div class="flex">      
-            <button class="hover:bg-stone-300 rounded" type="button" on:click={e => pagingBackward(e)} disabled={isLoading}>
-                <Icon icon="ph:caret-left" width="32" height="32" color={colorLime800} />
-            </button>   
-            <span class="m-auto px-2">{`${resultCount? startIndex + 1 : 0 }～${(startIndex + 10) >= resultCount ? resultCount : (startIndex + 10)}/${resultCount}`}件</span>
-            <button class="hover:bg-stone-300 rounded" type="button" on:click={e => pagingForward(e)} disabled={isLoading}>
-                <Icon icon="ph:caret-right" width="32" height="32" color={colorLime800} />
-            </button>
-        </div>        
+        <PagingLabel {startIndex} {resultCount} {isLoading} on:backward={pagingBackward} on:forward={pagingForward}/>       
     </div>
     <SearchModal bind:isDisplay={isDisplaySearchModal} action=''/>
 </div>
 <div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 <div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
     <SearchResult {runPromise} on:click={(event) => displayDetail(event.detail)}/>
+    <div class="flex justify-center py-2">
+        <PagingLabel {startIndex} {resultCount} {isLoading} isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}/>
+    </div>
     {#if isDisplayDetail}
         <BookInfoDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail} isRegister={true}/>
     {/if}
