@@ -7,7 +7,7 @@
 	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
 	import SearchModal from '$lib/components/app/SearchModal.svelte';
     import SearchResult from '../../../../lib/components/app/SearchResult.svelte';
-	import BookInfoDetail from '$lib/components/app/BookInfoDetail.svelte';
+	import ResultDetail from '$lib/components/app/ResultDetail.svelte';
 	import PagingLabel from '$lib/components/parts/PagingLabel.svelte';
    
     export let data: PageData;
@@ -96,7 +96,7 @@
         <PagingLabel {startIndex} {resultCount} {isLoading} isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}/>
     </div>
     {#if isDisplayDetail}
-        <BookInfoDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail} isRegister={true}/>
+        <ResultDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail}/>
     {/if}
 </div>
 

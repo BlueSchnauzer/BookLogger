@@ -7,7 +7,6 @@
 	import InfoLabel from '../parts/InfoLabel.svelte';
 
 	export let isDisplay = false;
-	export let isRegister = true;
 	export let action = '';
 	export let item: books_v1.Schema$Volume = {};
 	const colorStone700 = '#44403C';
