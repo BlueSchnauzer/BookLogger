@@ -29,6 +29,7 @@ export async function connectToDatabase() {
   }
 }
 
+/**ユーザIDに紐づいた書誌データを取得する */
 export async function getBookInfoByUserId(userId: number): Promise<BookInfo[]>{
   await connectToDatabase();
   return await collections.bookInfos?.find({userId}).toArray() as BookInfo[];
