@@ -43,7 +43,7 @@
     <form action={action} on:submit={e => validateSubmit(e)}>
         <div class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg">
             <div class="h-14 flex flex-row justify-between items-center">
-                <span class="text-xl">検索して追加する</span>
+                <span class="text-xl">検索して登録する</span>
                 <button type="button" on:click={closeModal}
                     class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
                 >
