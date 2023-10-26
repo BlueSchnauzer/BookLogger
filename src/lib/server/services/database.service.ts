@@ -31,6 +31,33 @@ export async function connectToDatabase() {
 
 /**ユーザIDに紐づいた書誌データを取得する */
 export async function getBookInfoByUserId(userId: number): Promise<BookInfo[]>{
-  await connectToDatabase();
-  return await collections.bookInfos?.find({userId}).toArray() as BookInfo[];
+  let bookInfos: BookInfo[] = [];
+
+  try {
+    await connectToDatabase();
+    bookInfos = await collections.bookInfos?.find({userId}).toArray() as BookInfo[];  
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+
+  return bookInfos;
+}
+
+export async function insertBookInfo(bookinfo: BookInfo): Promise<Response>{
+  let response = new Response('書誌データの作成に失敗しました。', {status: 400});
+  try {
+    await connectToDatabase();
+    const result = await collections.bookInfos?.insertOne(bookinfo);
+    if (result?.acknowledged){
+      response = new Response('書誌データの作成に成功しました。', {status: 201} );
+    }
+  }
+  catch (error) {
+    console.log(error);
+    response = new Response('書誌データの作成に失敗しました。', {status: 500});
+  }
+
+  return response;
 }

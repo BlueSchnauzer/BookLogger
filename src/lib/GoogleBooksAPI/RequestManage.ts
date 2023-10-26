@@ -38,7 +38,9 @@ export async function getBookInfosByQueries(booktitle: string, author: string, i
   return result;
 }
 
-/**GoogleBooksAPIにISBNでリクエストして書影データを取得する */
+/**GoogleBooksAPIにISBNでリクエストして書影データを取得する
+ * todo ISBNを持っていないデータもあるので代替処理が必要。
+ */
 export async function getThumbnailByIsbn(isbn_13: string): Promise<string> {
   if (!isbn_13) { throw new Error('ISBNが設定されていません。'); }
 
