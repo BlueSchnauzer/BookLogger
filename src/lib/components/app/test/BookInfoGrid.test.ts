@@ -10,7 +10,9 @@ describe('BookInfoGrid', () => {
           _id: new ObjectId('651451ed67241f439ce8a1af'),
           userId: 1,
           isVisible: true,
-          isbn_13: '978-4-15-031316-6',
+          identifier: {
+            isbn_13: '978-4-15-031316-6'
+          },
           title: 'エピローグ',
           author: ['円城塔'],
           thumbnail: '',
@@ -29,7 +31,9 @@ describe('BookInfoGrid', () => {
           _id: new ObjectId('651451ed67241f439ce8a1af'),
           userId: 1,
           isVisible: true,
-          isbn_13: '978-4-16-791019-8',
+          identifier: {
+            isbn_13: '978-4-16-791019-8'
+          },
           title: 'プロローグ',
           author: ['円城塔'],
           thumbnail: '',

@@ -9,7 +9,9 @@ describe('requestBookInfo', () => {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
-    isbn_13: '978-4-15-120051-9',
+    identifier: {
+      isbn_13: '978-4-15-120051-9'
+    },
     title: 'わたしを離さないで',
     author: ['イシグロカズオ'],
     thumbnail: '',
@@ -26,7 +28,7 @@ describe('requestBookInfo', () => {
   }
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await requestBookInfo([`isbn:${bookInfo.isbn_13}`]);
+    const result = await requestBookInfo([`isbn:${bookInfo.identifier?.isbn_13}`]);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
@@ -47,7 +49,7 @@ describe('requestBookInfo', () => {
   });
 
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await requestBookInfo([`isbn:${bookInfo.isbn_13}`, `intitle:${bookInfo.title}`, `inauthor:${bookInfo.author[0]}`]);
+    const result = await requestBookInfo([`isbn:${bookInfo.identifier?.isbn_13}`, `intitle:${bookInfo.title}`, `inauthor:${bookInfo.author[0]}`]);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
@@ -80,7 +82,9 @@ describe('requestBookInfoWithPartialResource', () => {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
-    isbn_13: '978-4-15-120051-9',
+    identifier: {
+      isbn_13: '978-4-15-120051-9'
+    },
     title: 'わたしを離さないで',
     author: ['イシグロカズオ'],
     thumbnail: '',
@@ -97,7 +101,7 @@ describe('requestBookInfoWithPartialResource', () => {
   }
 
   it('リソースを指定して取得できるか', async () => {
-    const result = await requestBookInfoWithPartialResource([`isbn:${bookInfo.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
+    const result = await requestBookInfoWithPartialResource([`isbn:${bookInfo.identifier?.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
     
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
@@ -105,7 +109,7 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 
   it('リソースを指定しない場合、全てのリソースが取得できるか', async () => {
-    const result = await requestBookInfoWithPartialResource([`isbn:${bookInfo.isbn_13}`]);
+    const result = await requestBookInfoWithPartialResource([`isbn:${bookInfo.identifier?.isbn_13}`]);
     
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
@@ -118,7 +122,9 @@ describe('getBookInfosByQueries', () => {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
-    isbn_13: '978-4-15-120051-9',
+    identifier: {
+      isbn_13: '978-4-15-120051-9'
+    },
     title: 'わたしを離さないで',
     author: ['イシグロカズオ'],
     thumbnail: '',
@@ -149,14 +155,14 @@ describe('getBookInfosByQueries', () => {
   });
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries('', '', bookInfo.isbn_13);
+    const result = await getBookInfosByQueries('', '', bookInfo.identifier?.isbn_13!);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
   });
   
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries(bookInfo.title, bookInfo.author[0], bookInfo.isbn_13);
+    const result = await getBookInfosByQueries(bookInfo.title, bookInfo.author[0], bookInfo.identifier?.isbn_13!);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(bookInfo.title);
@@ -184,7 +190,9 @@ describe('getThumbnailByIsbn', () => {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
     isVisible: true,
-    isbn_13: '978-4-15-120051-9',
+    identifier: {
+      isbn_13: '978-4-15-120051-9'
+    },
     title: 'わたしを離さないで',
     author: ['イシグロカズオ'],
     thumbnail: '',
@@ -203,7 +211,7 @@ describe('getThumbnailByIsbn', () => {
       _id: new ObjectId('651451ed67241f439ce8a1af'),
       userId: 1,
       isVisible: true,
-      isbn_13: '',
+      identifier: {},
       title: 'タイトル無し',
       author: [''],
       thumbnail: '',
@@ -222,7 +230,7 @@ describe('getThumbnailByIsbn', () => {
       _id: new ObjectId('651451ed67241f439ce8a1af'),
       userId: 1,
       isVisible: true,
-      isbn_13: '0000',
+      identifier: {},
       title: 'タイトル無し',
       author: [''],
       thumbnail: '',
@@ -239,20 +247,20 @@ describe('getThumbnailByIsbn', () => {
   }]
 
   it('ISBNを条件にして書影を取得できること', async () => {
-    const thumbnail = await getThumbnailByIsbn(bookInfos[0].isbn_13);
+    const thumbnail = await getThumbnailByIsbn(bookInfos[0].identifier?.isbn_13!);
 
     expect(thumbnail).toBeTruthy();
   });
 
   it('ISBNを持っていない場合にRejectされること', async () => {
-    await getThumbnailByIsbn(bookInfos[1].isbn_13)
+    await getThumbnailByIsbn(bookInfos[1].identifier?.isbn_13!)
     .catch((e: Error) => {
       expect(e.message).toEqual('ISBNが設定されていません。');
     });
   });
 
   it('リクエスト結果が0件の際にRejectされること', async () => {
-    await getThumbnailByIsbn(bookInfos[2].isbn_13)
+    await getThumbnailByIsbn(bookInfos[2].identifier?.isbn_13!)
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件に合う書影が見つかりませんでした。');
     });
