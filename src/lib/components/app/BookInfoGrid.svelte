@@ -5,7 +5,7 @@
 	export let bookInfos: BookInfo[];
 
 	const setThumbnail = async (bookInfo: BookInfo) => {
-		bookInfo.thumbnail = await getThumbnailByIsbn(bookInfo.isbn_13);
+		bookInfo.thumbnail = await getThumbnailByIsbn(bookInfo.identifier?.isbn_13!);
 	}
 
 </script>
