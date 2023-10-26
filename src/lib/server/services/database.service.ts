@@ -45,6 +45,7 @@ export async function getBookInfoByUserId(userId: number): Promise<BookInfo[]>{
   return bookInfos;
 }
 
+/**ユーザIDを指定して書誌データを保存する */
 export async function insertBookInfo(bookinfo: BookInfo): Promise<Response>{
   let response = new Response('書誌データの作成に失敗しました。', {status: 400});
   try {

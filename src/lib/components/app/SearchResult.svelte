@@ -20,9 +20,11 @@
         }
         return result;
     }
+    
     const getLabel = (data?: string | number): string => {
         return data?.toString() ?? 'データ無し';
     }
+
 	const dispatch = createEventDispatcher();
 	const handleClick = (item: books_v1.Schema$Volume) => {
 		dispatch('click', item);

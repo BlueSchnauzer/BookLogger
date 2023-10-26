@@ -17,7 +17,7 @@ export const GET: RequestHandler = async () => {
     }
 };
 
-/**DBで書誌データを保存する */
+/**DBに書誌データを保存する */
 export const POST: RequestHandler = async ({ request }) => {
     const item = await request.json() as books_v1.Schema$Volume;
     const bookInfoToInsert = new BookInfo(item, 1); //ユーザIDを取る
