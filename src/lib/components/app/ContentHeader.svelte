@@ -23,5 +23,7 @@
 	>
 		<Icon icon="ph:plus" width="36" height="36" color={colorStone700} />
 	</button>
-	<SearchModal bind:isDisplay={isDisplayModal}/>
+	{#if isDisplayModal}
+		<SearchModal bind:isDisplay={isDisplayModal}/>
+	{/if}
 </div>
