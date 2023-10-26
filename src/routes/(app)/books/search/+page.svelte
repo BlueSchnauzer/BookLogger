@@ -9,7 +9,9 @@
     import SearchResult from '../../../../lib/components/app/SearchResult.svelte';
 	import ResultDetail from '$lib/components/app/ResultDetail.svelte';
 	import PagingLabel from '$lib/components/parts/PagingLabel.svelte';
-   
+    import { SvelteToast } from '@zerodevx/svelte-toast'
+	import { toast } from '@zerodevx/svelte-toast'
+ 
     export let data: PageData;
     let isDisplaySearchModal = false;
     let resultCount = 0;
@@ -79,6 +81,18 @@
         currentBookInfo = bookInfo;
         isDisplayDetail = true;
     }
+
+    /**正常完了時のトースト表示*/
+	const pushSuccessToast = (message: string) => {
+		toast.push(message, { reversed: true, intro: { y: 100 }, theme: {'--toastBarBackground': '#65a30d'} });
+	}
+	/**異常完了時のトースト表示*/
+	const pushErrorToast = (message: string) => {
+		toast.push(message, { reversed: true, intro: { y: 100 }, 
+            theme:{ '--toastBarHeight': 0, '--toastWidth': 'auto', '--toastBackground': '#dc2626' } 
+        });
+	}
+
 </script>
 
 <div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
@@ -96,8 +110,9 @@
         <PagingLabel {startIndex} {resultCount} {isLoading} isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}/>
     </div>
     {#if isDisplayDetail}
-        <ResultDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail}/>
+        <ResultDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
     {/if}
+    <SvelteToast/>
 </div>
 
 <style>
@@ -111,4 +126,10 @@
         background-color: gray;
         border-radius: 20px;
     }
+    :root {
+		--toastContainerTop: auto;
+		--toastContainerRight: auto;
+		--toastContainerBottom: 4rem;
+		--toastContainerLeft: calc(50vw - 8rem);
+	}
 </style>
