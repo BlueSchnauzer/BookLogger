@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from 'svelte';
-	import InfoLabel from '../parts/InfoLabel.svelte';
+	import InfoLabel from '../parts/CategoryLabel.svelte';
     
     export let runPromise: () => Promise<books_v1.Schema$Volumes>;
 

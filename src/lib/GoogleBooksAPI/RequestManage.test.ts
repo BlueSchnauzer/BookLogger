@@ -230,7 +230,9 @@ describe('getThumbnailByIsbn', () => {
       _id: new ObjectId('651451ed67241f439ce8a1af'),
       userId: 1,
       isVisible: true,
-      identifier: {},
+      identifier: {
+        isbn_13: '0000'
+      },
       title: 'タイトル無し',
       author: [''],
       thumbnail: '',

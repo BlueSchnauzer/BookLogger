@@ -4,7 +4,7 @@
 	import PrimalyButton from '../parts/PrimalyButton.svelte';
 	import SecondaryButton from '../parts/SecondaryButton.svelte';
 	import type { books_v1 } from 'googleapis';
-	import InfoLabel from '../parts/InfoLabel.svelte';
+	import InfoLabel from '../parts/CategoryLabel.svelte';
 	import { createEventDispatcher } from "svelte";
 
 	export let isDisplay = false;
