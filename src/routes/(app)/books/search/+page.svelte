@@ -1,13 +1,12 @@
 <script lang="ts">
     import type { PageData } from './$types';
 	import type { books_v1 } from 'googleapis';
-	import Icon from '@iconify/svelte';
     import BookAdd from '$lib/icons/BookAdd.svelte';
 	import PrimalyButton from '$lib/components/parts/PrimalyButton.svelte';
 	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
 	import SearchModal from '$lib/components/app/SearchModal.svelte';
     import SearchResult from '../../../../lib/components/app/SearchResult.svelte';
-	import ResultDetail from '$lib/components/app/ResultDetail.svelte';
+	import BookInfoDetail from '$lib/components/app/BookInfoDetail.svelte';
 	import PagingLabel from '$lib/components/parts/PagingLabel.svelte';
     import { SvelteToast } from '@zerodevx/svelte-toast'
 	import { toast } from '@zerodevx/svelte-toast'
@@ -110,7 +109,7 @@
         <PagingLabel {startIndex} {resultCount} {isLoading} isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}/>
     </div>
     {#if isDisplayDetail}
-        <ResultDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
+        <BookInfoDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
     {/if}
     <SvelteToast/>
 </div>
