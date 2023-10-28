@@ -25,13 +25,12 @@ describe('ContentHeader', () => {
   it('ボタンクリックで検索モーダルを表示できること', async () => {
       render(ContentHeader, { headerIcon: BookCase, headerText: 'テスト', isDisplayAddButton: true });
 
-    //なぜかtestidで取得できないのでスキップ
-    //   const btnDisplaySearch = screen.getByTestId('btnDisplaySearch');
+      const btnDisplaySearch = screen.getByTestId('btnDisplaySearch');
 
-    //   await fireEvent.click(btnDisplaySearch);
-    //   expect(screen.getByTestId('fullCoverZ30')).toBeInTheDocument();
+      await fireEvent.click(btnDisplaySearch);
+      expect(screen.queryByTestId('fullCoverZ30')).toBeInTheDocument();
 
-    //   await fireEvent.click(btnDisplaySearch);
-    //   expect(screen.getByTestId('fullCoverZ30')).not.toBeInTheDocument();
+      await fireEvent.click(btnDisplaySearch);
+      expect(screen.queryByTestId('fullCoverZ30')).not.toBeInTheDocument();
   });
 });
