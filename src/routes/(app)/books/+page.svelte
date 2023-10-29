@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
-	import ContentFilters from '$lib/components/app/ContentFilters.svelte';
+	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
+	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
-	import BookInfoList from '$lib/components/app/BookInfoList.svelte';
+	import BookInfoList from '$lib/components/content/BookInfoList.svelte';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加

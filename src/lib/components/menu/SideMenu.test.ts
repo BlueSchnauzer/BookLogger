@@ -1,6 +1,6 @@
-import { render, fireEvent, screen } from '@testing-library/svelte';
-import { describe, expect, it, vitest } from 'vitest';
-import SideMenu from '$lib/components/app/SideMenu.svelte';
+import { render, fireEvent } from '@testing-library/svelte';
+import { describe, expect, it } from 'vitest';
+import SideMenu from '$lib/components/menu/SideMenu.svelte';
 import Dashboard from '$lib/icons/Dashboard.svelte';
 import CompleteBook from '$lib/icons/CompleteBook.svelte';
 import BookShelf from '$lib/icons/BookShelf.svelte';

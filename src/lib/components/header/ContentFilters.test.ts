@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
-import { describe, expect, it, vitest } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type * as customTypes from '$lib/customTypes';
-import ContentFilters from '$lib/components/app/ContentFilters.svelte';
+import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 
 describe('ContentFilters', () => {
   //データ作成

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import LayerZindex30 from '../parts/LayerZindex30.svelte';
-	import PrimalyButton from '../parts/PrimalyButton.svelte';
-	import SecondaryButton from '../parts/SecondaryButton.svelte';
-		import type { books_v1 } from 'googleapis';
+	import LayerZindex30 from '$lib/components/common/parts/LayerZindex30.svelte';
+	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
+	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
+	import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from "svelte";
-	import DetailContent from '../parts/DetailContent.svelte';
+	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import RegisteredContent from '../parts/RegisteredContent.svelte';
+	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 
 	export let isDisplay = false;
 	export let item: books_v1.Schema$Volume | BookInfo;

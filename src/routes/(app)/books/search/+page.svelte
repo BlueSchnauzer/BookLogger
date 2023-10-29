@@ -2,12 +2,12 @@
     import type { PageData } from './$types';
 	import type { books_v1 } from 'googleapis';
     import BookAdd from '$lib/icons/BookAdd.svelte';
-	import PrimalyButton from '$lib/components/parts/PrimalyButton.svelte';
-	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
-	import SearchModal from '$lib/components/app/SearchModal.svelte';
-    import SearchResult from '../../../../lib/components/app/SearchResult.svelte';
-	import BookInfoDetail from '$lib/components/app/BookInfoDetail.svelte';
-	import PagingLabel from '$lib/components/parts/PagingLabel.svelte';
+	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
+	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
+	import SearchModal from '$lib/components/search/SearchModal.svelte';
+    import SearchResult from '$lib/components/search/result/SearchResult.svelte';
+	import BookInfoDetail from '$lib/components/common/BookInfoDetail.svelte';
+	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
     import { SvelteToast } from '@zerodevx/svelte-toast'
 	import { toast } from '@zerodevx/svelte-toast'
  

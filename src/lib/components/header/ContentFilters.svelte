@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-	import ToggleSwitch from '$lib/components/parts/ToggleSwitch.svelte';
+	import ToggleSwitch from '$lib/components/common/parts/ToggleSwitch.svelte';
 	import Icon from '@iconify/svelte';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';

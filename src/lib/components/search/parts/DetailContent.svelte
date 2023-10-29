@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { books_v1 } from "googleapis";
-    import CategoryLabel from "./CategoryLabel.svelte";
+    import CategoryLabel from "$lib/components/common/parts/CategoryLabel.svelte";
 
     export let item: books_v1.Schema$Volume;
 

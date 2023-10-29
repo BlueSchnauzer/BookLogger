@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
-import BookInfoList from '../BookInfoList.svelte';
+import BookInfoList from '$lib/components/content/BookInfoList.svelte';
 import { ObjectId } from 'mongodb';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 
@@ -67,6 +67,10 @@ describe('BookInfoList', () => {
 
       expect(screen.queryByTitle(bookInfos[0].title)).not.toBeInTheDocument();
       expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
+  });
+
+  it('', () => {
+
   });
   
   it('ボタンクリックでお気に入りを切り替えられること', async () => {

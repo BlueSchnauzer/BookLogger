@@ -1,6 +1,6 @@
-import { render, fireEvent, screen } from '@testing-library/svelte';
+import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
-import SearchModal from '../SearchModal.svelte';
+import SearchModal from '$lib/components/search/SearchModal.svelte';
 import userEvent from '@testing-library/user-event';
 import { goto } from '$app/navigation';
 

@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
-import { describe, expect, it, vitest } from 'vitest';
-import ContentHeader from '$lib/components/app/ContentHeader.svelte';
+import { describe, expect, it } from 'vitest';
+import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 import BookCase from '$lib/icons/BookCase.svelte';
 
 describe('ContentHeader', () => {

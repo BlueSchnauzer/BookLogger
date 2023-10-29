@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { LayoutData } from '../$types';
 	import { page } from '$app/stores';
-	import SideMenuItem from '../../lib/components/app/SideMenu.svelte';
-	import BottomMenuItem from '../../lib/components/app/BottomMenu.svelte';
+	import SideMenuItem from '$lib/components/menu/SideMenu.svelte';
+	import BottomMenuItem from '$lib/components/menu/BottomMenu.svelte';
 	import type { menuItemData } from '$lib/customTypes';
 	import Dashboard from '$lib/icons/Dashboard.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';

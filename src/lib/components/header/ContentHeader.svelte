@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import type { ComponentType } from 'svelte';
-	import SearchModal from './SearchModal.svelte';
+	import SearchModal from '$lib/components/search/SearchModal.svelte';
 
 	export let headerIcon: ComponentType;
 	export let headerText: string;

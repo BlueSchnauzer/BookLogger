@@ -1,8 +1,8 @@
 <script lang="ts">
-    import PrimalyButton from '../parts/PrimalyButton.svelte';
-    import SecondaryButton from '../parts/SecondaryButton.svelte';
+    import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
+    import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
+    import LayerZindex30 from "$lib/components/common/parts/LayerZindex30.svelte";
 	import Icon from "@iconify/svelte";
-    import LayerZindex30 from "../parts/LayerZindex30.svelte";
 
     export let isDisplay = false;
     export let action = 'books/search';
