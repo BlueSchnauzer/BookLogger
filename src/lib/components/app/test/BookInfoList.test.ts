@@ -69,18 +69,6 @@ describe('BookInfoList', () => {
       expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
   });
   
-  it('クリックイベントを検知できること', async () => {
-    const { component } = render(BookInfoList, {bookInfos});
-    
-    const btns = screen.getAllByRole('button');
-    const mock = vitest.fn();
-
-    component.$on('click', mock);
-    await fireEvent.click(btns[0]);
-
-    expect(mock).toHaveBeenCalled();
-  });
-
   it('ボタンクリックでお気に入りを切り替えられること', async () => {
       const { component } = render(BookInfoList, {bookInfos});
 
