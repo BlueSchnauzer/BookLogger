@@ -2,7 +2,7 @@ import { getBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
 import { render, fireEvent, screen, waitFor } from '@testing-library/svelte';
 import type { books_v1 } from 'googleapis';
 import { afterEach, describe, expect, it, vi, vitest } from 'vitest';
-import BookInfoDetail from '$lib/components/common/BookInfoDetail.svelte';
+import BookInfoDetail from '$lib/components/common/DetailModal.svelte';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
 

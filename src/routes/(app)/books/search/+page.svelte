@@ -6,7 +6,7 @@
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import SearchModal from '$lib/components/search/SearchModal.svelte';
     import SearchResult from '$lib/components/search/result/SearchResult.svelte';
-	import BookInfoDetail from '$lib/components/common/BookInfoDetail.svelte';
+	import DetailModal from '$lib/components/common/DetailModal.svelte';
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
     import { SvelteToast } from '@zerodevx/svelte-toast'
 	import { toast } from '@zerodevx/svelte-toast'
@@ -16,7 +16,6 @@
     let resultCount = 0;
     let startIndex = 0;
     let isLoading = false;
-    const colorLime800 = '#3F6212';
 
     let currentBookInfo: books_v1.Schema$Volume;
     let isDisplayDetail = false;
@@ -109,7 +108,7 @@
         <PagingLabel {startIndex} {resultCount} {isLoading} isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}/>
     </div>
     {#if isDisplayDetail}
-        <BookInfoDetail item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
+        <DetailModal item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
     {/if}
     <SvelteToast/>
 </div>

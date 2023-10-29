@@ -51,38 +51,29 @@ describe('BookInfoList', () => {
   ];
 
   it('レンダリング', () => {
-      render(BookInfoList, {bookInfos});
+    render(BookInfoList, {bookInfos});
 
-      expect(screen.getByTitle(bookInfos[0].title)).toBeInTheDocument();
-      expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
+    expect(screen.getByTitle(bookInfos[0].title)).toBeInTheDocument();
+    expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
   });
 
   it('Propsに応じて書誌情報を非表示にできること', async () =>{
-      const { component } = render(BookInfoList, {bookInfos});
+    const { component } = render(BookInfoList, {bookInfos});
 
-      expect(screen.queryByTitle(bookInfos[0].title)).toBeInTheDocument();
-      
-      bookInfos[0].isVisible = false;
-      await component.$set({bookInfos});
+    expect(screen.queryByTitle(bookInfos[0].title)).toBeInTheDocument();
+    
+    bookInfos[0].isVisible = false;
+    await component.$set({bookInfos});
 
-      expect(screen.queryByTitle(bookInfos[0].title)).not.toBeInTheDocument();
-      expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
+    expect(screen.queryByTitle(bookInfos[0].title)).not.toBeInTheDocument();
+    expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
   });
 
-  it('', () => {
+  it('グリッドのクリック時に、詳細モーダルが表示されること', async () => {
+    render(BookInfoList, {bookInfos});
 
-  });
-  
-  it('ボタンクリックでお気に入りを切り替えられること', async () => {
-      const { component } = render(BookInfoList, {bookInfos});
-
-      const favorite = screen.getByRole('button');
-      const mock = vitest.fn();
-
-      component.$on('click', mock);
-      await fireEvent.click(favorite);
-
-      expect(bookInfos[0].isFavorite).toBeFalsy();
-      expect(mock).toHaveBeenCalled();
+    const grid1 = screen.getAllByRole('button')[0];
+    await fireEvent.click(grid1);
+    expect(screen.getByText('詳細')).toBeInTheDocument();
   });
 });
