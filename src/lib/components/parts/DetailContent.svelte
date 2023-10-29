@@ -4,7 +4,7 @@
 
     export let item: books_v1.Schema$Volume;
 
-    	const getLabel = (data?: string | number): string => {
+    const getLabel = (data?: string | number): string => {
 		return data?.toString() ?? 'データ無し';
 	};
 
