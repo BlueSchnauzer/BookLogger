@@ -2,13 +2,17 @@ import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
 import type * as customTypes from '$lib/customTypes';
 import ToggleSwitch from '$lib/components/parts/ToggleSwitch.svelte';
-import PrimalyButton from './PrimalyButton.svelte';
-import SecondaryButton from './SecondaryButton.svelte';
-import CategoryLabel from './CategoryLabel.svelte';
-import PagingLabel from './PagingLabel.svelte';
+import PrimalyButton from '$lib/components/parts/PrimalyButton.svelte';
+import SecondaryButton from '$lib/components/parts/SecondaryButton.svelte';
+import CategoryLabel from '$lib/components/parts/CategoryLabel.svelte';
+import PagingLabel from '$lib/components/parts/PagingLabel.svelte';
 import { getBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
-import DetailContent from './DetailContent.svelte';
+import DetailContent from '$lib/components/parts/DetailContent.svelte';
+import RegisteredContent from '$lib/components/parts/RegisteredContent.svelte';
 import type { books_v1 } from 'googleapis';
+import type { BookInfo } from '$lib/server/models/BookInfo';
+import { ObjectId } from 'mongodb';
+import { convertDate } from '$lib/utils';
 
 describe('ToggleSwitch', () => {
 	//データ作成
@@ -181,5 +185,40 @@ describe('DetailContent', async () => {
 		expect(screen.getByText(item.volumeInfo?.publishedDate!)).toBeInTheDocument();
 		expect(screen.getByText(item.volumeInfo?.pageCount!)).toBeInTheDocument();
 		expect(screen.getByText(item.volumeInfo?.description!)).toBeInTheDocument();
+	});
+});
+
+describe('RegisteredContent', async () => {
+  const bookInfo: BookInfo = {
+    _id: new ObjectId('651451ed67241f439ce8a1af'),
+    userId: 1,
+    isVisible: true,
+    identifier: {
+      isbn_13: '978-4-15-120051-9'
+    },
+    title: 'わたしを離さないで',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: -1,
+    history: [{
+        date: new Date,
+        currentPage: 0
+    }],
+    isFavorite: false,
+    isCompleted: false,
+    memorandum: 'メモです1'
+  }
+
+	it('レンダリング', () => {
+		render(RegisteredContent, {bookInfo});
+
+		expect(screen.getByAltText('書影')).toBeInTheDocument();
+		expect(screen.getByText(bookInfo.title!)).toBeInTheDocument();
+		expect(screen.getByText(bookInfo.author?.join(',')!)).toBeInTheDocument();
+		expect(screen.getByText(bookInfo.pageCount!)).toBeInTheDocument();
+		expect(screen.getByText(convertDate(bookInfo.history[0].date))).toBeInTheDocument();
+		expect(screen.getByText(bookInfo.history[0].currentPage)).toBeInTheDocument();
 	});
 });

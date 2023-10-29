@@ -28,9 +28,9 @@ describe('ContentHeader', () => {
       const btnDisplaySearch = screen.getByTestId('btnDisplaySearch');
 
       await fireEvent.click(btnDisplaySearch);
-      expect(screen.queryByTestId('fullCoverZ30')).toBeInTheDocument();
+      expect(screen.queryByTestId('layerZ30')).toBeInTheDocument();
 
       await fireEvent.click(btnDisplaySearch);
-      expect(screen.queryByTestId('fullCoverZ30')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('layerZ30')).not.toBeInTheDocument();
   });
 });
