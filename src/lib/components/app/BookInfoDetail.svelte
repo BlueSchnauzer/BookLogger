@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import FullCoverZindex30 from '../parts/FullCoverZindex30.svelte';
+	import LayerZindex30 from '../parts/LayerZindex30.svelte';
 	import PrimalyButton from '../parts/PrimalyButton.svelte';
 	import SecondaryButton from '../parts/SecondaryButton.svelte';
 	import type { books_v1 } from 'googleapis';
@@ -48,7 +48,7 @@
 	}
 </script>
 
-<FullCoverZindex30 bind:isDisplay isUseBackGroundColor={true}>
+<LayerZindex30 bind:isDisplay isUseBackGroundColor={true}>
 	{#if isDisplayLoader}
 		<div class="fixed m-auto inset-0 flex flex-1 justify-center items-center">
 			<span class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"></span>
@@ -63,6 +63,7 @@
 					type="button"
 					on:click={closeModalAndLoader}
 					class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
+					data-testid="btnClose"
 				>
 					<Icon icon="ph:x" width="36" height="36" color={colorStone700} />
 				</button>
@@ -76,4 +77,4 @@
 			</div>
 		</div>
 	{/if}
-</FullCoverZindex30>
+</LayerZindex30>

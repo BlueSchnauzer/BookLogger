@@ -2,7 +2,7 @@
     import PrimalyButton from '../parts/PrimalyButton.svelte';
     import SecondaryButton from '../parts/SecondaryButton.svelte';
 	import Icon from "@iconify/svelte";
-    import FullCoverZindex30 from "../parts/FullCoverZindex30.svelte";
+    import LayerZindex30 from "../parts/LayerZindex30.svelte";
 
     export let isDisplay = false;
     export let action = 'books/search';
@@ -39,7 +39,7 @@
 
 </script>
 
-<FullCoverZindex30 bind:isDisplay={isDisplay} isUseBackGroundColor={true}>
+<LayerZindex30 bind:isDisplay={isDisplay} isUseBackGroundColor={true}>
     <form action={action} on:submit={e => validateSubmit(e)}>
         <div class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg">
             <div class="h-14 flex flex-row justify-between items-center">
@@ -79,4 +79,4 @@
             </div>
         </div>    
     </form>
-</FullCoverZindex30>
+</LayerZindex30>
