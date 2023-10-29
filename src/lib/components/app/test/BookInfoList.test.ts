@@ -1,10 +1,10 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
-import BookInfoGrid from '../BookInfoGrid.svelte';
+import BookInfoList from '../BookInfoList.svelte';
 import { ObjectId } from 'mongodb';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 
-describe('BookInfoGrid', () => {
+describe('BookInfoList', () => {
   let bookInfos : BookInfo[] = [
       {
           _id: new ObjectId('651451ed67241f439ce8a1af'),
@@ -51,14 +51,14 @@ describe('BookInfoGrid', () => {
   ];
 
   it('レンダリング', () => {
-      render(BookInfoGrid, {bookInfos});
+      render(BookInfoList, {bookInfos});
 
       expect(screen.getByTitle(bookInfos[0].title)).toBeInTheDocument();
       expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
   });
 
   it('Propsに応じて書誌情報を非表示にできること', async () =>{
-      const { component } = render(BookInfoGrid, {bookInfos});
+      const { component } = render(BookInfoList, {bookInfos});
 
       expect(screen.queryByTitle(bookInfos[0].title)).toBeInTheDocument();
       
@@ -68,33 +68,21 @@ describe('BookInfoGrid', () => {
       expect(screen.queryByTitle(bookInfos[0].title)).not.toBeInTheDocument();
       expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
   });
-
-  it('グリッドアイテムクリックでサブメニュー用のデータと、クリックイベントを検知できること', async () => {
-    const { component } = render(BookInfoGrid, {bookInfos});
-
-    const gridItem = screen.queryByTitle(bookInfos[0].title)!;
-    const mock = vitest.fn();
-
-    component.$on('click', mock);
-    await fireEvent.click(gridItem);
-
-    expect(mock).toHaveBeenCalled();
-  });
   
-  it('タイトルクリックでページ移動と、クリックイベントを検知できること', async () => {
-    const { component } = render(BookInfoGrid, {bookInfos});
+  it('クリックイベントを検知できること', async () => {
+    const { component } = render(BookInfoList, {bookInfos});
     
-    const link = screen.getByRole('link');
+    const btns = screen.getAllByRole('button');
     const mock = vitest.fn();
 
     component.$on('click', mock);
-    await fireEvent.click(link);
+    await fireEvent.click(btns[0]);
 
     expect(mock).toHaveBeenCalled();
   });
 
-  it('ボタンクリックでお気に入りを切り替えられ、クリックイベントを検知できること', async () => {
-      const { component } = render(BookInfoGrid, {bookInfos});
+  it('ボタンクリックでお気に入りを切り替えられること', async () => {
+      const { component } = render(BookInfoList, {bookInfos});
 
       const favorite = screen.getByRole('button');
       const mock = vitest.fn();

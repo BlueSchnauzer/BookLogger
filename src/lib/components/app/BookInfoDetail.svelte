@@ -3,12 +3,14 @@
 	import LayerZindex30 from '../parts/LayerZindex30.svelte';
 	import PrimalyButton from '../parts/PrimalyButton.svelte';
 	import SecondaryButton from '../parts/SecondaryButton.svelte';
-	import type { books_v1 } from 'googleapis';
+		import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from "svelte";
 	import DetailContent from '../parts/DetailContent.svelte';
+	import type { BookInfo } from '$lib/server/models/BookInfo';
+	import RegisteredContent from '../parts/RegisteredContent.svelte';
 
 	export let isDisplay = false;
-	export let item: books_v1.Schema$Volume = {};
+	export let item: books_v1.Schema$Volume | BookInfo;
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
 
@@ -46,6 +48,8 @@
 		//ユーザ用のメッセージを設定してイベントを発行
 		handlePost(response.ok, response.ok ? '登録しました' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。');
 	}
+
+	const isVolumeItem = (item: any): item is books_v1.Schema$Volume => true;
 </script>
 
 <LayerZindex30 bind:isDisplay isUseBackGroundColor={true}>
@@ -69,7 +73,11 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<DetailContent {item}/>
+			{#if isVolumeItem(item) }
+				<DetailContent {item}/>
+			{:else}
+				<RegisteredContent bookInfo={item}/>
+			{/if}
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="h-14 flex flex-row justify-end items-center">
 				<PrimalyButton type="button" text="登録" on:click={postNewBookInfo}/>

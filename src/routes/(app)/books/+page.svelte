@@ -4,7 +4,7 @@
 	import ContentHeader from '$lib/components/app/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/app/ContentFilters.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
-	import BookInfoGrid from '$lib/components/app/BookInfoGrid.svelte';
+	import BookInfoList from '$lib/components/app/BookInfoList.svelte';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加
@@ -52,9 +52,6 @@
 		console.log(toggleFilterItems);
 	}
 
-	//ISBNで書誌情報を取得し、書影とページ数を取る。
-    //→ここじゃなくて、タグの方でawaitロジックを使った方がよさそう
-
     onMount(() => {
         //SSR時のエラー回避のためDOM生成後に実行
         window.ResizeObserver = ResizeObserver;
@@ -70,7 +67,7 @@
 </div>
 <div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 <div id="mainContent" class="p-1 contentHeight">
-	<BookInfoGrid bind:bookInfos={data.bookInfos}/>
+	<BookInfoList bind:bookInfos={data.bookInfos}/>
 </div>
 
 <style>
