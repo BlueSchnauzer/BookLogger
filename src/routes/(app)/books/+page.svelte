@@ -4,7 +4,9 @@
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
-	import BookInfoList from '$lib/components/content/BookInfoList.svelte';
+	import type { BookInfo } from '$lib/server/models/BookInfo';
+	import DetailModal from '$lib/components/common/DetailModal.svelte';
+	import BookInfoGrid from '$lib/components/content/parts/BookInfoGrid.svelte';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加
@@ -52,6 +54,14 @@
 		console.log(toggleFilterItems);
 	}
 
+	let isDisplayDetail = false;
+	let currentBookInfo: BookInfo;
+
+	const displayModal = (item: BookInfo) => {
+		currentBookInfo = item;
+		isDisplayDetail = true;
+	}
+
     onMount(() => {
         //SSR時のエラー回避のためDOM生成後に実行
         window.ResizeObserver = ResizeObserver;
@@ -67,8 +77,11 @@
 </div>
 <div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 <div id="mainContent" class="p-1 contentHeight">
-	<BookInfoList bind:bookInfos={data.bookInfos}/>
+	<BookInfoGrid bind:bookInfos={data.bookInfos} on:click={event => displayModal(event.detail)}/>
 </div>
+{#if isDisplayDetail}
+	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail}/>
+{/if}
 
 <style>
 	.contentHeight {
