@@ -65,7 +65,7 @@
 						</div>
 					{/await}
 					<div class="max-sm:hidden">
-						<sp class="px-2 text-lime-700 break-all collapseTitle">{bookInfo.title}</sp>
+						<sp class="text-left px-2 text-lime-700 break-all collapseTitle">{bookInfo.title}</sp>
 					</div>
 					<div class="self-center flex justify-between max-sm:hidden">
 						<span class="pl-2 text-xs">登録日</span>

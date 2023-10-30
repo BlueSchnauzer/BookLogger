@@ -7,9 +7,13 @@
 	let isDisplayDetail = false;
 	let currentBookInfo: BookInfo;
 
+	const displayModal = (item: BookInfo) => {
+		currentBookInfo = item;
+		isDisplayDetail = true;
+	}
 </script>
 
-<BookInfoGrid {bookInfos} on:click={() => {}} />
+<BookInfoGrid {bookInfos} on:click={event => displayModal(event.detail)} />
 {#if isDisplayDetail}
-	<DetailModal item={currentBookInfo} bind:isDisplay={isDisplayDetail}/>
+	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail}/>
 {/if}
