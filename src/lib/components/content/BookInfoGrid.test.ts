@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
-import BookInfoGrid from '$lib/components/content/parts/BookInfoGrid.svelte';
+import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 
 describe('BookInfoGrid', () => {
 	let bookInfos : BookInfo[] = [

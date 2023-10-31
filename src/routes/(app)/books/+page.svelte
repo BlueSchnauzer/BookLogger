@@ -6,7 +6,7 @@
 	import BookCase from '$lib/icons/BookCase.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import DetailModal from '$lib/components/common/DetailModal.svelte';
-	import BookInfoGrid from '$lib/components/content/parts/BookInfoGrid.svelte';
+	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加
