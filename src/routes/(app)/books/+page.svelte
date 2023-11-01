@@ -20,6 +20,9 @@
 	/**リストの値*/
 	let selectValue: number;
 
+	let isDisplayDetail = false;
+	let currentBookInfo: BookInfo;
+
 	let toggleFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
 		{ id: 2, text: '読みたい', type: 'status', isChecked: false, isVisible: true },
@@ -53,9 +56,6 @@
 		changeStatusVisibility();
 		console.log(toggleFilterItems);
 	}
-
-	let isDisplayDetail = false;
-	let currentBookInfo: BookInfo;
 
 	const displayModal = (item: BookInfo) => {
 		currentBookInfo = item;

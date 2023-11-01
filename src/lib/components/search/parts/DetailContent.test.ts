@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/svelte';
+import { render, screen, waitFor } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 import { getBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
 import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
@@ -9,15 +9,17 @@ describe('DetailContent', async () => {
 	const result: books_v1.Schema$Volumes = await getBookInfosByQueries('', '', isbn);
 	const item: books_v1.Schema$Volume = result.items![0];
 
-	it('レンダリング', () => {
+	it('レンダリング', async () => {
 		render(DetailContent, {item});
 
-		expect(screen.getByAltText('書影')).toBeInTheDocument();
+		await waitFor(() => {
+			expect(screen.getByAltText('書影')).toBeInTheDocument();
+		}, { timeout: 5000});
 		expect(screen.getByText(item.volumeInfo?.title!)).toBeInTheDocument();
 		expect(screen.getByText(item.volumeInfo?.authors?.join(',')!)).toBeInTheDocument();
 		expect(screen.getByText('データ無し')).toBeInTheDocument(); //データが無い場合はテキストを変更する
 		expect(screen.getByText(item.volumeInfo?.publishedDate!)).toBeInTheDocument();
-		expect(screen.getByText(item.volumeInfo?.pageCount!)).toBeInTheDocument();
+		expect(screen.getByText(`${item.volumeInfo?.pageCount!}ページ`)).toBeInTheDocument();
 		expect(screen.getByText(item.volumeInfo?.description!)).toBeInTheDocument();
 	});
 });

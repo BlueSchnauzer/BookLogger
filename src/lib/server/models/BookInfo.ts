@@ -10,17 +10,17 @@ export class BookInfo {
 	public thumbnail: string;
 	public createDate: Date;
 	public pageCount: number;
-	public history: [
-		{
-			date: Date;
-			currentPage: number;
-		}
-	];
 	public isCompleted: boolean;
 	public isFavorite: boolean;
 	public memorandum: string;
 	public isVisible: boolean;
 	public _id?: ObjectId;
+	public history!: [
+		{
+			date: Date;
+			currentPage: number;
+		}
+	];
 	public identifier?: {
 		isbn_13?: string;
 		isbn_10?: string;
@@ -36,12 +36,6 @@ export class BookInfo {
 		this.thumbnail = ''; //gapi固有の情報なので、保存しないで都度取る。
 		this.createDate = new Date;
 		this.pageCount = volume.volumeInfo?.pageCount ?? -1;
-		this.history = [
-			{
-				date: new Date,
-				currentPage: 0
-			}
-		];
 		this.isCompleted = false;
 		this.isFavorite = false;
 		this.memorandum = '';

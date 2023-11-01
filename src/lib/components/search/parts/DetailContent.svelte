@@ -54,7 +54,7 @@
             <CategoryLabel
                 categoryText="ページ数"
                 condition={item.volumeInfo?.pageCount}
-                labelFunction={() => item.volumeInfo?.pageCount?.toString()}
+                labelFunction={() => `${item.volumeInfo?.pageCount?.toString()}ページ`}
             />
         </div>
         <span class="text-lg font-bold">紹介</span>

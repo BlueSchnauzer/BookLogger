@@ -1,3 +1,5 @@
 export const convertDate = (date: Date, useYear = true) => {
-	return `${useYear? `${date.getFullYear()}年` : ''}${date.getMonth() + 1}月${date.getDay}日`;
+	//DBから取った書誌データは文字列で日付を持ってるため
+	if (typeof date === 'string') { date = new Date(date); }
+	return `${useYear? `${date.getFullYear()}/` : ''}${date.getMonth() + 1}/${date.getDate()}`;
 }
