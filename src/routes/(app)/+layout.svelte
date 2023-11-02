@@ -41,4 +41,10 @@
 	:global(body) {
 		background-color: theme(colors.vellum);
 	}
+	:root {
+		--toastContainerTop: auto;
+		--toastContainerRight: auto;
+		--toastContainerBottom: 4rem;
+		--toastContainerLeft: calc(50vw - 8rem);
+	}
 </style>
