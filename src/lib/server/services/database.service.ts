@@ -45,9 +45,10 @@ export async function getBookInfoByUserId(userId: number): Promise<BookInfo[]>{
   return bookInfos;
 }
 
-/**ユーザIDを指定して書誌データを保存する */
+/**書誌データを保存する */
 export async function insertBookInfo(bookinfo: BookInfo): Promise<Response>{
   let response = new Response('書誌データの作成に失敗しました。', {status: 400});
+
   try {
     await connectToDatabase();
     const result = await collections.bookInfos?.insertOne(bookinfo);
@@ -58,6 +59,38 @@ export async function insertBookInfo(bookinfo: BookInfo): Promise<Response>{
   catch (error) {
     console.log(error);
     response = new Response('書誌データの作成に失敗しました。', {status: 500});
+  }
+
+  return response;
+}
+
+/**書誌データを更新する */
+export async function updateBookInfo(bookInfo: BookInfo): Promise<Response>{
+  let response = new Response('書誌データの更新に失敗しました。', {status: 400});
+
+  try{
+    await connectToDatabase();
+    //historyとmemorandumだけ保存
+    const result = await collections.bookInfos?.updateOne(
+      {_id: new mongoDB.ObjectId(bookInfo._id)},
+      {
+        $set: {
+          isFavorite: bookInfo.isFavorite,
+          history: bookInfo.history,
+          memorandum: bookInfo.memorandum
+        },
+        $currentDate: {
+          updateDate: true
+        }
+      }
+    );
+    if (result?.acknowledged) {
+      response = new Response('書誌データの更新に成功しました。', {status: 200});
+    }
+  }
+  catch(error){
+    console.log(error);
+    response = new Response('書誌データの更新に失敗しました。', {status: 500});
   }
 
   return response;
