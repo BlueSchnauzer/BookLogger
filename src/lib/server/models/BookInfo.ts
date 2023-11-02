@@ -9,6 +9,7 @@ export class BookInfo {
 	public author: string[];
 	public thumbnail: string;
 	public createDate: Date;
+	public updateDate: Date;
 	public pageCount: number;
 	public isCompleted: boolean;
 	public isFavorite: boolean;
@@ -25,16 +26,18 @@ export class BookInfo {
 		isbn_13?: string;
 		isbn_10?: string;
 	};
-	public updateDate?: Date;
 	public shelfCategory?: ObjectId[];
 
 	/**GAPIのvolumeで初期化する */
 	constructor(volume: books_v1.Schema$Volume, userId: number){
+		const currentDate = new Date;
+
 		this.userId = userId;
 		this.title = volume.volumeInfo?.title ?? '';
 		this.author = volume.volumeInfo?.authors ?? [''];
 		this.thumbnail = ''; //gapi固有の情報なので、保存しないで都度取る。
-		this.createDate = new Date;
+		this.createDate = currentDate;
+		this.updateDate = currentDate;
 		this.pageCount = volume.volumeInfo?.pageCount ?? -1;
 		this.isCompleted = false;
 		this.isFavorite = false;
