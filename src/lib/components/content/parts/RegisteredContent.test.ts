@@ -41,12 +41,21 @@ describe('RegisteredContent', async () => {
 		expect(screen.getByDisplayValue(bookInfo.memorandum)).toBeInTheDocument();
 	});
 
+  it('お気に入りボタンクリックで値が変更されること', async () => {
+		render(RegisteredContent, {bookInfo});
+
+    const btnFavorite = screen.getByTestId('btnFavorite');
+    await fireEvent.click(btnFavorite);
+
+    expect(bookInfo.isFavorite).toEqual(true);
+  });
+
   it('読んだ記録を追加できること', async () => {
     const { container } = render(RegisteredContent, {bookInfo});
 
     const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
     const countInput = screen.getByTestId('countInput');
-    const btnAdd = screen.getByRole('button');
+    const btnAdd = screen.getByTestId('btnAdd');
 
     //userEventだと日付をいじれないのでJSで
     dateInput!.value = '2023-05-01'
@@ -62,7 +71,7 @@ describe('RegisteredContent', async () => {
 
     const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
     const countInput = screen.getByTestId('countInput');
-    const btnAdd = screen.getByRole('button');
+    const btnAdd = screen.getByTestId('btnAdd');
 
     //表示はされているが検知できない
     // dateInput!.value = ''

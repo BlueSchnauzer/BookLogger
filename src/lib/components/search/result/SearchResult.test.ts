@@ -6,4 +6,7 @@ import { getBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
 
 //awaitがテストできないので保留
 describe('SearchResult', () => {
+  it.skip('レンダリング', () => {
+
+  });
 });

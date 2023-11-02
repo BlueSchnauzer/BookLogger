@@ -20,6 +20,7 @@ describe('DetailModal(Seaching)', async () => {
 
     expect(screen.getByText('書籍登録')).toBeInTheDocument();
 		expect(screen.getByAltText('書影')).toBeInTheDocument();
+    expect(screen.queryByText('削除')).not.toBeInTheDocument();
     expect(screen.getByText('登録')).toBeInTheDocument();
     expect(screen.getByText('キャンセル')).toBeInTheDocument();
   });
@@ -114,9 +115,9 @@ describe('DetailModal(Registered)', async () => {
     render(BookInfoDetail, { isDisplay: true, bookInfo });
 
     expect(screen.getByText(bookInfo.title)).toBeInTheDocument();
-		expect(screen.getByAltText('書影')).toBeInTheDocument();
+		expect(screen.getByText('No Image')).toBeInTheDocument();
     expect(screen.getByText('削除')).toBeInTheDocument();
-    expect(screen.getByText('更新')).toBeInTheDocument();
+    expect(screen.getByText('編集')).toBeInTheDocument();
     expect(screen.getByText('キャンセル')).toBeInTheDocument();
   });
 
@@ -131,12 +132,12 @@ describe('DetailModal(Registered)', async () => {
     
   // });
 
-  it('読んだ履歴に新規データを追加できるか', () => {
+  it('historyとmemorandumに新規データを追加できるか', () => {
     
   });
 
-  it('メモ欄を編集して更新できるか', () => {
-    
+  it('編集後に保存せずクローズした際に、オブジェクトの値が変更されていないこと', () => {
+
   });
 
   it('削除成功時に、イベントを発信できること', async () => {
@@ -172,7 +173,6 @@ describe('DetailModal(Registered)', async () => {
   });
 
   it('更新成功時に、イベントを発信できること', async () => {
-    //fetchのモックを作成
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
