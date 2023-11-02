@@ -8,8 +8,8 @@
     import SearchResult from '$lib/components/search/result/SearchResult.svelte';
 	import DetailModal from '$lib/components/common/DetailModal.svelte';
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
+    import { pushSuccessToast, pushErrorToast } from '$lib/utils';
     import { SvelteToast } from '@zerodevx/svelte-toast'
-	import { toast } from '@zerodevx/svelte-toast'
  
     export let data: PageData;
     let isDisplaySearchModal = false;
@@ -80,17 +80,6 @@
         isDisplayDetail = true;
     }
 
-    /**正常完了時のトースト表示*/
-	const pushSuccessToast = (message: string) => {
-		toast.push(message, { reversed: true, intro: { y: 100 }, theme: {'--toastBarBackground': '#65a30d'} });
-	}
-	/**異常完了時のトースト表示*/
-	const pushErrorToast = (message: string) => {
-		toast.push(message, { reversed: true, intro: { y: 100 }, 
-            theme:{ '--toastBarHeight': 0, '--toastWidth': 'auto', '--toastBackground': '#dc2626' } 
-        });
-	}
-
 </script>
 
 <div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
@@ -124,10 +113,4 @@
         background-color: gray;
         border-radius: 20px;
     }
-    :root {
-		--toastContainerTop: auto;
-		--toastContainerRight: auto;
-		--toastContainerBottom: 4rem;
-		--toastContainerLeft: calc(50vw - 8rem);
-	}
 </style>

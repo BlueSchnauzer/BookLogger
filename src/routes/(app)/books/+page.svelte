@@ -12,6 +12,8 @@
     //iOS Safariなど用に追加
     import ResizeObserver from 'resize-observer-polyfill';
 	import { onMount } from 'svelte';
+	import { pushErrorToast, pushSuccessToast } from '$lib/utils';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	export let data: PageData;
 
@@ -80,12 +82,12 @@
 	<BookInfoGrid bind:bookInfos={data.bookInfos} on:click={event => displayModal(event.detail)}/>
 </div>
 {#if isDisplayDetail}
-	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail}/>
+	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
 {/if}
+<SvelteToast/>
 
 <style>
 	.contentHeight {
         height: calc(100% - 96px);
     }
-
 </style>

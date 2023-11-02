@@ -123,19 +123,6 @@ describe('DetailModal(Registered)', async () => {
 
   //非表示処理は変わらないのでテストしない
 
-  it('ボタンクリックでお気に入りフラグを変更できること', () => {
-
-  });
-
-  //優先度低いので実装するか未定
-  // it('本棚へ登録できること', () => {
-    
-  // });
-
-  it('historyとmemorandumに新規データを追加できるか', () => {
-    
-  });
-
   it('編集後に保存せずクローズした際に、オブジェクトの値が変更されていないこと', () => {
 
   });
@@ -180,7 +167,7 @@ describe('DetailModal(Registered)', async () => {
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
-    const btnUpdate = screen.getByText('更新');
+    const btnUpdate = screen.getByText('編集');
     await fireEvent.click(btnUpdate);
     
     await waitFor(() => {
@@ -196,7 +183,7 @@ describe('DetailModal(Registered)', async () => {
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
-    const btnUpdate = screen.getByText('更新');
+    const btnUpdate = screen.getByText('編集');
     await fireEvent.click(btnUpdate);
     
     await waitFor(() => {

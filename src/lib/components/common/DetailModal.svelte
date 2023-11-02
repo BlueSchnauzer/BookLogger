@@ -46,6 +46,7 @@
 	const postNewBookInfo = async () => {
 		displayLoader();
 
+		//books_v1.Schema$Volumeをpost
 		const response = await fetch('/api/bookinfo', {
 			method: 'POST',
 			body: JSON.stringify(item),
@@ -56,6 +57,23 @@
 		//ユーザ用のメッセージを設定してイベントを発行
 		handlePost(response.ok, response.ok ? '登録しました' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。');
 	}
+
+	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
+	const putBookInfo = async () => {
+		console.log(bookInfo);
+		displayLoader();
+
+		//bookinfoをput
+		const response = await fetch('/api/bookinfo', {
+			method: 'PUT',
+			body: JSON.stringify(bookInfo),
+			headers: {'Content-type': 'application:json'}
+		});
+
+		closeModalAndLoader();
+		//ユーザ用のメッセージを設定してイベントを発行
+		handlePost(response.ok, response.ok ? '更新しました' : '更新に失敗しました。\<br\>時間をおいて再度登録してください。');
+	};
 
 </script>
 
@@ -93,7 +111,7 @@
 				<div class="flex justify-between items-center">
 					<SecondaryButton type="button" text="削除" usage="delete" />
 					<div class="h-14 flex flex-row justify-end items-center">
-						<PrimalyButton type="button" text="編集" on:click={postNewBookInfo}/>
+						<PrimalyButton type="button" text="編集" on:click={putBookInfo}/>
 						<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 					</div>
 				</div>
