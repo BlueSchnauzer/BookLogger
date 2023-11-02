@@ -46,12 +46,12 @@ export async function getBookInfoByUserId(userId: number): Promise<BookInfo[]>{
 }
 
 /**書誌データを保存する */
-export async function insertBookInfo(bookinfo: BookInfo): Promise<Response>{
+export async function insertBookInfo(bookInfo: BookInfo): Promise<Response>{
   let response = new Response('書誌データの作成に失敗しました。', {status: 400});
 
   try {
     await connectToDatabase();
-    const result = await collections.bookInfos?.insertOne(bookinfo);
+    const result = await collections.bookInfos?.insertOne(bookInfo);
     if (result?.acknowledged){
       response = new Response('書誌データの作成に成功しました。', {status: 201} );
     }
@@ -84,7 +84,11 @@ export async function updateBookInfo(bookInfo: BookInfo): Promise<Response>{
         }
       }
     );
-    if (result?.acknowledged) {
+
+    if (result?.matchedCount === 0){
+      return response;
+    }
+    else if (result?.acknowledged) {
       response = new Response('書誌データの更新に成功しました。', {status: 200});
     }
   }
@@ -94,4 +98,23 @@ export async function updateBookInfo(bookInfo: BookInfo): Promise<Response>{
   }
 
   return response;
+}
+
+export async function deleteBookInfo(bookInfo: BookInfo): Promise<Response> {
+  let response = new Response('書誌データの削除に失敗しました。', {status: 400});
+
+  try {
+    await connectToDatabase();
+    const result = await collections.bookInfos?.insertOne(bookInfo);
+    if (result?.acknowledged){
+      response = new Response('書誌データの削除に成功しました。', {status: 201} );
+    }
+  }
+  catch (error) {
+    console.log(error);
+    response = new Response('書誌データの削除に失敗しました。', {status: 500});
+  }
+
+  return response;
+
 }

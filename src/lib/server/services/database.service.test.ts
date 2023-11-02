@@ -86,4 +86,11 @@ describe('updateBookInfo', () => {
 
     expect(result.status).toEqual(200);
   });
+
+  it('更新対象が見つからない場合にエラーステータスが返ってくること', async () => {
+    const invalidData = {_id: new ObjectId('a123456789b123456789c123')} as BookInfo;
+    const result = await service.updateBookInfo(invalidData);
+
+    expect(result.status).toEqual(400);
+  });
 });
