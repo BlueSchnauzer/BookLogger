@@ -82,14 +82,22 @@
 			<span class="bg-stone-400 h-[1px]" />
 			{#if isSearching }
 				<DetailContent {item}/>
-			{:else if isBookInfo()}
+				<span class="bg-stone-400 h-[1px]" />
+				<div class="h-14 flex flex-row justify-end items-center">
+					<PrimalyButton type="button" text="登録" on:click={postNewBookInfo}/>
+					<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
+				</div>
+			{:else if isBookInfo() }
 				<RegisteredContent {bookInfo}/>
+				<span class="bg-stone-400 h-[1px]" />
+				<div class="flex justify-between items-center">
+					<SecondaryButton type="button" text="削除" usage="delete" />
+					<div class="h-14 flex flex-row justify-end items-center">
+						<PrimalyButton type="button" text="編集" on:click={postNewBookInfo}/>
+						<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
+					</div>
+				</div>
 			{/if}
-			<span class="bg-stone-400 h-[1px]" />
-			<div class="h-14 flex flex-row justify-end items-center">
-				<PrimalyButton type="button" text="{isSearching ? '登録' : '編集'}" on:click={postNewBookInfo}/>
-				<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
-			</div>
 		</div>
 	{/if}
 </LayerZindex30>

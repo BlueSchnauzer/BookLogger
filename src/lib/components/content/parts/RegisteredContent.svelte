@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { BookInfo } from "$lib/server/models/BookInfo";
 	import { convertDate } from "$lib/utils";
+	import Icon from "@iconify/svelte";
 
     export let bookInfo: BookInfo;
 
@@ -56,19 +57,27 @@
     <div class="flex flex-col flex-shrink-0 p-4 max-sm:p-0 pt-6 max-sm:pt-4 min-w-44">
         {#if bookInfo.thumbnail}
             <img
-                class="self-center w-[128px] h-[182px] shadow-md"
+                class="mb-2 self-center w-[128px] h-[182px] shadow-md"
                 title={getLabel(bookInfo.title)}
                 src={bookInfo.thumbnail}
                 alt="書影"
             />
         {:else}
             <div
-                class="flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
+                class="mb-2 flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
                 title={getLabel(bookInfo.title)}
             >
                 <span>No Image</span>
             </div>
         {/if}
+        <button class="flex items-center" on:click={() => bookInfo.isFavorite = !bookInfo.isFavorite} data-testid="btnFavorite">
+            {#if bookInfo.isFavorite}
+                <Icon icon="ph:star-fill" color="#65a30d" width="32" height="32"/>    
+            {:else}
+                <Icon icon="ph:star-light" color="#65a30d" width="32" height="32"/>    
+            {/if}
+            <span class="ml-1 text-lg max-sm:in">お気に入り</span>
+        </button>
     </div>
     <span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
     <div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll">
@@ -118,7 +127,7 @@
                 </div>
                 <div class="mb-2 text-right">
                     <button class="h-8 px-2.5 py-1 mx-0.5 text-stone-700 bg-stone-300 border border-stone-700 duration-150 hover:bg-stone-200 rounded-full"
-                    on:click={addHistory}>
+                    on:click={addHistory} data-testid="btnAdd">
                     追加
                     </button>
                 </div>
