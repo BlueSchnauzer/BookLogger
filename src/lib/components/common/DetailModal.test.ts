@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi, vitest } from 'vitest';
 import BookInfoDetail from '$lib/components/common/DetailModal.svelte';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
+import userEvent from '@testing-library/user-event';
 
 describe('DetailModal(Seaching)', async () => {
 	const isbn = '978-4-15-120051-9';
@@ -101,7 +102,7 @@ describe('DetailModal(Registered)', async () => {
     thumbnail: '',
     createDate: new Date,
     updateDate: new Date,
-    pageCount: -1,
+    pageCount: 300,
     history: [{
         date: new Date,
         currentPage: 0
@@ -123,8 +124,27 @@ describe('DetailModal(Registered)', async () => {
 
   //非表示処理は変わらないのでテストしない
 
-  it('編集後に保存せずクローズした際に、オブジェクトの値が変更されていないこと', () => {
+  it('編集後に保存せずクローズした際に、オブジェクトの値が変更されていないこと', async () => {
+    render(BookInfoDetail, { isDisplay: true, bookInfo });
 
+    const orgIsFavorite = bookInfo.isFavorite;
+    const orgHistory = bookInfo.history;
+    const orgMemorandum = bookInfo.memorandum;
+
+    //isFavorite
+    await fireEvent.click(screen.getByTestId('btnFavorite'));
+    //history
+    await userEvent.type(screen.getByTestId('countInput'), '50');
+    await fireEvent.click(screen.getByTestId('btnAdd'));
+    //memorandum
+    await userEvent.type(screen.getByTestId<HTMLInputElement>('memoInput'), 'test');
+
+    //閉じる
+    await fireEvent.click(screen.getByTestId('btnClose'));
+
+    expect(orgIsFavorite).toEqual(bookInfo.isFavorite);
+    expect(orgHistory).toEqual(bookInfo.history);
+    expect(orgMemorandum).toEqual(bookInfo.memorandum);
   });
 
   it('削除成功時に、イベントを発信できること', async () => {
