@@ -5,8 +5,10 @@
 
 	export let bookInfos: BookInfo[];
 
+	/**書影を取得する(gapi固有の情報なので保存せず都度取得)*/
 	const setThumbnail = async (bookInfo: BookInfo) => {
-		bookInfo.thumbnail = await getThumbnailByIsbn(bookInfo.identifier?.isbn_13!);
+		//画面の再レンダリング時は取得済みなので実行しない。
+		if (!bookInfo.thumbnail) { bookInfo.thumbnail = await getThumbnailByIsbn(bookInfo.identifier?.isbn_13!); }
 	};
 
 	const dispatch = createEventDispatcher();
