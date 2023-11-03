@@ -70,13 +70,17 @@ export async function updateBookInfo(collections: collections, bookInfo: BookInf
   return response;
 }
 
-export async function deleteBookInfo(collections: collections, bookInfo: BookInfo): Promise<Response> {
+/**書誌データを削除する */
+export async function deleteBookInfo(collections: collections, _id: mongoDB.ObjectId): Promise<Response> {
   let response = new Response('書誌データの削除に失敗しました。', {status: 400});
 
   try {
-    const result = await collections.bookInfos?.insertOne(bookInfo);
-    if (result?.acknowledged){
-      response = new Response('書誌データの削除に成功しました。', {status: 201} );
+    const result = await collections.bookInfos?.deleteOne({_id: new mongoDB.ObjectId(_id)});
+    if (result && result.deletedCount){
+      response = new Response('書誌データの削除に成功しました。', {status: 202} );
+    } 
+    else if (!result || !result.deletedCount) {
+      return response;
     }
   }
   catch (error) {
@@ -85,5 +89,4 @@ export async function deleteBookInfo(collections: collections, bookInfo: BookInf
   }
 
   return response;
-
 }
