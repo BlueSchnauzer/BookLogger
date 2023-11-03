@@ -58,7 +58,7 @@
             />
         {:else}
             <div
-                class="mb-2 flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
+                class="mb-2 flex justify-center items-center self-center w-[128px] h-[182px] shadow-md bg-slate-300"
                 title={getLabel(bookInfo.title)}
             >
                 <span>No Image</span>
