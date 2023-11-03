@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
+import * as env from '$env/static/private';
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import * as service from "./database.service";
-import { ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import type {BookInfo} from "../models/BookInfo";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 //モックが上手く作れないので一旦テスト環境を直で操作
 
@@ -22,6 +24,18 @@ describe('getBookInfoByUserId', () => {
 });
 
 describe('insertBookInfo', () => {
+  let con: MongoClient;
+  let mongoServer: MongoMemoryServer;
+
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    con = await MongoClient.connect(mongoServer.getUri(), {});
+  });
+  afterAll(async () => {
+    if (con) { await con.close(); }
+    if (mongoServer) { await mongoServer.stop(); }
+  });
+
   const bookInfo: BookInfo = {
     userId: 1,
     isVisible: true,
@@ -49,12 +63,29 @@ describe('insertBookInfo', () => {
     expect(result.status).toEqual(201);
   });
 
+  it('memory test', async () => {
+    const db = con.db(mongoServer.instanceInfo?.dbName);
+
+    expect(db).toBeDefined();
+    //const col = db.collection(env.BOOKINFOS_COLLECTION_NAME);
+    //const result = await col.insertOne(bookInfo);
+    //expect(result.acknowledged).toBeTruthy();
+    //expect(await col.countDocuments({})).toBe(1);
+
+    const result = await service.insertBookInfo(bookInfo);
+    expect(result.status).toEqual(201);
+  });
+
   it('データが不正な場合にエラーステータスが返ってくること', async () => {
     //作成済みデータを指定
     const invalidData = {_id: new ObjectId('6539488af433e43f49821121')} as BookInfo;
     const result = await service.insertBookInfo(invalidData);
     
     expect(result.status).toEqual(500);
+  });
+
+  it('error', () => {
+
   });
 });
 
@@ -92,5 +123,16 @@ describe('updateBookInfo', () => {
     const result = await service.updateBookInfo(invalidData);
 
     expect(result.status).toEqual(400);
+  });
+});
+
+describe('deleteBookInfo', async () => {
+  
+  
+  it('書誌情報を削除できること', () => {
+  });
+
+  it('削除対象が見つからない場合にエラーステータスが返ってくること', () => {
+
   });
 });

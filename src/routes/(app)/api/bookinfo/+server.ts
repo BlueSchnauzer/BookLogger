@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types';
-import { getBookInfoByUserId, insertBookInfo, updateBookInfo } from '$lib/server/services/database.service';
+import collections from '$lib/server/database/collections';
+import { getBookInfoByUserId, insertBookInfo, updateBookInfo } from '$lib/server/database/database.service';
 import { json } from '@sveltejs/kit';
 import type { books_v1 } from 'googleapis';
 import { BookInfo } from '$lib/server/models/BookInfo';
@@ -9,7 +10,8 @@ import { validateReadingCount, validateReadingDate } from '$lib/utils';
 export const GET: RequestHandler = async () => {
     const userId = 1; //クッキーから取る？
     try {
-        let bookInfos = await getBookInfoByUserId(userId);
+        if (!collections) { return json(userId, {status: 500});}
+        let bookInfos = await getBookInfoByUserId(collections, userId);
 
         return json(bookInfos);    
     }
@@ -20,19 +22,25 @@ export const GET: RequestHandler = async () => {
 
 /**DBに書誌データを保存する */
 export const POST: RequestHandler = async ({ request }) => {
+    const userId = 1; //クッキーから取る？
+    if (!collections) { return json(userId, {status: 500});}
+
     const item = await request.json() as books_v1.Schema$Volume;
     const bookInfoToInsert = new BookInfo(item, 1); //ユーザIDを取る
 
     //一旦そのまま返す
-    return await insertBookInfo(bookInfoToInsert);
+    return await insertBookInfo(collections, bookInfoToInsert);
 };
 
 /**DBの書誌データを更新する */
 export const PUT: RequestHandler = async ({ request }) => {
+    const userId = 1; //クッキーから取る？
+    if (!collections) { return json(userId, {status: 500});}
+
     const item = await request.json() as BookInfo;
     if (!validatePutItem(item)) { return new Response('データが不正です', { status: 400}); }
 
-    return await updateBookInfo(item);
+    return await updateBookInfo(collections, item);
 };
 
 /**更新用データが不正でないか確認する */
