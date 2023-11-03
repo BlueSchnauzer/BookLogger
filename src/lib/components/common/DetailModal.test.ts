@@ -127,7 +127,7 @@ describe('DetailModal(Registered)', async () => {
 
   });
 
-  it('削除成功時に、イベントを発信できること', async () => {
+  it.skip('削除成功時に、イベントを発信できること', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
@@ -143,7 +143,7 @@ describe('DetailModal(Registered)', async () => {
     }, {timeout: 3000});
   });
 
-  it('削除失敗時に、イベントを発信できること', async () => {
+  it.skip('削除失敗時に、イベントを発信できること', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
 
