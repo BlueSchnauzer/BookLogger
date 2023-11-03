@@ -64,6 +64,13 @@
 		isDisplayDetail = true;
 	}
 
+	const handleSuccess = (detail: any) => {
+		if (detail.deletedId) {
+			data.bookInfos = data.bookInfos.filter(item => item._id !== detail.deletedId);
+		}
+		pushSuccessToast(detail.message);
+	}
+
     onMount(() => {
         //SSR時のエラー回避のためDOM生成後に実行
         window.ResizeObserver = ResizeObserver;
@@ -82,7 +89,7 @@
 	<BookInfoGrid bind:bookInfos={data.bookInfos} on:click={event => displayModal(event.detail)}/>
 </div>
 {#if isDisplayDetail}
-	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
+	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => handleSuccess(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
 {/if}
 <SvelteToast/>
 

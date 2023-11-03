@@ -85,6 +85,10 @@ describe('DetailModal(Seaching)', async () => {
 });
 
 describe('DetailModal(Registered)', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+ 
   const bookInfo: BookInfo = {
     _id: new ObjectId('651451ed67241f439ce8a1af'),
     userId: 1,
@@ -107,10 +111,6 @@ describe('DetailModal(Registered)', async () => {
     memorandum: 'メモです1'
   }
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
- 
   it('レンダリング', () => {
     render(BookInfoDetail, { isDisplay: true, bookInfo });
 
@@ -127,7 +127,7 @@ describe('DetailModal(Registered)', async () => {
 
   });
 
-  it.skip('削除成功時に、イベントを発信できること', async () => {
+  it('削除成功時に、イベントを発信できること', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
@@ -136,6 +136,10 @@ describe('DetailModal(Registered)', async () => {
 		component.$on('success', mockSuccess);
 
     const btnDelete = screen.getByText('削除');
+    //確認ダイアログをOKに認識させる
+    const confirmSpy = vi.spyOn(window, 'confirm');
+    confirmSpy.mockImplementation(vi.fn(() => true));
+
     await fireEvent.click(btnDelete);
     
     await waitFor(() => {
@@ -143,7 +147,7 @@ describe('DetailModal(Registered)', async () => {
     }, {timeout: 3000});
   });
 
-  it.skip('削除失敗時に、イベントを発信できること', async () => {
+  it('削除失敗時に、イベントを発信できること', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
 
@@ -152,6 +156,10 @@ describe('DetailModal(Registered)', async () => {
 		component.$on('failed', mockFailure);
 
     const btnDelete = screen.getByText('削除');
+    //確認ダイアログをOKに認識させる
+    const confirmSpy = vi.spyOn(window, 'confirm');
+    confirmSpy.mockImplementation(vi.fn(() => true));
+
     await fireEvent.click(btnDelete);
     
     await waitFor(() => {

@@ -41,6 +41,7 @@
 
         readingDate = setCurrentDate();
         readingCount = 0;
+        //追加した記録を反映させるため変更を通知
         bookInfo = bookInfo;
     }
 

@@ -8,6 +8,7 @@
 	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
+	import type { ObjectId } from 'mongodb';
 
 	export let isDisplay = false;
 	export let item: books_v1.Schema$Volume = {};
@@ -34,16 +35,16 @@
 	}
 
 	const dispatch = createEventDispatcher();
-	const handlePost = (isSuccess: boolean, message: string) => {
+	const handlePost = (isSuccess: boolean, message: string, deletedId?: ObjectId) => {
 		if (isSuccess){
-			dispatch('success', message);
+			dispatch('success', {message, deletedId});
 		} else {
 			dispatch('failed', message);
 		}
 	};
 
 	/**書誌データの保存処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
-	const postNewBookInfo = async () => {
+	const postBookInfo = async () => {
 		displayLoader();
 
 		//books_v1.Schema$Volumeをpost
@@ -60,7 +61,6 @@
 
 	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
 	const putBookInfo = async () => {
-		console.log(bookInfo);
 		displayLoader();
 
 		//bookinfoをput
@@ -74,6 +74,23 @@
 		//ユーザ用のメッセージを設定してイベントを発行
 		handlePost(response.ok, response.ok ? '更新しました' : '更新に失敗しました。\<br\>時間をおいて再度登録してください。');
 	};
+
+	/**書誌データの削除をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
+	const deleteBookInfo = async () => {
+		if (!confirm('削除します。よろしいですか？')) { return; }
+		displayLoader();
+
+		//削除対象の_idを渡す
+		const response = await fetch('/api/bookinfo', {
+			method: 'DELETE',
+			body: JSON.stringify(bookInfo._id),
+			headers: {'Content-type': 'application:json'}
+		});
+
+		closeModalAndLoader();
+		//ユーザ用のメッセージを設定してイベントを発行し、一覧画面からも削除するために削除したIdを含める
+		handlePost(response.ok, response.ok ? '削除しました' : '削除に失敗しました。\<br\>時間をおいて再度登録してください。', bookInfo._id);
+	}
 
 </script>
 
@@ -102,14 +119,14 @@
 				<DetailContent {item}/>
 				<span class="bg-stone-400 h-[1px]" />
 				<div class="h-14 flex flex-row justify-end items-center">
-					<PrimalyButton type="button" text="登録" on:click={postNewBookInfo}/>
+					<PrimalyButton type="button" text="登録" on:click={postBookInfo}/>
 					<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 				</div>
 			{:else if isBookInfo() }
 				<RegisteredContent {bookInfo}/>
 				<span class="bg-stone-400 h-[1px]" />
 				<div class="flex justify-between items-center">
-					<SecondaryButton type="button" text="削除" usage="delete" />
+					<SecondaryButton type="button" text="削除" usage="delete" on:click={deleteBookInfo}/>
 					<div class="h-14 flex flex-row justify-end items-center">
 						<PrimalyButton type="button" text="編集" on:click={putBookInfo}/>
 						<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
