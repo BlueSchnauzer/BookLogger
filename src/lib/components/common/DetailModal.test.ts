@@ -124,28 +124,10 @@ describe('DetailModal(Registered)', async () => {
 
   //非表示処理は変わらないのでテストしない
 
-  it('編集後に保存せずクローズした際に、オブジェクトの値が変更されていないこと', async () => {
-    render(BookInfoDetail, { isDisplay: true, bookInfo });
+  //+page.svelteで変更しているため、このコンポーネントでは操作しない
+  // it('保存後に、オブジェクトの値が変更されていること', async () => {
 
-    const orgIsFavorite = bookInfo.isFavorite;
-    const orgHistory = bookInfo.history;
-    const orgMemorandum = bookInfo.memorandum;
-
-    //isFavorite
-    await fireEvent.click(screen.getByTestId('btnFavorite'));
-    //history
-    await userEvent.type(screen.getByTestId('countInput'), '50');
-    await fireEvent.click(screen.getByTestId('btnAdd'));
-    //memorandum
-    await userEvent.type(screen.getByTestId<HTMLInputElement>('memoInput'), 'test');
-
-    //閉じる
-    await fireEvent.click(screen.getByTestId('btnClose'));
-
-    expect(orgIsFavorite).toEqual(bookInfo.isFavorite);
-    expect(orgHistory).toEqual(bookInfo.history);
-    expect(orgMemorandum).toEqual(bookInfo.memorandum);
-  });
+  // });
 
   it('削除成功時に、イベントを発信できること', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');

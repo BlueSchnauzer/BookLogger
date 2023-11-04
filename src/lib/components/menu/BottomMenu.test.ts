@@ -1,41 +1,59 @@
-import { render, fireEvent } from '@testing-library/svelte';
-import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/svelte';
+import { describe, expect, it, vi } from 'vitest';
+import type { Navigation, Page } from '@sveltejs/kit';
+import { readable } from 'svelte/store';
+import type * as stores from '$app/stores';
 import BottomMenu from '$lib/components/menu/BottomMenu.svelte';
-import Dashboard from '$lib/icons/Dashboard.svelte';
-import CompleteBook from '$lib/icons/CompleteBook.svelte';
-import BookShelf from '$lib/icons/BookShelf.svelte';
-import type * as customTypes from '$lib/customTypes';
-import type { ComponentType } from 'svelte';
 
 describe('BottomMenu', () => {
-  //データ作成
-  const MenuItemDatas: customTypes.menuItemData[] = [
-      { icon: Dashboard, ref: '/dashboard', jpName: 'ダッシュボード', enName: 'DashBoard' },
-      { icon: CompleteBook, ref: '/books/complete', jpName: '読み終わった本', enName: 'Complete' },
-      { icon: BookShelf, ref: '/shelfs', jpName: '本棚', enName: 'Shelfs' }
-  ];
-  const colorStone200 = '#E7E5E4';
-  let currentMenu: ComponentType = Dashboard;
+  //共通化が必要
+  vi.mock('$app/stores', (): typeof stores => {
+    const getStores: typeof stores.getStores = () => {
+      const navigating = readable<Navigation | null>(null);
+      const page = readable<Page>({
+        url: new URL('http://localhost'),
+        params: {},
+        route: {
+          id: null
+        },
+        status: 200,
+        error: null,
+        data: {},
+        form: undefined
+      });
+      const updated = { subscribe: readable(false).subscribe, check: async () => false };
+  
+      return { navigating, page, updated };
+    };
+    const page: typeof stores.page = {
+      subscribe(fn) {
+        return getStores().page.subscribe(fn);
+      }
+    };
+    const navigating: typeof stores.navigating = {
+      subscribe(fn) {
+        return getStores().navigating.subscribe(fn);
+      }
+    };
+    const updated: typeof stores.updated = {
+      subscribe(fn) {
+        return getStores().updated.subscribe(fn);
+      },
+      check: async () => false
+    };
 
-  it('レンダリング', () => {
-      const {container} = render(BottomMenu, { MenuItemDatas, currentMenu, iconColor: colorStone200 });
-
-      const dashboard = container.querySelector<HTMLElement>(`a[href="${MenuItemDatas[0].ref}"]`)!;
-      expect(dashboard).toBeInTheDocument();
-      const CompleteBook = container.querySelector<HTMLElement>(`a[href="${MenuItemDatas[1].ref}"]`)!;
-      expect(CompleteBook).toBeInTheDocument();
-      const BookShelf = container.querySelector<HTMLElement>(`a[href="${MenuItemDatas[2].ref}"]`)!;
-      expect(BookShelf).toBeInTheDocument();
+    return {
+    getStores,
+    navigating,
+    page,
+    updated
+    };
   });
 
-  it('クリックに応じてCSSクラスが付与されること', async () => {
-      const {container} = render(BottomMenu, { MenuItemDatas, currentMenu, iconColor: colorStone200 });
+  it('レンダリング', () => {
+    render(BottomMenu);
 
-      const firstItem = container.querySelector<HTMLElement>(`li:nth-child(1)`)!;
-      expect(firstItem).toHaveClass('border-y-lime-600');
-
-      const secondItem = container.querySelector<HTMLElement>(`li:nth-child(2)`)!;
-      await fireEvent.touchEnd(secondItem);
-      expect(secondItem).toHaveClass('border-y-lime-600');
+    expect(screen.getByText('DashBoard')).toBeInTheDocument();
+    expect(screen.getByText('Complete')).toBeInTheDocument();
   });
 });
