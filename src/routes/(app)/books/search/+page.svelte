@@ -97,7 +97,7 @@
         <PagingLabel {startIndex} {resultCount} {isLoading} isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}/>
     </div>
     {#if isDisplayDetail}
-        <DetailModal item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
+        <DetailModal item={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => pushSuccessToast(event.detail.message)} on:failed={(event) => pushErrorToast(event.detail)}/>
     {/if}
     <SvelteToast/>
 </div>
