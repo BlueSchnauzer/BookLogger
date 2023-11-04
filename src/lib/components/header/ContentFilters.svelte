@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-	import FullCoverZindex10 from '$lib/components/parts/FullCoverZindex10.svelte';
-	import ToggleSwitch from '$lib/components/parts/ToggleSwitch.svelte';
+	import ToggleSwitch from '$lib/components/common/parts/ToggleSwitch.svelte';
 	import Icon from '@iconify/svelte';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';
@@ -74,7 +73,7 @@
 				name="filter"
 				type="text"
 				size="15"
-				placeholder="書名、作者名..."
+				placeholder="タイトル、著者名..."
 				bind:value={inputValue}
 				class="absolute -ml-40 px-2 py-1 rounded-lg duration-300 transition-all {isDisplayInput
 					? 'animate-scale-in-right'
@@ -83,6 +82,7 @@
 			<button data-testid="btnDisplayFilterText"
 				class="ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
                     duration-150 hover:bg-stone-200"
+				title="検索"
 				on:click={() => (isDisplayInput = !isDisplayInput)}
 			>
 				<Icon icon="ph:magnifying-glass" width="28" height="28" color={colorStone700} />
@@ -90,14 +90,15 @@
 		</div>
 		<div>
 			<button data-testid="btnDisplayFilterOptions"
-				class="z-20 relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
+				class="relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
                     duration-150 hover:bg-stone-200"
+				title="並び替え"
 				on:click={() => (isDisplaySelect = !isDisplaySelect)}
 			>
 				<Icon icon="ph:list-magnifying-glass" width="28" height="28" color={colorStone700} />
 			</button>
 			<ul data-testid="filterOptions"
-				class="z-30 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect
+				class="z-10 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect
 					? ''
 					: 'hidden'}"
 			>
@@ -110,12 +111,11 @@
 				{/each}
 			</ul>
 		</div>
-		<FullCoverZindex10 bind:isDisplay={isDisplaySelect} isHiddenByOnclick={true} />
 	</div>
 </div>
 
 <style>
-	/* ウィンドウサイズが小さい時にトグルメニューの右端を半透明にする(tailwindcssだと長くなりすぎるのでクラス化) */
+	/* ウィンドウサイズが小さい時にトグルメニューの右端を半透明にする。 */
 	@media not all and (min-width: 1024px) {
 		.edgeGradiation::after {
 			content: '';

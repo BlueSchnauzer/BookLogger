@@ -1,0 +1,89 @@
+<script lang="ts">
+	import type { BookInfo } from '$lib/server/models/BookInfo';
+	import { getThumbnailByIsbn } from '$lib/GoogleBooksAPI/RequestManage';
+	import { createEventDispatcher } from 'svelte';
+
+	export let bookInfos: BookInfo[];
+
+	/**書影を取得する(gapi固有の情報なので保存せず都度取得)*/
+	const setThumbnail = async (bookInfo: BookInfo) => {
+		//画面の再レンダリング時は取得済みなので実行しない。
+		if (!bookInfo.thumbnail) { bookInfo.thumbnail = await getThumbnailByIsbn(bookInfo.identifier?.isbn_13!); }
+	};
+
+	const dispatch = createEventDispatcher();
+	const handleClick = (item: BookInfo) => {
+		dispatch('click', item);
+	};
+</script>
+
+<ul
+	class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
+>
+	{#each bookInfos as bookInfo (bookInfo._id)}
+		{#if bookInfo.isVisible}
+			<li style="display: inherit;" title={bookInfo.title}>
+				<button
+					class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
+					on:click={() => handleClick(bookInfo)}
+				>
+					{#await setThumbnail(bookInfo)}
+						<div
+							class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] border border-slate-300"
+						>
+							<span
+								class="animate-spin w-10 h-10 border-4 border-lime-600 rounded-full border-t-transparent"
+							/>
+						</div>
+					{:then}
+						{#if bookInfo.thumbnail}
+							<img
+								class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300"
+								src={bookInfo.thumbnail}
+								alt="test"
+							/>
+						{:else}
+							<div
+								class="max-sm:hidden justify-self-center self-center flex flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300"
+							>
+								<span>No Image</span>
+							</div>
+							<div
+								class="hidden max-sm:flex justify-self-center self-center flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300"
+							>
+								<span class="p-1 break-all collapseTitle">{bookInfo.title}</span>
+							</div>
+						{/if}
+					{:catch}
+						<div
+							class="max-sm:hidden justify-self-center self-center flex flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300"
+						>
+							<span>No Image</span>
+						</div>
+						<div
+							class="hidden max-sm:flex justify-self-center self-center flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300"
+						>
+							<span class="p-1 break-all collapseTitle">{bookInfo.title}</span>
+						</div>
+					{/await}
+					<div class="max-sm:hidden">
+						<sp class="text-left px-2 text-lime-700 break-all collapseTitle">{bookInfo.title}</sp>
+					</div>
+					<div class="self-center flex justify-between max-sm:hidden">
+						<span class="pl-2 text-xs">登録日</span>
+						<span class="pr-2 text-sm">2023年9月20日</span>
+					</div>
+				</button>
+			</li>
+		{/if}
+	{/each}
+</ul>
+
+<style>
+	.collapseTitle {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+	}
+</style>

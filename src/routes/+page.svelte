@@ -1,6 +1,4 @@
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1>
+<a href="/dashboard">DashBoard</a>
   
 <style lang="postcss">
     :global(html) {

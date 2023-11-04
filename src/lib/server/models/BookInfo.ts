@@ -1,52 +1,64 @@
-import { ObjectId } from 'mongodb';
-import { Schema, model, models } from 'mongoose';
+import type { books_v1 } from 'googleapis';
+import type { ObjectId } from 'mongodb';
 
 /**書誌情報 */
-export interface IBookInfo {
-	_id: ObjectId;
+export class BookInfo {
+	public userId: number;
+	public title: string;
 	//userId: ObjectId; //User用のスキーマが完成した際に入れ替える。
-	userId: number;
-	isbn_13: string;
-	title: string;
-	imageUrl: string;
-	createDate: Date;
-	updateDate: Date;
-	pageCount: number;
-	history: [
+	public author: string[];
+	public thumbnail: string;
+	public createDate: Date;
+	public updateDate: Date;
+	public pageCount: number;
+	public isCompleted: boolean;
+	public isFavorite: boolean;
+	public memorandum: string;
+	public isVisible: boolean;
+	public _id?: ObjectId;
+	public history!: [
 		{
 			date: Date;
 			currentPage: number;
 		}
 	];
-	isCompleted: boolean;
-    isFavorite: boolean;
-	memorandum: string;
-	isVisible: boolean;
-	isbn_10?: string;
+	public identifier?: {
+		isbn_13?: string;
+		isbn_10?: string;
+	};
+	public shelfCategory?: ObjectId[];
+
+	/**GAPIのvolumeで初期化する */
+	constructor(volume: books_v1.Schema$Volume, userId: number){
+		const currentDate = new Date;
+
+		this.userId = userId;
+		this.title = volume.volumeInfo?.title ?? '';
+		this.author = volume.volumeInfo?.authors ?? [''];
+		this.thumbnail = ''; //gapi固有の情報なので、保存しないで都度取る。
+		this.createDate = currentDate;
+		this.updateDate = currentDate;
+		this.pageCount = volume.volumeInfo?.pageCount ?? -1;
+		this.isCompleted = false;
+		this.isFavorite = false;
+		this.memorandum = '';
+		this.isVisible = true;
+		this.identifier = getIdentifier(volume.volumeInfo?.industryIdentifiers);
+	}
 }
 
-const bookInfoSchema = new Schema<IBookInfo>({
-	_id: {type: ObjectId},
-	//userId: { type: ObjectId, required: true, ref: User }, //User用のモデルが完成した際に入れ替える。
-	userId: {type: Number, required: true},
-	isbn_13: { type: String, required: true },
-	title: { type: String, required: true },
-	imageUrl: { type: String, default: '' },
-	createDate: { type: Date, required: true },
-	updateDate: { type: Date, required: true },
-	pageCount: { type: Number, default: -1 },
-	history: [
-		{
-			date: { type: Date, required: true },
-			currentPage: { type: Number, required: true }
-		}
-	],
-	isCompleted: { type: Boolean, required: true },
-    isFavorite: { type: Boolean, required: true, default: false},
-	memorandum: { type: String, default: '' },
-    isVisible: { type: Boolean, required: true, default: true},
-	isbn_10: { type: String, default: '' }
-});
+type industryIdentifiers = {
+	identifier?: string | undefined;
+	type?: string | undefined;
+} [] | undefined
 
-/**書誌情報のモデル */
-export default models['BookInfo'] || model<IBookInfo>('BookInfo', bookInfoSchema);
+/**ISBNを取得する(存在しない場合はundefined) */
+const getIdentifier = (identifiers: industryIdentifiers) => {
+	const isbn_13 = identifiers?.find(id => id.type === 'ISBN_13')?.identifier;
+	if (isbn_13) { return {isbn_13}; }
+	
+	const isbn_10 = identifiers?.find(id => id.type === 'ISBN_10')?.identifier;
+	if (isbn_10) { return {isbn_10}; }
+
+	return undefined;
+}

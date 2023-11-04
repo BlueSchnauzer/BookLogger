@@ -8,10 +8,9 @@
     <!-- 各ページでレンダリング -->
     <slot />
 </main>
-<div class="max-lg:hidden mx-1 mt-5 mb-3 bg-stone-400 w-[1px]" />
 
 <style>
     .flexWidth{
-        width: calc(100% - (224px + 208px));
+        width: calc(100% - (224px));
     }
 </style>

@@ -1,12 +1,9 @@
 import type { PageServerLoad } from './$types';
-import { connect } from '$lib/server/DB/connection';
-import BookInfoModel, { type IBookInfo } from '$lib/server/models/BookInfo';
+import type { BookInfo } from '$lib/server/models/BookInfo';
 
-export const load = (async () => {
-    let bookInfos: IBookInfo[] = [];
-    await connect();
-    bookInfos = await BookInfoModel.find({userId: 1}).exec();
+export const load = (async ({fetch}) => {
+    const response = await fetch('/api/bookinfo');
+    let bookInfos: BookInfo[] = await response.json();
 
-    //pojoでないとエラーになるため一度シリアライズする。
-    return { bookInfos: JSON.parse(JSON.stringify(bookInfos)) };
+    return { bookInfos };
 }) satisfies PageServerLoad;
