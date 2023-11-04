@@ -1,6 +1,6 @@
 import { toast } from "@zerodevx/svelte-toast";
 
-export const convertDate = (date: Date, useYear = true): string => {
+export const convertDate = (date: Date | string, useYear = true): string => {
 	if (!date) { return 'データ無し'; }
 	//DBから取った書誌データは文字列で日付を持ってるため
 	if (typeof date === 'string') { date = new Date(date); }
