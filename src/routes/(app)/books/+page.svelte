@@ -14,6 +14,7 @@
 	import { onMount } from 'svelte';
 	import { pushErrorToast, pushSuccessToast } from '$lib/utils';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import type { ObjectId } from 'mongodb';
 
 	export let data: PageData;
 
@@ -21,7 +22,6 @@
 	let inputValue: string;
 	/**リストの値*/
 	let selectValue: number;
-
 	let isDisplayDetail = false;
 	let currentBookInfo: BookInfo;
 
@@ -60,12 +60,17 @@
 	}
 
 	const displayModal = (item: BookInfo) => {
-		currentBookInfo = item;
+		currentBookInfo = structuredClone(item);
 		isDisplayDetail = true;
 	}
 
-	const handleSuccess = (detail: any) => {
-		if (detail.deletedId) {
+	const handleSuccess = (detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}) => {
+		//再レンダリングするために配列を再代入して、変更を通知
+		if (detail.updatedItem) {
+			const index = data.bookInfos.findIndex(item => item._id === detail.updatedItem._id);
+			data.bookInfos = [...data.bookInfos.slice(0, index), detail.updatedItem, ...data.bookInfos.slice(index + 1)];
+		}
+		else if (detail.deletedId) {
 			data.bookInfos = data.bookInfos.filter(item => item._id !== detail.deletedId);
 		}
 		pushSuccessToast(detail.message);
@@ -86,10 +91,13 @@
 </div>
 <div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 <div id="mainContent" class="p-1 contentHeight">
-	<BookInfoGrid bind:bookInfos={data.bookInfos} on:click={event => displayModal(event.detail)}/>
+	<BookInfoGrid bookInfos={data.bookInfos} on:click={event => displayModal(event.detail)}/>
 </div>
 {#if isDisplayDetail}
-	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} on:success={(event) => handleSuccess(event.detail)} on:failed={(event) => pushErrorToast(event.detail)}/>
+	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} 
+		on:success={(event) => handleSuccess(event.detail)} 
+		on:failed={(event) => pushErrorToast(event.detail)}
+	/>
 {/if}
 <SvelteToast/>
 

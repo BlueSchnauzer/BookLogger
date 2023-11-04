@@ -35,9 +35,9 @@
 	}
 
 	const dispatch = createEventDispatcher();
-	const handlePost = (isSuccess: boolean, message: string, deletedId?: ObjectId) => {
+	const handleRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: ObjectId) => {
 		if (isSuccess){
-			dispatch('success', {message, deletedId});
+			dispatch('success', {message, updatedItem, deletedId});
 		} else {
 			dispatch('failed', message);
 		}
@@ -56,7 +56,7 @@
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行
-		handlePost(response.ok, response.ok ? '登録しました' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。');
+		handleRequest(response.ok, response.ok ? '登録しました' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。');
 	}
 
 	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
@@ -72,7 +72,7 @@
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行
-		handlePost(response.ok, response.ok ? '更新しました' : '更新に失敗しました。\<br\>時間をおいて再度登録してください。');
+		handleRequest(response.ok, response.ok ? '更新しました' : '更新に失敗しました。\<br\>時間をおいて再度登録してください。', bookInfo);
 	};
 
 	/**書誌データの削除をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
@@ -89,7 +89,7 @@
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行し、一覧画面からも削除するために削除したIdを含める
-		handlePost(response.ok, response.ok ? '削除しました' : '削除に失敗しました。\<br\>時間をおいて再度登録してください。', bookInfo._id);
+		handleRequest(response.ok, response.ok ? '削除しました' : '削除に失敗しました。\<br\>時間をおいて再度登録してください。', undefined, bookInfo._id);
 	}
 
 </script>
