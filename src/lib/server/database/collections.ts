@@ -1,6 +1,6 @@
 import * as env from '$env/static/private';
 import * as mongoDB from 'mongodb';
-import type { BookInfo } from "../models/BookInfo";
+import type { BookInfo } from "$lib/server/models/BookInfo";
 
 export type collections = {
   bookInfos?: mongoDB.Collection<BookInfo>

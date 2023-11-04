@@ -1,6 +1,6 @@
 import * as mongoDB from 'mongodb';
-import type { BookInfo } from '../models/BookInfo';
-import type { collections } from './collections';
+import type { BookInfo } from '$lib/server/models/BookInfo';
+import type { collections } from '$lib/server/database/collections';
 
 /**ユーザIDに紐づいた書誌データを取得する */
 export async function getBookInfoByUserId(collections: collections, userId: number): Promise<BookInfo[]>{

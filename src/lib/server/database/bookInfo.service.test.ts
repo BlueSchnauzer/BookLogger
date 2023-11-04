@@ -2,8 +2,8 @@ import * as env from '$env/static/private';
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import * as service from "./database.service";
-import type {BookInfo} from "../models/BookInfo";
+import * as service from "$lib/server/database/bookInfo.service";
+import type { BookInfo } from '$lib/server/models/BookInfo';
 
 describe('getBookInfoByUserId', () => {
   let con: MongoClient;

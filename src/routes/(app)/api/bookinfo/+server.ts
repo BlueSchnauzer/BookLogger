@@ -1,10 +1,10 @@
 import type { RequestHandler } from './$types';
 import collections from '$lib/server/database/collections';
-import { deleteBookInfo, getBookInfoByUserId, insertBookInfo, updateBookInfo } from '$lib/server/database/database.service';
+import { deleteBookInfo, getBookInfoByUserId, insertBookInfo, updateBookInfo } from '$lib/server/database/bookInfo.service';
 import { json } from '@sveltejs/kit';
 import type { books_v1 } from 'googleapis';
 import { BookInfo } from '$lib/server/models/BookInfo';
-import { validateReadingCount, validateReadingDate } from '$lib/utils';
+import { validateReadingCount } from '$lib/utils';
 
 /**DBからユーザIDに一致するデータを取得する */
 export const GET: RequestHandler = async () => {
