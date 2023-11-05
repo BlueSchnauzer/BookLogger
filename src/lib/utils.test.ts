@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import * as utils from '$lib/utils';
+import type { BookInfo } from "$lib/server/models/BookInfo";
 
 describe('convertDate', () => {
   const testDate = new Date(2023, 5, 15);
@@ -79,3 +80,5 @@ describe('validateReadingCount', () => {
 });
 
 //toastはE2Eでテストする
+
+//handleSuccessはE2Eでテストする
