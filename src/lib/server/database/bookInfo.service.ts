@@ -17,6 +17,27 @@ export async function getBookInfo(collections: collections, userId: number): Pro
   return bookInfos;
 }
 
+/**historyが空(読みたい本)で、ユーザIDに紐づいた書誌データを取得する */
+export async function getWishBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+  let bookInfos: BookInfo[] = [];
+
+  try {
+    const filter: mongoDB.Filter<BookInfo> = {
+      $and: [
+        {userId},
+        {history: undefined}
+      ]
+    };
+    bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+
+  return bookInfos;
+}
+
 /**書誌データを保存する */
 export async function insertBookInfo(collections: collections, bookInfo: BookInfo): Promise<Response>{
   let response = new Response('書誌データの作成に失敗しました。', {status: 400});

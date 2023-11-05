@@ -25,10 +25,10 @@ afterEach(async () => {
 describe('getBookInfo', () => {  
   it('ユーザIDに一致するデータを取得できること',async () => {
     //対象のデータを設定
-    const preData = await col.insertOne({userId: 1} as BookInfo);
+    const userId = 1;
+    const preData = await col.insertOne({userId} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const userId = 1;
     const response = await service.getBookInfo({ bookInfos: col }, userId);
 
     expect(response.length).toBeGreaterThanOrEqual(1);
@@ -40,17 +40,63 @@ describe('getBookInfo', () => {
 
     expect(response.length).toEqual(0);
   });
-});
 
-describe('getBookInfoByFavorite', () => {
-  it('お気に入りがTrueなデータのみが取得できること', () => {
+  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
+    const response = await service.getBookInfo({ bookInfos: col }, Number(undefined));
 
-  });
-
-  it('一致するデータが無い場合に空のデータが返ること', () => {
-
+    expect(response.length).toEqual(0);
   });
 });
+
+describe('getWishBookInfo', () => {  
+  it('historyが空で、ユーザIDに一致するデータを取得できること',async () => {
+    //対象のデータを設定
+    const userId = 1;
+    const dummyData = [
+      {userId, history: [{date: new Date, currentPage: 50}]}, 
+      {userId, history: [{date: new Date, currentPage: 50}]}, 
+      {userId, history: undefined}
+    ];
+    const preData = await col.insertMany(dummyData as BookInfo[]);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getWishBookInfo({ bookInfos: col }, userId);
+
+    expect(response.length).toEqual(1);
+    expect(response[0].userId).toEqual(userId);
+  });
+
+  it('一致するデータが無い場合に空のデータが返ること', async () => {
+    const response = await service.getWishBookInfo({ bookInfos: col }, 10000);
+
+    expect(response.length).toEqual(0);
+  });
+
+  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
+    const response = await service.getWishBookInfo({ bookInfos: col }, Number(undefined));
+
+    expect(response.length).toEqual(0);
+  });
+});
+
+// describe('getBookInfoByFavorite', () => {
+//   it('お気に入りがTrueで、ユーザIDに一致するデータのみが取得できること', async () => {
+//     //対象のデータを設定
+//     const userId = 1;
+//     const dummyData = [{userId, isFavorite: true}, {userId, isFavorite: true}, {userId, isFavorite: false}];
+//     const preData = await col.insertMany( dummyData as BookInfo[]);
+//     expect(await preData.acknowledged).toBeTruthy();
+
+//     const response = await service.getBookInfoByFavorite({ bookInfos: col }, userId);
+
+//     expect(response.length).toEqual(2);
+//     expect(response[0].userId).toEqual(userId);
+//   });
+
+//   it('一致するデータが無い場合に空のデータが返ること', () => {
+
+//   });
+// });
 
 describe('insertBookInfo', () => {
   const bookInfo: BookInfo = {
@@ -80,7 +126,7 @@ describe('insertBookInfo', () => {
     expect(await col.countDocuments({})).toBe(1);
   });
 
-  it('データが不正な場合にエラーステータスが返ってくること', async () => {
+  it('データが不正(同じ_idで作成済み)な場合にエラーステータスが返ってくること', async () => {
     //事前にデータを作成
     const preData = await col.insertOne(bookInfo);
     expect(await preData.acknowledged).toBeTruthy();
@@ -88,6 +134,13 @@ describe('insertBookInfo', () => {
     //作成済みデータを指定
     const invalidData = {_id: await preData.insertedId} as BookInfo;
     const result = await service.insertBookInfo({ bookInfos: col }, invalidData);
+    
+    expect(result.ok).toBeFalsy();
+  });
+
+  //MongoDB側のコレクション定義をして弾く必要があるのでスキップ
+  it.skip('データが不正(undefinedを渡す)な場合にエラーステータスが返ってくること', async () => {  
+    const result = await service.insertBookInfo({ bookInfos: col }, bookInfo);
     
     expect(result.ok).toBeFalsy();
   });
