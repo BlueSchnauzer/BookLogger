@@ -1,11 +1,13 @@
 # BookLogger
-[![Test](https://github.com/BlueSchnauzer/BookLogger/actions/workflows/TestWorkflow.yml/badge.svg)](https://github.com/BlueSchnauzer/BookLogger/actions/workflows/TestWorkflow.yml) ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=book-logger)
+[![Integration](https://github.com/BlueSchnauzer/BookLogger/actions/workflows/Integration.yml/badge.svg)](https://github.com/BlueSchnauzer/BookLogger/actions/workflows/Integration.yml) ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=book-logger)
 
 ## 説明
 
 ## 使い方
 
-### 開発ツール
+## 開発
+
+### 言語、環境等
 - Node.js
 - Svelte(SvelteKit, Vite)
 - Typescript
