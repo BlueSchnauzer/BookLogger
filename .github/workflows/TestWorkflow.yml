@@ -16,10 +16,3 @@ jobs:
 
       - name: Test
         run: npm run test:unit
-      
-      - name: Upload build artifact
-        if: ${{ github.event_name == 'push' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: ./build
