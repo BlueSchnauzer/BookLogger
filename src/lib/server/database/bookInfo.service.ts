@@ -3,7 +3,7 @@ import type { BookInfo } from '$lib/server/models/BookInfo';
 import type { collections } from '$lib/server/database/collections';
 
 /**ユーザIDに紐づいた書誌データを取得する */
-export async function getBookInfoByUserId(collections: collections, userId: number): Promise<BookInfo[]>{
+export async function getBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
 
   try {

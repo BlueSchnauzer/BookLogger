@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import collections from '$lib/server/database/collections';
-import { deleteBookInfo, getBookInfoByUserId, insertBookInfo, updateBookInfo } from '$lib/server/database/bookInfo.service';
+import { deleteBookInfo, getBookInfo, insertBookInfo, updateBookInfo } from '$lib/server/database/bookInfo.service';
 import { json } from '@sveltejs/kit';
 import type { books_v1 } from 'googleapis';
 import { BookInfo } from '$lib/server/models/BookInfo';
@@ -11,7 +11,7 @@ export const GET: RequestHandler = async () => {
     const userId = 1; //クッキーから取る？
     try {
         if (!collections) { return json(userId, {status: 500});}
-        let bookInfos = await getBookInfoByUserId(collections, userId);
+        let bookInfos = await getBookInfo(collections, userId);
 
         return json(bookInfos);    
     }
@@ -43,6 +43,7 @@ export const PUT: RequestHandler = async ({ request }) => {
     return await updateBookInfo(collections, item);
 };
 
+/**DBの書誌データを削除する */
 export const DELETE: RequestHandler = async ({ request }) => {
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 

@@ -5,59 +5,54 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import * as service from "$lib/server/database/bookInfo.service";
 import type { BookInfo } from '$lib/server/models/BookInfo';
 
-describe('getBookInfoByUserId', () => {
-  let con: MongoClient;
-  let mongoServer: MongoMemoryServer;
-  let db: Db;
-  let col: Collection<BookInfo>;
+//共通で使用する接続データと、その初期化・破棄用の処理
+let con: MongoClient;
+let mongoServer: MongoMemoryServer;
+let db: Db;
+let col: Collection<BookInfo>;
 
-  beforeEach(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    con = await MongoClient.connect(mongoServer.getUri(), {});
-    db = con.db(mongoServer.instanceInfo?.dbName);
-    col = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
-  });
-  afterEach(async () => {
-    if (con) { await con.close(); }
-    if (mongoServer) { await mongoServer.stop(); }
-  });
-  
+beforeEach(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  con = await MongoClient.connect(mongoServer.getUri(), {});
+  db = con.db(mongoServer.instanceInfo?.dbName);
+  col = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
+});
+afterEach(async () => {
+  if (con) { await con.close(); }
+  if (mongoServer) { await mongoServer.stop(); }
+});
+
+describe('getBookInfo', () => {  
   it('ユーザIDに一致するデータを取得できること',async () => {
     //対象のデータを設定
     const preData = await col.insertOne({userId: 1} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
     const userId = 1;
-    const response = await service.getBookInfoByUserId({ bookInfos: col }, userId);
+    const response = await service.getBookInfo({ bookInfos: col }, userId);
 
     expect(response.length).toBeGreaterThanOrEqual(1);
     expect(response[0].userId).toEqual(userId);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
-    const response = await service.getBookInfoByUserId({ bookInfos: col }, 10000);
+    const response = await service.getBookInfo({ bookInfos: col }, 10000);
 
     expect(response.length).toEqual(0);
   });
 });
 
+describe('getBookInfoByFavorite', () => {
+  it('お気に入りがTrueなデータのみが取得できること', () => {
+
+  });
+
+  it('一致するデータが無い場合に空のデータが返ること', () => {
+
+  });
+});
+
 describe('insertBookInfo', () => {
-  let con: MongoClient;
-  let mongoServer: MongoMemoryServer;
-  let db: Db;
-  let col: Collection<BookInfo>;
-
-  beforeEach(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    con = await MongoClient.connect(mongoServer.getUri(), {});
-    db = con.db(mongoServer.instanceInfo?.dbName);
-    col = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
-  });
-  afterEach(async () => {
-    if (con) { await con.close(); }
-    if (mongoServer) { await mongoServer.stop(); }
-  });
-
   const bookInfo: BookInfo = {
     userId: 1,
     isVisible: true,
@@ -99,22 +94,6 @@ describe('insertBookInfo', () => {
 });
 
 describe('updateBookInfo', () => {
-  let con: MongoClient;
-  let mongoServer: MongoMemoryServer;
-  let db: Db;
-  let col: Collection<BookInfo>;
-
-  beforeEach(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    con = await MongoClient.connect(mongoServer.getUri(), {});
-    db = con.db(mongoServer.instanceInfo?.dbName);
-    col = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
-  });
-  afterEach(async () => {
-    if (con) { await con.close(); }
-    if (mongoServer) { await mongoServer.stop(); }
-  });
-
   const bookInfo: BookInfo = {
     _id: new ObjectId('6539488af433e43f49821121'),
     userId: 1,
@@ -165,22 +144,6 @@ describe('updateBookInfo', () => {
 });
 
 describe('deleteBookInfo', async () => {
-  let con: MongoClient;
-  let mongoServer: MongoMemoryServer;
-  let db: Db;
-  let col: Collection<BookInfo>;
-
-  beforeEach(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    con = await MongoClient.connect(mongoServer.getUri(), {});
-    db = con.db(mongoServer.instanceInfo?.dbName);
-    col = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
-  });
-  afterEach(async () => {
-    if (con) { await con.close(); }
-    if (mongoServer) { await mongoServer.stop(); }
-  });
-
   it('書誌情報を削除できること', async () => {
     //対象のデータを設定
     const preData = await col.insertOne({userId: 1} as BookInfo);
