@@ -1,20 +1,19 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
+	import BookCase from '$lib/icons/BookCase.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
-	import BookCase from '$lib/icons/BookCase.svelte';
-	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import DetailModal from '$lib/components/common/DetailModal.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
+	import DetailModal from '$lib/components/common/DetailModal.svelte';
+	import { pushErrorToast, handleSuccess } from '$lib/utils';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加
     import ResizeObserver from 'resize-observer-polyfill';
 	import { onMount } from 'svelte';
-	import { pushErrorToast, pushSuccessToast } from '$lib/utils';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import type { ObjectId } from 'mongodb';
 
 	export let data: PageData;
 
@@ -64,18 +63,6 @@
 		isDisplayDetail = true;
 	}
 
-	const handleSuccess = (detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}) => {
-		//再レンダリングするために配列を再代入して、変更を通知
-		if (detail.updatedItem) {
-			const index = data.bookInfos.findIndex(item => item._id === detail.updatedItem._id);
-			data.bookInfos = [...data.bookInfos.slice(0, index), detail.updatedItem, ...data.bookInfos.slice(index + 1)];
-		}
-		else if (detail.deletedId) {
-			data.bookInfos = data.bookInfos.filter(item => item._id !== detail.deletedId);
-		}
-		pushSuccessToast(detail.message);
-	}
-
     onMount(() => {
         //SSR時のエラー回避のためDOM生成後に実行
         window.ResizeObserver = ResizeObserver;
@@ -95,7 +82,7 @@
 </div>
 {#if isDisplayDetail}
 	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} 
-		on:success={(event) => handleSuccess(event.detail)} 
+		on:success={(event) => data.bookInfos = handleSuccess(data.bookInfos, event.detail)} 
 		on:failed={(event) => pushErrorToast(event.detail)}
 	/>
 {/if}
