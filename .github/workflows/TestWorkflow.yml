@@ -1,0 +1,25 @@
+name: Test Workflow
+
+on:
+  pull_request: 
+    branches: [ $default-branch ]
+  workflow_call:
+
+jobs: 
+  test:
+    name: Test workflow triggered by ${{ github.event_name }}
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Build
+        uses: ./.github/actions/build
+
+      - name: Test
+        run: npm run test:unit
+      
+      - name: Upload build artifact
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ./build
