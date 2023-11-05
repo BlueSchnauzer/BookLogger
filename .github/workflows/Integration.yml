@@ -1,0 +1,38 @@
+# プルリクエストを作成したタイミングなどでテストコードを実行する。
+# CDに関連する処理はVercelが自動でやってくれるので対応無し
+
+name: Integration
+
+on:
+  pull_request: 
+    branches: 
+      - main
+
+env: 
+  MONGO_URL: ${{secrets.MONGO_URL}}
+  DB_NAME: ${{secrets.TEST_DB_NAME}}
+  BOOKINFOS_COLLECTION_NAME: ${{secrets.BOOKINFOS_COLLECTION_NAME}}
+  PUBLIC_BOOKSAPI_LIST: ${{vars.PUBLIC_BOOKSAPI_LIST}}
+
+jobs: 
+  test:
+    name: Test and build triggered by pull request
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test:unit
