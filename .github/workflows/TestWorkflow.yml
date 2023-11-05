@@ -5,6 +5,12 @@ on:
     branches: 
       - main
 
+env: 
+  MONGO_URL: ${{secrets.MONGO_URL}}
+  DB_NAME: ${{secrets.DB_NAME}}
+  BOOKINFOS_COLLECTION_NAME: ${{secrets.BOOKINFOS_COLLECTION_NAME}}
+  PUBLIC_BOOKSAPI_LIST: ${{vars.PUBLIC_BOOKSAPI_LIST}}
+
 jobs: 
   test:
     name: Test workflow triggered by ${{ github.event_name }}
