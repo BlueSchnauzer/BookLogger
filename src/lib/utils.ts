@@ -1,7 +1,7 @@
 import { toast } from "@zerodevx/svelte-toast";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 import type { ObjectId } from "mongodb";
-import type { PageData } from "../routes/$types";
+import type { toggleFilterItem } from "$lib/customTypes";
 
 export const convertDate = (date: Date | string, useYear = true): string => {
 	if (!date) { return 'データ無し'; }
@@ -38,16 +38,42 @@ export const pushErrorToast = (message: string): void => {
 	});
 }
 
-/**成功用のトーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
-export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}): BookInfo[] => {
+/**編集内容を反映した書誌データを返す(再レンダリングに使用) */
+export const applyChangesToBookInfos = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}): BookInfo[] => {
+	let appliedItems = bookInfos;
+
 	if (detail.updatedItem) {
 		const index = bookInfos.findIndex(item => item._id === detail.updatedItem._id);
-		bookInfos = [...bookInfos.slice(0, index), detail.updatedItem, ...bookInfos.slice(index + 1)];
+		appliedItems = [...bookInfos.slice(0, index), detail.updatedItem, ...bookInfos.slice(index + 1)];
 	}
 	else if (detail.deletedId) {
-		bookInfos = bookInfos.filter(item => item._id !== detail.deletedId);
+		appliedItems = bookInfos.filter(item => item._id !== detail.deletedId);
 	}
+
+	return appliedItems;
+}
+
+/**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
+export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}): BookInfo[] => {
+	const appliedItems = applyChangesToBookInfos(bookInfos, detail);
 	pushSuccessToast(detail.message);
 
-	return bookInfos;
+	return appliedItems;
+}
+
+/**お気に入り状態の書誌データのみを表示状態にして返す(再レンダリングに使用) */
+export const toggleFavorite = (bookInfos: BookInfo[], filter: toggleFilterItem): BookInfo[] => {
+	if (filter.type !== 'favorite') { return bookInfos; }
+	
+	const toggledItems = bookInfos;
+	if (filter.isChecked) {
+		toggledItems.forEach(item => {
+			if (!item.isFavorite) { item.isVisible = false; }
+		});
+	}
+	else {
+		toggledItems.forEach(item => item.isVisible = true);
+	}
+
+	return toggledItems;
 }
