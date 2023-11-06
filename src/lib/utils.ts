@@ -65,7 +65,9 @@ export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, u
 export const toggleFavorite = (bookInfos: BookInfo[], filter: toggleFilterItem): BookInfo[] => {
 	if (filter.type !== 'favorite') { return bookInfos; }
 	
-	const toggledItems = bookInfos;
+	//一応ディープコピー
+	const toggledItems = structuredClone(bookInfos);
+
 	if (filter.isChecked) {
 		toggledItems.forEach(item => {
 			if (!item.isFavorite) { item.isVisible = false; }
