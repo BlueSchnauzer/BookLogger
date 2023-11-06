@@ -7,7 +7,7 @@
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 	import DetailModal from '$lib/components/common/DetailModal.svelte';
-	import { pushErrorToast, handleSuccess } from '$lib/utils';
+	import * as utils from '$lib/utils';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
@@ -31,6 +31,8 @@
 		{ id: 1, text: '最近追加した順' },
 		{ id: 2, text: '最近読み終わった順' }
 	];
+
+	$: { data.bookInfos = utils.toggleFavorite(data.bookInfos, toggleFilterItems[0]); }
 
 	const displayModal = (item: BookInfo) => {
 		currentBookInfo = structuredClone(item);
@@ -56,8 +58,8 @@
 </div>
 {#if isDisplayDetail}
 	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} 
-		on:success={(event) => data.bookInfos = handleSuccess(data.bookInfos, event.detail)} 
-		on:failed={(event) => pushErrorToast(event.detail)}
+		on:success={(event) => data.bookInfos = utils.handleSuccess(data.bookInfos, event.detail)} 
+		on:failed={(event) => utils.pushErrorToast(event.detail)}
 	/>
 {/if}
 <SvelteToast/>
