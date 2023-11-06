@@ -88,7 +88,7 @@ describe('getWishBookInfo', () => {
 });
 
 describe('getReadingBookInfo', () => {  
-  it('isCompletedがFalseでhistoryに記録があり、ユーザIDに一致するデータを取得できること',async () => {
+  it('isCompletedがFalseでhistoryに記録がある、ユーザIDに一致するデータを取得できること',async () => {
     const dummyData = [
       {userId, history: [{date: new Date, currentPage: 50}], isCompleted: false}, 
       {userId, history: [{date: new Date, currentPage: 50}], isCompleted: false}, 

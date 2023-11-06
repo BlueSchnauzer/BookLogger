@@ -25,7 +25,34 @@ export async function getWishBookInfo(collections: collections, userId: number):
     const filter: mongoDB.Filter<BookInfo> = {
       $and: [
         {userId},
-        {history: undefined}
+        {history: undefined} //MongoDBではnullでJSだとundefined
+      ]
+    };
+    bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+
+  return bookInfos;
+}
+
+/**isCompletedがFalseでhistoryに記録のある、ユーザIDに紐づいた書誌データを取得する */
+export async function getReadingBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+  let bookInfos: BookInfo[] = [];
+
+  try {
+    const filter: mongoDB.Filter<BookInfo> = {
+      $and: [
+        {userId},
+        {isCompleted: false},
+        {history: //nullでなく、記録があること
+          { 
+            $ne: undefined,
+            $not: { $size: 0 } 
+          }
+        }
       ]
     };
     bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
