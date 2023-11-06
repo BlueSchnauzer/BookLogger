@@ -54,7 +54,7 @@
 </div>
 <div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 <div id="mainContent" class="p-1 contentHeight">
-	<BookInfoGrid bookInfos={data.bookInfos} on:click={event => displayModal(event.detail)}/>
+	<BookInfoGrid bookInfos={data.bookInfos} emptyMessage={data.emptyMessage} on:click={event => displayModal(event.detail)}/>
 </div>
 {#if isDisplayDetail}
 	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} 

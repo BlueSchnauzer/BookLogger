@@ -6,5 +6,8 @@ export const load = (async ({fetch}) => {
     const response = await fetch('/api/bookinfo/wish');
     let bookInfos: BookInfo[] = await response.json();
 
-    return { bookInfos };
+    return { 
+        bookInfos, 
+        emptyMessage: '読みたい本が登録されていません。<br>右上の追加ボタンから本を検索して登録してください！' 
+    };
 }) satisfies PageServerLoad;
