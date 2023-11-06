@@ -52,7 +52,7 @@
 					on:click={removeAllToggleCheck}
 					class={toggleFilterItems.some((item) => item.isChecked) ? '' : 'hidden'}
 				>
-					<Icon icon="ph:x" width="24" height="24" />
+					<Icon icon="ph:x" width="28" height="28" />
 				</button>
 			</li>
 			{#each toggleFilterItems as item (item.id)}
