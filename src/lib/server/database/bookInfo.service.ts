@@ -3,11 +3,32 @@ import type { BookInfo } from '$lib/server/models/BookInfo';
 import type { collections } from '$lib/server/database/collections';
 
 /**ユーザIDに紐づいた書誌データを取得する */
-export async function getBookInfoByUserId(collections: collections, userId: number): Promise<BookInfo[]>{
+export async function getBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
 
   try {
     bookInfos = await collections.bookInfos?.find({userId}).toArray() as BookInfo[];  
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+
+  return bookInfos;
+}
+
+/**historyが空(読みたい本)で、ユーザIDに紐づいた書誌データを取得する */
+export async function getWishBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+  let bookInfos: BookInfo[] = [];
+
+  try {
+    const filter: mongoDB.Filter<BookInfo> = {
+      $and: [
+        {userId},
+        {history: undefined}
+      ]
+    };
+    bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
   }
   catch (error) {
     console.log(error);

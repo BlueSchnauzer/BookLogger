@@ -1,20 +1,19 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
+	import BookCase from '$lib/icons/BookCase.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
-	import BookCase from '$lib/icons/BookCase.svelte';
-	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import DetailModal from '$lib/components/common/DetailModal.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
+	import DetailModal from '$lib/components/common/DetailModal.svelte';
+	import * as utils from '$lib/utils';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
     //iOS Safariなど用に追加
     import ResizeObserver from 'resize-observer-polyfill';
 	import { onMount } from 'svelte';
-	import { pushErrorToast, pushSuccessToast } from '$lib/utils';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import type { ObjectId } from 'mongodb';
 
 	export let data: PageData;
 
@@ -36,44 +35,34 @@
 		{ id: 2, text: '最近読み終わった順' }
 	];
 
+	$: { data.bookInfos = utils.toggleFavorite(data.bookInfos, toggleFilterItems[0]); }
+
     /**statusタイプのフィルター選択時に、他のstatusフィルターを非表示にする。
 	 * 他のページでは非表示にするラベルが無いことと、onchangeで拾うと二重に検知するためここで管理。
 	*/
-    const changeStatusVisibility = () => {
-        const checkedItem = toggleFilterItems.filter(item => item.type === 'status').find(item => item.isChecked);
+    // const changeStatusVisibility = () => {
+    //     const checkedItem = toggleFilterItems.filter(item => item.type === 'status').find(item => item.isChecked);
 
-        toggleFilterItems.forEach(item => {
-            if (item.type === 'favorite' || item === checkedItem) { return; }
+    //     toggleFilterItems.forEach(item => {
+    //         if (item.type === 'favorite' || item === checkedItem) { return; }
 
-			if (checkedItem) {
-				item.isVisible = false;
-			} else {
-				item.isVisible = true;
-			}
-        });
-        toggleFilterItems = [...toggleFilterItems];
-    }
-	$: {
-		//トグルフィルターの変更を検知する何かしらの処理を行う。
-		changeStatusVisibility();
-		console.log(toggleFilterItems);
-	}
+	// 		if (checkedItem) {
+	// 			item.isVisible = false;
+	// 		} else {
+	// 			item.isVisible = true;
+	// 		}
+    //     });
+    //     toggleFilterItems = [...toggleFilterItems];
+    // }
+	// $: {
+	// 	//トグルフィルターの変更を検知する何かしらの処理を行う。
+	// 	changeStatusVisibility();
+	// 	console.log(toggleFilterItems);
+	// }
 
 	const displayModal = (item: BookInfo) => {
 		currentBookInfo = structuredClone(item);
 		isDisplayDetail = true;
-	}
-
-	const handleSuccess = (detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}) => {
-		//再レンダリングするために配列を再代入して、変更を通知
-		if (detail.updatedItem) {
-			const index = data.bookInfos.findIndex(item => item._id === detail.updatedItem._id);
-			data.bookInfos = [...data.bookInfos.slice(0, index), detail.updatedItem, ...data.bookInfos.slice(index + 1)];
-		}
-		else if (detail.deletedId) {
-			data.bookInfos = data.bookInfos.filter(item => item._id !== detail.deletedId);
-		}
-		pushSuccessToast(detail.message);
 	}
 
     onMount(() => {
@@ -95,8 +84,8 @@
 </div>
 {#if isDisplayDetail}
 	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} 
-		on:success={(event) => handleSuccess(event.detail)} 
-		on:failed={(event) => pushErrorToast(event.detail)}
+		on:success={(event) => data.bookInfos = utils.handleSuccess(data.bookInfos, event.detail)} 
+		on:failed={(event) => utils.pushErrorToast(event.detail)}
 	/>
 {/if}
 <SvelteToast/>
