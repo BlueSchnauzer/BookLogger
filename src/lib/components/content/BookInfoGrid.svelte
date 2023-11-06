@@ -1,10 +1,14 @@
 <script lang="ts">
+	//import { page } from '$app/stores';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import { getThumbnailByIsbn } from '$lib/GoogleBooksAPI/RequestManage';
 	import { createEventDispatcher } from 'svelte';
+	import { convertDate } from '$lib/utils';
 
 	export let bookInfos: BookInfo[];
-
+	//todo ページに応じて表示を切り替える。
+	//const pathName = $page.url.pathname;
+	
 	/**書影を取得する(gapi固有の情報なので保存せず都度取得)*/
 	const setThumbnail = async (bookInfo: BookInfo) => {
 		//画面の再レンダリング時は取得済みなので実行しない。
@@ -71,7 +75,7 @@
 					</div>
 					<div class="self-center flex justify-between max-sm:hidden">
 						<span class="pl-2 text-xs">登録日</span>
-						<span class="pr-2 text-sm">2023年9月20日</span>
+						<span class="pr-2 text-sm">{convertDate(bookInfo.createDate)}</span>
 					</div>
 				</button>
 			</li>
