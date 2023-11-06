@@ -7,7 +7,7 @@
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 	import DetailModal from '$lib/components/common/DetailModal.svelte';
-	import { pushErrorToast, handleSuccess } from '$lib/utils';
+	import * as utils from '$lib/utils';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
     import SimpleBar from 'simplebar';
     import 'simplebar/dist/simplebar.css';
@@ -35,28 +35,30 @@
 		{ id: 2, text: '最近読み終わった順' }
 	];
 
+	$: { data.bookInfos = utils.toggleFavorite(data.bookInfos, toggleFilterItems[0]); }
+
     /**statusタイプのフィルター選択時に、他のstatusフィルターを非表示にする。
 	 * 他のページでは非表示にするラベルが無いことと、onchangeで拾うと二重に検知するためここで管理。
 	*/
-    const changeStatusVisibility = () => {
-        const checkedItem = toggleFilterItems.filter(item => item.type === 'status').find(item => item.isChecked);
+    // const changeStatusVisibility = () => {
+    //     const checkedItem = toggleFilterItems.filter(item => item.type === 'status').find(item => item.isChecked);
 
-        toggleFilterItems.forEach(item => {
-            if (item.type === 'favorite' || item === checkedItem) { return; }
+    //     toggleFilterItems.forEach(item => {
+    //         if (item.type === 'favorite' || item === checkedItem) { return; }
 
-			if (checkedItem) {
-				item.isVisible = false;
-			} else {
-				item.isVisible = true;
-			}
-        });
-        toggleFilterItems = [...toggleFilterItems];
-    }
-	$: {
-		//トグルフィルターの変更を検知する何かしらの処理を行う。
-		changeStatusVisibility();
-		console.log(toggleFilterItems);
-	}
+	// 		if (checkedItem) {
+	// 			item.isVisible = false;
+	// 		} else {
+	// 			item.isVisible = true;
+	// 		}
+    //     });
+    //     toggleFilterItems = [...toggleFilterItems];
+    // }
+	// $: {
+	// 	//トグルフィルターの変更を検知する何かしらの処理を行う。
+	// 	changeStatusVisibility();
+	// 	console.log(toggleFilterItems);
+	// }
 
 	const displayModal = (item: BookInfo) => {
 		currentBookInfo = structuredClone(item);
@@ -82,8 +84,8 @@
 </div>
 {#if isDisplayDetail}
 	<DetailModal bookInfo={currentBookInfo} bind:isDisplay={isDisplayDetail} 
-		on:success={(event) => data.bookInfos = handleSuccess(data.bookInfos, event.detail)} 
-		on:failed={(event) => pushErrorToast(event.detail)}
+		on:success={(event) => data.bookInfos = utils.handleSuccess(data.bookInfos, event.detail)} 
+		on:failed={(event) => utils.pushErrorToast(event.detail)}
 	/>
 {/if}
 <SvelteToast/>
