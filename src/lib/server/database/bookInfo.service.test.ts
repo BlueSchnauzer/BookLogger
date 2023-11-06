@@ -22,20 +22,23 @@ afterEach(async () => {
   if (mongoServer) { await mongoServer.stop(); }
 });
 
+const userId = 1;
+
 describe('getBookInfo', () => {  
   it('ユーザIDに一致するデータを取得できること',async () => {
-    //対象のデータを設定
-    const userId = 1;
-    const preData = await col.insertOne({userId} as BookInfo);
+    const preData = await col.insertMany([{userId}, {userId: 10}] as BookInfo[]);
     expect(await preData.acknowledged).toBeTruthy();
 
     const response = await service.getBookInfo({ bookInfos: col }, userId);
 
-    expect(response.length).toBeGreaterThanOrEqual(1);
+    expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
+    const preData = await col.insertOne({userId: 100} as BookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+
     const response = await service.getBookInfo({ bookInfos: col }, 10000);
 
     expect(response.length).toEqual(0);
@@ -50,12 +53,10 @@ describe('getBookInfo', () => {
 
 describe('getWishBookInfo', () => {  
   it('historyが空で、ユーザIDに一致するデータを取得できること',async () => {
-    //対象のデータを設定
-    const userId = 1;
     const dummyData = [
       {userId, history: [{date: new Date, currentPage: 50}]}, 
-      {userId, history: [{date: new Date, currentPage: 50}]}, 
-      {userId, history: undefined}
+      {userId, history: undefined}, 
+      {userId: 10, history: undefined}
     ];
     const preData = await col.insertMany(dummyData as BookInfo[]);
     expect(await preData.acknowledged).toBeTruthy();
@@ -67,7 +68,14 @@ describe('getWishBookInfo', () => {
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
-    const response = await service.getWishBookInfo({ bookInfos: col }, 10000);
+    const dummyData = [
+      {userId: 10, history: undefined}, 
+      {userId, history: [{date: new Date, currentPage: 50}]}
+    ];
+    const preData = await col.insertMany(dummyData as BookInfo[]);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getWishBookInfo({ bookInfos: col }, userId);
 
     expect(response.length).toEqual(0);
   });
@@ -79,10 +87,47 @@ describe('getWishBookInfo', () => {
   });
 });
 
+describe('getReadingBookInfo', () => {  
+  it('isCompletedがFalseでhistoryに記録があり、ユーザIDに一致するデータを取得できること',async () => {
+    const dummyData = [
+      {userId, history: [{date: new Date, currentPage: 50}], isCompleted: false}, 
+      {userId, history: [{date: new Date, currentPage: 50}], isCompleted: false}, 
+      {userId: 10, history: [{date: new Date, currentPage: 50}], isCompleted: false}, 
+      {userId, history: [{date: new Date, currentPage: 300}], isCompleted: true}
+    ];
+    const preData = await col.insertMany(dummyData as BookInfo[]);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getReadingBookInfo({ bookInfos: col }, userId);
+
+    expect(response.length).toEqual(2);
+    expect(response[0].userId).toEqual(userId);
+    expect(response[1].userId).toEqual(userId);
+  });
+
+  it('一致するデータが無い場合に空のデータが返ること', async () => {
+    const dummyData = [
+      {userId, history: [{date: new Date, currentPage: 300}], isCompleted: true},
+      {userId: 10, history: [{date: new Date, currentPage: 50}], isCompleted: false} 
+    ];
+    const preData = await col.insertMany(dummyData as BookInfo[]);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getReadingBookInfo({ bookInfos: col }, userId);
+
+    expect(response.length).toEqual(0);
+  });
+
+  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
+    const response = await service.getReadingBookInfo({ bookInfos: col }, Number(undefined));
+
+    expect(response.length).toEqual(0);
+  });
+});
+
 // describe('getBookInfoByFavorite', () => {
 //   it('お気に入りがTrueで、ユーザIDに一致するデータのみが取得できること', async () => {
 //     //対象のデータを設定
-//     const userId = 1;
 //     const dummyData = [{userId, isFavorite: true}, {userId, isFavorite: true}, {userId, isFavorite: false}];
 //     const preData = await col.insertMany( dummyData as BookInfo[]);
 //     expect(await preData.acknowledged).toBeTruthy();
