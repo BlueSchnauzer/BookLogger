@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-	import BookShelf from '$lib/icons/BookShelf.svelte';
+	import BookCase from '$lib/icons/BookCase.svelte';
 	import BooksMainContent from './BooksMainContent.svelte';
 
 	export let data: PageData;
-	const headerIcon = BookShelf;
+	const headerIcon = BookCase;
 	const headerText = '登録した本';
 
 	const toggleFilterItems: toggleFilterItem[] = [

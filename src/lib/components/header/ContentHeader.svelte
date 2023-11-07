@@ -18,7 +18,7 @@
 	</div>
 	<button data-testid="btnDisplaySearch" on:click={() => isDisplayModal = !isDisplayModal}
 		class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300
-        {isDisplayAddButton ? '' : 'invisible'}"
+    	{isDisplayAddButton ? '' : 'invisible'}"
 		title='書籍登録'
 	>
 		<Icon icon="ph:plus" width="36" height="36" color={colorStone700} />

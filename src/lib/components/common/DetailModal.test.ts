@@ -124,11 +124,6 @@ describe('DetailModal(Registered)', async () => {
 
   //非表示処理は変わらないのでテストしない
 
-  //+page.svelteで変更しているため、このコンポーネントでは操作しない
-  // it('保存後に、オブジェクトの値が変更されていること', async () => {
-
-  // });
-
   it('削除成功時に、イベントを発信できること', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));

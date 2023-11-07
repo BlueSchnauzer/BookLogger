@@ -48,8 +48,7 @@
 	<div id="labelContainer" class="flex items-center w-[400px] max-lg:w-60 edgeGradiation">
 		<ul class="flex items-center">
 			<li class="flex">
-				<button
-					on:click={removeAllToggleCheck}
+				<button	on:click={removeAllToggleCheck}
 					class={toggleFilterItems.some((item) => item.isChecked) ? '' : 'hidden'}
 				>
 					<Icon icon="ph:x" width="28" height="28" />
@@ -57,50 +56,35 @@
 			</li>
 			{#each toggleFilterItems as item (item.id)}
 				<li>
-					<ToggleSwitch
-						id={item.id}
-						text={item.text}
-						isVisible={item.isVisible}
-						bind:isChecked={item.isChecked}				
-					/>
+					<ToggleSwitch id={item.id} text={item.text} isVisible={item.isVisible} bind:isChecked={item.isChecked} />
 				</li>
 			{/each}
 		</ul>
 	</div>
 	<div class="flex items-center">
 		<div class="pl-2 flex items-center">
-			<input
-				name="filter"
-				type="text"
-				size="15"
-				placeholder="タイトル、著者名..."
-				bind:value={inputValue}
-				class="absolute -ml-40 px-2 py-1 rounded-lg duration-300 transition-all {isDisplayInput
-					? 'animate-scale-in-right'
-					: 'hidden'}"
+			<input name="filter" type="text" size="15"
+			 	placeholder="タイトル、著者名..."	bind:value={inputValue}
+				class="absolute -ml-40 px-2 py-1 rounded-lg duration-300 transition-all 
+				{isDisplayInput	? 'animate-scale-in-right' : 'hidden'}"
 			/>
 			<button data-testid="btnDisplayFilterText"
-				class="ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
-                    duration-150 hover:bg-stone-200"
-				title="検索"
-				on:click={() => (isDisplayInput = !isDisplayInput)}
+				class="ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300 duration-150 hover:bg-stone-200"
+				title="検索" on:click={() => (isDisplayInput = !isDisplayInput)}
 			>
 				<Icon icon="ph:magnifying-glass" width="28" height="28" color={colorStone700} />
 			</button>
 		</div>
 		<div>
 			<button data-testid="btnDisplayFilterOptions"
-				class="relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300
-                    duration-150 hover:bg-stone-200"
-				title="並び替え"
-				on:click={() => (isDisplaySelect = !isDisplaySelect)}
+				class="relative ml-2 h-10 w-10 rounded-full flex justify-center items-center bg-stone-300 border border-stone-300 duration-150 hover:bg-stone-200"
+				title="並び替え" on:click={() => (isDisplaySelect = !isDisplaySelect)}
 			>
 				<Icon icon="ph:list-magnifying-glass" width="28" height="28" color={colorStone700} />
 			</button>
 			<ul data-testid="filterOptions"
-				class="z-10 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg {isDisplaySelect
-					? ''
-					: 'hidden'}"
+				class="z-10 absolute w-40 mt-1 -ml-28 bg-stone-200 border border-stone-300 rounded shadow-lg 
+				{isDisplaySelect ? '' : 'hidden'}"
 			>
 				{#each selectFilterItems as item (item.id)}
 					<li class="flex duration-150 hover:bg-stone-300">
