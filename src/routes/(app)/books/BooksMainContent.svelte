@@ -30,6 +30,7 @@
 	let selectValue: number;
 	let isDisplayDetail = false;
 	let currentBookInfo: BookInfo;
+	let gridContent: HTMLElement;
 
   $: { bookInfos = utils.toggleFavorite(bookInfos, toggleFilterItems[0]); }
 
@@ -41,7 +42,6 @@
   onMount(() => {
     //SSR時のエラー回避のためDOM生成後に実行
     window.ResizeObserver = ResizeObserver;
-    const gridContent = window.document.querySelector<HTMLElement>('#mainContent');
     if (gridContent) { new SimpleBar(gridContent, {autoHide: false}); }
   });
 
@@ -53,7 +53,7 @@
 		<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
-	<div id="gridContent" class="p-1 contentHeight">
+	<div bind:this={gridContent} class="p-1 contentHeight">
 		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
 	{#if isDisplayDetail}
