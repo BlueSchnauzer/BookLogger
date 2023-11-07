@@ -1,4 +1,4 @@
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from '../$types';
 import collections from '$lib/server/database/collections';
 import { json } from '@sveltejs/kit';
 import { getReadingBookInfo } from '$lib/server/database/bookInfo.service';

@@ -7,7 +7,7 @@
 
 	export let bookInfos: BookInfo[];
 	/**表示する本が無い場合のメッセージ*/
-	export let emptyMessage = '本が登録されていません。<br>右上の追加ボタンから本を検索して登録してください！';
+	export let emptyMessage: string;
 	
 	//todo ページに応じて表示を切り替える。
 	//const pathName = $page.url.pathname;

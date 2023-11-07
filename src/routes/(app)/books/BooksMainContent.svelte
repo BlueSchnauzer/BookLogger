@@ -23,6 +23,8 @@
 	export let toggleFilterItems: toggleFilterItem[];
 	/**絞り込み用のドロップダウンフィルター */
   export let selectFilterItems: selectFilterItem[];
+	/**データ0件の時に表示するメッセージ */
+	export let emptyMessage = '本が登録されていません。<br>右上の追加ボタンから本を検索して登録してください！';
 
 	let inputValue: string;
 	let selectValue: number;
@@ -52,7 +54,7 @@
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div id="gridContent" class="p-1 contentHeight">
-		<BookInfoGrid {bookInfos} on:click={(event) => displayModal(event.detail)} />
+		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
 	{#if isDisplayDetail}
 		<DetailModal

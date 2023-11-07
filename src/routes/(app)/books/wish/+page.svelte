@@ -24,4 +24,5 @@
 	bookInfos={data.bookInfos}
 	{toggleFilterItems}
 	{selectFilterItems}
+	emptyMessage={data.emptyMessage}
 />
