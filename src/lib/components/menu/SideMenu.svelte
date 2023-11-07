@@ -37,7 +37,6 @@
 					<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
 				</li>
 			{/if}
-
 			<li
 				class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600 
 				{data.ref === pathName ? 'border-x-lime-600 bg-stone-600 ' : ''}"

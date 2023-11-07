@@ -3,7 +3,7 @@
 
 	export let type: 'button' | 'submit';
 	export let text = '';
-    export let isUseMargin = true;
+  export let isUseMargin = true;
 
 	const dispatch = createEventDispatcher();
 	const handleClick = () => {
@@ -13,8 +13,10 @@
 
 <button
 	{type}
-	class="w-24 h-8 {isUseMargin? 'mr-1' : ''} bg-lime-700 text-gray-50 rounded duration-150 hover:bg-lime-600"
+	class="w-24 h-8 {isUseMargin? 'mr-1' : ''} 
+	bg-lime-700 text-gray-50 rounded duration-150 hover:bg-lime-600"
 	title={text}
-	on:click={handleClick}>
-    {text}
+	on:click={handleClick}
+>
+  {text}
 </button>
