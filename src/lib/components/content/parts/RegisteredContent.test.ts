@@ -1,58 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
-import type { BookInfo } from '$lib/server/models/BookInfo';
-import { ObjectId } from 'mongodb';
+import { fireEvent, render, screen } from '@testing-library/svelte';
 import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 import { convertDate } from '$lib/utils';
 import userEvent from '@testing-library/user-event';
+import { oneBookInfo } from '$lib/vitest-setup';
 
 describe('RegisteredContent', async () => {
   const pastDate = new Date(2023, 5, 1);
-  const bookInfo: BookInfo = {
-    _id: new ObjectId('651451ed67241f439ce8a1af'),
-    userId: 1,
-    isVisible: true,
-    identifier: {
-      isbn_13: '978-4-15-120051-9'
-    },
-    title: 'わたしを離さないで',
-    author: ['イシグロカズオ'],
-    thumbnail: '',
-    createDate: pastDate,
-    updateDate: pastDate,
-    pageCount: 300,
-    history: [{
-        date: new Date(2023, 10, 30),
-        currentPage: 0
-    }],
-    isFavorite: false,
-    isCompleted: false,
-    memorandum: 'メモです1'
-  }
 
 	it('レンダリング', async () => {
-		render(RegisteredContent, {bookInfo});
+		render(RegisteredContent, {bookInfo: oneBookInfo});
 
 		expect(screen.getByText('No Image')).toBeInTheDocument();
-		expect(screen.getByText(bookInfo.title!)).toBeInTheDocument();
-		expect(screen.getByText(bookInfo.author?.join(',')!)).toBeInTheDocument();
-		expect(screen.getByText(`${bookInfo.pageCount!}ページ`)).toBeInTheDocument();
-		expect(screen.getByText(convertDate(bookInfo.history[0].date))).toBeInTheDocument();
-		expect(screen.getByDisplayValue(bookInfo.memorandum)).toBeInTheDocument();
+		expect(screen.getByText(oneBookInfo.title!)).toBeInTheDocument();
+		expect(screen.getByText(oneBookInfo.author?.join(',')!)).toBeInTheDocument();
+		expect(screen.getByText(`${oneBookInfo.pageCount!}ページ`)).toBeInTheDocument();
+		expect(screen.getByText(convertDate(oneBookInfo.history[0].date))).toBeInTheDocument();
+		expect(screen.getByDisplayValue(oneBookInfo.memorandum)).toBeInTheDocument();
 	});
 
   it('お気に入りボタンクリックで値が変更されること', async () => {
-		render(RegisteredContent, {bookInfo});
+		render(RegisteredContent, {bookInfo: oneBookInfo});
 
     const btnFavorite = screen.getByTestId('btnFavorite');
     await fireEvent.click(btnFavorite);
 
-    expect(bookInfo.isFavorite).toEqual(true);
+    expect(oneBookInfo.isFavorite).toEqual(true);
   });
 
   //成功しないため原因調査中
   it.skip('読んだ記録を追加できること', async () => {
-    const { container } = render(RegisteredContent, {bookInfo});
+    const { container } = render(RegisteredContent, {bookInfo: oneBookInfo});
 
     const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
     const countInput = screen.getByTestId('countInput');
@@ -68,7 +46,7 @@ describe('RegisteredContent', async () => {
 });
 
   it('値が不正な場合に、読んだ記録を追加できないこと', async () => {
-    const { container } = render(RegisteredContent, {bookInfo});
+    const { container } = render(RegisteredContent, {bookInfo: oneBookInfo});
 
     const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
     const countInput = screen.getByTestId('countInput');
@@ -82,15 +60,15 @@ describe('RegisteredContent', async () => {
     dateInput!.value = '2023-05-01'
     await userEvent.type(countInput, '-1');
     await fireEvent.click(btnAdd);
-    expect(screen.getByText(`ページ数は1～${bookInfo.pageCount}ページで入力してください`)).toBeInTheDocument();
+    expect(screen.getByText(`ページ数は1～${oneBookInfo.pageCount}ページで入力してください`)).toBeInTheDocument();
   });
 
   it('メモ欄を更新した際に、書誌情報の値が同期していること', async () => {
-    render(RegisteredContent, {bookInfo});
+    render(RegisteredContent, {bookInfo: oneBookInfo});
 
     const memoInput = screen.getByTestId<HTMLInputElement>('memoInput');
     await userEvent.type(memoInput, 'test');
 
-    expect(memoInput.value).toEqual(bookInfo.memorandum);
+    expect(memoInput.value).toEqual(oneBookInfo.memorandum);
   });
 });

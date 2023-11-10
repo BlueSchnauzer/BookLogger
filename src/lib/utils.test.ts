@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import * as utils from '$lib/utils';
 import type { BookInfo } from "$lib/server/models/BookInfo";
-import { ObjectId } from "mongodb";
+import type { ObjectId } from "mongodb";
+import * as testData from "./vitest-setup";
 
 describe('convertDate', () => {
   const testDate = new Date(2023, 5, 15);
@@ -83,85 +84,11 @@ describe('validateReadingCount', () => {
 //toastはE2Eでテストする
 
 describe('applyChangesToBookInfos', () => {
-  const firstId = new ObjectId('a123456789b123456789c123');
-  const secondId = new ObjectId('A123456789B123456789C123');
-  const thirdId = new ObjectId('b123456789c123456789d123');
-
-  let bookInfos : BookInfo[];
-
-  beforeEach(() => {
-    bookInfos = [
-      {
-          _id: firstId,
-          userId: 1,
-          isVisible: true,
-          identifier: {
-            isbn_13: '978-4-15-031316-6'
-          },
-          title: 'エピローグ',
-          author: ['円城塔'],
-          thumbnail: '',
-          createDate: new Date,
-          updateDate: new Date,
-          pageCount: -1,
-          history: [{
-              date: new Date,
-              currentPage: 0
-          }],
-          isFavorite: false,
-          isCompleted: false,
-          memorandum: ''
-      },
-      {
-          _id: secondId,
-          userId: 1,
-          isVisible: true,
-          identifier: {
-            isbn_13: '978-4-16-791019-8'
-          },
-          title: 'プロローグ',
-          author: ['円城塔'],
-          thumbnail: '',
-          createDate: new Date,
-          updateDate: new Date,
-          pageCount: -1,
-          history: [{
-              date: new Date,
-              currentPage: 0
-          }],
-          isFavorite: false,
-          isCompleted: false,
-          memorandum: ''
-      },
-      {
-        _id: thirdId,
-        userId: 1,
-        isVisible: true,
-        identifier: {
-          isbn_13: ''
-        },
-        title: '3冊目',
-        author: ['テスト'],
-        thumbnail: '',
-        createDate: new Date,
-        updateDate: new Date,
-        pageCount: -1,
-        history: [{
-            date: new Date,
-            currentPage: 0
-        }],
-        isFavorite: false,
-        isCompleted: false,
-        memorandum: ''
-      },
-    ]
-  });
-
   it('更新データがある際に、対象の書誌データが更新されること', () => {
-    const copy = structuredClone(bookInfos[1]);
+    const copy = structuredClone(testData.threeBookInfos[1]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
-    copy._id = secondId;
+    copy._id = testData.secondId;
     copy.isFavorite = true;
     copy.history.push({
       date: new Date,
@@ -173,7 +100,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(bookInfos, updateDetail);
+    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[1].isFavorite).toBeTruthy();
@@ -187,10 +114,10 @@ describe('applyChangesToBookInfos', () => {
   });
 
   it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
-    const copy = structuredClone(bookInfos[0]);
+    const copy = structuredClone(testData.threeBookInfos[0]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
-    copy._id = firstId;
+    copy._id = testData.firstId;
     copy.isFavorite = true;
     copy.history.push({
       date: new Date,
@@ -202,7 +129,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(bookInfos, updateDetail);
+    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[0].isFavorite).toBeTruthy();
@@ -216,10 +143,10 @@ describe('applyChangesToBookInfos', () => {
   });
 
   it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
-    const copy = structuredClone(bookInfos[2]);
+    const copy = structuredClone(testData.threeBookInfos[2]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
-    copy._id = thirdId;
+    copy._id = testData.thirdId;
     copy.isFavorite = true;
     copy.history.push({
       date: new Date,
@@ -231,7 +158,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(bookInfos, updateDetail);
+    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[2].isFavorite).toBeTruthy();
@@ -245,11 +172,11 @@ describe('applyChangesToBookInfos', () => {
   });
 
   it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
-    const oneItems = [bookInfos[0]];
+    const oneItems = [testData.threeBookInfos[0]];
     const copy = structuredClone(oneItems[0]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
-    copy._id = firstId;
+    copy._id = testData.firstId;
     copy.isFavorite = true;
     copy.history.push({
       date: new Date,
@@ -272,9 +199,9 @@ describe('applyChangesToBookInfos', () => {
     const invalidDetail = {
       message: '', 
       updatedItem: undefined as unknown as BookInfo, 
-      deletedId: firstId
+      deletedId: testData.firstId
     };
-    const result = utils.applyChangesToBookInfos(bookInfos, invalidDetail);
+    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
 
     expect(result.length).toEqual(2);
   });
@@ -285,10 +212,10 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(bookInfos, invalidDetail);
+    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
 
     //同じ値か
-    expect(result).toEqual(bookInfos);
+    expect(result).toEqual(testData.threeBookInfos);
   });
 
 });
@@ -296,83 +223,10 @@ describe('applyChangesToBookInfos', () => {
 //handleSuccessはE2Eでテストする
 
 describe('toggleFavorite', () => {
-  const firstId = new ObjectId('a123456789b123456789c123');
-  const secondId = new ObjectId('A123456789B123456789C123');
-  const thirdId = new ObjectId('b123456789c123456789d123');
-
-  let bookInfos : BookInfo[];
-
-  beforeEach(() => {
-    bookInfos = [
-      {
-          _id: firstId,
-          userId: 1,
-          isVisible: true,
-          identifier: {
-            isbn_13: '978-4-15-031316-6'
-          },
-          title: 'エピローグ',
-          author: ['円城塔'],
-          thumbnail: '',
-          createDate: new Date,
-          updateDate: new Date,
-          pageCount: -1,
-          history: [{
-              date: new Date,
-              currentPage: 0
-          }],
-          isFavorite: true,
-          isCompleted: false,
-          memorandum: ''
-      },
-      {
-          _id: secondId,
-          userId: 1,
-          isVisible: true,
-          identifier: {
-            isbn_13: '978-4-16-791019-8'
-          },
-          title: 'プロローグ',
-          author: ['円城塔'],
-          thumbnail: '',
-          createDate: new Date,
-          updateDate: new Date,
-          pageCount: -1,
-          history: [{
-              date: new Date,
-              currentPage: 0
-          }],
-          isFavorite: true,
-          isCompleted: false,
-          memorandum: ''
-      },
-      {
-        _id: thirdId,
-        userId: 1,
-        isVisible: true,
-        identifier: {
-          isbn_13: ''
-        },
-        title: '3冊目',
-        author: ['テスト'],
-        thumbnail: '',
-        createDate: new Date,
-        updateDate: new Date,
-        pageCount: -1,
-        history: [{
-            date: new Date,
-            currentPage: 0
-        }],
-        isFavorite: false,
-        isCompleted: false,
-        memorandum: ''
-      },
-    ]
-  });
-
   it('フィルターのisCheckedがTrueの際に、お気に入りの書誌データのみisVisibleがTrueに変更されるか', () => {
-    bookInfos.forEach(item => item.isVisible = true);
-    const toggledItems = utils.toggleFavorite(bookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
+    testData.threeBookInfos.forEach(item => item.isVisible = true);
+    testData.threeBookInfos[0].isFavorite = true;
+    const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
     expect(toggledItems[1].isVisible).toBeTruthy();
@@ -380,8 +234,8 @@ describe('toggleFavorite', () => {
   });
   
   it('フィルターのisCheckedがFalseの際に、全データのisVisibleがTrueに変更されるか', () => {
-    bookInfos.forEach(item => item.isVisible = false);
-    const toggledItems = utils.toggleFavorite(bookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true});
+    testData.threeBookInfos.forEach(item => item.isVisible = false);
+    const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
     expect(toggledItems[1].isVisible).toBeTruthy();
@@ -389,8 +243,8 @@ describe('toggleFavorite', () => {
   });
 
   it('フィルターのタイプがfavorite以外の場合、データが変更されないこと', () => {
-    const toggledItems = utils.toggleFavorite(bookInfos, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
+    const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
 
-    expect(toggledItems).toEqual(bookInfos);
+    expect(toggledItems).toEqual(testData.threeBookInfos);
   });
 });

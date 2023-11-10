@@ -3,9 +3,7 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/svelte';
 import type { books_v1 } from 'googleapis';
 import { afterEach, describe, expect, it, vi, vitest } from 'vitest';
 import BookInfoDetail from '$lib/components/common/DetailModal.svelte';
-import type { BookInfo } from '$lib/server/models/BookInfo';
-import { ObjectId } from 'mongodb';
-import userEvent from '@testing-library/user-event';
+import { oneBookInfo } from '$lib/vitest-setup';
 
 describe('DetailModal(Seaching)', async () => {
 	const isbn = '978-4-15-120051-9';
@@ -90,32 +88,10 @@ describe('DetailModal(Registered)', async () => {
     vi.restoreAllMocks();
   });
  
-  const bookInfo: BookInfo = {
-    _id: new ObjectId('651451ed67241f439ce8a1af'),
-    userId: 1,
-    isVisible: true,
-    identifier: {
-      isbn_13: '978-4-15-120051-9'
-    },
-    title: 'わたしを離さないで',
-    author: ['イシグロカズオ'],
-    thumbnail: '',
-    createDate: new Date,
-    updateDate: new Date,
-    pageCount: 300,
-    history: [{
-        date: new Date,
-        currentPage: 0
-    }],
-    isFavorite: false,
-    isCompleted: false,
-    memorandum: 'メモです1'
-  }
-
   it('レンダリング', () => {
-    render(BookInfoDetail, { isDisplay: true, bookInfo });
+    render(BookInfoDetail, { isDisplay: true, bookInfo: oneBookInfo });
 
-    expect(screen.getByText(bookInfo.title)).toBeInTheDocument();
+    expect(screen.getByText(oneBookInfo.title)).toBeInTheDocument();
 		expect(screen.getByText('No Image')).toBeInTheDocument();
     expect(screen.getByText('削除')).toBeInTheDocument();
     expect(screen.getByText('編集')).toBeInTheDocument();
@@ -128,7 +104,7 @@ describe('DetailModal(Registered)', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
-    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo });
+    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo: oneBookInfo });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -148,7 +124,7 @@ describe('DetailModal(Registered)', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
 
-    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo });
+    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo: oneBookInfo });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
@@ -168,7 +144,7 @@ describe('DetailModal(Registered)', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
-    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo });
+    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo: oneBookInfo });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -184,7 +160,7 @@ describe('DetailModal(Registered)', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
 
-    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo });
+    const { component } = render(BookInfoDetail, { isDisplay: true, bookInfo: oneBookInfo });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 

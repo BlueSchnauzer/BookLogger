@@ -11,8 +11,8 @@ export class BookInfo {
 	public createDate: Date;
 	public updateDate: Date;
 	public pageCount: number;
-	public isCompleted: boolean;
 	public isFavorite: boolean;
+	public status: 'wish' | 'reading' | 'complete';
 	public memorandum: string;
 	public isVisible: boolean;
 	public _id?: ObjectId;
@@ -39,7 +39,7 @@ export class BookInfo {
 		this.createDate = currentDate;
 		this.updateDate = currentDate;
 		this.pageCount = volume.volumeInfo?.pageCount ?? -1;
-		this.isCompleted = false;
+		this.status = 'wish';
 		this.isFavorite = false;
 		this.memorandum = '';
 		this.isVisible = true;
