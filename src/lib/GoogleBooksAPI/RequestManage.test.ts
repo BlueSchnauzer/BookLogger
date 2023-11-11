@@ -1,7 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { requestBookInfo, getThumbnailByIsbn, getBookInfosByQueries, requestBookInfoWithPartialResource } from "./RequestManage";
-import type { BookInfo } from "$lib/server/models/BookInfo";
-import { ObjectId } from "mongodb";
 import { oneBookInfo } from "$lib/vitest-setup";
 
 describe('requestBookInfo', () => {

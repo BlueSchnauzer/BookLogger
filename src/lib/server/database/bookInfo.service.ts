@@ -17,7 +17,7 @@ export async function getBookInfo(collections: collections, userId: number): Pro
   return bookInfos;
 }
 
-/**historyが空(読みたい本)で、ユーザIDに紐づいた書誌データを取得する */
+/**statusがwishで、ユーザIDに紐づいた書誌データを取得する */
 export async function getWishBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
 
@@ -25,7 +25,7 @@ export async function getWishBookInfo(collections: collections, userId: number):
     const filter: mongoDB.Filter<BookInfo> = {
       $and: [
         {userId},
-        {history: undefined} //MongoDBではnullでJSだとundefined
+        {status: 'wish'}
       ]
     };
     bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
@@ -38,7 +38,7 @@ export async function getWishBookInfo(collections: collections, userId: number):
   return bookInfos;
 }
 
-/**isCompletedがFalseでhistoryに記録のある、ユーザIDに紐づいた書誌データを取得する */
+/**statusがreadingで、ユーザIDに紐づいた書誌データを取得する */
 export async function getReadingBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
 
@@ -46,13 +46,7 @@ export async function getReadingBookInfo(collections: collections, userId: numbe
     const filter: mongoDB.Filter<BookInfo> = {
       $and: [
         {userId},
-        {isCompleted: false},
-        {history: //nullでなく、記録があること
-          { 
-            $ne: undefined,
-            $not: { $size: 0 } 
-          }
-        }
+        {status: 'reading'}
       ]
     };
     bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
@@ -94,6 +88,7 @@ export async function updateBookInfo(collections: collections, bookInfo: BookInf
       {
         $set: {
           isFavorite: bookInfo.isFavorite,
+          status: bookInfo.status,
           history: bookInfo.history,
           memorandum: bookInfo.memorandum
         },

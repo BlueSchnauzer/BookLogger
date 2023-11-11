@@ -3,9 +3,9 @@ import 'vitest-dom/extend-expect'
 import type { BookInfo } from '$lib/server/models/BookInfo'
 import { ObjectId } from 'mongodb'
 
-export const firstId = new ObjectId('a123456789b123456789c123');
-export const secondId = new ObjectId('d123456789e123456789f123');
-export const thirdId = new ObjectId('A123456789B123456789C123');
+export const firstId = new ObjectId('651451ed67241f439ce8a1af');
+export const secondId = new ObjectId('651451ed67241f439ce8a1b0');
+export const thirdId = new ObjectId('651451ed67241f439ce8a1b1');
 
 /**テスト用書誌データ(1件) */
 export const oneBookInfo: BookInfo = {

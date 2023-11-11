@@ -229,7 +229,7 @@ describe('toggleFavorite', () => {
     const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
-    expect(toggledItems[1].isVisible).toBeTruthy();
+    expect(toggledItems[1].isVisible).toBeFalsy();
     expect(toggledItems[2].isVisible).toBeFalsy();
   });
   

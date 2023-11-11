@@ -9,13 +9,14 @@ describe('RegisteredContent', async () => {
   const pastDate = new Date(2023, 5, 1);
 
 	it('レンダリング', async () => {
-		render(RegisteredContent, {bookInfo: oneBookInfo});
+    oneBookInfo.history[0].date = pastDate
+    render(RegisteredContent, {bookInfo: oneBookInfo});
 
 		expect(screen.getByText('No Image')).toBeInTheDocument();
 		expect(screen.getByText(oneBookInfo.title!)).toBeInTheDocument();
 		expect(screen.getByText(oneBookInfo.author?.join(',')!)).toBeInTheDocument();
 		expect(screen.getByText(`${oneBookInfo.pageCount!}ページ`)).toBeInTheDocument();
-		expect(screen.getByText(convertDate(oneBookInfo.history[0].date))).toBeInTheDocument();
+		expect(screen.getByText(convertDate(pastDate))).toBeInTheDocument();
 		expect(screen.getByDisplayValue(oneBookInfo.memorandum)).toBeInTheDocument();
 	});
 
