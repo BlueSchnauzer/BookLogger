@@ -144,6 +144,23 @@ describe('getReadingBookInfo', () => {
 //   });
 // });
 
+describe('updateStatus', () => {
+  it('statusをwishに変更できること。', () => {
+  });
+
+  it('statusをreadingに変更できること。', () => {
+
+  });
+
+  it('statusをcompleteに変更できること。', () => {
+
+  });
+
+  it('不正な値を設定した際に、statusが変更できないこと。', () => {
+
+  });
+});
+
 describe('insertBookInfo', () => {
   it('書誌情報を保存できること', async () => {
     const result = await service.insertBookInfo({ bookInfos: col }, oneBookInfo);
