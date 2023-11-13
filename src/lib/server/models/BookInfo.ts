@@ -1,3 +1,4 @@
+import type { status } from '$lib/customTypes';
 import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
 
@@ -12,7 +13,7 @@ export class BookInfo {
 	public updateDate: Date;
 	public pageCount: number;
 	public isFavorite: boolean;
-	public status: 'wish' | 'reading' | 'complete';
+	public status: status;
 	public memorandum: string;
 	public isVisible: boolean;
 	public _id?: ObjectId;
