@@ -44,28 +44,22 @@
 </script>
 
 <div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll">
-	{#if bookInfo.title}
-		<span class="pt-2 text-lg font-bold text-lime-700">{bookInfo.title}</span>
-	{:else}
-		<span class="pt-2 text-lg font-bold text-gray-400">データ無し</span>
-	{/if}
 	<div class="flex-1">
 		<div class="p-2">
-			<CategoryLabel 
-				categoryText={'著者名'}	condition={bookInfo.author} 
-				labelFunction={() => bookInfo.author.join(',')} isRegistered={true}
+			<CategoryLabel categoryText="タイトル" condition={bookInfo.title} 
+				labelFunction={() => bookInfo.title}
 			/>
-			<CategoryLabel 
-				categoryText={'ページ数'} condition={bookInfo.pageCount} 
-				labelFunction={() => bookInfo.pageCount.toString() + 'ページ'} isRegistered={true}
+			<CategoryLabel categoryText="著者" condition={bookInfo.author}
+        labelFunction={() => bookInfo.author?.join(', ')}
 			/>
-			<CategoryLabel 
-				categoryText={'登録日'} condition={bookInfo.author} 
-				labelFunction={() => convertDate(bookInfo.createDate)} isRegistered={true}
+			<CategoryLabel categoryText="登録日" condition={bookInfo.pageCount}
+				labelFunction={() => convertDate(bookInfo.createDate)}
 			/>
-			<CategoryLabel 
-				categoryText={'最終更新日'} condition={bookInfo.author}
-				labelFunction={() => convertDate(bookInfo.updateDate)} isRegistered={true}
+			<CategoryLabel categoryText="最終更新日" condition={bookInfo.pageCount}
+				labelFunction={() => convertDate(bookInfo.updateDate)}
+			/>
+			<CategoryLabel categoryText="ページ数" condition={bookInfo.pageCount}
+				labelFunction={() => bookInfo.pageCount.toString() + 'ページ'}
 			/>
 			<div
 				class="mb-2 flex justify-between max-sm:flex-col max-sm:justify-start max-sm:items-stretch"
