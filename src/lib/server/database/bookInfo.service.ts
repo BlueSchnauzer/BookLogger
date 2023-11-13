@@ -1,10 +1,12 @@
 import * as mongoDB from 'mongodb';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import type { collections } from '$lib/server/database/collections';
+import type { status } from '$lib/customTypes';
 
 /**ユーザIDに紐づいた書誌データを取得する */
 export async function getBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
+  if (typeof userId !== 'number') { return bookInfos; }
 
   try {
     bookInfos = await collections.bookInfos?.find({userId}).toArray() as BookInfo[];  
@@ -17,36 +19,16 @@ export async function getBookInfo(collections: collections, userId: number): Pro
   return bookInfos;
 }
 
-/**statusがwishで、ユーザIDに紐づいた書誌データを取得する */
-export async function getWishBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+/**statusが引数と一致し、ユーザIDに紐づいた書誌データを取得する */
+export async function getBookInfoByStatus(collections: collections, userId: number, status: status): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
+  if (typeof userId !== 'number') { return bookInfos; }
 
   try {
     const filter: mongoDB.Filter<BookInfo> = {
       $and: [
         {userId},
-        {status: 'wish'}
-      ]
-    };
-    bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
-  }
-  catch (error) {
-    console.log(error);
-    console.log('書誌データの取得に失敗しました。');
-  }
-
-  return bookInfos;
-}
-
-/**statusがreadingで、ユーザIDに紐づいた書誌データを取得する */
-export async function getReadingBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
-  let bookInfos: BookInfo[] = [];
-
-  try {
-    const filter: mongoDB.Filter<BookInfo> = {
-      $and: [
-        {userId},
-        {status: 'reading'}
+        {status}
       ]
     };
     bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  

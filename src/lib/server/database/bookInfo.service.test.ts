@@ -54,73 +54,49 @@ describe('getBookInfo', () => {
   });
 });
 
-describe('getWishBookInfo', () => {  
+describe('getBookInfoByStatus', () => {  
+  beforeEach(async () => {
+    threeBookInfos[0].status = 'wish';
+    threeBookInfos[1].status = 'reading';
+    threeBookInfos[2].status = 'complete';
+    await col.insertMany(threeBookInfos);
+  });
+  
   it('statusがwishで、ユーザIDに一致するデータを取得できること',async () => {
-    threeBookInfos[0].status = 'wish';
-    threeBookInfos[1].status = 'reading';
-    threeBookInfos[2].status = 'complete';
-
-    const preData = await col.insertMany(threeBookInfos);
-    expect(await preData.acknowledged).toBeTruthy();
-
-    const response = await service.getWishBookInfo({ bookInfos: col }, userId);
+    const response = await service.getBookInfoByStatus({ bookInfos: col }, userId, 'wish');
 
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
   });
 
-  it('一致するデータが無い場合に空のデータが返ること', async () => {
-    threeBookInfos[0].status = 'reading';
-    threeBookInfos[1].status = 'complete';
-    threeBookInfos[2].status = 'wish';
-    threeBookInfos[2].userId = 10000;
-    
-    const preData = await col.insertMany(threeBookInfos);
-    expect(await preData.acknowledged).toBeTruthy();
-
-    const response = await service.getWishBookInfo({ bookInfos: col }, userId);
-
-    expect(response.length).toEqual(0);
-  });
-
-  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getWishBookInfo({ bookInfos: col }, Number(undefined));
-
-    expect(response.length).toEqual(0);
-  });
-});
-
-describe('getReadingBookInfo', () => {  
   it('statusがreadingで、ユーザIDに一致するデータを取得できること',async () => {
-    threeBookInfos[0].status = 'wish';
-    threeBookInfos[1].status = 'reading';
-    threeBookInfos[2].status = 'complete';
+    const response = await service.getBookInfoByStatus({ bookInfos: col }, userId, 'reading');
 
-    const preData = await col.insertMany(threeBookInfos);
-    expect(await preData.acknowledged).toBeTruthy();
+    expect(response.length).toEqual(1);
+    expect(response[0].userId).toEqual(userId);
+  });
 
-    const response = await service.getReadingBookInfo({ bookInfos: col }, userId);
+  it('statusがcompleteで、ユーザIDに一致するデータを取得できること',async () => {
+    const response = await service.getBookInfoByStatus({ bookInfos: col }, userId, 'complete');
 
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
-    threeBookInfos[0].status = 'wish';
-    threeBookInfos[1].status = 'reading';
-    threeBookInfos[1].userId = 10000;
-    threeBookInfos[2].status = 'complete';
-
-    const preData = await col.insertMany(threeBookInfos);
-    expect(await preData.acknowledged).toBeTruthy();
-
-    const response = await service.getReadingBookInfo({ bookInfos: col }, userId);
+    const response = await service.getBookInfoByStatus({ bookInfos: col }, 10000, 'wish');
 
     expect(response.length).toEqual(0);
   });
 
   it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getReadingBookInfo({ bookInfos: col }, Number(undefined));
+    const response = await service.getBookInfoByStatus({ bookInfos: col }, Number(undefined), 'wish');
+
+    expect(response.length).toEqual(0);
+  });
+
+  it('statusが不正な場合に空のデータが返ること', async () => {
+    const response = await service.getBookInfoByStatus({ bookInfos: col }, userId, 'test' as any);
 
     expect(response.length).toEqual(0);
   });
@@ -143,23 +119,6 @@ describe('getReadingBookInfo', () => {
 
 //   });
 // });
-
-describe('updateStatus', () => {
-  it('statusをwishに変更できること。', () => {
-  });
-
-  it('statusをreadingに変更できること。', () => {
-
-  });
-
-  it('statusをcompleteに変更できること。', () => {
-
-  });
-
-  it('不正な値を設定した際に、statusが変更できないこと。', () => {
-
-  });
-});
 
 describe('insertBookInfo', () => {
   it('書誌情報を保存できること', async () => {
