@@ -16,6 +16,7 @@ describe('RegisteredContent', async () => {
 		expect(screen.getByText(oneBookInfo.title!)).toBeInTheDocument();
 		expect(screen.getByText(oneBookInfo.author?.join(',')!)).toBeInTheDocument();
 		expect(screen.getByText(`${oneBookInfo.pageCount!}ページ`)).toBeInTheDocument();
+    expect(screen.getByText('読みたい本')).toBeInTheDocument();
 		expect(screen.getByText(convertDate(pastDate))).toBeInTheDocument();
 		expect(screen.getByDisplayValue(oneBookInfo.memorandum)).toBeInTheDocument();
 	});
@@ -27,6 +28,19 @@ describe('RegisteredContent', async () => {
     await fireEvent.click(btnFavorite);
 
     expect(oneBookInfo.isFavorite).toEqual(true);
+  });
+
+  it('ステータスを更新した際に、書誌情報の値が同期していること', async () => {
+		const bookInfo = structuredClone(oneBookInfo);
+    render(RegisteredContent, {bookInfo: bookInfo});
+
+    const select = screen.getByRole('combobox');
+    expect(select).toHaveValue('wish');
+
+    const reading = 'reading';
+    await fireEvent.change(select, { target: { value: reading }});
+    expect(select).toHaveValue(reading);
+    expect(bookInfo.status).toEqual(reading);
   });
 
   //成功しないため原因調査中

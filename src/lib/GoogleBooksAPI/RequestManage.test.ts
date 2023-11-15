@@ -44,10 +44,10 @@ describe('requestBookInfo', () => {
   it('検索結果が複数ある際に、ページングができるか', async () => {
     const pageOne = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`], 10, 0);
     expect(pageOne.totalItems).toBeGreaterThanOrEqual(11);
-    const firstItem = pageOne.items![0].volumeInfo?.title;
+    const firstItem = pageOne.items![0].volumeInfo;
 
     const pageTwo = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`], 10, 10);
-    const eleventhItem = pageTwo.items![0].volumeInfo?.title;
+    const eleventhItem = pageTwo.items![0].volumeInfo;
 
     expect(firstItem).not.toEqual(eleventhItem);
   });
