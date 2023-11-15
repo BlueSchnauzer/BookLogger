@@ -14,9 +14,9 @@
 	let isValidDate = true;
 	let isValidCount = true;
 	const statusList = [
-		{ id: 1, status: 'wish', label: '読みたい本' },
-		{ id: 2, status: 'reading', label: '読んでいる本' },
-		{ id: 3, status: 'complete', label: '読み終わった本' }
+		{ status: 'wish', label: '読みたい本' },
+		{ status: 'reading', label: '読んでいる本' },
+		{ status: 'complete', label: '読み終わった本' }
 	]
 
 	/**inputタグの日付をDateに変換*/
@@ -71,8 +71,8 @@
 	</div>
 	<span class="py-2 text-lg font-bold">ステータス</span>
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-		<select bind:value={bookInfo.status} class="w-full p-2 rounded-lg border-[1px] border-stone-400" name="status" id="statusSelect">
-			{#each statusList as item (item.id)}
+		<select bind:value={bookInfo.status} class="w-full p-2 rounded-lg border-[1px] border-stone-400" name="status" id="statusSelect" data-testid="statusSelect">
+			{#each statusList as item (item.status)}
 				<option value={item.status}>{item.label}</option>
 			{/each}
 		</select>
