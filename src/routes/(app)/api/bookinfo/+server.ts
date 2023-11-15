@@ -23,7 +23,6 @@ export const POST: RequestHandler = async ({ request }) => {
     const item = await request.json() as books_v1.Schema$Volume;
     const bookInfoToInsert = new BookInfo(item, userId); //ユーザIDを取る
 
-    //一旦そのまま返す
     return await insertBookInfo(collections, bookInfoToInsert);
 };
 
