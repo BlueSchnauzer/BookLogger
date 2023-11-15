@@ -12,7 +12,7 @@ export const GET: RequestHandler = async () => {
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
     let bookInfos = await getBookInfo(collections, userId);
 
-    return json(bookInfos);    
+    return json(bookInfos, {status: 200});    
 };
 
 /**DBに書誌データを保存する */
