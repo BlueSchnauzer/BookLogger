@@ -10,6 +10,6 @@
 	{#if condition}
 		<span class="mb-2 border-b-stone-400 border-b-[1px]">{labelFunction()}</span>
 	{:else}
-		<span class="mb-2 text-gray-500 border-b-lime-700 border-b-[1px]">データ無し</span>
+		<span class="mb-2 text-gray-500 border-b-stone-400 border-b-[1px]">データ無し</span>
 	{/if}
 </div>
