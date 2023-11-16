@@ -4,6 +4,10 @@ import type { BookInfo } from '$lib/server/models/BookInfo';
 export const load = (async ({ fetch }) => {
   //読みたい本のみを取得
   const response = await fetch('/api/bookinfo/wish');
+  if (!response.ok) {
+    //todo エラーページにリダイレクト
+  }
+  
   let bookInfos: BookInfo[] = await response.json();
 
   return {

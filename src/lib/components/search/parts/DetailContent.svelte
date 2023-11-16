@@ -25,13 +25,13 @@
 		{/if}
 	</div>
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
-	<div class="flex flex-col p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll" >
+	<div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll" >
 		{#if item.volumeInfo?.title}
 			<span class="pt-2 text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
 		{:else}
 			<span class="pt-2 text-lg font-bold text-gray-400">データ無し</span>
 		{/if}
-		<div class="p-2">
+		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
 			<CategoryLabel categoryText="著者" condition={item.volumeInfo?.authors}
         labelFunction={() => item.volumeInfo?.authors?.join(', ')}
 			/>
@@ -46,7 +46,7 @@
 			/>
 		</div>
 		<span class="text-lg font-bold">紹介</span>
-		<div class="py-2 px-4">
+		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
 			{#if item.volumeInfo?.description}
 				<p>{item.volumeInfo?.description}</p>
 			{:else}

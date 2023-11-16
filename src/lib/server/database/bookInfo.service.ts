@@ -1,10 +1,12 @@
 import * as mongoDB from 'mongodb';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import type { collections } from '$lib/server/database/collections';
+import type { status } from '$lib/customTypes';
 
 /**ユーザIDに紐づいた書誌データを取得する */
 export async function getBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
+  if (typeof userId !== 'number') { return bookInfos; }
 
   try {
     bookInfos = await collections.bookInfos?.find({userId}).toArray() as BookInfo[];  
@@ -17,15 +19,16 @@ export async function getBookInfo(collections: collections, userId: number): Pro
   return bookInfos;
 }
 
-/**historyが空(読みたい本)で、ユーザIDに紐づいた書誌データを取得する */
-export async function getWishBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+/**statusが引数と一致し、ユーザIDに紐づいた書誌データを取得する */
+export async function getBookInfoByStatus(collections: collections, userId: number, status: status): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
+  if (typeof userId !== 'number') { return bookInfos; }
 
   try {
     const filter: mongoDB.Filter<BookInfo> = {
       $and: [
         {userId},
-        {history: undefined}
+        {status}
       ]
     };
     bookInfos = await collections.bookInfos?.find(filter).toArray() as BookInfo[];  
@@ -67,6 +70,7 @@ export async function updateBookInfo(collections: collections, bookInfo: BookInf
       {
         $set: {
           isFavorite: bookInfo.isFavorite,
+          status: bookInfo.status,
           history: bookInfo.history,
           memorandum: bookInfo.memorandum
         },

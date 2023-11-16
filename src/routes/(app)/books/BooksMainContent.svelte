@@ -4,7 +4,7 @@
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
-	import DetailModal from '$lib/components/common/DetailModal.svelte';
+	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
 	import * as utils from '$lib/utils';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
   import SimpleBar from 'simplebar';
@@ -23,11 +23,14 @@
 	export let toggleFilterItems: toggleFilterItem[];
 	/**絞り込み用のドロップダウンフィルター */
   export let selectFilterItems: selectFilterItem[];
+	/**データ0件の時に表示するメッセージ */
+	export let emptyMessage = '本が登録されていません。<br>右上の追加ボタンから本を検索して登録してください！';
 
 	let inputValue: string;
 	let selectValue: number;
 	let isDisplayDetail = false;
 	let currentBookInfo: BookInfo;
+	let gridContent: HTMLElement;
 
   $: { bookInfos = utils.toggleFavorite(bookInfos, toggleFilterItems[0]); }
 
@@ -39,7 +42,6 @@
   onMount(() => {
     //SSR時のエラー回避のためDOM生成後に実行
     window.ResizeObserver = ResizeObserver;
-    const gridContent = window.document.querySelector<HTMLElement>('#mainContent');
     if (gridContent) { new SimpleBar(gridContent, {autoHide: false}); }
   });
 
@@ -51,11 +53,11 @@
 		<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
-	<div id="gridContent" class="p-1 contentHeight">
-		<BookInfoGrid {bookInfos} on:click={(event) => displayModal(event.detail)} />
+	<div bind:this={gridContent} class="p-1 contentHeight">
+		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
 	{#if isDisplayDetail}
-		<DetailModal
+		<RegisteredModal
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
 			on:success={(event) => (bookInfos = utils.handleSuccess(bookInfos, event.detail))}

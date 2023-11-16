@@ -18,6 +18,8 @@ export type toggleFilterItem = {
 };
 
 export type selectFilterItem = { 
-    id: number;
-    text: string; 
+	id: number;
+	text: string; 
 };
+
+export type status = 'wish' | 'reading' | 'complete';

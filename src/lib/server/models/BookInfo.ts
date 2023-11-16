@@ -1,3 +1,4 @@
+import type { status } from '$lib/customTypes';
 import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
 
@@ -11,8 +12,8 @@ export class BookInfo {
 	public createDate: Date;
 	public updateDate: Date;
 	public pageCount: number;
-	public isCompleted: boolean;
 	public isFavorite: boolean;
+	public status: status;
 	public memorandum: string;
 	public isVisible: boolean;
 	public _id?: ObjectId;
@@ -38,8 +39,8 @@ export class BookInfo {
 		this.thumbnail = ''; //gapi固有の情報なので、保存しないで都度取る。
 		this.createDate = currentDate;
 		this.updateDate = currentDate;
-		this.pageCount = volume.volumeInfo?.pageCount ?? -1;
-		this.isCompleted = false;
+		this.pageCount = volume.volumeInfo?.pageCount ?? 0;
+		this.status = 'wish';
 		this.isFavorite = false;
 		this.memorandum = '';
 		this.isVisible = true;

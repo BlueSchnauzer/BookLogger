@@ -2,23 +2,14 @@
 	export let categoryText: string;
 	export let condition: any;
 	export let labelFunction: () => string | undefined;
-	export let isRegistered = false;
-
-	let mainStyle = '';
-	let labelStyle = '';
-
-	if (isRegistered) {
-		mainStyle = 'mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch';
-		labelStyle = 'max-sm:self-end';
-	}
 
 </script>
 
-<div class={mainStyle}>
-	<span class="font-medium">{categoryText}</span>
+<div class="mb-2 flex flex-col justify-start items-stretch">
+	<span class="mb-1 text-lime-800">{categoryText}</span>
 	{#if condition}
-		<span class={labelStyle}>{labelFunction()}</span>
+		<span class="mb-2 border-b-stone-400 border-b-[1px]">{labelFunction()}</span>
 	{:else}
-		<span class="text-gray-500 {labelStyle}">データ無し</span>
+		<span class="mb-2 text-gray-500 border-b-stone-400 border-b-[1px]">データ無し</span>
 	{/if}
 </div>

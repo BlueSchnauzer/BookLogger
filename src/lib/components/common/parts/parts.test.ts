@@ -136,4 +136,6 @@ describe('CategoryLabel', () => {
 
 		expect(screen.getByText('データ無し')).toBeInTheDocument();
 	});
+
+	//todo 登録済みデータ用のテストを追加する
 });
