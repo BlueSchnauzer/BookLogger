@@ -6,7 +6,7 @@
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import SearchModal from '$lib/components/search/SearchModal.svelte';
 	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
-	import DetailModal from '$lib/components/common/DetailModal.svelte';
+	import ContentModal from '$lib/components/search/ContentModal.svelte';
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
 	import { pushSuccessToast, pushErrorToast } from '$lib/utils';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
@@ -103,7 +103,7 @@
 			/>
 		</div>
 		{#if isDisplayDetail}
-			<DetailModal
+			<ContentModal
 				item={currentBookInfo}
 				bind:isDisplay={isDisplayDetail}
 				on:success={(event) => pushSuccessToast(event.detail.message)}

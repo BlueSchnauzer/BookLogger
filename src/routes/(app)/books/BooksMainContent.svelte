@@ -4,7 +4,7 @@
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
-	import DetailModal from '$lib/components/common/DetailModal.svelte';
+	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
 	import * as utils from '$lib/utils';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
   import SimpleBar from 'simplebar';
@@ -57,7 +57,7 @@
 		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
 	{#if isDisplayDetail}
-		<DetailModal
+		<RegisteredModal
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
 			on:success={(event) => (bookInfos = utils.handleSuccess(bookInfos, event.detail))}
