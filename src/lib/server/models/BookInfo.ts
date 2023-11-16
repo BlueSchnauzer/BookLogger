@@ -39,7 +39,7 @@ export class BookInfo {
 		this.thumbnail = ''; //gapi固有の情報なので、保存しないで都度取る。
 		this.createDate = currentDate;
 		this.updateDate = currentDate;
-		this.pageCount = volume.volumeInfo?.pageCount ?? -1;
+		this.pageCount = volume.volumeInfo?.pageCount ?? 0;
 		this.status = 'wish';
 		this.isFavorite = false;
 		this.memorandum = '';

@@ -42,7 +42,7 @@
 		const response = await fetch('/api/bookinfo', {
 			method: 'POST',
 			body: JSON.stringify(item),
-			headers: {'Content-type': 'application:json'}
+			headers: {'Content-type': 'application/json'}
 		});
 
 		closeModalAndLoader();

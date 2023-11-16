@@ -2,7 +2,6 @@
 	import type { BookInfo } from "$lib/server/models/BookInfo";
 	import { convertDate, validateReadingCount, validateReadingDate } from "$lib/utils";
 	import CategoryLabel from "$lib/components/common/parts/CategoryLabel.svelte";
-	import type { status } from "$lib/customTypes";
 
 	export let bookInfo: BookInfo;
 
@@ -59,10 +58,10 @@
 		<CategoryLabel categoryText="著者" condition={bookInfo.author}
 			labelFunction={() => bookInfo.author?.join(', ')}
 		/>
-		<CategoryLabel categoryText="登録日" condition={bookInfo.pageCount}
+		<CategoryLabel categoryText="登録日" condition={bookInfo.createDate}
 			labelFunction={() => convertDate(bookInfo.createDate)}
 		/>
-		<CategoryLabel categoryText="最終更新日" condition={bookInfo.pageCount}
+		<CategoryLabel categoryText="最終更新日" condition={bookInfo.updateDate}
 			labelFunction={() => convertDate(bookInfo.updateDate)}
 		/>
 		<CategoryLabel categoryText="ページ数" condition={bookInfo.pageCount}
