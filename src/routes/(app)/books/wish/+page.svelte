@@ -12,8 +12,7 @@
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
 	];
 	const selectFilterItems: selectFilterItem[] = [
-		{ id: 1, text: '最近追加した順' },
-		{ id: 2, text: '最近読み終わった順' }
+		{ id: 1, text: '最近追加した順' }
 	];
 
 </script>
