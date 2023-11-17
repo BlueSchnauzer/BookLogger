@@ -18,17 +18,16 @@
 		{ status: 'complete', label: '読み終わった本' }
 	]
 
-	/**inputタグの日付をDateに変換*/
-	const convertReadingDateToDate = () => {
-		const splitDate = readingDate.split('-');
-		return new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]));
-	};
-
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
 		isValidDate = validateReadingDate(readingDate);
 		isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
 		if (!isValidDate || !isValidCount) { return; }
+
+		const message = '最後のページまで読み終わりました！ステータスを「読み終わった本」に変更しますか？\r(キャンセルの場合、そのままのステータスで保存します)';
+		if (readingCount === bookInfo.pageCount && bookInfo.status !== 'complete' && confirm(message)){
+			bookInfo.status = 'complete';
+		}
 
 		const item = {
 			date: convertReadingDateToDate(),
@@ -45,6 +44,32 @@
 		//追加した記録を反映させるため変更を通知
 		bookInfo = bookInfo;
 	};
+
+	/**inputタグの日付をDateに変換*/
+	const convertReadingDateToDate = () => {
+		const splitDate = readingDate.split('-');
+		return new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]));
+	};
+
+	/**読んだ記録に最終ページの記録があるか*/
+	const isExistCompleteHistory = () => {
+		let isExist = false;
+		bookInfo.history.forEach(item => {
+			if (item.currentPage === bookInfo.pageCount) { isExist = true; }
+		})
+
+		return isExist;
+	}
+
+	/**completeステータス変更時に、最終ページまで記録があるかを確認し、追加するかのメッセージを出す*/
+	const isChangedToComplete = () => {
+		const message = '読んだ記録に本日の日付で、\n最後のページまで読んだ記録をつけますか？';
+		if (bookInfo.status === 'complete' && !isExistCompleteHistory() && confirm(message)){
+			readingDate = setCurrentDate();
+			readingCount = bookInfo.pageCount;
+			addHistory();
+		}
+	}
 
 </script>
 
@@ -70,7 +95,10 @@
 	</div>
 	<span class="py-2 text-lg font-bold">ステータス</span>
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-		<select bind:value={bookInfo.status} class="w-full p-2 rounded-lg border-[1px] border-stone-400" name="status" id="statusSelect" data-testid="statusSelect">
+		<select bind:value={bookInfo.status} class="w-full p-2 rounded-lg border-[1px] border-stone-400" 
+			on:change={isChangedToComplete}
+			name="status" id="statusSelect" data-testid="statusSelect"
+		>
 			{#each statusList as item (item.status)}
 				<option value={item.status}>{item.label}</option>
 			{/each}
