@@ -5,7 +5,7 @@
 	import Icon from '@iconify/svelte';
 
 	export let isDisplay = false;
-	export let action = 'books/search';
+	export let action = '/books/search';
 	let bookTitle = '';
 	let author = '';
 	let isbn = '';
