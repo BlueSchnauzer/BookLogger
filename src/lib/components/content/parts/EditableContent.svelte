@@ -53,6 +53,7 @@
 
 	/**読んだ記録に最終ページの記録があるか*/
 	const isExistCompleteHistory = () => {
+		if (!bookInfo.history) { return false; }
 		let isExist = false;
 		bookInfo.history!.forEach(item => {
 			if (item.currentPage === bookInfo.pageCount) { isExist = true; }
