@@ -248,3 +248,20 @@ describe('toggleFavorite', () => {
     expect(toggledItems).toEqual(testData.threeBookInfos);
   });
 });
+
+describe('getTypeForBottomLabel', () => {
+  it('読んでいる本のパスでprogressが返ること', () => {
+    const result = utils.getTypeForBottomLabel('/books/reading');
+    expect(result).toEqual('progress');
+  });
+
+  it('読み終わった本のパスでcompleteDateが返ること', () => {
+    const result = utils.getTypeForBottomLabel('/books/complete');
+    expect(result).toEqual('completeDate');
+  });
+
+  it('その他のパスでcreateDateが返ること', () => {
+    const result = utils.getTypeForBottomLabel('/books');
+    expect(result).toEqual('createDate');
+  });
+});

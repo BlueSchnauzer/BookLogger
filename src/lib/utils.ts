@@ -1,9 +1,9 @@
 import { toast } from "@zerodevx/svelte-toast";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 import type { ObjectId } from "mongodb";
-import type { toggleFilterItem } from "$lib/customTypes";
+import type { toggleFilterItem, typeForBottomLabel } from "$lib/customTypes";
 
-export const convertDate = (date: Date | string, useYear = true): string => {
+export const convertDate = (date: Date | string | undefined, useYear = true): string => {
 	if (!date) { return 'データ無し'; }
 	//DBから取った書誌データは文字列で日付を持ってるため
 	if (typeof date === 'string') { date = new Date(date); }
@@ -78,4 +78,14 @@ export const toggleFavorite = (bookInfos: BookInfo[], filter: toggleFilterItem):
 	}
 
 	return toggledItems;
+}
+
+/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
+export const getTypeForBottomLabel = (pathName: string): typeForBottomLabel => {
+	const typeForLabel = 
+		pathName === '/books/reading' ? 'progress'
+			: pathName === '/books/complete' ? 'completeDate'
+			: 'createDate';
+
+	return typeForLabel;
 }
