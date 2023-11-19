@@ -171,6 +171,32 @@ describe('updateBookInfo', () => {
     expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); //更新日は自動更新
   });
 
+  it('isCompleteがFaulthyの場合にcompleteDateが更新されないこと', async () => {
+    //事前にデータを作成
+    const preData = await col.insertOne(oneBookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+    
+    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo, false);
+    expect(result.ok).toBeTruthy();
+
+    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
+    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); 
+    expect(updatedItem?.completeDate).not.toBeDefined();
+  });
+
+  it('isCompleteがTruthyの場合にcompleteDateが更新されること', async () => {
+    //事前にデータを作成
+    const preData = await col.insertOne(oneBookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+    
+    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo, true);
+    expect(result.ok).toBeTruthy();
+
+    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
+    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); 
+    expect(updatedItem?.completeDate).toBeDefined();
+  });
+
   it('更新対象が見つからない場合にエラーステータスが返ってくること', async () => {
     const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo);
 
