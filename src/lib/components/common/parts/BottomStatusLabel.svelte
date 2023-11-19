@@ -15,7 +15,7 @@
   </div>
 {:else if typeForLabel === 'completeDate'}
   <div class="self-center flex justify-between max-sm:hidden">
-    <span class="pl-2 text-xs">読み終えた日</span>
+    <span class="pl-2 text-xs">読み終わった日</span>
     <span class="pr-2 text-sm">{convertDate(bookInfo.completeDate)}</span>
   </div>
 {:else}
