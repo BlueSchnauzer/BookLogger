@@ -157,7 +157,7 @@ describe('updateBookInfo', () => {
     oneBookInfo.isFavorite = true;
     oneBookInfo.status = 'complete';
     oneBookInfo.memorandum = 'メモ欄編集'
-    oneBookInfo.history.push({ date: new Date, currentPage: 100 });
+    oneBookInfo.history!.push({ date: new Date, currentPage: 100 });
     
     const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo);
     expect(result.ok).toBeTruthy();
@@ -167,7 +167,7 @@ describe('updateBookInfo', () => {
     expect(updatedItem?.isFavorite).toBeTruthy();
     expect(updatedItem?.status).toEqual('complete');
     expect(updatedItem?.memorandum).toBeTruthy();
-    expect(updatedItem?.history.length).toEqual(2);
+    expect(updatedItem?.history!.length).toEqual(2);
     expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); //更新日は自動更新
   });
 

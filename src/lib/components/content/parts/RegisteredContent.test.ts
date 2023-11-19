@@ -9,7 +9,7 @@ describe('RegisteredContent', async () => {
   const pastDate = new Date(2023, 5, 1);
 
 	it('レンダリング', async () => {
-    oneBookInfo.history[0].date = pastDate
+    oneBookInfo.history![0].date = pastDate
     render(RegisteredContent, {bookInfo: oneBookInfo});
 
 		expect(screen.getByText('No Image')).toBeInTheDocument();

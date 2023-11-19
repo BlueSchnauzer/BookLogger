@@ -17,7 +17,8 @@ export class BookInfo {
 	public memorandum: string;
 	public isVisible: boolean;
 	public _id?: ObjectId;
-	public history!: [
+	public completeDate?: Date;
+	public history?: [
 		{
 			date: Date;
 			currentPage: number;
