@@ -54,6 +54,7 @@ const validatePutItem = (bookInfo: BookInfo): boolean => {
     }
 
     let result = true;
+    //作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
     if (!bookInfo.history) { return result; }
     
     bookInfo.history.forEach(item => {

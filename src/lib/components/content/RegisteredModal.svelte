@@ -36,7 +36,7 @@
 
 	/**読んだ記録が追加されたが、ステータスが読みたい本のままになっているか*/
 	const isAddedFirstHistoryToWishBook = () => {
-		return bookInfo.status === 'wish' && currentHistoryLength === 0 && bookInfo.history.length >= 1;
+		return bookInfo.status === 'wish' && currentHistoryLength === 0 && bookInfo.history!.length >= 1;
 	}
 
 	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
