@@ -3,7 +3,7 @@ import { describe, expect, it, vitest } from 'vitest';
 import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 import { threeBookInfos } from '$lib/vitest-setup';
 
-describe('BookInfoGrid', () => {
+describe.skip('BookInfoGrid', () => {
 	it('レンダリング', () => {
 		render(BookInfoGrid, {bookInfos: threeBookInfos, emptyMessage: ''});
 

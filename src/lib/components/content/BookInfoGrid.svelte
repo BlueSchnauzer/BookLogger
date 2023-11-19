@@ -1,16 +1,15 @@
 <script lang="ts">
-	//import { page } from '$app/stores';
+	import { page } from '$app/stores';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import { getThumbnailByIsbn } from '$lib/GoogleBooksAPI/RequestManage';
 	import { createEventDispatcher } from 'svelte';
-	import { convertDate } from '$lib/utils';
+	import { convertDate, getTypeForBottomLabel } from '$lib/utils';
+	import BottomStatusLabel from '../common/parts/BottomStatusLabel.svelte';
 
 	export let bookInfos: BookInfo[];
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
-	
-	//todo ページに応じて表示を切り替える。
-	//const pathName = $page.url.pathname;
+	const typeForLabel = getTypeForBottomLabel($page.url.pathname);
 
 	const isExistDisplayableItems = (bookInfos: BookInfo[]): boolean => {
 		if (!bookInfos || bookInfos.length === 0) { return false }
@@ -45,6 +44,7 @@
 						class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
 						on:click={() => handleClick(bookInfo)}
 					>
+						<!-- 書影のリクエストを待機 -->
 						{#await setThumbnail(bookInfo)}
 							<div
 								class="justify-self-center self-center flex items-center justify-center w-[128px] h-[182px] border border-slate-300"
@@ -85,12 +85,9 @@
 							</div>
 						{/await}
 						<div class="max-sm:hidden">
-							<sp class="text-left px-2 text-lime-700 break-all collapseTitle">{bookInfo.title}</sp>
+							<span class="text-left px-2 text-lime-700 break-all collapseTitle">{bookInfo.title}</span>
 						</div>
-						<div class="self-center flex justify-between max-sm:hidden">
-							<span class="pl-2 text-xs">登録日</span>
-							<span class="pr-2 text-sm">{convertDate(bookInfo.createDate)}</span>
-						</div>
+						<BottomStatusLabel {typeForLabel} {bookInfo}/>
 					</button>
 				</li>
 			{/if}

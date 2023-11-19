@@ -23,3 +23,4 @@ export type selectFilterItem = {
 };
 
 export type status = 'wish' | 'reading' | 'complete';
+export type typeForBottomLabel = 'createDate' | 'completeDate' | 'progress';

@@ -90,7 +90,7 @@ describe('applyChangesToBookInfos', () => {
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.secondId;
     copy.isFavorite = true;
-    copy.history.push({
+    copy.history!.push({
       date: new Date,
       currentPage: 50
     });
@@ -104,13 +104,13 @@ describe('applyChangesToBookInfos', () => {
 
     expect(result.length).toEqual(3);
     expect(result[1].isFavorite).toBeTruthy();
-    expect(result[1].history.length).toEqual(2);
+    expect(result[1].history!.length).toEqual(2);
 
     //対象以外が変更されていないか
     expect(result[0].isFavorite).toBeFalsy();
-    expect(result[0].history.length).toEqual(1);
+    expect(result[0].history!.length).toEqual(1);
     expect(result[2].isFavorite).toBeFalsy();
-    expect(result[2].history.length).toEqual(1);
+    expect(result[2].history!.length).toEqual(1);
   });
 
   it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
@@ -119,7 +119,7 @@ describe('applyChangesToBookInfos', () => {
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.firstId;
     copy.isFavorite = true;
-    copy.history.push({
+    copy.history!.push({
       date: new Date,
       currentPage: 50
     });
@@ -133,13 +133,13 @@ describe('applyChangesToBookInfos', () => {
 
     expect(result.length).toEqual(3);
     expect(result[0].isFavorite).toBeTruthy();
-    expect(result[0].history.length).toEqual(2);
+    expect(result[0].history!.length).toEqual(2);
 
     //対象以外が変更されていないか
     expect(result[1].isFavorite).toBeFalsy();
-    expect(result[1].history.length).toEqual(1);
+    expect(result[1].history!.length).toEqual(1);
     expect(result[2].isFavorite).toBeFalsy();
-    expect(result[2].history.length).toEqual(1);
+    expect(result[2].history!.length).toEqual(1);
   });
 
   it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
@@ -148,7 +148,7 @@ describe('applyChangesToBookInfos', () => {
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.thirdId;
     copy.isFavorite = true;
-    copy.history.push({
+    copy.history!.push({
       date: new Date,
       currentPage: 50
     });
@@ -162,13 +162,13 @@ describe('applyChangesToBookInfos', () => {
 
     expect(result.length).toEqual(3);
     expect(result[2].isFavorite).toBeTruthy();
-    expect(result[2].history.length).toEqual(2);
+    expect(result[2].history!.length).toEqual(2);
 
     //対象以外が変更されていないか
     expect(result[0].isFavorite).toBeFalsy();
-    expect(result[0].history.length).toEqual(1);
+    expect(result[0].history!.length).toEqual(1);
     expect(result[1].isFavorite).toBeFalsy();
-    expect(result[1].history.length).toEqual(1);
+    expect(result[1].history!.length).toEqual(1);
   });
 
   it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
@@ -178,7 +178,7 @@ describe('applyChangesToBookInfos', () => {
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.firstId;
     copy.isFavorite = true;
-    copy.history.push({
+    copy.history!.push({
       date: new Date,
       currentPage: 50
     });
@@ -246,5 +246,22 @@ describe('toggleFavorite', () => {
     const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
 
     expect(toggledItems).toEqual(testData.threeBookInfos);
+  });
+});
+
+describe('getTypeForBottomLabel', () => {
+  it('読んでいる本のパスでprogressが返ること', () => {
+    const result = utils.getTypeForBottomLabel('/books/reading');
+    expect(result).toEqual('progress');
+  });
+
+  it('読み終わった本のパスでcompleteDateが返ること', () => {
+    const result = utils.getTypeForBottomLabel('/books/complete');
+    expect(result).toEqual('completeDate');
+  });
+
+  it('その他のパスでcreateDateが返ること', () => {
+    const result = utils.getTypeForBottomLabel('/books');
+    expect(result).toEqual('createDate');
   });
 });

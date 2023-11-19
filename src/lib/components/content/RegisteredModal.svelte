@@ -13,6 +13,7 @@
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
 	const currentHistoryLength: number = bookInfo.history != null ? bookInfo.history.length : 0;
+	const currentStatus = bookInfo.status;
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
@@ -36,11 +37,12 @@
 
 	/**読んだ記録が追加されたが、ステータスが読みたい本のままになっているか*/
 	const isAddedFirstHistoryToWishBook = () => {
-		return bookInfo.status === 'wish' && currentHistoryLength === 0 && bookInfo.history.length >= 1;
+		return bookInfo.status === 'wish' && currentHistoryLength === 0 && bookInfo.history!.length >= 1;
 	}
 
 	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
 	const putBookInfo = async () => {
+		//成功時のメッセージを設定
 		let updateMessage = '更新しました。';
 		if (isAddedFirstHistoryToWishBook()){
 			if (confirm('ステータスを「読んでいる本」に変更しますか？\n(キャンセルの場合、そのままのステータスで保存します)')) {
@@ -51,10 +53,11 @@
 		
 		displayLoader();
 
-		//bookinfoをput
+		//bookinfoと読み終わったか(completeに変更時のみ)をput
+		const isComplete = currentStatus !== 'complete' && bookInfo.status === 'complete';
 		const response = await fetch('/api/bookinfo', {
 			method: 'PUT',
-			body: JSON.stringify(bookInfo),
+			body: JSON.stringify({bookInfo, isComplete}),
 			headers: {'Content-type': 'application/json'}
 		});
 

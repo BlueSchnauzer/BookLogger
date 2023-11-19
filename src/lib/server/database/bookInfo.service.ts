@@ -60,25 +60,37 @@ export async function insertBookInfo(collections: collections, bookInfo: BookInf
 }
 
 /**書誌データを更新する */
-export async function updateBookInfo(collections: collections, bookInfo: BookInfo): Promise<Response>{
+export async function updateBookInfo(collections: collections, bookInfo: BookInfo, isComplete = false): Promise<Response>{
   let response = new Response('書誌データの更新に失敗しました。', {status: 400});
 
   try{
-    //historyとmemorandumだけ保存
-    const result = await collections.bookInfos?.updateOne(
-      {_id: new mongoDB.ObjectId(bookInfo._id)},
-      {
-        $set: {
-          isFavorite: bookInfo.isFavorite,
-          status: bookInfo.status,
-          history: bookInfo.history,
-          memorandum: bookInfo.memorandum
-        },
+    //読み終わっている場合のみcompleteDateを更新対象にする
+    //(readOnlyかつ、falseを設定できないので事前に分岐させて処理)
+    let updateFilter;
+    if (isComplete){
+      updateFilter = {
+        $currentDate: {
+          updateDate: true,
+          completeDate: true
+        }
+      } as mongoDB.UpdateFilter<BookInfo>
+    } else {
+      updateFilter = {
         $currentDate: {
           updateDate: true
         }
-      }
-    );
+      } as mongoDB.UpdateFilter<BookInfo>
+    }
+
+    //(日付以外は)以下の項目のみ更新
+    updateFilter.$set = {
+      isFavorite: bookInfo.isFavorite,
+      status: bookInfo.status,
+      history: bookInfo.history,
+      memorandum: bookInfo.memorandum
+    }
+
+    const result = await collections.bookInfos?.updateOne({_id: new mongoDB.ObjectId(bookInfo._id)}, updateFilter);
 
     if (result?.matchedCount === 0){
       return response;

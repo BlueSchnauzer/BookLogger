@@ -31,10 +31,10 @@ export const PUT: RequestHandler = async ({ request }) => {
     const userId = 1; //todo クッキーから取る？無かったらエラー
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
-    const item = await request.json() as BookInfo;
+    const item = await request.json() as {bookInfo: BookInfo, isComplete: boolean};
     if (!validatePutItem(item)) { return new Response('データが不正です', { status: 400}); }
 
-    return await updateBookInfo(collections, item);
+    return await updateBookInfo(collections, item.bookInfo, item.isComplete);
 };
 
 /**DBの書誌データを削除する */
@@ -48,14 +48,15 @@ export const DELETE: RequestHandler = async ({ request }) => {
 };
 
 /**更新用データが不正でないか確認する */
-const validatePutItem = (bookInfo: BookInfo): boolean => {
+const validatePutItem = ({bookInfo, isComplete}: {bookInfo: BookInfo, isComplete: boolean}): boolean => {
     if (!bookInfo._id) { 
         return false;
     }
 
     let result = true;
+
+    //作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
     if (!bookInfo.history) { return result; }
-    
     bookInfo.history.forEach(item => {
         if (!result) { return; }
 
@@ -68,6 +69,12 @@ const validatePutItem = (bookInfo: BookInfo): boolean => {
             return;
         }
     });
+
+    //読み終わっている場合、最終ページの記録があるか確認
+    if (isComplete && result){
+        const isExist = bookInfo.history.findIndex(item => item.currentPage === bookInfo.pageCount);
+        result = isExist !== -1 ? true : false;
+    }
 
     return result;
 }

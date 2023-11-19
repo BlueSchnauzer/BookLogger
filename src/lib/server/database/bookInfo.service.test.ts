@@ -157,7 +157,7 @@ describe('updateBookInfo', () => {
     oneBookInfo.isFavorite = true;
     oneBookInfo.status = 'complete';
     oneBookInfo.memorandum = 'メモ欄編集'
-    oneBookInfo.history.push({ date: new Date, currentPage: 100 });
+    oneBookInfo.history!.push({ date: new Date, currentPage: 100 });
     
     const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo);
     expect(result.ok).toBeTruthy();
@@ -167,8 +167,34 @@ describe('updateBookInfo', () => {
     expect(updatedItem?.isFavorite).toBeTruthy();
     expect(updatedItem?.status).toEqual('complete');
     expect(updatedItem?.memorandum).toBeTruthy();
-    expect(updatedItem?.history.length).toEqual(2);
+    expect(updatedItem?.history!.length).toEqual(2);
     expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); //更新日は自動更新
+  });
+
+  it('isCompleteがFaulthyの場合にcompleteDateが更新されないこと', async () => {
+    //事前にデータを作成
+    const preData = await col.insertOne(oneBookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+    
+    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo, false);
+    expect(result.ok).toBeTruthy();
+
+    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
+    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); 
+    expect(updatedItem?.completeDate).not.toBeDefined();
+  });
+
+  it('isCompleteがTruthyの場合にcompleteDateが更新されること', async () => {
+    //事前にデータを作成
+    const preData = await col.insertOne(oneBookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+    
+    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo, true);
+    expect(result.ok).toBeTruthy();
+
+    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
+    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); 
+    expect(updatedItem?.completeDate).toBeDefined();
   });
 
   it('更新対象が見つからない場合にエラーステータスが返ってくること', async () => {
