@@ -65,6 +65,7 @@ export async function updateBookInfo(collections: collections, bookInfo: BookInf
 
   try{
     //読み終わっている場合のみcompleteDateを更新対象にする
+    //(readOnlyかつ、falseを設定できないので事前に分岐させて処理)
     let updateFilter;
     if (isComplete){
       updateFilter = {
