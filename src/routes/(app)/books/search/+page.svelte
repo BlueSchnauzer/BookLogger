@@ -19,6 +19,7 @@
 
 	let currentBookInfo: books_v1.Schema$Volume;
 	let isDisplayDetail = false;
+	const target = 'searchToast';
 
 	let runPromise = async (): Promise<books_v1.Schema$Volumes> => {
 		isLoading = true;
@@ -106,11 +107,13 @@
 			<ContentModal
 				item={currentBookInfo}
 				bind:isDisplay={isDisplayDetail}
-				on:success={(event) => pushSuccessToast(event.detail.message)}
-				on:failed={(event) => pushErrorToast(event.detail)}
+				on:success={(event) => pushSuccessToast(event.detail.message, target)}
+				on:failed={(event) => pushErrorToast(event.detail, target)}
 			/>
 		{/if}
-		<SvelteToast />
+		<div class="wrap-bottom">
+			<SvelteToast {target}/>
+		</div>
 	</div>
 </main>
 
@@ -127,5 +130,11 @@
 	.customScroll::-webkit-scrollbar-thumb {
 		background-color: gray;
 		border-radius: 20px;
+	}
+	.wrap-bottom {
+		--toastContainerTop: auto;
+		--toastContainerRight: auto;
+		--toastContainerBottom: 4rem;
+		--toastContainerLeft: calc(50vw - 8rem);
 	}
 </style>

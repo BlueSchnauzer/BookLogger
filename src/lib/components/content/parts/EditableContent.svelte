@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { BookInfo } from "$lib/server/models/BookInfo";
-	import { convertDate, validateReadingCount, validateReadingDate } from "$lib/utils";
+	import { convertDate, pushToast, validateReadingCount, validateReadingDate } from "$lib/utils";
 	import CategoryLabel from "$lib/components/common/parts/CategoryLabel.svelte";
+	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
+	import { onMount } from "svelte";
 
 	export let bookInfo: BookInfo;
 
@@ -17,7 +19,9 @@
 		{ status: 'reading', label: '読んでいる本' },
 		{ status: 'complete', label: '読み終わった本' }
 	]
-
+	const target = 'modalToast';
+	const currentStatus = bookInfo.status;
+	
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
 		isValidDate = validateReadingDate(readingDate);
@@ -36,7 +40,7 @@
 
 		//ステータスを自動で変更する。
 		let toastMessage = '';
-		if (bookInfo.history.length === 1) {
+		if (currentStatus === 'wish' && bookInfo.history.length === 1) {
 			bookInfo.status = 'reading';
 			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
 		}	else if (readingCount === bookInfo.pageCount && bookInfo.status !== 'complete') {
@@ -48,6 +52,9 @@
 		readingCount = 0;
 		//追加した記録を反映させるため変更を通知
 		bookInfo = bookInfo;
+
+		//入力値の自動変更があればトーストで通知。
+		if (toastMessage) { pushToast(toastMessage, target); }
 	};
 
 	/**inputタグの日付をDateに変換*/
@@ -77,6 +84,10 @@
 		}
 	}
 
+	onMount(() => {
+		//アンマウント時にトーストが表示されていれば削除する。
+		return () => toast.pop(0);
+	});
 </script>
 
 <div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll">
@@ -161,6 +172,9 @@
 			/>
 		</div>
 	</div>
+</div>
+<div class="wrap-default">
+	<SvelteToast {target}/>
 </div>
 
 <style>

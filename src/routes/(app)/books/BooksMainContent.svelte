@@ -6,7 +6,7 @@
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
 	import * as utils from '$lib/utils';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
   import SimpleBar from 'simplebar';
   import 'simplebar/dist/simplebar.css';
   //iOS Safariなど用に追加
@@ -31,6 +31,7 @@
 	let isDisplayDetail = false;
 	let currentBookInfo: BookInfo;
 	let gridContent: HTMLElement;
+	const target = 'mainToast';
 
   $: { bookInfos = utils.toggleFavorite(bookInfos, toggleFilterItems[0]); }
 
@@ -43,6 +44,9 @@
     //SSR時のエラー回避のためDOM生成後に実行
     window.ResizeObserver = ResizeObserver;
     if (gridContent) { new SimpleBar(gridContent, {autoHide: false}); }
+
+		//アンマウント時にトーストが表示されていれば削除する。
+		return () => toast.pop(0);
   });
 
 </script>
@@ -60,11 +64,13 @@
 		<RegisteredModal
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
-			on:success={(event) => (bookInfos = utils.handleSuccess(bookInfos, event.detail))}
-			on:failed={(event) => utils.pushErrorToast(event.detail)}
+			on:success={(event) => (bookInfos = utils.handleSuccess(bookInfos, event.detail, target))}
+			on:failed={(event) => utils.pushErrorToast(event.detail, target)}
 		/>
 	{/if}
-	<SvelteToast />
+	<div class="wrap-bottom">
+		<SvelteToast {target}/>
+	</div>
 </main>
 
 <style>
@@ -73,5 +79,11 @@
 	}
 	.contentHeight {
 		height: calc(100% - 96px);
+	}
+	.wrap-bottom {
+		--toastContainerTop: auto;
+		--toastContainerRight: auto;
+		--toastContainerBottom: 4rem;
+		--toastContainerLeft: calc(50vw - 8rem);
 	}
 </style>
