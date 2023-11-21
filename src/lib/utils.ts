@@ -26,15 +26,26 @@ export const validateReadingCount = (readingCount: number, pageCount: number): b
 	return true;
 }
 
-/**正常完了時のトースト表示(利用先でフレームのインポートとスタイル適用が必要)*/
-export const pushSuccessToast = (message: string): void => {
-	toast.push(message, { reversed: true, intro: { y: 100 }, theme: {'--toastBarBackground': '#65a30d'} });
+//トーストは利用先でコンテナのインポート、スタイル適用とアンマウント時のpopが必要
+
+/**画面右上にトーストを表示する*/
+export const pushToast = (message: string, target: string): void => {
+	toast.push(message, { theme: { '--toastBarBackground': '#65a30d' }, target });
 }
 
-/**異常完了時のトースト表示*/
-export const pushErrorToast = (message: string): void => {
+/**画面下部に正常完了用トーストを表示する*/
+export const pushSuccessToast = (message: string, target: string): void => {
+	toast.push(message, { reversed: true, intro: { y: 100 },
+		theme: { '--toastBarBackground': '#65a30d' }, 
+		target 
+	});
+}
+
+/**画面下部に異常完了用トーストを表示する*/
+export const pushErrorToast = (message: string, target: string): void => {
 	toast.push(message, { reversed: true, intro: { y: 100 }, 
-		theme:{ '--toastBarHeight': 0, '--toastWidth': 'auto', '--toastBackground': '#dc2626' } 
+		theme:{ '--toastBarHeight': 0, '--toastWidth': 'auto', '--toastBackground': '#dc2626' }, 
+		target 
 	});
 }
 
@@ -54,9 +65,9 @@ export const applyChangesToBookInfos = (bookInfos: BookInfo[], detail: {message:
 }
 
 /**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
-export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}): BookInfo[] => {
+export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}, target: string): BookInfo[] => {
 	const appliedItems = applyChangesToBookInfos(bookInfos, detail);
-	pushSuccessToast(detail.message);
+	pushSuccessToast(detail.message, target);
 
 	return appliedItems;
 }

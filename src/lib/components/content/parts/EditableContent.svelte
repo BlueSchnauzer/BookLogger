@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { BookInfo } from "$lib/server/models/BookInfo";
-	import { convertDate, validateReadingCount, validateReadingDate } from "$lib/utils";
+	import { convertDate, pushToast, validateReadingCount, validateReadingDate } from "$lib/utils";
 	import CategoryLabel from "$lib/components/common/parts/CategoryLabel.svelte";
+	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
+	import { onMount } from "svelte";
 
 	export let bookInfo: BookInfo;
 
@@ -17,17 +19,13 @@
 		{ status: 'reading', label: '読んでいる本' },
 		{ status: 'complete', label: '読み終わった本' }
 	]
-
+	const target = 'modalToast';
+	
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
 		isValidDate = validateReadingDate(readingDate);
 		isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
 		if (!isValidDate || !isValidCount) { return; }
-
-		const message = '最後のページまで読み終わりました！ステータスを「読み終わった本」に変更しますか？\r(キャンセルの場合、そのままのステータスで保存します)';
-		if (readingCount === bookInfo.pageCount && bookInfo.status !== 'complete' && confirm(message)){
-			bookInfo.status = 'complete';
-		}
 
 		const item = {
 			date: convertReadingDateToDate(),
@@ -39,10 +37,23 @@
 			bookInfo.history = [item];
 		}
 
+		//読んだ記録と現在のステータスが一致しない場合に自動で変更する。
+		let toastMessage = '';
+		if (bookInfo.status === 'wish' && bookInfo.history.length === 1) {
+			bookInfo.status = 'reading';
+			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
+		}	else if (bookInfo.status !== 'complete' && readingCount === bookInfo.pageCount) {
+			bookInfo.status = 'complete';
+			toastMessage = 'ステータスを「読み終わった本」に変更しました。';
+		}
+
 		readingDate = setCurrentDate();
 		readingCount = 0;
 		//追加した記録を反映させるため変更を通知
 		bookInfo = bookInfo;
+
+		//入力値の自動変更があればトーストで通知。
+		if (toastMessage) { pushToast(toastMessage, target); }
 	};
 
 	/**inputタグの日付をDateに変換*/
@@ -54,6 +65,7 @@
 	/**読んだ記録に最終ページの記録があるか*/
 	const isExistCompleteHistory = () => {
 		if (!bookInfo.history) { return false; }
+
 		let isExist = false;
 		bookInfo.history!.forEach(item => {
 			if (item.currentPage === bookInfo.pageCount) { isExist = true; }
@@ -62,16 +74,21 @@
 		return isExist;
 	}
 
-	/**completeステータス変更時に、最終ページまで記録があるかを確認し、追加するかのメッセージを出す*/
+	/**ステータスがcompleteに変更された際に、最終ページまでの記録が無ければ追加する。*/
 	const isChangedToComplete = () => {
-		const message = '読んだ記録に本日の日付で、\n最後のページまで読んだ記録をつけますか？';
-		if (bookInfo.status === 'complete' && !isExistCompleteHistory() && confirm(message)){
-			readingDate = setCurrentDate();
-			readingCount = bookInfo.pageCount;
-			addHistory();
-		}
+		if (bookInfo.status !== 'complete' || isExistCompleteHistory()) { return; }
+
+		readingDate = setCurrentDate();
+		readingCount = bookInfo.pageCount;
+		addHistory();
+
+		pushToast('最後のページまでの読んだ記録を追加しました。', target);
 	}
 
+	onMount(() => {
+		//アンマウント時にトーストが表示されていれば削除する。
+		return () => toast.pop(0);
+	});
 </script>
 
 <div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll">
@@ -156,6 +173,9 @@
 			/>
 		</div>
 	</div>
+</div>
+<div class="wrap-default">
+	<SvelteToast {target}/>
 </div>
 
 <style>

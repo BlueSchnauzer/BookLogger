@@ -12,8 +12,7 @@
 	export let bookInfo: BookInfo;
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
-	const currentHistoryLength: number = bookInfo.history != null ? bookInfo.history.length : 0;
-	const currentStatus = bookInfo.status;
+	const beforeStatus = bookInfo.status;
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
@@ -35,26 +34,12 @@
 		}
 	};
 
-	/**読んだ記録が追加されたが、ステータスが読みたい本のままになっているか*/
-	const isAddedFirstHistoryToWishBook = () => {
-		return bookInfo.status === 'wish' && currentHistoryLength === 0 && bookInfo.history!.length >= 1;
-	}
-
 	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
 	const putBookInfo = async () => {
-		//成功時のメッセージを設定
-		let updateMessage = '更新しました。';
-		if (isAddedFirstHistoryToWishBook()){
-			if (confirm('ステータスを「読んでいる本」に変更しますか？\n(キャンセルの場合、そのままのステータスで保存します)')) {
-				bookInfo.status = 'reading'; 
-				updateMessage = '読んでいる本に移動しました。';
-			}
-		}
-		
 		displayLoader();
 
 		//bookinfoと読み終わったか(completeに変更時のみ)をput
-		const isComplete = currentStatus !== 'complete' && bookInfo.status === 'complete';
+		const isComplete = beforeStatus !== 'complete' && bookInfo.status === 'complete';
 		const response = await fetch('/api/bookinfo', {
 			method: 'PUT',
 			body: JSON.stringify({bookInfo, isComplete}),
@@ -63,7 +48,7 @@
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行
-		handleRequest(response.ok, response.ok ? updateMessage : '更新に失敗しました。\<br\>時間をおいて再度登録してください。', bookInfo);
+		handleRequest(response.ok, response.ok ? '更新しました。' : '更新に失敗しました。\<br\>時間をおいて再度登録してください。', bookInfo);
 	};
 
 	/**書誌データの削除をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
