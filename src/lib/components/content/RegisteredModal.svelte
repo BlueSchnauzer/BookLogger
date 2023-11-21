@@ -12,7 +12,7 @@
 	export let bookInfo: BookInfo;
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
-	const currentStatus = bookInfo.status;
+	const beforeStatus = bookInfo.status;
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
@@ -39,7 +39,7 @@
 		displayLoader();
 
 		//bookinfoと読み終わったか(completeに変更時のみ)をput
-		const isComplete = currentStatus !== 'complete' && bookInfo.status === 'complete';
+		const isComplete = beforeStatus !== 'complete' && bookInfo.status === 'complete';
 		const response = await fetch('/api/bookinfo', {
 			method: 'PUT',
 			body: JSON.stringify({bookInfo, isComplete}),

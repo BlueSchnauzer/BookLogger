@@ -20,7 +20,6 @@
 		{ status: 'complete', label: '読み終わった本' }
 	]
 	const target = 'modalToast';
-	const currentStatus = bookInfo.status;
 	
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
@@ -38,12 +37,12 @@
 			bookInfo.history = [item];
 		}
 
-		//ステータスを自動で変更する。
+		//読んだ記録と現在のステータスが一致しない場合に自動で変更する。
 		let toastMessage = '';
-		if (currentStatus === 'wish' && bookInfo.history.length === 1) {
+		if (bookInfo.status === 'wish' && bookInfo.history.length === 1) {
 			bookInfo.status = 'reading';
 			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
-		}	else if (readingCount === bookInfo.pageCount && bookInfo.status !== 'complete') {
+		}	else if (bookInfo.status !== 'complete' && readingCount === bookInfo.pageCount) {
 			bookInfo.status = 'complete';
 			toastMessage = 'ステータスを「読み終わった本」に変更しました。';
 		}
@@ -66,6 +65,7 @@
 	/**読んだ記録に最終ページの記録があるか*/
 	const isExistCompleteHistory = () => {
 		if (!bookInfo.history) { return false; }
+
 		let isExist = false;
 		bookInfo.history!.forEach(item => {
 			if (item.currentPage === bookInfo.pageCount) { isExist = true; }
@@ -74,14 +74,15 @@
 		return isExist;
 	}
 
-	/**completeステータス変更時に、最終ページまで記録があるかを確認し、追加するかのメッセージを出す*/
+	/**ステータスがcompleteに変更された際に、最終ページまでの記録が無ければ追加する。*/
 	const isChangedToComplete = () => {
-		const message = '読んだ記録に本日の日付で、\n最後のページまで読んだ記録をつけますか？';
-		if (bookInfo.status === 'complete' && !isExistCompleteHistory() && confirm(message)){
-			readingDate = setCurrentDate();
-			readingCount = bookInfo.pageCount;
-			addHistory();
-		}
+		if (bookInfo.status !== 'complete' || isExistCompleteHistory()) { return; }
+
+		readingDate = setCurrentDate();
+		readingCount = bookInfo.pageCount;
+		addHistory();
+
+		pushToast('最後のページまでの読んだ記録を追加しました。', target);
 	}
 
 	onMount(() => {
