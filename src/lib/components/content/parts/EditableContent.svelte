@@ -24,11 +24,6 @@
 		isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
 		if (!isValidDate || !isValidCount) { return; }
 
-		const message = '最後のページまで読み終わりました！ステータスを「読み終わった本」に変更しますか？\r(キャンセルの場合、そのままのステータスで保存します)';
-		if (readingCount === bookInfo.pageCount && bookInfo.status !== 'complete' && confirm(message)){
-			bookInfo.status = 'complete';
-		}
-
 		const item = {
 			date: convertReadingDateToDate(),
 			currentPage: readingCount
@@ -37,6 +32,16 @@
 			bookInfo.history.push(item);
 		} else {
 			bookInfo.history = [item];
+		}
+
+		//ステータスを自動で変更する。
+		let toastMessage = '';
+		if (bookInfo.history.length === 1) {
+			bookInfo.status = 'reading';
+			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
+		}	else if (readingCount === bookInfo.pageCount && bookInfo.status !== 'complete') {
+			bookInfo.status = 'complete';
+			toastMessage = 'ステータスを「読み終わった本」に変更しました。';
 		}
 
 		readingDate = setCurrentDate();
