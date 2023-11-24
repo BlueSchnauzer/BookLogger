@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  // import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
   const colorStone700 = '#44403C';
 </script>
 
-<!-- <h1>{$page.status}: {$page.error?.message}</h1> -->
 <section class="w-screen h-screen flex flex-col flex-grow items-center justify-center">
   <Icon icon="mdi:face-cry-outline" width="160" height="160" color={colorStone700}/>
   <div>
