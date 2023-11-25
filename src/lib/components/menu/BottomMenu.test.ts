@@ -53,7 +53,7 @@ describe('BottomMenu', () => {
   it('レンダリング', () => {
     render(BottomMenu);
 
-    expect(screen.getByText('DashBoard')).toBeInTheDocument();
+    expect(screen.getByText('Home')).toBeInTheDocument();
     expect(screen.getByText('Complete')).toBeInTheDocument();
   });
 });

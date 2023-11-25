@@ -4,4 +4,4 @@
     //export let data: PageData;
 </script>
 
-<h1>ダッシュボード</h1>
+<h1>ホーム</h1>
