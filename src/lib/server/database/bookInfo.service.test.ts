@@ -54,6 +54,41 @@ describe('getBookInfo', () => {
   });
 });
 
+describe('getRecentBookInfo', () => {  
+  it('直前に編集した、ユーザIDに一致するデータを1件のみ取得できること',async () => {
+    const copiedInfo = structuredClone(oneBookInfo);
+
+    const first = await col.insertOne(oneBookInfo);
+    expect(await first.acknowledged).toBeTruthy();
+
+    copiedInfo.title = 'recentbook';
+    copiedInfo.updateDate = new Date;
+    const second = await col.insertOne(copiedInfo);
+    expect(await second.acknowledged).toBeTruthy();
+
+    const response = await service.getRecentBookInfo({ bookInfos: col }, userId);
+
+    expect(response.length).toEqual(1);
+    expect(response[0].userId).toEqual(userId);
+    expect(response[0].title).toEqual('recentbook');
+  });
+
+  it('一致するデータが無い場合に空のデータが返ること', async () => {
+    const preData = await col.insertOne({userId: 100} as BookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getRecentBookInfo({ bookInfos: col }, 10000);
+
+    expect(response.length).toEqual(0);
+  });
+
+  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
+    const response = await service.getRecentBookInfo({ bookInfos: col }, Number(undefined));
+
+    expect(response.length).toEqual(0);
+  });
+});
+
 describe('getBookInfoByStatus', () => {  
   beforeEach(async () => {
     threeBookInfos[0].status = 'wish';
