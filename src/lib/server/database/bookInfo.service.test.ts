@@ -89,6 +89,36 @@ describe('getRecentBookInfo', () => {
   });
 });
 
+describe('getBookInfoWithOnlyHistory', () => {  
+  it('ユーザIDに一致するデータの、historyのみを取得できること',async () => {
+    const copiedInfo = structuredClone(oneBookInfo);
+    copiedInfo.userId = 10000
+    const preData = await col.insertMany([oneBookInfo, copiedInfo]);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, userId);
+
+    expect(response).not.toBeUndefined();
+    expect(response?.length).toEqual(1);
+    expect(response[0].history?.[0].currentPage).toEqual(0);
+  });
+
+  it('一致するデータが無い場合に空のデータが返ること', async () => {
+    const preData = await col.insertOne({userId: 100} as BookInfo);
+    expect(await preData.acknowledged).toBeTruthy();
+
+    const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, 10000);
+
+    expect(response.length).toEqual(0);
+  });
+
+  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
+    const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, Number(undefined));
+
+    expect(response.length).toEqual(0);
+  });
+});
+
 describe('getBookInfoByStatus', () => {  
   beforeEach(async () => {
     threeBookInfos[0].status = 'wish';
