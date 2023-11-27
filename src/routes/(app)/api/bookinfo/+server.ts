@@ -13,8 +13,13 @@ export const GET: RequestHandler = async ({ url }) => {
 
     let bookInfos: BookInfo[];
     if (url.searchParams.get('recentbook') === 'true'){
+        //直近で読んだ書誌データを取得
         bookInfos = await service.getRecentBookInfo(collections, userId);
-    }else {
+    } else if (url.searchParams.get('history') === 'true'){
+        //書誌データのhistoryのみを取得
+        bookInfos = await service.getBookInfoWithOnlyHistory(collections, userId);
+    } else {
+        //全書誌データを取得
         bookInfos = await service.getBookInfo(collections, userId);    
     }
     return json(bookInfos, {status: 200});    
