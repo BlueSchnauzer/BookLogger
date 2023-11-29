@@ -59,7 +59,8 @@
 	/**inputタグの日付をDateに変換*/
 	const convertReadingDateToDate = () => {
 		const splitDate = readingDate.split('-');
-		return new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]));
+		//UTCで設定する
+		return new Date(Date.UTC(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])));
 	};
 
 	/**読んだ記録に最終ページの記録があるか*/
