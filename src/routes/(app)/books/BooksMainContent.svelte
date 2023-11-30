@@ -5,7 +5,8 @@
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
-	import * as utils from '$lib/utils';
+	import { handleSuccess, toggleFavorite } from '$lib/utils/bookInfo';
+	import { pushErrorToast } from '$lib/utils/toast';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
   import SimpleBar from 'simplebar';
   import 'simplebar/dist/simplebar.css';
@@ -33,7 +34,7 @@
 	let gridContent: HTMLElement;
 	const target = 'mainToast';
 
-  $: { bookInfos = utils.toggleFavorite(bookInfos, toggleFilterItems[0]); }
+  $: { bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]); }
 
 	const displayModal = (item: BookInfo) => {
 		currentBookInfo = structuredClone(item);
@@ -64,8 +65,8 @@
 		<RegisteredModal
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
-			on:success={(event) => (bookInfos = utils.handleSuccess(bookInfos, event.detail, target))}
-			on:failed={(event) => utils.pushErrorToast(event.detail, target)}
+			on:success={(event) => (bookInfos = handleSuccess(bookInfos, event.detail, target))}
+			on:failed={(event) => pushErrorToast(event.detail, target)}
 		/>
 	{/if}
 	<div class="wrap-bottom">

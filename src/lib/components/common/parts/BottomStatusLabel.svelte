@@ -2,7 +2,7 @@
 	import type { typeForBottomLabel } from '$lib/customTypes';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import { convertDate } from '$lib/utils';
+	import { convertDate } from '$lib/utils/bookInfo';
 	import Icon from '@iconify/svelte';
 
   export let typeForLabel : typeForBottomLabel;

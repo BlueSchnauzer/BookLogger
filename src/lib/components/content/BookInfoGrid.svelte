@@ -3,8 +3,8 @@
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import { getThumbnailByIsbn } from '$lib/GoogleBooksAPI/RequestManage';
 	import { createEventDispatcher } from 'svelte';
-	import { convertDate, getTypeForBottomLabel } from '$lib/utils';
-	import BottomStatusLabel from '../common/parts/BottomStatusLabel.svelte';
+	import { getTypeForBottomLabel } from '$lib/utils/bookInfo';
+	import BottomStatusLabel from '$lib/components/common/parts/BottomStatusLabel.svelte';
 
 	export let bookInfos: BookInfo[];
 	/**表示する本が無い場合のメッセージ*/

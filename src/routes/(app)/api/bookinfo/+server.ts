@@ -4,7 +4,7 @@ import * as service from '$lib/server/database/bookInfo.service';
 import { json } from '@sveltejs/kit';
 import type { books_v1 } from 'googleapis';
 import { BookInfo } from '$lib/server/models/BookInfo';
-import { validateReadingCount } from '$lib/utils';
+import { validateReadingCount } from '$lib/utils/validation';
 
 /**DBからユーザIDに一致するデータを取得する */
 export const GET: RequestHandler = async ({ url }) => {
