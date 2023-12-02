@@ -15,8 +15,10 @@
       data: {
         labels,
         datasets: [{
-          label: '1週間に読んだページ数',
-          data: graphData
+          label: 'ページ数',
+          data: graphData,
+          backgroundColor: '#65a30d', 
+          borderRadius: 10
         }]
       }
     });
