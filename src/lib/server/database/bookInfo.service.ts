@@ -19,6 +19,40 @@ export async function getBookInfo(collections: collections, userId: number): Pro
   return bookInfos;
 }
 
+/**直近で読んだ、ユーザIDに紐づいた書誌データを取得する */
+export async function getRecentBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+  let bookInfos: BookInfo[] = [];
+  if (typeof userId !== 'number') { return bookInfos; }
+
+  try {
+    bookInfos = await collections.bookInfos?.find({userId}).sort({updateDate: -1}).limit(1).toArray() as BookInfo[];  
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+
+  return bookInfos;
+}
+
+/**ユーザIDに紐づいた書誌データから、historyのみを取得する */
+export async function getBookInfoWithOnlyHistory(collections: collections, userId: number) {
+  //historyだけ取得するが、まとめて1つの配列にはできないので書誌データごとに取得する。
+  let histories: BookInfo[] = [];
+  if (typeof userId !== 'number') { return []; }
+
+  try {
+    const projection = { _id: 0, history: 1};
+    histories = await collections.bookInfos?.find({userId}).project(projection).toArray() as BookInfo[];  
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+
+  return histories;
+}
+
 /**statusが引数と一致し、ユーザIDに紐づいた書誌データを取得する */
 export async function getBookInfoByStatus(collections: collections, userId: number, status: status): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
-import { convertDate } from '$lib/utils';
+import { convertDate } from '$lib/utils/bookInfo';
 import userEvent from '@testing-library/user-event';
 import { oneBookInfo } from '$lib/vitest-setup';
 

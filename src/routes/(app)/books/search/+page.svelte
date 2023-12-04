@@ -8,7 +8,7 @@
 	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
 	import ContentModal from '$lib/components/search/ContentModal.svelte';
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
-	import { pushSuccessToast, pushErrorToast } from '$lib/utils';
+	import { pushSuccessToast, pushErrorToast } from '$lib/utils/toast';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	export let data: PageData;

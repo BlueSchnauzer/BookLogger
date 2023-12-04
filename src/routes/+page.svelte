@@ -1,4 +1,4 @@
-<a href="/dashboard">DashBoard</a>
+<a href="/home">ホーム</a>
 
 <style lang="postcss">
 	:global(html) {

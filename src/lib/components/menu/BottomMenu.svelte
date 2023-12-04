@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { menuItemData } from '$lib/customTypes';
-	import Dashboard from '$lib/icons/Dashboard.svelte';
+	import Home from '$lib/icons/Home.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
@@ -9,7 +9,7 @@
 	import BookShelf from '$lib/icons/BookShelf.svelte';
 
 	const MenuItemDatas: menuItemData[] = [
-		{ icon: Dashboard, ref: '/dashboard', jpName: 'ダッシュボード', enName: 'DashBoard' },
+		{ icon: Home, ref: '/home', jpName: 'ホーム', enName: 'Home' },
 		{ icon: BookCase, ref: '/books', jpName: '登録した本', enName: 'AllBooks' },
 		{ icon: PileOfBooks, ref: '/books/wish', jpName: '読みたい本', enName: 'Wish' },
 		{ icon: Openingbook, ref: '/books/reading', jpName: '読んでいる本', enName: 'Reading' },

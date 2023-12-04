@@ -54,7 +54,7 @@ describe('SideMenu', () => {
   it('レンダリング', () => {
     render(SideMenu);
 
-    expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
+    expect(screen.getByText('ホーム')).toBeInTheDocument();
     expect(screen.getByText('読み終わった本')).toBeInTheDocument();
   });
 });

@@ -1,83 +1,34 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import * as utils from '$lib/utils';
 import type { BookInfo } from "$lib/server/models/BookInfo";
 import type { ObjectId } from "mongodb";
-import * as testData from "./vitest-setup";
+import * as testData from "../vitest-setup";
+
+import { applyChangesToBookInfos, convertDate, getTypeForBottomLabel, toggleFavorite } from "$lib/utils/bookInfo";
+import { validateReadingCount, validateReadingDate } from "$lib/utils/validation";
 
 describe('convertDate', () => {
   const testDate = new Date(2023, 5, 15);
 
   it('Dateを渡した際に(年)月日の形式で返すこと', () => {
-    const resultWithYear = utils.convertDate(testDate);
+    const resultWithYear = convertDate(testDate);
     expect(resultWithYear).toEqual('2023/6/15');
     
-    const resultWithoutYear = utils.convertDate(testDate, false);
+    const resultWithoutYear = convertDate(testDate, false);
     expect(resultWithoutYear).toEqual('6/15');
   });
 
   it('データがundefinedの場合に、データ無しの文字列が返ること', () => {
     const invalidData = undefined;
-    const result = utils.convertDate(invalidData as unknown as Date);
+    const result = convertDate(invalidData as unknown as Date);
 
     expect(result).toEqual('データ無し');
   });
 
   it('データが文字列の際でも変換できること', () => {
     const dateString = testDate.toUTCString();
-    const result = utils.convertDate(dateString);
+    const result = convertDate(dateString);
     
     expect(result).toEqual('2023/6/15');
-  });
-});
-
-describe('validateReadingDate', () => {
-  it('データがTruthyかどうか判定できること', () => {
-    const validData = '2023-10-30';
-    const result = utils.validateReadingDate(validData);
-
-    expect(result).toBeTruthy();
-  });
-
-  it('データがFalthyかどうか判定できること', () => {
-    const invalidData = '';
-    const result = utils.validateReadingDate(invalidData);
-
-    expect(result).toBeFalsy();
-  });
-});
-
-describe('validateReadingCount', () => {
-  it('データが1～pageCountの間の場合に、trueが返ってくること', () => {
-    const resultWith1 = utils.validateReadingCount(1, 500);
-    const resultWith250 = utils.validateReadingCount(250, 500);
-    const resultWith500 = utils.validateReadingCount(500, 500);
-
-    expect(resultWith1).toBeTruthy();
-    expect(resultWith250).toBeTruthy();
-    expect(resultWith500).toBeTruthy();
-  });
-
-  it('データがFalthyかどうか判定できること', () => {
-    const invalidData = Number(undefined);
-    const result = utils.validateReadingCount(invalidData, 500);
-
-    expect(result).toBeFalsy();
-  });
-
-  it('データが0以下の場合にfalseが返ってくること', () => {
-    const resultWith0 = utils.validateReadingCount(0, 500);
-    const resultWithMinus1 = utils.validateReadingCount(-1, 500);
-    
-    expect(resultWith0).toBeFalsy();
-    expect(resultWithMinus1).toBeFalsy();
-  });
-  
-  it('データがpageCountより大きい場合にfalseが返ってくること', () => {
-    const resultWithOver1 = utils.validateReadingCount(501, 500);
-    const resultWithPower = utils.validateReadingCount(1000, 500);
-    
-    expect(resultWithOver1).toBeFalsy();
-    expect(resultWithPower).toBeFalsy();
   });
 });
 
@@ -100,7 +51,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
+    const result = applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[1].isFavorite).toBeTruthy();
@@ -129,7 +80,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
+    const result = applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[0].isFavorite).toBeTruthy();
@@ -158,7 +109,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
+    const result = applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[2].isFavorite).toBeTruthy();
@@ -188,7 +139,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(oneItems, updateDetail);
+    const result = applyChangesToBookInfos(oneItems, updateDetail);
 
     expect(result.length).toEqual(1);
     expect(result[0]).toBeTruthy();
@@ -201,7 +152,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: testData.firstId
     };
-    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
+    const result = applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
 
     expect(result.length).toEqual(2);
   });
@@ -212,7 +163,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: undefined as unknown as ObjectId
     };
-    const result = utils.applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
+    const result = applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
 
     //同じ値か
     expect(result).toEqual(testData.threeBookInfos);
@@ -226,7 +177,7 @@ describe('toggleFavorite', () => {
   it('フィルターのisCheckedがTrueの際に、お気に入りの書誌データのみisVisibleがTrueに変更されるか', () => {
     testData.threeBookInfos.forEach(item => item.isVisible = true);
     testData.threeBookInfos[0].isFavorite = true;
-    const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
+    const toggledItems = toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
     expect(toggledItems[1].isVisible).toBeFalsy();
@@ -235,7 +186,7 @@ describe('toggleFavorite', () => {
   
   it('フィルターのisCheckedがFalseの際に、全データのisVisibleがTrueに変更されるか', () => {
     testData.threeBookInfos.forEach(item => item.isVisible = false);
-    const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true});
+    const toggledItems = toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
     expect(toggledItems[1].isVisible).toBeTruthy();
@@ -243,25 +194,81 @@ describe('toggleFavorite', () => {
   });
 
   it('フィルターのタイプがfavorite以外の場合、データが変更されないこと', () => {
-    const toggledItems = utils.toggleFavorite(testData.threeBookInfos, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
+    const toggledItems = toggleFavorite(testData.threeBookInfos, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
 
     expect(toggledItems).toEqual(testData.threeBookInfos);
   });
 });
 
 describe('getTypeForBottomLabel', () => {
+  it('ホームのパスでupdateDateが返ること', () => {
+    const result = getTypeForBottomLabel('/books');
+    expect(result).toEqual('updateDate');
+  });
+
   it('読んでいる本のパスでprogressが返ること', () => {
-    const result = utils.getTypeForBottomLabel('/books/reading');
+    const result = getTypeForBottomLabel('/books/reading');
     expect(result).toEqual('progress');
   });
 
   it('読み終わった本のパスでcompleteDateが返ること', () => {
-    const result = utils.getTypeForBottomLabel('/books/complete');
+    const result = getTypeForBottomLabel('/books/complete');
     expect(result).toEqual('completeDate');
   });
 
   it('その他のパスでcreateDateが返ること', () => {
-    const result = utils.getTypeForBottomLabel('/books');
+    const result = getTypeForBottomLabel('/books/wish');
     expect(result).toEqual('createDate');
+  });
+});
+
+describe('validateReadingDate', () => {
+  it('データがTruthyかどうか判定できること', () => {
+    const validData = '2023-10-30';
+    const result = validateReadingDate(validData);
+
+    expect(result).toBeTruthy();
+  });
+
+  it('データがFalthyかどうか判定できること', () => {
+    const invalidData = '';
+    const result = validateReadingDate(invalidData);
+
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('validateReadingCount', () => {
+  it('データが1～pageCountの間の場合に、trueが返ってくること', () => {
+    const resultWith1 = validateReadingCount(1, 500);
+    const resultWith250 = validateReadingCount(250, 500);
+    const resultWith500 = validateReadingCount(500, 500);
+
+    expect(resultWith1).toBeTruthy();
+    expect(resultWith250).toBeTruthy();
+    expect(resultWith500).toBeTruthy();
+  });
+
+  it('データがFalthyかどうか判定できること', () => {
+    const invalidData = Number(undefined);
+    const result = validateReadingCount(invalidData, 500);
+
+    expect(result).toBeFalsy();
+  });
+
+  it('データが0以下の場合にfalseが返ってくること', () => {
+    const resultWith0 = validateReadingCount(0, 500);
+    const resultWithMinus1 = validateReadingCount(-1, 500);
+    
+    expect(resultWith0).toBeFalsy();
+    expect(resultWithMinus1).toBeFalsy();
+  });
+  
+  it('データがpageCountより大きい場合にfalseが返ってくること', () => {
+    const resultWithOver1 = validateReadingCount(501, 500);
+    const resultWithPower = validateReadingCount(1000, 500);
+    
+    expect(resultWithOver1).toBeFalsy();
+    expect(resultWithPower).toBeFalsy();
   });
 });
