@@ -4,9 +4,9 @@ import type { BookInfo } from '$lib/server/models/BookInfo';
 
 export const load = (async ({ fetch }) => {
   //直近で読んだ書誌データを取得
-  const recentBook = await fetch('/api/bookinfo?recentbook=true');
-  if (!recentBook.ok) {
-    throw error(recentBook.status);
+  const bookInfos = await fetch('/api/bookinfo?recentbook=true');
+  if (!bookInfos.ok) {
+    throw error(bookInfos.status);
   }
 
   //書誌データのhistoryのみを取得
@@ -15,11 +15,11 @@ export const load = (async ({ fetch }) => {
     throw error(history.status);
   }
   
-  const bookInfos: BookInfo[] = await recentBook.json();
+  const recentBook: BookInfo[] = await bookInfos.json();
   const pagesWithDate = getPageCountInCurrentWeek(await history.json());
   console.log(pagesWithDate);
   
-  return { bookInfos, pagesWithDate };
+  return { recentBook, pagesWithDate };
 }) satisfies PageServerLoad;
 
 const getPageCountInCurrentWeek = (bookInfos: BookInfo[]) => {
