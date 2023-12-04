@@ -48,7 +48,8 @@ export const toggleFavorite = (bookInfos: BookInfo[], filter: toggleFilterItem):
 /**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
 export const getTypeForBottomLabel = (pathName: string): typeForBottomLabel => {
 	const typeForLabel = 
-		pathName === '/books/reading' ? 'progress'
+		pathName === '/books' ? 'updateDate'
+			: pathName === '/books/reading' ? 'progress'
 			: pathName === '/books/complete' ? 'completeDate'
 			: 'createDate';
 

@@ -201,6 +201,11 @@ describe('toggleFavorite', () => {
 });
 
 describe('getTypeForBottomLabel', () => {
+  it('ホームのパスでupdateDateが返ること', () => {
+    const result = getTypeForBottomLabel('/books');
+    expect(result).toEqual('updateDate');
+  });
+
   it('読んでいる本のパスでprogressが返ること', () => {
     const result = getTypeForBottomLabel('/books/reading');
     expect(result).toEqual('progress');
@@ -212,7 +217,7 @@ describe('getTypeForBottomLabel', () => {
   });
 
   it('その他のパスでcreateDateが返ること', () => {
-    const result = getTypeForBottomLabel('/books');
+    const result = getTypeForBottomLabel('/books/wish');
     expect(result).toEqual('createDate');
   });
 });
