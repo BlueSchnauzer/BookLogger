@@ -51,6 +51,7 @@
   "type": "module",
   "dependencies": {
     "chart.js": "^4.4.0",
+    "firebase": "^10.7.0",
     "googleapis": "^128.0.0",
     "mongodb": "^6.2.0",
     "mongodb-memory-server": "^9.0.1",
