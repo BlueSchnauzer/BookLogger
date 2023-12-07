@@ -28,4 +28,4 @@ if (!getApps().length) {
   firebaseApp = initializeApp(firebaseConfig);
 }
  
-export const auth = getAuth(firebaseApp);
+export const firebaseAuth = getAuth(firebaseApp);

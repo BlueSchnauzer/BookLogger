@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
-	import { auth } from '$lib/firebase';
+  import { firebaseAuth } from '$lib/firebase.client';
 
 	let email: string;
 	let password: string;
@@ -9,7 +9,7 @@
 	let success: boolean | undefined = undefined;
 
 	const register = () => {
-		createUserWithEmailAndPassword(auth, email, password)
+		createUserWithEmailAndPassword(firebaseAuth, email, password)
 			.then(() => {
 				goto('/login');
 			})

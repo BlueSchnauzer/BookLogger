@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { authUser } from '$lib/authStore';
-  import { auth } from '$lib/firebase';
+  import { firebaseAuth } from '$lib/firebase.client';
   import { signInWithEmailAndPassword } from 'firebase/auth';
 
   let email: string;
@@ -10,7 +10,7 @@
 	let success: boolean | undefined = undefined;
 
   const login = () => {
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredentials) => {
         authUser.set({
           uid: userCredentials.user.uid,
