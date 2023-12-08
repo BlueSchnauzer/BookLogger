@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { authUser } from '$lib/authStore';
   import { firebaseAuth } from '$lib/firebase.client';
   import { signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -9,21 +8,23 @@
 
 	let success: boolean | undefined = undefined;
 
-  const login = () => {
-    signInWithEmailAndPassword(firebaseAuth, email, password)
-      .then((userCredentials) => {
-        authUser.set({
-          uid: userCredentials.user.uid,
-          email: userCredentials.user.email!
-        });
+  const login = async () => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(firebaseAuth, email, password);
+      const idToken = await userCredentials.user.getIdToken();
 
-        goto('/home');
-      })
-      .catch((error) => {
-        console.log(error);
-
-        success = false;
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        body: JSON.stringify(idToken),
+        headers: {'Content-type': 'application/json'}
       });
+    }
+    catch (error) {
+      console.log(error);
+      success = false;
+    }
+
+    goto('/home');
   }
 </script>
  
