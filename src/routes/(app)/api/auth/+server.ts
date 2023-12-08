@@ -8,8 +8,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   cookies.delete(cookieName, { path: '/' });
 
   try {
-    console.log('api route');
-    console.log(token);
     //クライアント側での認証情報が正しいか確認し、uidを取得する。
     const uid = (await firebaseAdminAuth.verifyIdToken(token)).uid;
     
