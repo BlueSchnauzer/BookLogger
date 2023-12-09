@@ -1,30 +1,31 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+	import { createUserWithEmailAndPassword } from 'firebase/auth';
   import { firebaseAuth } from '$lib/firebase.client';
 	import AuthMenu from '../AuthMenu.svelte';
+	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
 
 	let email: string;
 	let password: string;
 
+  //ローダーを表示する
+  let isDisplay = false;
 	let success: boolean | undefined = undefined;
 
-	// const registerWithGoogle = () => {
-	// 	const provider = new GoogleAuthProvider();
-	// 	signInWithPopup(firebaseAuth, provider)
-	// };
-
 	const registerWithEmail = async () => {
+		isDisplay = true;
 		try {
 			await createUserWithEmailAndPassword(firebaseAuth, email, password);
+			isDisplay = false;
 			goto('/login');
 		}
 		catch (error) {
 			console.log(error);
+			isDisplay = false;
 			success = false;
 		}
 	};
-
+	
 </script>
 
 <div class="flex flex-col p-8 space-y-4 rounded-3xl bg-white sm:w-10/12 max-w-2xl">
@@ -32,14 +33,7 @@
 	{#if !success && success !== undefined}
 		<div class="p-8 text-red-500 bg-red-100">エラーが発生しました。時間をおいて再度お試しください。</div>
 	{/if}
-  <button class="w-60 self-center px-8 py-2 rounded duration-100 text-white bg-sky-600 hover:bg-sky-700">
-    Googleアカウントで登録
-  </button>
-  <div class="flex justify-center items-center">
-    <div class="w-7 bg-stone-400 min-h-[1px]" />
-    <span class="px-2">OR</span>
-    <div class="w-7 bg-stone-400 min-h-[1px]" />
-  </div>
+	<span class="text-gray-500">※Googleアカウントがある場合は登録なしで利用できます。</span>
   <form class="flex flex-col gap-4" on:submit|preventDefault={registerWithEmail}>
     <span class="text-sm">メールアドレス</span>
     <input
@@ -62,3 +56,4 @@
     </button>
   </form>
 </div>
+<FullCoverLoader {isDisplay} />
