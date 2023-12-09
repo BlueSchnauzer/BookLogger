@@ -10,6 +10,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
   try {
     //クライアント側での認証情報が正しいか確認し、uidを取得する。
+    //(認証自体はフロントのfirebaseで行って、サーバーで不正な処理でないかを確認する)
     const uid = (await firebaseAdminAuth.verifyIdToken(token)).uid;
     
     cookies.set(cookieName, uid, { path: '/' });
