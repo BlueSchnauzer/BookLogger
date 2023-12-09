@@ -6,18 +6,19 @@
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
-	import BookShelf from '$lib/icons/BookShelf.svelte';
 
+	//モバイルメニュー(画面サイズが小さい時にサイドメニューと入れ替えで表示)
+	
 	const MenuItemDatas: menuItemData[] = [
-		{ icon: Home, ref: '/home', jpName: 'ホーム', enName: 'Home' },
-		{ icon: BookCase, ref: '/books', jpName: '登録した本', enName: 'AllBooks' },
-		{ icon: PileOfBooks, ref: '/books/wish', jpName: '読みたい本', enName: 'Wish' },
-		{ icon: Openingbook, ref: '/books/reading', jpName: '読んでいる本', enName: 'Reading' },
-		{ icon: CompleteBook, ref: '/books/complete', jpName: '読み終わった本', enName: 'Complete' },
-		{ icon: BookShelf, ref: '/shelfs', jpName: '本棚', enName: 'Shelfs' }
+		{ icon: Home, ref: '/home', name: 'Home' },
+		{ icon: BookCase, ref: '/books', name: 'AllBooks' },
+		{ icon: PileOfBooks, ref: '/books/wish', name: 'Wish' },
+		{ icon: Openingbook, ref: '/books/reading', name: 'Reading' },
+		{ icon: CompleteBook, ref: '/books/complete', name: 'Complete' }
 	];
 	const colorStone200 = '#E7E5E4';
 
+	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;
 	$: pathName = $page.url.pathname;
 </script>
@@ -30,7 +31,7 @@
 			>
 				<a href={data.ref} class="flex flex-1 flex-col items-center justify-evenly">
 					<svelte:component this={data.icon} color={colorStone200} />
-					<span class="text-xs text-stone-200">{data.enName}</span>
+					<span class="text-xs text-stone-200">{data.name}</span>
 				</a>
 			</li>
 		{/each}

@@ -4,8 +4,7 @@ import type { ComponentType } from 'svelte';
 export type menuItemData = {
 	icon: ComponentType;
 	ref: string;
-	jpName: string;
-	enName: string;
+	name: string;
 };
 
 /**ラベルフィルター(トグル) */
