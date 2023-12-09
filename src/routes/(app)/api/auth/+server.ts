@@ -1,10 +1,11 @@
 import type { RequestHandler } from './$types';
 import { firebaseAdminAuth } from '$lib/server/firebase.server';
 
+const cookieName = 'uid';
+
 /**ログイン情報を確認し、クッキーに保存する */
 export const POST: RequestHandler = async ({ request, cookies }) => {
   const token = await request.json();
-  const cookieName = 'uid';
   cookies.delete(cookieName, { path: '/' });
 
   try {
@@ -19,4 +20,11 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   }
 
   return new Response('ログインに成功しました。', { status: 200 });
+};
+
+/**クッキーを削除する */
+export const DELETE: RequestHandler = async ({ cookies }) => {
+  cookies.delete(cookieName, { path: '/' });
+
+  return new Response('クッキーの削除に成功しました。', { status: 200 });
 };
