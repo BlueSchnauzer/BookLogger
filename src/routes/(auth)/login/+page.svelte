@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
   import { firebaseAuth } from '$lib/firebase.client';
   import { signInWithEmailAndPassword } from 'firebase/auth';
+	import AuthMenu from '../AuthMenu.svelte';
 
   let email: string;
   let password: string;
@@ -18,34 +19,49 @@
         body: JSON.stringify(idToken),
         headers: {'Content-type': 'application/json'}
       });
+      
+      goto('/home');
     }
     catch (error) {
       console.log(error);
       success = false;
     }
-
-    goto('/home');
   }
+
 </script>
- 
-<form
-  class="flex flex-col gap-4 p-8 space-y-4 bg-white sm:w-10/12"
-  on:submit|preventDefault={login}
->
-  <input
-    type="email"
-    placeholder="Email"
-    class="px-4 py-2 border border-gray-300 rounded-md"
-    required
-    bind:value={email}
-  />
-  <input
-    type="password"
-    placeholder="Password"
-    class="px-4 py-2 border border-gray-300 rounded-md"
-    required
-    bind:value={password}
-  />
- 
-  <button type="submit" class="default-action">Login</button>
-</form>
+
+<div class="flex flex-col p-8 space-y-4 rounded-3xl bg-white sm:w-10/12 max-w-2xl">
+  <AuthMenu/>
+	{#if !success && success !== undefined}
+		<div class="p-8 text-red-500 bg-red-100">エラーが発生しました。時間をおいて再度お試しください。</div>
+	{/if}
+  <button class="w-60 self-center px-8 py-2 rounded duration-100 text-white bg-sky-600 hover:bg-sky-700">
+    Googleアカウントでログイン
+  </button>
+  <div class="flex justify-center items-center">
+    <div class="w-7 bg-stone-400 min-h-[1px]" />
+    <span class="px-2">OR</span>
+    <div class="w-7 bg-stone-400 min-h-[1px]" />
+  </div>
+  <form class="flex flex-col gap-4" on:submit|preventDefault={login}>
+    <span class="text-sm">メールアドレス</span>
+    <input
+      type="email"
+      placeholder="メールアドレス"
+      class="px-4 py-2 border border-gray-300 rounded-md"
+      required
+      bind:value={email}
+    />
+    <span class="text-sm">パスワード</span>
+    <input
+      type="password"
+      placeholder="パスワード"
+      class="px-4 py-2 border border-gray-300 rounded-md"
+      required
+      bind:value={password}
+    />
+    <button type="submit" class="w-28 self-center px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700">
+      ログイン
+    </button>
+  </form>
+</div>
