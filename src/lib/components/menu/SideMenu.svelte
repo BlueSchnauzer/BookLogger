@@ -7,6 +7,9 @@
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
+	import { signOut } from 'firebase/auth';
+	import { firebaseAuth } from '$lib/firebase.client';
+	import { goto } from '$app/navigation';
 
 	//PC用メニュー
 
@@ -22,6 +25,20 @@
 	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;
 	$: pathName = $page.url.pathname;	
+
+	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
+	const logout = async () => {
+		try {
+			await signOut(firebaseAuth);
+			const response = await fetch('/api/auth', {
+				method: 'DELETE'
+			});
+		}
+		catch (error) {
+			console.log(error);
+		}
+    goto('/login');
+	}
 
 </script>
 
@@ -48,7 +65,7 @@
 			{/each}
 		</ul>
 		<div class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600">
-			<button class="flex flex-1 group items-center rounded-md">
+			<button class="flex flex-1 group items-center rounded-md" on:click={logout}>
 				<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 					<Icon icon="ph:sign-out-bold" width="24" height="24" color={colorStone200}/>
 				</div>
