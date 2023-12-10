@@ -10,7 +10,7 @@
   let email: string;
   let password: string;
 
-  /**ローダー表示 */
+  //ローダー表示
   let isDisplay = false;
 	let success: boolean | undefined = undefined;
 
