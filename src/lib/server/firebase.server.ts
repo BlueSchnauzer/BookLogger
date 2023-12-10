@@ -1,7 +1,3 @@
-import {
-  
-  FIREBASE_ADMIN_CLIENT_EMAIL
-} from '$env/static/private'
 import { env } from '$env/dynamic/private'
 import { PUBLIC_FIREBASE_PROJECT_ID } from '$env/static/public';
 import admin from 'firebase-admin';
@@ -16,7 +12,7 @@ if (!getApps().length) {
   firebaseAdmin = initializeApp({
     credential: credential.cert({
       privateKey: env.FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      clientEmail: FIREBASE_ADMIN_CLIENT_EMAIL,
+      clientEmail: env.FIREBASE_ADMIN_CLIENT_EMAIL,
       projectId: PUBLIC_FIREBASE_PROJECT_ID
     })
   })
