@@ -1,5 +1,4 @@
 import { env } from '$env/dynamic/private'
-import { PUBLIC_FIREBASE_PROJECT_ID } from '$env/static/public';
 import admin from 'firebase-admin';
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
@@ -13,7 +12,7 @@ if (!getApps().length) {
     credential: credential.cert({
       privateKey: env.FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, '\n'),
       clientEmail: env.FIREBASE_ADMIN_CLIENT_EMAIL,
-      projectId: PUBLIC_FIREBASE_PROJECT_ID
+      projectId: env.PUBLIC_FIREBASE_PROJECT_ID
     })
   })
 }
