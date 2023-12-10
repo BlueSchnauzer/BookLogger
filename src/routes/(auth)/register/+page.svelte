@@ -4,6 +4,7 @@
   import { firebaseAuth } from '$lib/firebase.client';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
+	import { pushErrorToast, pushSuccessToast } from '$lib/utils/toast';
 
 	let email: string;
 	let password: string;
@@ -12,16 +13,20 @@
   let isDisplay = false;
 	let success: boolean | undefined = undefined;
 
+  const target = 'mainToast';
+
   /**メールとパスワードでのユーザ登録処理*/
 	const registerWithEmail = async () => {
 		isDisplay = true;
 
 		try {
 			await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      pushSuccessToast('登録が完了しました。', target);
 			goto('/login');
 		}
 		catch (error) {
 			console.log(error);
+      pushErrorToast('登録に失敗しました。', target);
 			success = false;
 		}
 

@@ -4,7 +4,8 @@
   import { GoogleAuthProvider, getRedirectResult, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { toast } from '@zerodevx/svelte-toast';
 
   let email: string;
   let password: string;
@@ -76,6 +77,11 @@
     //リダイレクトの場合、ページが再読み込みされるので
     //マウント後に認証結果を確認する。
     await handleRedirectResult();
+  })
+
+  onDestroy(() => {
+    //アンマウント時にトーストが表示されていれば削除する。
+		toast.pop(0);
   })
 
 </script>
