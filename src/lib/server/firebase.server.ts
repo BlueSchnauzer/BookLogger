@@ -24,25 +24,4 @@ if (!getApps().length) {
 
 const firebaseAdminAuth = getAuth(firebaseAdmin);
 
-/**
- * idTokenがFalthyもしくは、idTokenの認証結果がFalthyの場合にログインページへリダイレクトする。
- * @param idToken firebase認証後のidToken
- * @param isRedirect 不正だった場合にリダイレクトするか
- * @returns デコードしたトークン情報
- */
-const verifyAuthorisation = async (idToken: string, isRedirect: boolean): Promise<DecodedIdToken | undefined> => {
-  if (!idToken) {
-    if (isRedirect) { throw redirect(302, '/login'); }
-    return undefined;
-  }
-
-  const decodedToken = await firebaseAdminAuth.verifyIdToken(idToken);
-  if (!decodedToken) {
-    if (isRedirect) { throw redirect(302, '/login') }
-    return undefined;
-  }
-
-  return decodedToken;
-}
-
-export { firebaseAdminAuth, verifyAuthorisation};
+export { firebaseAdminAuth };
