@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { firebaseAdminAuth } from '$lib/server/firebase.server';
 
-const cookieName = 'uid';
+const cookieName = 'idToken';
 
 /**ログイン情報を確認し、クッキーに保存する */
 export const POST: RequestHandler = async ({ request, cookies }) => {
@@ -11,9 +11,9 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   try {
     //クライアント側での認証情報が正しいか確認し、uidを取得する。
     //(認証自体はフロントのfirebaseで行って、サーバーで不正な処理でないかを確認する)
-    const uid = (await firebaseAdminAuth.verifyIdToken(token)).uid;
+    const decodeIdToken = await firebaseAdminAuth.verifyIdToken(token);
     
-    cookies.set(cookieName, uid, { path: '/' });
+    cookies.set(cookieName, token, { path: '/' , httpOnly: true, secure: true });
   }
   catch (error){
     console.log(error);
