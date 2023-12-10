@@ -10,7 +10,7 @@ export const thirdId = new ObjectId('651451ed67241f439ce8a1b1');
 /**テスト用書誌データ(1件) */
 export const oneBookInfo: BookInfo = {
   _id: firstId,
-  userId: 1,
+  userId: 'firstData',
   isVisible: true,
   identifier: {
     isbn_13: '978-4-15-120051-9'
@@ -33,7 +33,7 @@ export const oneBookInfo: BookInfo = {
 /**テスト用書誌データ(3件) */
 export const threeBookInfos: BookInfo[] = [{
   _id: firstId,
-  userId: 1,
+  userId: 'firstData',
   isVisible: true,
   identifier: {
     isbn_13: '978-4-15-120051-9'
@@ -54,7 +54,7 @@ export const threeBookInfos: BookInfo[] = [{
 },
 {
   _id: secondId,
-  userId: 1,
+  userId: 'secondData',
   isVisible: true,
   identifier: {
     isbn_13: '978-4-15-031316-6'
@@ -75,7 +75,7 @@ export const threeBookInfos: BookInfo[] = [{
 },
 {
   _id: thirdId,
-  userId: 1,
+  userId: 'thirdData',
   isVisible: true,
   identifier: {
     isbn_13: '978-4-16-791019-8'

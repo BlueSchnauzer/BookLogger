@@ -4,9 +4,9 @@ import type { collections } from '$lib/server/database/collections';
 import type { status } from '$lib/customTypes';
 
 /**ユーザIDに紐づいた書誌データを取得する */
-export async function getBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+export async function getBookInfo(collections: collections, userId: string): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
-  if (typeof userId !== 'number') { return bookInfos; }
+  if (typeof userId !== 'string') { return bookInfos; }
 
   try {
     bookInfos = await collections.bookInfos?.find({userId}).toArray() as BookInfo[];  
@@ -20,9 +20,9 @@ export async function getBookInfo(collections: collections, userId: number): Pro
 }
 
 /**直近で読んだ、ユーザIDに紐づいた書誌データを取得する */
-export async function getRecentBookInfo(collections: collections, userId: number): Promise<BookInfo[]>{
+export async function getRecentBookInfo(collections: collections, userId: string): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
-  if (typeof userId !== 'number') { return bookInfos; }
+  if (typeof userId !== 'string') { return bookInfos; }
 
   try {
     bookInfos = await collections.bookInfos?.find({userId}).sort({updateDate: -1}).limit(1).toArray() as BookInfo[];  
@@ -36,10 +36,10 @@ export async function getRecentBookInfo(collections: collections, userId: number
 }
 
 /**ユーザIDに紐づいた書誌データから、historyのみを取得する */
-export async function getBookInfoWithOnlyHistory(collections: collections, userId: number) {
+export async function getBookInfoWithOnlyHistory(collections: collections, userId: string) {
   //historyだけ取得するが、まとめて1つの配列にはできないので書誌データごとに取得する。
   let histories: BookInfo[] = [];
-  if (typeof userId !== 'number') { return []; }
+  if (typeof userId !== 'string') { return []; }
 
   try {
     const projection = { _id: 0, history: 1};
@@ -54,9 +54,9 @@ export async function getBookInfoWithOnlyHistory(collections: collections, userI
 }
 
 /**statusが引数と一致し、ユーザIDに紐づいた書誌データを取得する */
-export async function getBookInfoByStatus(collections: collections, userId: number, status: status): Promise<BookInfo[]>{
+export async function getBookInfoByStatus(collections: collections, userId: string, status: status): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
-  if (typeof userId !== 'number') { return bookInfos; }
+  if (typeof userId !== 'string') { return bookInfos; }
 
   try {
     const filter: mongoDB.Filter<BookInfo> = {
