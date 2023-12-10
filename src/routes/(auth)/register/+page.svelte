@@ -12,18 +12,20 @@
   let isDisplay = false;
 	let success: boolean | undefined = undefined;
 
+  /**メールとパスワードでのユーザ登録処理*/
 	const registerWithEmail = async () => {
 		isDisplay = true;
+
 		try {
 			await createUserWithEmailAndPassword(firebaseAuth, email, password);
-			isDisplay = false;
 			goto('/login');
 		}
 		catch (error) {
 			console.log(error);
-			isDisplay = false;
 			success = false;
 		}
+
+    isDisplay = false;
 	};
 	
 </script>

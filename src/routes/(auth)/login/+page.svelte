@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
   import { firebaseAuth } from '$lib/firebase.client';
-  import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+  import { GoogleAuthProvider, getRedirectResult, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
+	import { onMount } from 'svelte';
 
   let email: string;
   let password: string;
 
-  //ローダーを表示する
+  /**ローダー表示 */
   let isDisplay = false;
 	let success: boolean | undefined = undefined;
 
@@ -22,31 +23,60 @@
 
     try {
       if (type === 'google'){
-        const provider = new GoogleAuthProvider();
-        provider.setDefaultLanguage('en');
-		    const userCredentials = await signInWithPopup(firebaseAuth, provider);
-        idToken = await userCredentials.user.getIdToken();
+        await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
+        //後続処理はリダイレクトから戻った後にonMountで行う。
       }
       else {
         const userCredentials = await signInWithEmailAndPassword(firebaseAuth, email, password);
         idToken = await userCredentials.user.getIdToken();
-      }
-
-      const response = await fetch('/api/auth', {
-        method: 'POST',
-        body: JSON.stringify(idToken),
-        headers: {'Content-type': 'application/json'}
-      });
-      
-      isDisplay = false;
-      goto('/home');
+  
+        await setCookie(idToken);
+        goto('/home');
+      }      
     }
     catch (error) {
       console.log(error);
-      isDisplay = false;
       success = false;
     }
+
+    isDisplay = false;
   }
+
+  /**認証したユーザの認証情報をクッキーに保存する。*/
+  const setCookie = async (idToken: string) => {
+    const response = await fetch('/api/auth', {
+      method: 'POST',
+      body: JSON.stringify(idToken),
+      headers: {'Content-type': 'application/json'}
+    });
+  }
+
+  /**リダイレクトから戻った際にGoogle認証が成功したかを確認する。*/
+  const handleRedirectResult = async () => {
+    isDisplay = true;
+
+    try {
+      const userCredentials = await getRedirectResult(firebaseAuth);
+      if (userCredentials) {
+        const idToken = await userCredentials!.user.getIdToken();
+        await setCookie(idToken);
+
+        goto('/home'); 
+      }
+    }
+    catch (error) {
+      console.log(error);
+      success = false;
+    }
+
+    isDisplay = false;
+  }
+
+  onMount(async () => {
+    //リダイレクトの場合、ページが再読み込みされるので
+    //マウント後に認証結果を確認する。
+    await handleRedirectResult();
+  })
 
 </script>
 
