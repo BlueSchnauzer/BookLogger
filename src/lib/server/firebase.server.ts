@@ -24,11 +24,19 @@ if (!getApps().length) {
 
 const firebaseAdminAuth = getAuth(firebaseAdmin);
 
-/**idTokenがFalthyもしくは、idTokenの認証結果がFalthyの場合にログインページへリダイレクトする。 */
-const verifyAuthorisation = async (idToken: string) => {
+/**
+ * idTokenがFalthyもしくは、idTokenの認証結果がFalthyの場合にログインページへリダイレクトする。
+ * @param idToken firebase認証後のidToken
+ * @param isRedirect 不正だった場合にリダイレクトするか
+ * @returns 
+ */
+const verifyAuthorisation = async (idToken: string, isRedirect: boolean): Promise<boolean> => {
   if (!idToken || await !firebaseAdminAuth.verifyIdToken(idToken)) {
-    throw redirect(302, '/login');
+    if (isRedirect) { throw redirect(302, '/login') }
+    return false;
   }
+
+  return true;
 }
 
 export { firebaseAdminAuth, verifyAuthorisation};

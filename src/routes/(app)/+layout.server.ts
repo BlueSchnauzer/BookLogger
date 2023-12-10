@@ -5,7 +5,7 @@ import { firebaseAdminAuth, verifyAuthorisation } from '$lib/server/firebase.ser
 export const load = (async ({ cookies }) => {
   //クッキーが無い、もしくはverifyが通らない場合は不正なアクセスなので弾く。
   const idToken = cookies.get('idToken');
-  await verifyAuthorisation(idToken!);
+  await verifyAuthorisation(idToken!, true);
 
   return {};
 }) satisfies LayoutServerLoad;
