@@ -4,9 +4,8 @@ import type { ObjectId } from 'mongodb';
 
 /**書誌情報 */
 export class BookInfo {
-	public userId: number;
+	public userId: string;
 	public title: string;
-	//userId: ObjectId; //User用のスキーマが完成した際に入れ替える。
 	public author: string[];
 	public thumbnail: string;
 	public createDate: Date;
@@ -31,7 +30,7 @@ export class BookInfo {
 	public shelfCategory?: ObjectId[];
 
 	/**GAPIのvolumeで初期化する */
-	constructor(volume: books_v1.Schema$Volume, userId: number){
+	constructor(volume: books_v1.Schema$Volume, userId: string){
 		const currentDate = new Date;
 
 		this.userId = userId;

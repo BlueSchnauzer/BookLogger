@@ -6,6 +6,7 @@ import ToggleSwitch from '$lib/components/common/parts/ToggleSwitch.svelte';
 import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
+import FullCoverLoader from './FullCoverLoader.svelte';
 
 describe('LayerZindex30', () => {
   it('レンダリング', () => {
@@ -21,6 +22,24 @@ describe('LayerZindex30', () => {
     await fireEvent.click(layer);
 
     expect(screen.getByTestId('layerZ30')).toHaveClass('hidden');
+  });
+});
+
+describe('FullCoverLoader', () => {
+  it('レンダリング', () => {
+    render(FullCoverLoader, {isDisplay: true});
+
+    expect(screen.getByTestId('layerZ30')).toBeInTheDocument();
+		expect(screen.getByTestId('loader')).toBeInTheDocument();
+  });
+
+  it('propsがFaulthyの際に非表示に変更されること', async () => {
+    const { component } = render(FullCoverLoader, {isDisplay: true});
+
+		await component.$set({isDisplay: false});
+
+    expect(screen.getByTestId('layerZ30')).toHaveClass('hidden');
+		expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
   });
 });
 

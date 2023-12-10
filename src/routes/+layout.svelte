@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import NProgress from 'nprogress';
 	import 'nprogress/nprogress.css';

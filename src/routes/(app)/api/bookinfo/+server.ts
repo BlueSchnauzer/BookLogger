@@ -5,10 +5,13 @@ import { json } from '@sveltejs/kit';
 import type { books_v1 } from 'googleapis';
 import { BookInfo } from '$lib/server/models/BookInfo';
 import { validateReadingCount } from '$lib/utils/validation';
+import { verifyAndGetUid } from '$lib/server/verification';
 
 /**DBからユーザIDに一致するデータを取得する */
-export const GET: RequestHandler = async ({ url }) => {
-    const userId = 1; //todo クッキーから取る？
+export const GET: RequestHandler = async ({ url, cookies }) => {
+    const userId = await verifyAndGetUid(cookies.get('idToken'));
+    
+    if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
     let bookInfos: BookInfo[];
@@ -26,8 +29,10 @@ export const GET: RequestHandler = async ({ url }) => {
 };
 
 /**DBに書誌データを保存する */
-export const POST: RequestHandler = async ({ request }) => {
-    const userId = 1; //クッキーから取る？
+export const POST: RequestHandler = async ({ request, cookies }) => {
+    const userId = await verifyAndGetUid(cookies.get('idToken'));
+    
+    if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
     const item = await request.json() as books_v1.Schema$Volume;
@@ -37,8 +42,10 @@ export const POST: RequestHandler = async ({ request }) => {
 };
 
 /**DBの書誌データを更新する */
-export const PUT: RequestHandler = async ({ request }) => {
-    const userId = 1; //todo クッキーから取る？無かったらエラー
+export const PUT: RequestHandler = async ({ request, cookies }) => {
+    const userId = await verifyAndGetUid(cookies.get('idToken'));
+    
+    if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
     const item = await request.json() as {bookInfo: BookInfo, isComplete: boolean};
@@ -48,7 +55,10 @@ export const PUT: RequestHandler = async ({ request }) => {
 };
 
 /**DBの書誌データを削除する */
-export const DELETE: RequestHandler = async ({ request }) => {
+export const DELETE: RequestHandler = async ({ request, cookies }) => {
+    const userId = await verifyAndGetUid(cookies.get('idToken'));
+    
+    if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
     if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
     const _id = await request.json();
