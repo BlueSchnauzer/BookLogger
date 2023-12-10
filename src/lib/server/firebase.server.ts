@@ -6,7 +6,7 @@ import { PUBLIC_FIREBASE_PROJECT_ID } from '$env/static/public';
 import { redirect } from '@sveltejs/kit';
 import admin from 'firebase-admin';
 import { getApps, initializeApp } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
+import { getAuth, type DecodedIdToken } from 'firebase-admin/auth';
 
 //ビルド時に名前付きエクスポートするとエラーになるので、一度デフォルトエクスポートを挟んでから取得
 const { credential } = admin;
@@ -28,15 +28,21 @@ const firebaseAdminAuth = getAuth(firebaseAdmin);
  * idTokenがFalthyもしくは、idTokenの認証結果がFalthyの場合にログインページへリダイレクトする。
  * @param idToken firebase認証後のidToken
  * @param isRedirect 不正だった場合にリダイレクトするか
- * @returns 
+ * @returns デコードしたトークン情報
  */
-const verifyAuthorisation = async (idToken: string, isRedirect: boolean): Promise<boolean> => {
-  if (!idToken || await !firebaseAdminAuth.verifyIdToken(idToken)) {
-    if (isRedirect) { throw redirect(302, '/login') }
-    return false;
+const verifyAuthorisation = async (idToken: string, isRedirect: boolean): Promise<DecodedIdToken | undefined> => {
+  if (!idToken) {
+    if (isRedirect) { throw redirect(302, '/login'); }
+    return undefined;
   }
 
-  return true;
+  const decodedToken = await firebaseAdminAuth.verifyIdToken(idToken);
+  if (!decodedToken) {
+    if (isRedirect) { throw redirect(302, '/login') }
+    return undefined;
+  }
+
+  return decodedToken;
 }
 
 export { firebaseAdminAuth, verifyAuthorisation};
