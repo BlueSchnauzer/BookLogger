@@ -3,6 +3,7 @@ import {
   FIREBASE_ADMIN_CLIENT_EMAIL
 } from '$env/static/private'
 import { PUBLIC_FIREBASE_PROJECT_ID } from '$env/static/public';
+import { redirect } from '@sveltejs/kit';
 import admin from 'firebase-admin';
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
@@ -21,4 +22,13 @@ if (!getApps().length) {
   })
 }
 
-export const firebaseAdminAuth = getAuth(firebaseAdmin);
+const firebaseAdminAuth = getAuth(firebaseAdmin);
+
+/**idTokenがFalthyもしくは、idTokenの認証結果がFalthyの場合にログインページへリダイレクトする。 */
+const verifyAuthorisation = async (idToken: string) => {
+  if (!idToken || await !firebaseAdminAuth.verifyIdToken(idToken)) {
+    throw redirect(302, '/login');
+  }
+}
+
+export { firebaseAdminAuth, verifyAuthorisation};
