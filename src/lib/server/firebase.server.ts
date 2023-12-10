@@ -15,7 +15,7 @@ let firebaseAdmin;
 if (!getApps().length) {
   firebaseAdmin = initializeApp({
     credential: credential.cert({
-      privateKey: FIREBASE_ADMIN_PRIVATE_KEY,
+      privateKey: FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, '\n'),
       clientEmail: FIREBASE_ADMIN_CLIENT_EMAIL,
       projectId: PUBLIC_FIREBASE_PROJECT_ID
     })
