@@ -118,7 +118,7 @@
       required
       bind:value={password}
     />
-    <button type="submit" class="w-28 self-center px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700">
+    <button type="submit" class="w-32 self-center px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700">
       ログイン
     </button>
   </form>
