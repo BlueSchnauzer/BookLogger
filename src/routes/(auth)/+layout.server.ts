@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { verifyAuthorisation } from '$lib/server/firebase.server';
+import { verifyAuthorisation } from '$lib/server/verification';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ cookies }) => {

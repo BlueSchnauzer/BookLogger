@@ -2,11 +2,13 @@ import type { RequestHandler } from '../$types';
 import collections from '$lib/server/database/collections';
 import { json } from '@sveltejs/kit';
 import { getBookInfoByStatus } from '$lib/server/database/bookInfo.service';
+import { verifyAndGetUid } from '$lib/server/verification';
 
 /**DBから読んでいる本で、ユーザIDに一致するデータを取得する */
-export const GET: RequestHandler = async () => {
-    const userId = 1; //todo クッキーから取る？無ければエラー
-
+export const GET: RequestHandler = async ({ cookies }) => {
+    const userId = await verifyAndGetUid(cookies.get('idToken'));
+    
+    if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
     if (!collections) { return json(userId, {status: 500});}
     let bookInfos = await getBookInfoByStatus(collections, userId, 'complete');
 

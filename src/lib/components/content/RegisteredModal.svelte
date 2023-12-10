@@ -48,7 +48,7 @@
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行
-		handleRequest(response.ok, response.ok ? '更新しました。' : '更新に失敗しました。\<br\>時間をおいて再度登録してください。', bookInfo);
+		handleRequest(response.ok, response.ok ? '更新しました。' : '更新に失敗しました。\<br\>時間をおいてから再度お試しください。', bookInfo);
 	};
 
 	/**書誌データの削除をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/

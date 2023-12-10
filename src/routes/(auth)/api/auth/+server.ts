@@ -9,7 +9,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   cookies.delete(cookieName, { path: '/' });
 
   try {
-    //クライアント側での認証情報が正しいか確認し、uidを取得する。
+    //クライアント側での認証情報が正しいか確認する。
     //(認証自体はフロントのfirebaseで行って、サーバーで不正な処理でないかを確認する)
     const decodeIdToken = await firebaseAdminAuth.verifyIdToken(token);
     
