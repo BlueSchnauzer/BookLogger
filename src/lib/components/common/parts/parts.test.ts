@@ -7,6 +7,8 @@ import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
 import FullCoverLoader from './FullCoverLoader.svelte';
+import BottomStatusLabel from './BottomStatusLabel.svelte';
+import { oneBookInfo } from '$lib/vitest-setup';
 
 describe('LayerZindex30', () => {
   it('レンダリング', () => {
@@ -158,3 +160,34 @@ describe('CategoryLabel', () => {
 
 	//todo 登録済みデータ用のテストを追加する
 });
+
+describe('BottomStatusLabel', () => {
+	it('登録日のステータスでレンダリングできること', () => {
+		render(BottomStatusLabel, {typeForLabel: 'createDate', bookInfo: oneBookInfo, isResponsiveText: false});
+
+		expect(screen.getByText('登録日')).toBeInTheDocument();
+	})
+
+	it('読んでいるページ数でレンダリングできること', () => {
+		oneBookInfo.history?.push({date: new Date, currentPage: oneBookInfo.pageCount / 2});
+		render(BottomStatusLabel, {typeForLabel: 'progress', bookInfo: oneBookInfo, isResponsiveText: false});
+
+		expect(screen.getByText('読んだページ数')).toBeInTheDocument();
+		expect(screen.getByTestId('pageProgress').style.width).toEqual('50%');
+	})
+
+	//そもそも総ページ数が無い本は編集することが無意味だが
+	it('総ページ数の無い書誌データの場合、更新日が表示されること', () => {
+		oneBookInfo.pageCount = 0;
+		render(BottomStatusLabel, {typeForLabel: 'progress', bookInfo: oneBookInfo, isResponsiveText: false});
+
+		expect(screen.getByText('更新日')).toBeInTheDocument();
+	})
+
+	it('読み終わった日のステータスでレンダリングできること', () => {
+		render(BottomStatusLabel, {typeForLabel: 'completeDate', bookInfo: oneBookInfo, isResponsiveText: false});
+
+		expect(screen.getByText('読み終わった日')).toBeInTheDocument();
+	})
+
+})
