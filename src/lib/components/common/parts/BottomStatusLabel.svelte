@@ -48,7 +48,7 @@
     <span class="pr-2 text-sm">{convertDate(bookInfo.updateDate)}</span>
   </div>
 {:else if typeForLabel === 'progress'}
-  <div class="self-center flex flex-col max-sm:hidden">
+  <div class="self-center flex flex-col {isResponsiveText ? 'max-sm:hidden' : ''}">
     <div class="px-2 pb-1.5 text-xs flex justify-between">
       <span>読んだページ数</span>
       <span>{getMaxPageCount()}ページ</span>
