@@ -7,10 +7,7 @@
 	export let data: PageData;
 
 	const toggleFilterItems: toggleFilterItem[] = [
-		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
-		{ id: 2, text: '読みたい', type: 'status', isChecked: false, isVisible: true },
-		{ id: 3, text: '読んでいる', type: 'status', isChecked: false, isVisible: true },
-		{ id: 4, text: '読み終わった', type: 'status', isChecked: false, isVisible: true }
+		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }
 	];
 	const selectFilterItems: selectFilterItem[] = [
 		{ id: 1, text: '最近追加した順' },
