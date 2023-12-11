@@ -77,7 +77,7 @@
 		</div>
 	{:else}
 		<div
-			class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[800px] max-h-[600px] m-auto inset-0 px-3 bg-vellum rounded-lg"
+			class="z-40 flex flex-col fixed w-[90%] h-[90%] max-w-[800px] max-h-[600px] m-auto inset-0 px-3 bg-vellum rounded-lg"
 		>
 			<div class="h-14 flex flex-row justify-between items-center">
 				<span class="text-xl">詳細</span>
