@@ -150,16 +150,14 @@
 				{/if}
 			</ul>
 		</div>
-		<div class="mb-1 text-right max-sm:flex max-sm:flex-col max-sm:items-stretch">
-			<input class="p-1 rounded-lg mr-1 max-sm:mb-1 border-[1px] border-stone-400" type="date" name="readingDate"
+		<div class="mb-1 text-right">
+			<input class="p-1 rounded-lg mr-1 border-[1px] border-stone-400" type="date" name="readingDate"
 				id="readingDate" bind:value={readingDate}	data-testid="dateInput"
 			/>
-			<div class="max-sm:mb-1">
-				<input class="w-16 p-1 rounded-lg border-[1px] border-stone-400" type="number" name="readingCount"
-					id="readingCount"	min="1"	max={bookInfo.pageCount} bind:value={readingCount}	data-testid="countInput"
-				/>
-				<span>ページ</span>
-			</div>
+			<input class="w-16 p-1 rounded-lg border-[1px] border-stone-400" type="number" name="readingCount"
+				id="readingCount"	min="1"	max={bookInfo.pageCount} bind:value={readingCount}	data-testid="countInput"
+			/>
+			<span>ページ</span>
 		</div>
 		<div class="mb-2 text-right">
 			<button
