@@ -36,7 +36,7 @@ export class BookInfo {
 		this.userId = userId;
 		this.title = volume.volumeInfo?.title ?? '';
 		this.author = volume.volumeInfo?.authors ?? [''];
-		this.thumbnail = ''; //gapi固有の情報なので、保存しないで都度取る。
+		this.thumbnail = volume.volumeInfo?.imageLinks?.thumbnail ?? ''; //gapi固有の情報だが、画像そのものではなく場所を表すURLを保存する。
 		this.createDate = currentDate;
 		this.updateDate = currentDate;
 		this.pageCount = volume.volumeInfo?.pageCount ?? 0;
