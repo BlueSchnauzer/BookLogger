@@ -55,14 +55,18 @@ describe('getBookInfo', () => {
 });
 
 describe('getRecentBookInfo', () => {  
-  it('直前に編集した、ユーザIDに一致するデータを1件のみ取得できること',async () => {
+  it('直前に編集し、読んだ記録が保存されている、ユーザIDに一致するデータを1件のみ取得できること',async () => {
     const copiedInfo = structuredClone(oneBookInfo);
 
+    oneBookInfo.history = undefined;
     const first = await col.insertOne(oneBookInfo);
     expect(await first.acknowledged).toBeTruthy();
 
     copiedInfo.title = 'recentbook';
     copiedInfo.updateDate = new Date;
+    copiedInfo.history = undefined;
+    copiedInfo.history = [] as any;
+    copiedInfo.history?.push({date: new Date, currentPage: 10});
     const second = await col.insertOne(copiedInfo);
     expect(await second.acknowledged).toBeTruthy();
 
@@ -71,13 +75,14 @@ describe('getRecentBookInfo', () => {
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
     expect(response[0].title).toEqual('recentbook');
+    expect(response[0].history?.length).toEqual(1);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
     const preData = await col.insertOne({userId: 'savedData'} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getRecentBookInfo({ bookInfos: col }, 'defferentData');
+    const response = await service.getRecentBookInfo({ bookInfos: col }, 'savedData');
 
     expect(response.length).toEqual(0);
   });
