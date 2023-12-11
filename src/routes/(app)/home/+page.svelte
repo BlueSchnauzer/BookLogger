@@ -47,6 +47,10 @@
           backgroundColor: '#65a30d', 
           borderRadius: 10
         }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
       }
     });
 
