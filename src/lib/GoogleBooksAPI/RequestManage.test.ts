@@ -1,52 +1,58 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { requestBookInfo, getThumbnailByIsbn, getBookInfosByQueries, requestBookInfoWithPartialResource } from "./RequestManage";
-import { oneBookInfo } from "$lib/vitest-setup";
+import { getTestData } from "$lib/vitest-setup";
+import type { BookInfo } from "$lib/server/models/BookInfo";
 
 describe('requestBookInfo', () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await requestBookInfo([`isbn:${oneBookInfo.identifier?.isbn_13}`]);
+    const result = await requestBookInfo([`isbn:${testData.identifier?.isbn_13}`]);
 
     expect(result.items).toBeDefined();
-    expect(result.items![0].volumeInfo?.title).toEqual(oneBookInfo.title);
+    expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });
   
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const result = await requestBookInfo([`intitle:${oneBookInfo.title}`]);
+    const result = await requestBookInfo([`intitle:${testData.title}`]);
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const result = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`]);
+    const result = await requestBookInfo([`inauthor:${testData.author[0]}`]);
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await requestBookInfo([`isbn:${oneBookInfo.identifier?.isbn_13}`, `intitle:${oneBookInfo.title}`, `inauthor:${oneBookInfo.author[0]}`]);
+    const result = await requestBookInfo([`isbn:${testData.identifier?.isbn_13}`, `intitle:${testData.title}`, `inauthor:${testData.author[0]}`]);
 
     expect(result.items).toBeDefined();
-    expect(result.items![0].volumeInfo?.title).toEqual(oneBookInfo.title);
+    expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });  
 
   it('検索結果が複数ある時に、取得数を制限できるか', async () => {
-    const defaultCounts = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`]);
+    const defaultCounts = await requestBookInfo([`inauthor:${testData.author[0]}`]);
     expect(defaultCounts.items).toBeDefined();
     expect(defaultCounts.items?.length).toEqual(10);
 
-    const twenty = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`], 20);
+    const twenty = await requestBookInfo([`inauthor:${testData.author[0]}`], 20);
     expect(twenty.items).toBeDefined();
     expect(twenty.items?.length).toEqual(20);
   });
 
   it('検索結果が複数ある際に、ページングができるか', async () => {
-    const pageOne = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`], 10, 0);
+    const pageOne = await requestBookInfo([`inauthor:${testData.author[0]}`], 10, 0);
     expect(pageOne.totalItems).toBeGreaterThanOrEqual(11);
     const firstItem = pageOne.items![0].volumeInfo;
 
-    const pageTwo = await requestBookInfo([`inauthor:${oneBookInfo.author[0]}`], 10, 10);
+    const pageTwo = await requestBookInfo([`inauthor:${testData.author[0]}`], 10, 10);
     const eleventhItem = pageTwo.items![0].volumeInfo;
 
     expect(firstItem).not.toEqual(eleventhItem);
@@ -54,8 +60,13 @@ describe('requestBookInfo', () => {
 });
 
 describe('requestBookInfoWithPartialResource', () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('リソースを指定して取得できるか', async () => {
-    const result = await requestBookInfoWithPartialResource([`isbn:${oneBookInfo.identifier?.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
+    const result = await requestBookInfoWithPartialResource([`isbn:${testData.identifier?.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
     
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
@@ -63,7 +74,7 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 
   it('リソースを指定しない場合、全てのリソースが取得できるか', async () => {
-    const result = await requestBookInfoWithPartialResource([`isbn:${oneBookInfo.identifier?.isbn_13}`]);
+    const result = await requestBookInfoWithPartialResource([`isbn:${testData.identifier?.isbn_13}`]);
     
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
@@ -72,32 +83,37 @@ describe('requestBookInfoWithPartialResource', () => {
 });
 
 describe('getBookInfosByQueries', () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const result = await getBookInfosByQueries(oneBookInfo.title, '', '');
+    const result = await getBookInfosByQueries(testData.title, '', '');
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries('', oneBookInfo.author[0], '');
+    const result = await getBookInfosByQueries('', testData.author[0], '');
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries('', '', oneBookInfo.identifier?.isbn_13!);
+    const result = await getBookInfosByQueries('', '', testData.identifier?.isbn_13!);
 
     expect(result.items).toBeDefined();
-    expect(result.items![0].volumeInfo?.title).toEqual(oneBookInfo.title);
+    expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });
   
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries(oneBookInfo.title, oneBookInfo.author[0], oneBookInfo.identifier?.isbn_13!);
+    const result = await getBookInfosByQueries(testData.title, testData.author[0], testData.identifier?.isbn_13!);
 
     expect(result.items).toBeDefined();
-    expect(result.items![0].volumeInfo?.title).toEqual(oneBookInfo.title);
+    expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });  
 
   //rejectを確認

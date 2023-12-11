@@ -4,7 +4,7 @@ import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import * as service from "$lib/server/database/bookInfo.service";
 import type { BookInfo } from '$lib/server/models/BookInfo';
-import { oneBookInfo, threeBookInfos } from '$lib/vitest-setup';
+import { getTestData, getTestDatas } from '$lib/vitest-setup';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
 let con: MongoClient;
@@ -26,10 +26,15 @@ afterEach(async () => {
 const userId = 'firstData';
 
 describe('getBookInfo', () => {  
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('ユーザIDに一致するデータを取得できること',async () => {
-    const copiedInfo = structuredClone(oneBookInfo);
+    const copiedInfo = structuredClone(testData);
     copiedInfo.userId = 'copiedData'
-    const preData = await col.insertMany([oneBookInfo, copiedInfo]);
+    const preData = await col.insertMany([testData, copiedInfo]);
     expect(await preData.acknowledged).toBeTruthy();
 
     const response = await service.getBookInfo({ bookInfos: col }, userId);
@@ -55,14 +60,23 @@ describe('getBookInfo', () => {
 });
 
 describe('getRecentBookInfo', () => {  
-  it('直前に編集した、ユーザIDに一致するデータを1件のみ取得できること',async () => {
-    const copiedInfo = structuredClone(oneBookInfo);
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
 
-    const first = await col.insertOne(oneBookInfo);
+  it('直前に編集し、読んだ記録が保存されている、ユーザIDに一致するデータを1件のみ取得できること',async () => {
+    const copiedInfo = structuredClone(testData);
+
+    testData.history = undefined;
+    const first = await col.insertOne(testData);
     expect(await first.acknowledged).toBeTruthy();
 
     copiedInfo.title = 'recentbook';
     copiedInfo.updateDate = new Date;
+    copiedInfo.history = undefined;
+    copiedInfo.history = [] as any;
+    copiedInfo.history?.push({date: new Date, currentPage: 10});
     const second = await col.insertOne(copiedInfo);
     expect(await second.acknowledged).toBeTruthy();
 
@@ -71,13 +85,14 @@ describe('getRecentBookInfo', () => {
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
     expect(response[0].title).toEqual('recentbook');
+    expect(response[0].history?.length).toEqual(1);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
     const preData = await col.insertOne({userId: 'savedData'} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getRecentBookInfo({ bookInfos: col }, 'defferentData');
+    const response = await service.getRecentBookInfo({ bookInfos: col }, 'savedData');
 
     expect(response.length).toEqual(0);
   });
@@ -90,10 +105,15 @@ describe('getRecentBookInfo', () => {
 });
 
 describe('getBookInfoWithOnlyHistory', () => {  
-  it('ユーザIDに一致するデータの、historyのみを取得できること',async () => {
-    const copiedInfo = structuredClone(oneBookInfo);
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
+ it('ユーザIDに一致するデータの、historyのみを取得できること',async () => {
+    const copiedInfo = structuredClone(testData);
     copiedInfo.userId = 'copiedData'
-    const preData = await col.insertMany([oneBookInfo, copiedInfo]);
+    const preData = await col.insertMany([testData, copiedInfo]);
     expect(await preData.acknowledged).toBeTruthy();
 
     const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, userId);
@@ -120,11 +140,12 @@ describe('getBookInfoWithOnlyHistory', () => {
 });
 
 describe('getBookInfoByStatus', () => {  
+  const testDatas = getTestDatas();
   beforeEach(async () => {
-    threeBookInfos[0].status = 'wish';
-    threeBookInfos[1].status = 'reading';
-    threeBookInfos[2].status = 'complete';
-    await col.insertMany(threeBookInfos);
+    testDatas[0].status = 'wish';
+    testDatas[1].status = 'reading';
+    testDatas[2].status = 'complete';
+    await col.insertMany(testDatas);
   });
   
   it('statusがwishで、ユーザIDに一致するデータを取得できること',async () => {
@@ -189,15 +210,20 @@ describe('getBookInfoByStatus', () => {
 // });
 
 describe('insertBookInfo', () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('書誌情報を保存できること', async () => {
-    const result = await service.insertBookInfo({ bookInfos: col }, oneBookInfo);
+    const result = await service.insertBookInfo({ bookInfos: col }, testData);
     expect(result.ok).toBeTruthy();
     expect(await col.countDocuments({})).toBe(1);
   });
 
   it('データが不正(同じ_idで作成済み)な場合にエラーステータスが返ってくること', async () => {
     //事前にデータを作成
-    const preData = await col.insertOne(oneBookInfo);
+    const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
   
     //作成済みデータを指定
@@ -209,73 +235,83 @@ describe('insertBookInfo', () => {
 
   //MongoDB側のコレクション定義をして弾く必要があるのでスキップ
   it.skip('データが不正(undefinedを渡す)な場合にエラーステータスが返ってくること', async () => {  
-    const result = await service.insertBookInfo({ bookInfos: col }, oneBookInfo);
+    const result = await service.insertBookInfo({ bookInfos: col }, testData);
     
     expect(result.ok).toBeFalsy();
   });
 });
 
 describe('updateBookInfo', () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('書誌情報を更新できること', async () => {
     //事前にデータを作成
-    const preData = await col.insertOne(oneBookInfo);
+    const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
 
     //以下の4つだけ更新可能
-    oneBookInfo.isFavorite = true;
-    oneBookInfo.status = 'complete';
-    oneBookInfo.memorandum = 'メモ欄編集'
-    oneBookInfo.history!.push({ date: new Date, currentPage: 100 });
+    testData.isFavorite = true;
+    testData.status = 'complete';
+    testData.memorandum = 'メモ欄編集'
+    testData.history!.push({ date: new Date, currentPage: 100 });
     
-    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo);
+    const result = await service.updateBookInfo({ bookInfos: col }, testData);
     expect(result.ok).toBeTruthy();
     
-    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
-    expect(updatedItem?.title).toEqual(oneBookInfo.title);
+    const updatedItem = await col.findOne({userId: testData.userId});
+    expect(updatedItem?.title).toEqual(testData.title);
     expect(updatedItem?.isFavorite).toBeTruthy();
     expect(updatedItem?.status).toEqual('complete');
     expect(updatedItem?.memorandum).toBeTruthy();
     expect(updatedItem?.history!.length).toEqual(2);
-    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); //更新日は自動更新
+    expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); //更新日は自動更新
   });
 
   it('isCompleteがFaulthyの場合にcompleteDateが更新されないこと', async () => {
     //事前にデータを作成
-    const preData = await col.insertOne(oneBookInfo);
+    const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
     
-    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo, false);
+    const result = await service.updateBookInfo({ bookInfos: col }, testData, false);
     expect(result.ok).toBeTruthy();
 
-    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
-    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); 
+    const updatedItem = await col.findOne({userId: testData.userId});
+    expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); 
     expect(updatedItem?.completeDate).not.toBeDefined();
   });
 
   it('isCompleteがTruthyの場合にcompleteDateが更新されること', async () => {
     //事前にデータを作成
-    const preData = await col.insertOne(oneBookInfo);
+    const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
     
-    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo, true);
+    const result = await service.updateBookInfo({ bookInfos: col }, testData, true);
     expect(result.ok).toBeTruthy();
 
-    const updatedItem = await col.findOne({userId: oneBookInfo.userId});
-    expect(updatedItem?.updateDate).not.toEqual(oneBookInfo.updateDate); 
+    const updatedItem = await col.findOne({userId: testData.userId});
+    expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); 
     expect(updatedItem?.completeDate).toBeDefined();
   });
 
   it('更新対象が見つからない場合にエラーステータスが返ってくること', async () => {
-    const result = await service.updateBookInfo({ bookInfos: col }, oneBookInfo);
+    const result = await service.updateBookInfo({ bookInfos: col }, testData);
 
     expect(result.ok).toBeFalsy();
   });
 });
 
 describe('deleteBookInfo', async () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   it('書誌情報を削除できること', async () => {
     //対象のデータを設定
-    const preData = await col.insertOne(oneBookInfo);
+    const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
 
     const result = await service.deleteBookInfo({ bookInfos: col }, preData.insertedId);

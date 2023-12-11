@@ -25,7 +25,11 @@ export async function getRecentBookInfo(collections: collections, userId: string
   if (typeof userId !== 'string') { return bookInfos; }
 
   try {
-    bookInfos = await collections.bookInfos?.find({userId}).sort({updateDate: -1}).limit(1).toArray() as BookInfo[];  
+    //historyが0より大きいデータを、更新日を降順にしてから、1個だけ取る
+    bookInfos = await collections.bookInfos?.find({
+        userId,
+        "history.0": { $exists: true}
+      }).sort({updateDate: -1}).limit(1).toArray() as BookInfo[];  
   }
   catch (error) {
     console.log(error);
@@ -42,6 +46,7 @@ export async function getBookInfoWithOnlyHistory(collections: collections, userI
   if (typeof userId !== 'string') { return []; }
 
   try {
+    //historyのみを取得(_idは指定無しでも取れるので、取らないように明示する)
     const projection = { _id: 0, history: 1};
     histories = await collections.bookInfos?.find({userId}).project(projection).toArray() as BookInfo[];  
   }

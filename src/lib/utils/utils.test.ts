@@ -35,8 +35,13 @@ describe('convertDate', () => {
 //toastはE2Eでテストする
 
 describe('applyChangesToBookInfos', () => {
+  let testDatas: BookInfo[];
+  beforeEach(() => {
+    testDatas = testData.getTestDatas();
+  })
+
   it('更新データがある際に、対象の書誌データが更新されること', () => {
-    const copy = structuredClone(testData.threeBookInfos[1]);
+    const copy = structuredClone(testDatas[1]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.secondId;
@@ -51,7 +56,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
+    const result = applyChangesToBookInfos(testDatas, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[1].isFavorite).toBeTruthy();
@@ -65,7 +70,7 @@ describe('applyChangesToBookInfos', () => {
   });
 
   it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
-    const copy = structuredClone(testData.threeBookInfos[0]);
+    const copy = structuredClone(testDatas[0]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.firstId;
@@ -80,7 +85,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
+    const result = applyChangesToBookInfos(testDatas, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[0].isFavorite).toBeTruthy();
@@ -94,7 +99,7 @@ describe('applyChangesToBookInfos', () => {
   });
 
   it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
-    const copy = structuredClone(testData.threeBookInfos[2]);
+    const copy = structuredClone(testDatas[2]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.thirdId;
@@ -109,7 +114,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testData.threeBookInfos, updateDetail);
+    const result = applyChangesToBookInfos(testDatas, updateDetail);
 
     expect(result.length).toEqual(3);
     expect(result[2].isFavorite).toBeTruthy();
@@ -123,7 +128,7 @@ describe('applyChangesToBookInfos', () => {
   });
 
   it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
-    const oneItems = [testData.threeBookInfos[0]];
+    const oneItems = [testDatas[0]];
     const copy = structuredClone(oneItems[0]);
     //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
     //DBから取得した場合は内部のプロパティが無いので対応不要
@@ -152,7 +157,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: testData.firstId
     };
-    const result = applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
+    const result = applyChangesToBookInfos(testDatas, invalidDetail);
 
     expect(result.length).toEqual(2);
   });
@@ -163,10 +168,10 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testData.threeBookInfos, invalidDetail);
+    const result = applyChangesToBookInfos(testDatas, invalidDetail);
 
     //同じ値か
-    expect(result).toEqual(testData.threeBookInfos);
+    expect(result).toEqual(testDatas);
   });
 
 });
@@ -174,10 +179,15 @@ describe('applyChangesToBookInfos', () => {
 //handleSuccessはE2Eでテストする
 
 describe('toggleFavorite', () => {
+  let testDatas: BookInfo[];
+  beforeEach(() => {
+    testDatas = testData.getTestDatas();
+  })
+
   it('フィルターのisCheckedがTrueの際に、お気に入りの書誌データのみisVisibleがTrueに変更されるか', () => {
-    testData.threeBookInfos.forEach(item => item.isVisible = true);
-    testData.threeBookInfos[0].isFavorite = true;
-    const toggledItems = toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
+    testDatas.forEach(item => item.isVisible = true);
+    testDatas[0].isFavorite = true;
+    const toggledItems = toggleFavorite(testDatas, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: true, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
     expect(toggledItems[1].isVisible).toBeFalsy();
@@ -185,8 +195,8 @@ describe('toggleFavorite', () => {
   });
   
   it('フィルターのisCheckedがFalseの際に、全データのisVisibleがTrueに変更されるか', () => {
-    testData.threeBookInfos.forEach(item => item.isVisible = false);
-    const toggledItems = toggleFavorite(testData.threeBookInfos, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true});
+    testDatas.forEach(item => item.isVisible = false);
+    const toggledItems = toggleFavorite(testDatas, {id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true});
 
     expect(toggledItems[0].isVisible).toBeTruthy();
     expect(toggledItems[1].isVisible).toBeTruthy();
@@ -194,9 +204,9 @@ describe('toggleFavorite', () => {
   });
 
   it('フィルターのタイプがfavorite以外の場合、データが変更されないこと', () => {
-    const toggledItems = toggleFavorite(testData.threeBookInfos, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
+    const toggledItems = toggleFavorite(testDatas, {id: 1, text: '読みたい本', type: 'status', isChecked: false, isVisible: true});
 
-    expect(toggledItems).toEqual(testData.threeBookInfos);
+    expect(toggledItems).toEqual(testDatas);
   });
 });
 
