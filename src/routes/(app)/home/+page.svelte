@@ -47,6 +47,10 @@
           backgroundColor: '#65a30d', 
           borderRadius: 10
         }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
       }
     });
 
@@ -85,10 +89,10 @@
         {/if}    
       {/if}
     </div>
-    <div class="w-[90%] h-fit flex flex-col items-center justify-center max-lg:self-center p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">
+    <div class="w-[90%] h-[90%] flex flex-col items-center justify-center max-lg:self-center p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">
       <p class="text-xl m-2 text-lime-700 font-medium self-start">1週間に読んだページ数</p>
-      <div class="w-[90%] h-[90%] rounded shadow-md">
-        <canvas class="bg-gray-100 m-2 p-2" bind:this={countGraph} id="countGraph"></canvas>
+      <div class="max-sm:w-full max-sm:h-full w-[90%] h-[90%] rounded shadow-md">
+        <canvas class="bg-gray-100 m-2 p-2 min-h-[250px]" bind:this={countGraph} id="countGraph"></canvas>
       </div>
     </div>
   </div>
