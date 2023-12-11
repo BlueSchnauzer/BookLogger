@@ -1,17 +1,23 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/svelte';
-import { afterEach, describe, expect, it, vi, vitest } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi, vitest } from 'vitest';
 import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
-import { oneBookInfo } from '$lib/vitest-setup';
+import { getTestData } from '$lib/vitest-setup';
+import type { BookInfo } from '$lib/server/models/BookInfo';
 
 describe('RegisteredModal', async () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
   afterEach(() => {
     vi.restoreAllMocks();
   });
  
   it('レンダリング', () => {
-    render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 
-    expect(screen.getByText(oneBookInfo.title)).toBeInTheDocument();
+    expect(screen.getByText(testData.title)).toBeInTheDocument();
 		expect(screen.getByText('No Image')).toBeInTheDocument();
     expect(screen.getByText('削除')).toBeInTheDocument();
     expect(screen.getByText('編集')).toBeInTheDocument();
@@ -20,17 +26,17 @@ describe('RegisteredModal', async () => {
 
   it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
     const testId = 'layerZ30';
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
     
     expect(screen.getByTestId(testId)).toBeInTheDocument();
     
-    await component.$set({ isDisplay: false, bookInfo: oneBookInfo });
+    await component.$set({ isDisplay: false, bookInfo: testData });
     expect(screen.getByTestId(testId)).toHaveClass('hidden');
   });
   
   it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
     const testId = 'layerZ30';
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
     
     const btnClose = screen.getByTestId('btnClose');
     const btnCancel = screen.getByText('キャンセル');
@@ -38,7 +44,7 @@ describe('RegisteredModal', async () => {
     await fireEvent.click(btnClose);
     expect(screen.getByTestId(testId)).toHaveClass('hidden');
  
-    await component.$set({ isDisplay: true, bookInfo: oneBookInfo });
+    await component.$set({ isDisplay: true, bookInfo: testData });
     await fireEvent.click(btnCancel);
     expect(screen.getByTestId(testId)).toHaveClass('hidden');
   });
@@ -47,7 +53,7 @@ describe('RegisteredModal', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -67,7 +73,7 @@ describe('RegisteredModal', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
@@ -87,7 +93,7 @@ describe('RegisteredModal', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -103,7 +109,7 @@ describe('RegisteredModal', async () => {
     let mockFetch = vi.spyOn(global, 'fetch');
     mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: oneBookInfo });
+    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
