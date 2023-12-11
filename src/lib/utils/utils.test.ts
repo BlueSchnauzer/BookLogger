@@ -201,9 +201,19 @@ describe('toggleFavorite', () => {
 });
 
 describe('getTypeForBottomLabel', () => {
-  it('ホームのパスでupdateDateが返ること', () => {
+  it('ホームのパスでprogressが返ること', () => {
+    const result = getTypeForBottomLabel('/home');
+    expect(result).toEqual('progress');
+  });
+
+  it('登録した本のパスでcreateDateが返ること', () => {
     const result = getTypeForBottomLabel('/books');
-    expect(result).toEqual('updateDate');
+    expect(result).toEqual('createDate');
+  });
+
+  it('読みたい本のパスでcreateDateが返ること', () => {
+    const result = getTypeForBottomLabel('/books/wish');
+    expect(result).toEqual('createDate');
   });
 
   it('読んでいる本のパスでprogressが返ること', () => {
@@ -214,11 +224,6 @@ describe('getTypeForBottomLabel', () => {
   it('読み終わった本のパスでcompleteDateが返ること', () => {
     const result = getTypeForBottomLabel('/books/complete');
     expect(result).toEqual('completeDate');
-  });
-
-  it('その他のパスでcreateDateが返ること', () => {
-    const result = getTypeForBottomLabel('/books/wish');
-    expect(result).toEqual('createDate');
   });
 });
 

@@ -30,4 +30,4 @@ export type readingHistory = {
 /**書誌データのステータス */
 export type status = 'wish' | 'reading' | 'complete';
 /**一覧画面でのラベル種別 */
-export type typeForBottomLabel = 'createDate' | 'updateDate' | 'progress' | 'completeDate';
+export type typeForBottomLabel = 'createDate' | 'progress' | 'completeDate';
