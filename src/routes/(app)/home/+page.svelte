@@ -28,6 +28,14 @@
 		isDisplayDetail = true;
 	}
 
+  /**トーストを表示し、再度最新の書誌データを取得する。*/
+  const handleSuccessAndFetchData = async (event: CustomEvent<any>) => {
+    data.recentBook = handleSuccess(data.recentBook, event.detail, target);
+
+    const response = await fetch('/api/bookinfo?recentbook=true', { method: 'GET' });
+    if (response.ok) { data.recentBook = await response.json() as BookInfo[]; }
+  }
+
   onMount(() => {
     const chart = new Chart(countGraph, {
       type: 'bar',
@@ -63,8 +71,10 @@
           <GridContent bookInfo={data.recentBook[0]} isResponsiveText={false}/>
         </button>
       {:else}
-        <p class="text-xl m-2 text-lime-700 font-medium">本が登録されていません。</p>
-        <p class="text-xl m-2 text-lime-700 font-medium">下のボタン、もしくは右上のアイコンから本を検索してください。</p>
+        <div class="text-xl m-2 text-lime-700 font-medium">
+          <p>本の登録か、読んだ記録の登録がされていません。</p>
+          <p>下のボタン、もしくは右上のアイコンから本を検索してください。</p>
+        </div>
         <button class="px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700"
           on:click={() => isDisplaySearchModal = !isDisplaySearchModal}
         >
@@ -86,7 +96,7 @@
     <RegisteredModal
       bookInfo={currentBookInfo}
       bind:isDisplay={isDisplayDetail}
-      on:success={(event) => (data.recentBook = handleSuccess(data.recentBook, event.detail, target))}
+      on:success={(event) => handleSuccessAndFetchData(event)}
       on:failed={(event) => pushErrorToast(event.detail, target)}
     />
   {/if}
