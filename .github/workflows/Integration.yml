@@ -48,6 +48,9 @@ jobs:
 
       - name: UnitTest
         run: npm run test:unit
+
+      - name: Install Playwright
+        run: npx playwright install
         
       - name: UITest
         run: npm run test:ui
