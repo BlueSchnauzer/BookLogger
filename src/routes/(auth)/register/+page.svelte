@@ -35,6 +35,10 @@
 	
 </script>
 
+<svelte:head>
+  <title>登録</title>
+</svelte:head>
+
 <div class="flex flex-col p-8 space-y-4 rounded-3xl bg-white sm:w-10/12 max-w-2xl">
   <AuthMenu/>
 	{#if !success && success !== undefined}

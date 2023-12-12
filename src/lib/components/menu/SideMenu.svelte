@@ -65,7 +65,7 @@
 			{/each}
 		</ul>
 		<div class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600">
-			<button class="flex flex-1 group items-center rounded-md" on:click={logout}>
+			<button data-testid="btnLogoutInSide" class="flex flex-1 group items-center rounded-md" on:click={logout}>
 				<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 					<Icon icon="ph:sign-out-bold" width="24" height="24" color={colorStone200}/>
 				</div>

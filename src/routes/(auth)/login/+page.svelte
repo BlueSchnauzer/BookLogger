@@ -13,6 +13,8 @@
   //ローダー表示
   let isDisplay = false;
 	let success: boolean | undefined = undefined;
+  let btnGoogleLogin: HTMLButtonElement;
+  let btnEmailLogin: HTMLButtonElement;
 
   /**
    * 認証を行い、firebaseから受け取ったuidをクッキーに保存する
@@ -77,6 +79,8 @@
     //リダイレクトの場合、ページが再読み込みされるので
     //マウント後に認証結果を確認する。
     await handleRedirectResult();
+    btnGoogleLogin.disabled = false;
+    btnEmailLogin.disabled = false;
   })
 
   onDestroy(() => {
@@ -86,12 +90,17 @@
 
 </script>
 
+<svelte:head>
+  <title>ログイン</title>
+</svelte:head>
+
 <div class="flex flex-col p-8 space-y-4 rounded-3xl bg-white sm:w-10/12 max-w-2xl">
   <AuthMenu/>
 	{#if !success && success !== undefined}
 		<div class="p-8 text-red-500 bg-red-100">エラーが発生しました。時間をおいて再度お試しください。</div>
 	{/if}
-  <button class="w-60 self-center px-8 py-2 rounded duration-100 text-white bg-sky-600 hover:bg-sky-700"
+  <button disabled bind:this={btnGoogleLogin} aria-label="btnGoogleLogin" type="submit" 
+    class="w-60 self-center px-8 py-2 rounded duration-100 text-white bg-sky-600 hover:bg-sky-700"
     on:click={() => login('google')}
   >
     Googleアカウントでログイン
@@ -118,7 +127,9 @@
       required
       bind:value={password}
     />
-    <button type="submit" class="w-32 self-center px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700">
+    <button disabled bind:this={btnEmailLogin} data-testid="btnLogin" aria-label="btnEmailLogin" type="submit" 
+      class="w-32 self-center px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700"
+    >
       ログイン
     </button>
     <span class="text-gray-500 text-xs">※Googleアカウントでのログインができない場合、メールアドレスとパスワードを登録してください。</span>

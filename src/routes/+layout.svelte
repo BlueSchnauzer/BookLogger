@@ -25,5 +25,6 @@
 <style>
 	:global(#nprogress .bar) {
 		background-color: #65a30d;
+		height: 4px;
 	}
 </style>

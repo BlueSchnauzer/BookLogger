@@ -27,7 +27,7 @@
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
 	<div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll" >
 		{#if item.volumeInfo?.title}
-			<span class="pt-2 text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
+			<span data-testid="searchedItemTitle" class="pt-2 text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
 		{:else}
 			<span class="pt-2 text-lg font-bold text-gray-400">データ無し</span>
 		{/if}

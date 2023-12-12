@@ -31,12 +31,12 @@
 </script>
 
 {#await runPromise()}
-	<div class="flex flex-1 justify-center items-center">
+	<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
 		<span class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent" />
 	</div>
 {:then result}
 	{#if result.items}
-		<ul>
+		<ul data-testid="resultList">
 			{#each result.items as item (item.id)}
 				<li class="flex">
 					<button	class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md" on:click={() => handleClick(item)}>
