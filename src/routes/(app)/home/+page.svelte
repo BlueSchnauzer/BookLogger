@@ -21,6 +21,7 @@
   let isDisplayDetail = false;
   let isDisplaySearchModal = false;
   let currentBookInfo: BookInfo;
+  const pageName = 'ホーム';
   const target = 'mainToast';
 
   const displayModal = (item: BookInfo) => {
@@ -61,19 +62,19 @@
 </script>
 
 <svelte:head>
-  <title>ホーム</title>
+  <title>{pageName}</title>
 </svelte:head>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
   <div class="pl-2 pr-3 pt-1.5 h-14 flex flex-col justify-between">
-		<ContentHeader headerIcon={Home} headerText={'ホーム'} isDisplayAddButton={true} />
+		<ContentHeader headerIcon={Home} headerText={pageName} isDisplayAddButton={true} />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
   <div class="flex max-lg:flex-col p-1 homeContentHeight overflow-y-auto customScroll">
-    <div class="flex flex-col items-center h-fit p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">
+    <div data-testid="recentbook" class="flex flex-col items-center h-fit p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">
       {#if data.recentBook && data.recentBook.length !== 0}
         <p class="text-xl m-2 text-lime-700 font-medium self-start">最近読んだ本</p>
-        <button class="grid item h-96 w-72 bg-slate-50 rounded shadow-md"
+        <button data-testid="btnRecentbook" class="grid item h-96 w-72 bg-slate-50 rounded shadow-md"
           on:click={() => displayModal(data.recentBook[0])}
         >
           <GridContent bookInfo={data.recentBook[0]} isResponsiveText={false}/>
@@ -93,7 +94,7 @@
         {/if}    
       {/if}
     </div>
-    <div class="w-[90%] h-[90%] flex flex-col items-center justify-center max-lg:self-center p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">
+    <div data-testid="pageGraph" class="w-[90%] h-[90%] flex flex-col items-center justify-center max-lg:self-center p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">
       <p class="text-xl m-2 text-lime-700 font-medium self-start">1週間に読んだページ数</p>
       <div class="max-sm:w-full max-sm:h-full w-[90%] h-[90%] rounded shadow-md">
         <canvas class="bg-gray-100 m-2 p-2 min-h-[250px]" bind:this={countGraph} id="countGraph"></canvas>

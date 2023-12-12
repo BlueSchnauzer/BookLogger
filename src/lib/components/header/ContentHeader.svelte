@@ -36,9 +36,9 @@
 	<div>
 		<div class="max-md:hidden flex">
 			<svelte:component this={headerIcon} width={30} height={30} />
-			<h1 class="text-xl pl-2">{headerText}</h1>
+			<h1 data-testid="headerText" class="text-xl pl-2">{headerText}</h1>
 		</div>
-		<button class="max-md:flex hidden w-10 h-10 items-center justify-center" on:click={logout}>
+		<button data-testid="btnLogoutInHeader" class="max-md:flex hidden w-10 h-10 items-center justify-center" on:click={logout}>
 			<Icon icon="ph:sign-out" width="36" height="36" color={colorStone700} />
 		</button>	
 	</div>
