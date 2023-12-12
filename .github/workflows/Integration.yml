@@ -9,6 +9,10 @@ on:
       - main
 
 env: 
+  # UIテスト用の変数
+  TEST_LOGIN_EMAIL: ${{secrets.TEST_LOGIN_EMAIL}}
+  TEST_LOGIN_PASSWORD: ${{secrets.TEST_LOGIN_PASSWORD}}
+  
   MONGO_URL: ${{secrets.MONGO_URL}}
   DB_NAME: ${{secrets.TEST_DB_NAME}}
   BOOKINFOS_COLLECTION_NAME: ${{secrets.BOOKINFOS_COLLECTION_NAME}}
@@ -42,5 +46,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Test
+      - name: UnitTest
         run: npm run test:unit
+      - name: UITest
+        run: npm run test:ui
