@@ -60,6 +60,10 @@
 
 </script>
 
+<svelte:head>
+  <title>ホーム</title>
+</svelte:head>
+
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
   <div class="pl-2 pr-3 pt-1.5 h-14 flex flex-col justify-between">
 		<ContentHeader headerIcon={Home} headerText={'ホーム'} isDisplayAddButton={true} />

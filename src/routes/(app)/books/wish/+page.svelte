@@ -5,6 +5,7 @@
 	import BooksMainContent from '../BooksMainContent.svelte';
    
   export let data: PageData;
+	const pageName = '読みたい本';
 
 	const toggleFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true },
@@ -15,9 +16,13 @@
 
 </script>
 
+<svelte:head>
+  <title>{pageName}</title>
+</svelte:head>
+
 <BooksMainContent 
 	headerIcon={PileOfBooks}
-	headerText={'読みたい本'}
+	headerText={pageName}
 	bookInfos={data.bookInfos}
 	{toggleFilterItems}
 	{selectFilterItems}

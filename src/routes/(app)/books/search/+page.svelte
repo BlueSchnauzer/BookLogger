@@ -19,6 +19,7 @@
 
 	let currentBookInfo: books_v1.Schema$Volume;
 	let isDisplayDetail = false;
+	const pageName = '書籍検索';
 	const target = 'searchToast';
 
 	let runPromise = async (): Promise<books_v1.Schema$Volumes> => {
@@ -82,9 +83,13 @@
 	};
 </script>
 
+<svelte:head>
+  <title>{pageName}</title>
+</svelte:head>
+
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader headerIcon={BookAdd} headerText="書籍検索" isDisplayAddButton={false} />
+		<ContentHeader headerIcon={BookAdd} headerText={pageName} isDisplayAddButton={false} />
 		<div class="flex justify-between">
 			<PrimalyButton type="button" text="再検索"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
