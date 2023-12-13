@@ -10,8 +10,18 @@ TailWind CSSを利用しているため、
 PCだけでなくスマホやタブレットでの表示にも対応しています。  
 - PC表示  
 ![スクリーンショット 2023-12-13 220038](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/d1de970c-23d7-45ce-af0f-f01192df2eac)
-- スマホ、タブレット表示  
+- スマホ、タブレット表示  で
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/0d572132-ab6a-4679-a48b-f224d34ad841)
+
+### 開発動機
+普段、私は複数の本を並行して読み進めるタイプなのですが、  
+どの本をいつ、何ページ読んだかがわからなくなり、  
+最初から読み直したり、そのまま読まなくなったり(積読にしたり)ということが度々ありました。  
+<br>
+ページ数を管理したり、本を登録できるアプリはたくさんありますが、  
+スマホアプリが多いように思えたことと、PCでも使いたいという要件を満たすため、  
+ありふれた機能ばかりではありますが、今回のアプリを作成しました。  
+(普段使っているKindle Viewerにこんな機能があればいいのに、という不満を解消するものでもあります)  
 
 ## 📗 使い方
 アプリの利用にはGoogleアカウントが必要ですが、  
@@ -26,6 +36,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 
 検索結果が表示されたら、書誌データを選択し登録を行ってください。  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/c15f0232-b655-4242-947d-50869def76e8)  
+<br>
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/6a468894-1757-42d6-bcbb-bf0b42f320b2)  
 
 ### 🖊️ 編集  
@@ -33,7 +44,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 登録したばかりの本は「読みたい本」(いわゆる積読です)ページに表示されます。  
 (「登録した本」は登録済みの全ての本が表示されます)
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/0e6a2ccd-d45f-4286-adfd-e618e87189cf)  
-
+<br>
 読み進めた本や、過去に読んだ本があれば、一覧から選択し内容を編集できます。  
 ステータスは自分でも変更可能ですが、  
 基本的に操作に応じて、自動で書き換わるようになっています。  
@@ -43,26 +54,31 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 現在読んでいる本は「読んでいる本」ページに表示され、  
 どこまで読み終わっているかを、一目で確認することができます。  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/44dac0fe-43b0-4c84-a89e-b489cf9a31a9)  
-
+<br>
 また、ホーム画面では直近で読んでいる本を見れ、  
 1週間でどのくらいのページ数を読んだかをグラフで確認することができます。  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/65ad400d-3eb3-4b74-8950-4ea87576c7d3)  
 
 ## 🔧 開発
 アプリケーションの構成図は以下の通りです。  
-SvelteKitでフロントエンドとバックエンドの両方を実装し、  
+SvelteKitでアプリを実装し、  
 ユーザ認証、書誌データ取得とデータ保存は、  
 それぞれFirebase Authentication、GoogleBooksAPIとMongoDBを利用しています。  
-
+<br>
 デプロイ環境はVercelで、  
 Github Actionsでビルドと、ユニット/UIの自動テスト(CI)、  
 VercelのGithub連携で自動デプロイを行っています(CD)。  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/05ac7acd-b55a-435f-afed-d6c89ee12e7d)  
+<br>
+SvelteKit(Reactに対するNext.jsみたいなものです)を利用しているため、  
+フロントエンドはSvelteのUIコンポーネントと、SvelteKitのルーティング機能を使うことで実装し、  
+サーバーサイドも同様に、SvelteKitのサーバーロジックとAPIルートを使うことで実装しています。  
+(Vitest、Testing-LibraryとPlaywrightを利用して、コンポーネント、ユニットとUIのテストコードを作成しています)  
 
-### 言語、環境等
+
+### 使用技術
 - Node.js
 - SvelteKit(Svelte, Vite)
-  - Reactに対するNext.jsみたいなものです。
 - Typescript
 - Tailwind CSS
 - Firebase Authentication
