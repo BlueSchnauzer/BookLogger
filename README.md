@@ -6,7 +6,7 @@
 読んだページ数や感想などを記録することで自分好みの本棚を作れる書籍管理アプリです。  
 https://book-logger-nine.vercel.app/login
 
-TailWind CSSを利用しているため、  
+TailWind CSSでレスポンシブに実装しているため、  
 PCだけでなくスマホやタブレットでの表示にも対応しています。  
 - PC表示  
 ![スクリーンショット 2023-12-13 220038](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/d1de970c-23d7-45ce-af0f-f01192df2eac)
