@@ -13,7 +13,7 @@ PCだけでなくスマホやタブレットでの表示にも対応していま
 - スマホ、タブレット表示  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/0d572132-ab6a-4679-a48b-f224d34ad841)
 
-## 📄 使い方
+## 📗 使い方
 アプリの利用にはGoogleアカウントが必要ですが、  
 Googleアカウントを使用しない場合は、Emailとパスワードを登録することでアプリの利用が可能です。  
 (ユーザ認証にはFirebase Authenticationを利用しています)  
@@ -28,7 +28,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/c15f0232-b655-4242-947d-50869def76e8)  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/6a468894-1757-42d6-bcbb-bf0b42f320b2)  
 
-### ✒️ 編集  
+### 🖊️ 編集  
 登録した本はステータスに応じて、各画面に表示されます。  
 登録したばかりの本は「読みたい本」(いわゆる積読です)ページに表示されます。  
 (「登録した本」は登録済みの全ての本が表示されます)
@@ -39,7 +39,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 基本的に操作に応じて、自動で書き換わるようになっています。  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/39d9c5db-6a93-457e-9a43-23fe7b318962)  
 
-### 📗 管理  
+### 📖 管理  
 現在読んでいる本は「読んでいる本」ページに表示され、  
 どこまで読み終わっているかを、一目で確認することができます。  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/44dac0fe-43b0-4c84-a89e-b489cf9a31a9)  
