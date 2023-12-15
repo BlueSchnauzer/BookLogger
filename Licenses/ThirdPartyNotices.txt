@@ -99,9 +99,6 @@ SOFTWARE.
 
 ---------------------------------------------------------
 
-
----------------------------------------------------------
-
 simplebar
 https://github.com/Grsmto/simplebar
 
@@ -128,6 +125,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ---------------------------------------------------------
+
 nprogress
 https://github.com/rstacruz/nprogress
 
