@@ -13,3 +13,4 @@ BookLogger.code-workspace
 /playwright-report/
 /playwright/.cache/
 /.vercel/
+/.vscode/
