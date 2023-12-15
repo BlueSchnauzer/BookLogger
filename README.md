@@ -66,7 +66,6 @@ SvelteKit(Reactに対するNext.jsみたいなものです)を利用している
 サーバーサイドも同様に、SvelteKitのサーバーロジックとAPIルートを使うことで実装しています。  
 (Vitest、Testing-LibraryとPlaywrightを利用して、コンポーネント、ユニットとUIのテストコードを作成しています)  
 
-
 ### 使用技術
 - Node.js
 - SvelteKit(Svelte, Vite)
@@ -84,9 +83,12 @@ SvelteKit(Reactに対するNext.jsみたいなものです)を利用している
 - [nprogress](https://github.com/rstacruz/nprogress)
 - [svelte-toast](https://github.com/zerodevx/svelte-toast)
 - [Tailanimista](https://tail-animista.vercel.app/)
+- [Chart.js](https://www.chartjs.org/)
+- [jsdom](https://github.com/jsdom/jsdom)
+- [mongodb-memory-server](https://nodkz.github.io/mongodb-memory-server/)
 - [Iconify](https://iconify.design/)
 - [Atlas Icons](https://atlasicons.vectopus.com/)
-- [icooon-mono](icooon-mono)
+- [icooon-mono](https://icooon-mono.com/)
 - [Phosphor Icons](https://phosphoricons.com/)
 - [material-design-icons](https://github.com/google/material-design-icons)
 - [fluentui-system-icons](https://github.com/microsoft/fluentui-system-icons)
