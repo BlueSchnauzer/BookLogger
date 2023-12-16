@@ -17,7 +17,7 @@
 
   /**読んだ記録の中から最大のページ数を取得する。*/
   const getMaxPageCount = (): number => {
-    return bookInfo.history?.reduce((max, item) => Math.max(max, item.currentPage), -Infinity)!;
+    return bookInfo.pageHistory?.reduce((max, item) => Math.max(max, item.currentPage), -Infinity)!;
   }
 
   /**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/

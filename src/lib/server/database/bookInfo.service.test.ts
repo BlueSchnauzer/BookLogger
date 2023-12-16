@@ -68,15 +68,15 @@ describe('getRecentBookInfo', () => {
   it('直前に編集し、読んだ記録が保存されている、ユーザIDに一致するデータを1件のみ取得できること',async () => {
     const copiedInfo = structuredClone(testData);
 
-    testData.history = undefined;
+    testData.pageHistory = undefined;
     const first = await col.insertOne(testData);
     expect(await first.acknowledged).toBeTruthy();
 
     copiedInfo.title = 'recentbook';
     copiedInfo.updateDate = new Date;
-    copiedInfo.history = undefined;
-    copiedInfo.history = [] as any;
-    copiedInfo.history?.push({date: new Date, currentPage: 10});
+    copiedInfo.pageHistory = undefined;
+    copiedInfo.pageHistory = [] as any;
+    copiedInfo.pageHistory?.push({id: crypto.randomUUID(), date: new Date, currentPage: 10});
     const second = await col.insertOne(copiedInfo);
     expect(await second.acknowledged).toBeTruthy();
 
@@ -85,7 +85,7 @@ describe('getRecentBookInfo', () => {
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
     expect(response[0].title).toEqual('recentbook');
-    expect(response[0].history?.length).toEqual(1);
+    expect(response[0].pageHistory?.length).toEqual(1);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
@@ -116,24 +116,24 @@ describe('getBookInfoWithOnlyHistory', () => {
     const preData = await col.insertMany([testData, copiedInfo]);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, userId);
+    const response = await service.getBookInfoWithOnlyPageHistory({ bookInfos: col }, userId);
 
     expect(response).not.toBeUndefined();
     expect(response?.length).toEqual(1);
-    expect(response[0].history?.[0].currentPage).toEqual(0);
+    expect(response[0].pageHistory?.[0].currentPage).toEqual(0);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
     const preData = await col.insertOne({userId: 'savedData'} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, 'defferentData');
+    const response = await service.getBookInfoWithOnlyPageHistory({ bookInfos: col }, 'defferentData');
 
     expect(response.length).toEqual(0);
   });
 
   it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getBookInfoWithOnlyHistory({ bookInfos: col }, String(undefined));
+    const response = await service.getBookInfoWithOnlyPageHistory({ bookInfos: col }, String(undefined));
 
     expect(response.length).toEqual(0);
   });
@@ -256,7 +256,7 @@ describe('updateBookInfo', () => {
     testData.isFavorite = true;
     testData.status = 'complete';
     testData.memorandum = 'メモ欄編集'
-    testData.history!.push({ date: new Date, currentPage: 100 });
+    testData.pageHistory!.push({id: crypto.randomUUID(), date: new Date, currentPage: 100 });
     
     const result = await service.updateBookInfo({ bookInfos: col }, testData);
     expect(result.ok).toBeTruthy();
@@ -266,7 +266,7 @@ describe('updateBookInfo', () => {
     expect(updatedItem?.isFavorite).toBeTruthy();
     expect(updatedItem?.status).toEqual('complete');
     expect(updatedItem?.memorandum).toBeTruthy();
-    expect(updatedItem?.history!.length).toEqual(2);
+    expect(updatedItem?.pageHistory!.length).toEqual(2);
     expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); //更新日は自動更新
   });
 

@@ -21,12 +21,6 @@ export type selectFilterItem = {
 	text: string; 
 };
 
-/**読書記録 */
-export type readingHistory = {
-	date: Date,
-	currentPage: number
-}
-
 /**書誌データのステータス */
 export type status = 'wish' | 'reading' | 'complete';
 /**一覧画面でのラベル種別 */

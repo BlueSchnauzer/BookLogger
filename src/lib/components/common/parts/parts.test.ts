@@ -175,7 +175,7 @@ describe('BottomStatusLabel', () => {
 	})
 
 	it('読んでいるページ数でレンダリングできること', () => {
-		testData.history?.push({date: new Date, currentPage: testData.pageCount / 2});
+		testData.pageHistory?.push({id: crypto.randomUUID(), date: new Date, currentPage: testData.pageCount / 2});
 		render(BottomStatusLabel, {typeForLabel: 'progress', bookInfo: testData, isResponsiveText: false});
 
 		expect(screen.getByText('読んだページ数')).toBeInTheDocument();

@@ -25,10 +25,10 @@ export async function getRecentBookInfo(collections: collections, userId: string
   if (typeof userId !== 'string') { return bookInfos; }
 
   try {
-    //historyが0より大きいデータを、更新日を降順にしてから、1個だけ取る
+    //pageHistoryが0より大きいデータを、更新日を降順にしてから、1個だけ取る
     bookInfos = await collections.bookInfos?.find({
         userId,
-        "history.0": { $exists: true}
+        "pageHistory.0": { $exists: true}
       }).sort({updateDate: -1}).limit(1).toArray() as BookInfo[];  
   }
   catch (error) {
@@ -39,15 +39,15 @@ export async function getRecentBookInfo(collections: collections, userId: string
   return bookInfos;
 }
 
-/**ユーザIDに紐づいた書誌データから、historyのみを取得する */
-export async function getBookInfoWithOnlyHistory(collections: collections, userId: string) {
-  //historyだけ取得するが、まとめて1つの配列にはできないので書誌データごとに取得する。
+/**ユーザIDに紐づいた書誌データから、pageHistoryのみを取得する */
+export async function getBookInfoWithOnlyPageHistory(collections: collections, userId: string) {
+  //pageHistoryだけ取得するが、まとめて1つの配列にはできないので書誌データごとに取得する。
   let histories: BookInfo[] = [];
   if (typeof userId !== 'string') { return []; }
 
   try {
-    //historyのみを取得(_idは指定無しでも取れるので、取らないように明示する)
-    const projection = { _id: 0, history: 1};
+    //pageHistoryのみを取得(_idは指定無しでも取れるので、取らないように明示する)
+    const projection = { _id: 0, pageHistory: 1};
     histories = await collections.bookInfos?.find({userId}).project(projection).toArray() as BookInfo[];  
   }
   catch (error) {
@@ -125,7 +125,7 @@ export async function updateBookInfo(collections: collections, bookInfo: BookInf
     updateFilter.$set = {
       isFavorite: bookInfo.isFavorite,
       status: bookInfo.status,
-      history: bookInfo.history,
+      pageHistory: bookInfo.pageHistory,
       memorandum: bookInfo.memorandum
     }
 

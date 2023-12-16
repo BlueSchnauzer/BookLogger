@@ -76,8 +76,8 @@ const validatePutItem = ({bookInfo, isComplete}: {bookInfo: BookInfo, isComplete
     let result = true;
 
     //作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
-    if (!bookInfo.history) { return result; }
-    bookInfo.history.forEach(item => {
+    if (!bookInfo.pageHistory) { return result; }
+    bookInfo.pageHistory.forEach(item => {
         if (!result) { return; }
 
         if (!item.date) {
@@ -92,7 +92,7 @@ const validatePutItem = ({bookInfo, isComplete}: {bookInfo: BookInfo, isComplete
 
     //読み終わっている場合、最終ページの記録があるか確認
     if (isComplete && result){
-        const isExist = bookInfo.history.findIndex(item => item.currentPage === bookInfo.pageCount);
+        const isExist = bookInfo.pageHistory.findIndex(item => item.currentPage === bookInfo.pageCount);
         result = isExist !== -1 ? true : false;
     }
 

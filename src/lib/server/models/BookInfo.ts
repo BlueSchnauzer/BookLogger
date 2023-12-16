@@ -17,8 +17,9 @@ export class BookInfo {
 	public isVisible: boolean;
 	public _id?: ObjectId;
 	public completeDate?: Date;
-	public history?: [
+	public pageHistory?: [
 		{
+			id: string;
 			date: Date;
 			currentPage: number;
 		}

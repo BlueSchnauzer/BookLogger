@@ -32,18 +32,19 @@
 		if (!isValidDate || !isValidCount) { return; }
 
 		const item = {
+      id: crypto.randomUUID(),
 			date: convertReadingDateToDate(),
 			currentPage: readingCount
 		};
-		if (bookInfo.history) {
-			bookInfo.history.push(item);
+		if (bookInfo.pageHistory) {
+			bookInfo.pageHistory.push(item);
 		} else {
-			bookInfo.history = [item];
+			bookInfo.pageHistory = [item];
 		}
 
 		//読んだ記録と現在のステータスが一致しない場合に自動で変更する。
 		let toastMessage = '';
-		if (bookInfo.status === 'wish' && bookInfo.history.length === 1) {
+		if (bookInfo.status === 'wish' && bookInfo.pageHistory.length === 1) {
 			bookInfo.status = 'reading';
 			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
 		}	else if (bookInfo.status !== 'complete' && readingCount === bookInfo.pageCount) {
@@ -69,10 +70,10 @@
 
 	/**読んだ記録に最終ページの記録があるか*/
 	const isExistCompleteHistory = () => {
-		if (!bookInfo.history) { return false; }
+		if (!bookInfo.pageHistory) { return false; }
 
 		let isExist = false;
-		bookInfo.history!.forEach(item => {
+		bookInfo.pageHistory!.forEach(item => {
 			if (item.currentPage === bookInfo.pageCount) { isExist = true; }
 		})
 
@@ -138,8 +139,8 @@
 			class="mb-2 flex flex-col justify-start items-stretch"
 		>
 			<ul class="flex flex-col rounded">
-				{#if bookInfo.history && bookInfo.history.length > 0}
-					{#each bookInfo.history as item}
+				{#if bookInfo.pageHistory && bookInfo.pageHistory.length > 0}
+					{#each bookInfo.pageHistory as item}
 						<li class="my-1 flex">
 							<button class="p-1 mr-1 rounded-full hover:bg-stone-300"
 							>
