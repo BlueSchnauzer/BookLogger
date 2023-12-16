@@ -15,6 +15,10 @@
 
 	const colorStone700 = '#44403C';
 
+  const isDisplayableProgress = () => {
+    return (bookInfo.pageCount && bookInfo.pageCount > 0) && (bookInfo.pageHistory && bookInfo.pageHistory?.length > 0 )
+  }
+
   /**読んだ記録の中から最大のページ数を取得する。*/
   const getMaxPageCount = (): number => {
     return bookInfo.pageHistory?.reduce((max, item) => Math.max(max, item.currentPage), -Infinity)!;
@@ -39,7 +43,7 @@
     </div>
     <span class="pr-2 text-sm">{convertDate(bookInfo.createDate)}</span>
   </div>
-{:else if typeForLabel === 'progress' && (bookInfo.pageCount <= 0 || !bookInfo.pageCount)}
+{:else if typeForLabel === 'progress' && !isDisplayableProgress() }
   <div class="self-center flex justify-between {isResponsiveText ? 'max-sm:hidden' : ''}">
     <div class="pl-2 flex items-center">
       <Icon icon="mdi:pencil-plus-outline" width="18" height="18" color={colorStone700}/>
