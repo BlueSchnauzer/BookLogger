@@ -6,6 +6,7 @@
 	import CategoryLabel from "$lib/components/common/parts/CategoryLabel.svelte";
 	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import { onMount } from "svelte";
+	import Icon from "@iconify/svelte";
 
 	export let bookInfo: BookInfo;
 
@@ -22,6 +23,7 @@
 		{ status: 'complete', label: '読み終わった本' }
 	]
 	const target = 'modalToast';
+	const colorStone700 = '#44403C';
 	
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
@@ -138,9 +140,15 @@
 			<ul class="flex flex-col rounded">
 				{#if bookInfo.history && bookInfo.history.length > 0}
 					{#each bookInfo.history as item}
-						<li class="my-1 flex justify-between items-center border-b-lime-700 border-b-[1px]">
-							<span>{convertDate(item.date)}</span>
-							<span>{item.currentPage}ページ</span>
+						<li class="my-1 flex">
+							<button class="p-1 mr-1 rounded-full hover:bg-stone-300"
+							>
+								<Icon icon="ph:x" width="24" height="24" color={colorStone700} />
+							</button>
+							<div class="flex flex-grow justify-between items-center border-b-lime-700 border-b-[1px]">
+								<span>{convertDate(item.date)}</span>
+								<span>{item.currentPage}ページ</span>
+							</div>
 						</li>
 					{/each}
 				{:else}
