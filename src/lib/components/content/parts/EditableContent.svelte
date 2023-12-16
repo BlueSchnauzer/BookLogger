@@ -61,6 +61,13 @@
 		if (toastMessage) { pushToast(toastMessage, target); }
 	};
 
+	/**読んだ記録を削除する*/
+	const deletePageHistory = (id: string) => {
+		if (bookInfo.pageHistory) {
+			bookInfo.pageHistory = bookInfo.pageHistory.filter(item => item.id !== id);
+		}
+	}
+
 	/**inputタグの日付をDateに変換*/
 	const convertReadingDateToDate = () => {
 		const splitDate = readingDate.split('-');
@@ -140,9 +147,13 @@
 		>
 			<ul class="flex flex-col rounded">
 				{#if bookInfo.pageHistory && bookInfo.pageHistory.length > 0}
-					{#each bookInfo.pageHistory as item}
+					{#each bookInfo.pageHistory as item (item.id)}
 						<li class="my-1 flex">
-							<button class="p-1 mr-1 rounded-full hover:bg-stone-300"
+							<button 
+								type="button"
+								aria-label="btnDeletePageHistory"
+								class="p-1 mr-1 rounded-full hover:bg-stone-300"
+								on:click={() => deletePageHistory(item.id)}
 							>
 								<Icon icon="ph:x" width="24" height="24" color={colorStone700} />
 							</button>
