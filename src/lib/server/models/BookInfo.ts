@@ -17,13 +17,13 @@ export class BookInfo {
 	public isVisible: boolean;
 	public _id?: ObjectId;
 	public completeDate?: Date;
-	public pageHistory?: [
+	public pageHistory?: 
 		{
 			id: string;
 			date: Date;
 			currentPage: number;
-		}
-	];
+		}[]
+	;
 	public identifier?: {
 		isbn_13?: string;
 		isbn_10?: string;
