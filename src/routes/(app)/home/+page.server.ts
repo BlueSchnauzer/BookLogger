@@ -41,7 +41,7 @@ const getPageCountInCurrentWeek = (bookInfos: BookInfo[]) => {
   //各書誌データのHistoryを確認して1日に読んだページ数を取得
   bookInfos.forEach(bookInfo => {
     //今週分のhistoryを取得し、日付の重複を排除する(残すのは最大のページ数)
-    const historyInCurrentWeek = bookInfo.history?.filter(item => new Date(item.date) >= lastDate);
+    const historyInCurrentWeek = bookInfo.pageHistory?.filter(item => new Date(item.date) >= lastDate);
     const historyMap = new Map<string, number>();
 
     historyInCurrentWeek?.forEach(item => {

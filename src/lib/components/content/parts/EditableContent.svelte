@@ -6,6 +6,7 @@
 	import CategoryLabel from "$lib/components/common/parts/CategoryLabel.svelte";
 	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import { onMount } from "svelte";
+	import Icon from "@iconify/svelte";
 
 	export let bookInfo: BookInfo;
 
@@ -22,6 +23,7 @@
 		{ status: 'complete', label: '読み終わった本' }
 	]
 	const target = 'modalToast';
+	const colorStone700 = '#44403C';
 	
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
@@ -30,18 +32,19 @@
 		if (!isValidDate || !isValidCount) { return; }
 
 		const item = {
+      id: crypto.randomUUID(),
 			date: convertReadingDateToDate(),
 			currentPage: readingCount
 		};
-		if (bookInfo.history) {
-			bookInfo.history.push(item);
+		if (bookInfo.pageHistory) {
+			bookInfo.pageHistory.push(item);
 		} else {
-			bookInfo.history = [item];
+			bookInfo.pageHistory = [item];
 		}
 
 		//読んだ記録と現在のステータスが一致しない場合に自動で変更する。
 		let toastMessage = '';
-		if (bookInfo.status === 'wish' && bookInfo.history.length === 1) {
+		if (bookInfo.status === 'wish' && bookInfo.pageHistory.length === 1) {
 			bookInfo.status = 'reading';
 			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
 		}	else if (bookInfo.status !== 'complete' && readingCount === bookInfo.pageCount) {
@@ -58,6 +61,13 @@
 		if (toastMessage) { pushToast(toastMessage, target); }
 	};
 
+	/**読んだ記録を削除する*/
+	const deletePageHistory = (id: string) => {
+		if (bookInfo.pageHistory) {
+			bookInfo.pageHistory = bookInfo.pageHistory.filter(item => item.id !== id);
+		}
+	}
+
 	/**inputタグの日付をDateに変換*/
 	const convertReadingDateToDate = () => {
 		const splitDate = readingDate.split('-');
@@ -67,10 +77,10 @@
 
 	/**読んだ記録に最終ページの記録があるか*/
 	const isExistCompleteHistory = () => {
-		if (!bookInfo.history) { return false; }
+		if (!bookInfo.pageHistory) { return false; }
 
 		let isExist = false;
-		bookInfo.history!.forEach(item => {
+		bookInfo.pageHistory!.forEach(item => {
 			if (item.currentPage === bookInfo.pageCount) { isExist = true; }
 		})
 
@@ -136,11 +146,21 @@
 			class="mb-2 flex flex-col justify-start items-stretch"
 		>
 			<ul class="flex flex-col rounded">
-				{#if bookInfo.history && bookInfo.history.length > 0}
-					{#each bookInfo.history as item}
-						<li class="my-1 flex justify-between items-center border-b-lime-700 border-b-[1px]">
-							<span>{convertDate(item.date)}</span>
-							<span>{item.currentPage}ページ</span>
+				{#if bookInfo.pageHistory && bookInfo.pageHistory.length > 0}
+					{#each bookInfo.pageHistory as item (item.id)}
+						<li class="my-1 flex">
+							<button 
+								type="button"
+								aria-label="btnDeletePageHistory"
+								class="p-1 mr-1 rounded-full hover:bg-stone-300"
+								on:click={() => deletePageHistory(item.id)}
+							>
+								<Icon icon="ph:x" width="24" height="24" color={colorStone700} />
+							</button>
+							<div class="flex flex-grow justify-between items-center border-b-lime-700 border-b-[1px]">
+								<span>{convertDate(item.date)}</span>
+								<span>{item.currentPage}ページ</span>
+							</div>
 						</li>
 					{/each}
 				{:else}

@@ -22,7 +22,8 @@ export const getTestData = () => {
     createDate: new Date,
     updateDate: new Date,
     pageCount: 300,
-    history: [{
+    pageHistory: [{
+      id: crypto.randomUUID(),
       date: new Date,
       currentPage: 0
     }],
@@ -49,7 +50,8 @@ export const getTestDatas = () => {
     createDate: new Date,
     updateDate: new Date,
     pageCount: 300,
-    history: [{
+    pageHistory: [{
+      id: crypto.randomUUID(),
       date: new Date,
       currentPage: 0
     }],
@@ -70,7 +72,8 @@ export const getTestDatas = () => {
     createDate: new Date,
     updateDate: new Date,
     pageCount: -1,
-    history: [{
+    pageHistory: [{
+      id: crypto.randomUUID(),
       date: new Date,
       currentPage: 0
     }],
@@ -91,7 +94,8 @@ export const getTestDatas = () => {
     createDate: new Date,
     updateDate: new Date,
     pageCount: -1,
-    history: [{
+    pageHistory: [{
+      id: crypto.randomUUID(),
       date: new Date,
       currentPage: 0
     }],
