@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
         bookInfos = await service.getRecentBookInfo(collections, userId);
     } else if (url.searchParams.get('history') === 'true'){
         //書誌データのhistoryのみを取得
-        bookInfos = await service.getBookInfoWithOnlyHistory(collections, userId);
+        bookInfos = await service.getBookInfoWithOnlyPageHistory(collections, userId);
     } else {
         //全書誌データを取得
         bookInfos = await service.getBookInfo(collections, userId);    
