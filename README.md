@@ -39,7 +39,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 読み進めた本や、過去に読んだ本があれば、一覧から選択し内容を編集できます。  
 ステータスは自分でも変更可能ですが、  
 基本的に操作に応じて、自動で書き換わるようになっています。  
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/39d9c5db-6a93-457e-9a43-23fe7b318962)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/9b87a78b-beda-4866-803d-553cce36d210)
 
 ### 📖 管理  
 現在読んでいる本は「読んでいる本」ページに表示され、  
