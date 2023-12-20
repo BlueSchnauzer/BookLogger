@@ -120,9 +120,24 @@
 		<CategoryLabel categoryText="最終更新日" condition={bookInfo.updateDate}
 			labelFunction={() => convertDate(bookInfo.updateDate)}
 		/>
-		<CategoryLabel categoryText="ページ数" condition={bookInfo.pageCount}
-			labelFunction={() => bookInfo.pageCount.toString() + 'ページ'}
-		/>
+		<div class="mb-2 flex flex-col justify-start items-stretch">
+			<span class="mb-1 text-lime-800">ページ数</span>
+			<div class="flex">
+				{#if bookInfo.pageCount}
+					<span class="flex-grow mb-2 border-b-stone-400 border-b-[1px]">{bookInfo.pageCount.toString() + 'ページ'}</span>
+				{:else}
+					<span class="flex-grow mb-2 text-gray-500 border-b-stone-400 border-b-[1px]">データ無し</span>
+				{/if}
+				<button 
+					type="button"
+					aria-label="btnEditPageCount"
+					title="ページ数を編集する"
+					class="p-1 mr-1 rounded-full hover:bg-stone-300"
+				>
+					<Icon icon="mdi:pencil-plus-outline" width="24" height="24" color={colorStone700} />
+				</button>
+			</div>
+		</div>
 	</div>
 	<span class="py-2 text-lg font-bold">ステータス</span>
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
