@@ -17,7 +17,6 @@ export const load = (async ({ fetch }) => {
   
   const recentBook: BookInfo[] = await bookInfos.json();
   const pagesWithDate = getPageCountInCurrentWeek(await history.json());
-  console.log(pagesWithDate);
   
   return { recentBook, pagesWithDate };
 }) satisfies PageServerLoad;
