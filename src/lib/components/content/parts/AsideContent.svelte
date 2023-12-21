@@ -16,6 +16,7 @@
       class="mb-2 self-center w-[128px] h-[182px] shadow-md"
       title={getLabel(bookInfo.title)} src={bookInfo.thumbnail} alt="書影"
     />
+    <span class="self-center text-gray-400 text-xs">Image By Google</span>
   {:else}
     <div
       class="mb-2 flex justify-center items-center self-center w-[128px] h-[182px] shadow-md bg-slate-300"
