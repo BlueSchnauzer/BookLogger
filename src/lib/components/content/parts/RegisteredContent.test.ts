@@ -36,6 +36,20 @@ describe('RegisteredContent', async () => {
     expect(testData.isFavorite).toEqual(true);
   });
 
+  it('ページ数を更新した際に、書誌情報の値が同期していること', async () => {
+		const bookInfo = structuredClone(testData);
+    render(RegisteredContent, {bookInfo: bookInfo});
+
+    const editButton = screen.getByRole('button', {name: 'btnEditPageCount'});
+    await fireEvent.click(editButton);
+
+    const editField = screen.getByTestId('editPageCount');
+    await userEvent.clear(editField);
+    await userEvent.type(editField, '500');
+
+    expect(bookInfo.pageCount).toEqual(500);
+  });
+
   it('ステータスを更新した際に、書誌情報の値が同期していること', async () => {
 		const bookInfo = structuredClone(testData);
     render(RegisteredContent, {bookInfo: bookInfo});
