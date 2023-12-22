@@ -254,6 +254,7 @@ describe('updateBookInfo', () => {
 
     //以下の4つだけ更新可能
     testData.isFavorite = true;
+    testData.pageCount = 500;
     testData.status = 'complete';
     testData.memorandum = 'メモ欄編集'
     testData.pageHistory!.push({id: crypto.randomUUID(), date: new Date, currentPage: 100 });
@@ -264,6 +265,7 @@ describe('updateBookInfo', () => {
     const updatedItem = await col.findOne({userId: testData.userId});
     expect(updatedItem?.title).toEqual(testData.title);
     expect(updatedItem?.isFavorite).toBeTruthy();
+    expect(updatedItem?.pageCount).toEqual(testData.pageCount);
     expect(updatedItem?.status).toEqual('complete');
     expect(updatedItem?.memorandum).toBeTruthy();
     expect(updatedItem?.pageHistory!.length).toEqual(2);

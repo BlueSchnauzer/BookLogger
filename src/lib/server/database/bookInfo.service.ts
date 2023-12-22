@@ -124,6 +124,7 @@ export async function updateBookInfo(collections: collections, bookInfo: BookInf
     //(日付以外は)以下の項目のみ更新
     updateFilter.$set = {
       isFavorite: bookInfo.isFavorite,
+      pageCount: bookInfo.pageCount,
       status: bookInfo.status,
       pageHistory: bookInfo.pageHistory,
       memorandum: bookInfo.memorandum

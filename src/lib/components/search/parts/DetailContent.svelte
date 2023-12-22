@@ -15,6 +15,7 @@
 			<img class="self-center w-[128px] h-[182px] shadow-md"
 				title={getLabel(item.volumeInfo?.title)} src={item.volumeInfo?.imageLinks?.thumbnail} alt="書影"
 			/>
+			<span class="self-center text-gray-400 text-xs">Image By Google</span>
 		{:else}
 			<div
 				class="flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
