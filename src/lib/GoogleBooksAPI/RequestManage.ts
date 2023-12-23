@@ -24,7 +24,7 @@ export async function requestBookInfoWithPartialResource(queries: string[], reso
 }
 
 /**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する */
-export async function getBookInfosByQueries(booktitle: string, author: string, isbn_13: string, maxResults = 10, startIndex = 0): Promise<books_v1.Schema$Volumes>{
+export async function requestBookInfosByQueries(booktitle: string, author: string, isbn_13: string, maxResults = 10, startIndex = 0): Promise<books_v1.Schema$Volumes>{
   const queries: string[] = [];
   if (booktitle) { queries.push(`intitle:${booktitle}`); }
   if (author) { queries.push(`inauthor:${author}`); }

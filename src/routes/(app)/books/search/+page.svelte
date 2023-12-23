@@ -24,7 +24,7 @@
 
 	let runPromise = async (): Promise<books_v1.Schema$Volumes> => {
 		isLoading = true;
-		const result = await data.getBookInfo();
+		const result = await data.requestBookInfo();
 		isLoading = false;
 		resultCount = result.totalItems!;
 		return result;
@@ -36,7 +36,7 @@
 			//ページングを初期化
 			startIndex = 0;
 			resultCount = 0;
-			const result = await data.getBookInfo();
+			const result = await data.requestBookInfo();
 			resultCount = result.totalItems!;
 			isLoading = false;
 			return result;
@@ -53,7 +53,7 @@
 			startIndex -= 10;
 			runPromise = async (): Promise<books_v1.Schema$Volumes> => {
 				isLoading = true;
-				const result = await data.getBookInfo(startIndex);
+				const result = await data.requestBookInfo(startIndex);
 				isLoading = false;
 				return result;
 			};
@@ -70,7 +70,7 @@
 			startIndex += 10;
 			runPromise = async (): Promise<books_v1.Schema$Volumes> => {
 				isLoading = true;
-				const result = await data.getBookInfo(startIndex);
+				const result = await data.requestBookInfo(startIndex);
 				isLoading = false;
 				return result;
 			};
