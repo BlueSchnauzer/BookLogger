@@ -7,7 +7,7 @@ export const load = (async (params) => {
   const author = params.url.searchParams.get('author');
   const isbn = params.url.searchParams.get('isbn');
   const page = Number(params.url.searchParams.get('page'));
-  const startIndex = page > 0 ? page : 1;
+  const startIndex = page >= 0 ? page : 0;
 
   //パラメータを条件に検索を行う関数を作成し、クライアント側に渡して実行
   const requestBookInfo = async (startIndex = 0) => requestBookInfosByQueries(bookTitle!, author!, isbn!, 10, startIndex) as books_v1.Schema$Volumes;
