@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { requestBookInfo, getThumbnailByIsbn, getBookInfosByQueries, requestBookInfoWithPartialResource } from "./RequestManage";
+import { requestBookInfo, getThumbnailByIsbn, requestBookInfosByQueries, requestBookInfoWithPartialResource } from "./RequestManage";
 import { getTestData } from "$lib/vitest-setup";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 
@@ -82,35 +82,35 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 });
 
-describe('getBookInfosByQueries', () => {
+describe('requestBookInfosByQueries', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
   })
 
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const result = await getBookInfosByQueries(testData.title, '', '');
+    const result = await requestBookInfosByQueries(testData.title, '', '');
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries('', testData.author[0], '');
+    const result = await requestBookInfosByQueries('', testData.author[0], '');
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries('', '', testData.identifier?.isbn_13!);
+    const result = await requestBookInfosByQueries('', '', testData.identifier?.isbn_13!);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });
   
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await getBookInfosByQueries(testData.title, testData.author[0], testData.identifier?.isbn_13!);
+    const result = await requestBookInfosByQueries(testData.title, testData.author[0], testData.identifier?.isbn_13!);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
@@ -118,14 +118,14 @@ describe('getBookInfosByQueries', () => {
 
   //rejectを確認
   it('queriesが無い場合にRejectされること', () => {
-    getBookInfosByQueries('', '', '')
+    requestBookInfosByQueries('', '', '')
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件が入力されていません。');
     });
   });
 
   it('リクエスト結果が0件の際にRejectされること', () => {
-    getBookInfosByQueries('', '', '0000')
+    requestBookInfosByQueries('', '', '0000')
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件に合う書誌情報が見つかりませんでした。');
     });

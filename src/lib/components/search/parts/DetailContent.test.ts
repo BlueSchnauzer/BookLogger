@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
-import { getBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
+import { requestBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
 import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 import type { books_v1 } from 'googleapis';
 
 describe('DetailContent', async () => {
 	const isbn = '978-4-15-120051-9';
-	const result: books_v1.Schema$Volumes = await getBookInfosByQueries('', '', isbn);
+	const result: books_v1.Schema$Volumes = await requestBookInfosByQueries('', '', isbn, 10, 0);
 	const item: books_v1.Schema$Volume = result.items![0];
 
 	it('レンダリング', async () => {

@@ -79,6 +79,7 @@
 						/>
 					</li>
 				</ul>
+				<input type="hidden" value="0" name="page" aria-label="name">
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="h-14 flex flex-row justify-end items-center">
