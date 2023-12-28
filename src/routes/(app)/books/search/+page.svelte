@@ -22,23 +22,14 @@
 	const pageName = '書籍検索';
 	const target = 'searchToast';
 
-	let runPromise = async (): Promise<books_v1.Schema$Volumes> => {
-		isLoading = true;
-		const result = await data.requestBookInfo();
-		isLoading = false;
-		resultCount = result.totalItems!;
-		return result;
-	};
+	let runPromise: () => Promise<books_v1.Schema$Volumes>;
 	$: {
 		//再検索時に再実行されるようreactive化
 		runPromise = async (): Promise<books_v1.Schema$Volumes> => {
 			isLoading = true;
-			//ページングを初期化
-			startIndex = 0;
-			resultCount = 0;
 			const result = await data.requestBookInfo();
-			resultCount = result.totalItems!;
 			isLoading = false;
+			resultCount = result.totalItems!;
 			return result;
 		};
 	}
