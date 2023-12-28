@@ -14,7 +14,6 @@
 	export let data: PageData;
 	let isDisplaySearchModal = false;
 	let resultCount = 0;
-	let startIndex = 0;
 	let isLoading = false;
 
 	let currentBookInfo: books_v1.Schema$Volume;
@@ -31,40 +30,6 @@
 			isLoading = false;
 			resultCount = result.totalItems!;
 			return result;
-		};
-	}
-
-	/**後方にページング*/
-	let pagingBackward = () => {};
-	$: {
-		pagingBackward = () => {
-			if (startIndex === 0) {
-				return;
-			}
-			startIndex -= 10;
-			runPromise = async (): Promise<books_v1.Schema$Volumes> => {
-				isLoading = true;
-				const result = await data.requestBookInfo(startIndex);
-				isLoading = false;
-				return result;
-			};
-		};
-	}
-
-	/**前方にページング*/
-	let pagingForward = () => {};
-	$: {
-		pagingForward = () => {
-			if (startIndex + 10 >= resultCount) {
-				return;
-			}
-			startIndex += 10;
-			runPromise = async (): Promise<books_v1.Schema$Volumes> => {
-				isLoading = true;
-				const result = await data.requestBookInfo(startIndex);
-				isLoading = false;
-				return result;
-			};
 		};
 	}
 
@@ -85,8 +50,8 @@
 			<PrimalyButton type="button" text="再検索"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel {startIndex}	{resultCount}	{isLoading}	
-        on:backward={pagingBackward} on:forward={pagingForward}
+			<PagingLabel bookTitle={data.bookTitle} author={data.author} isbn={data.isbn} 
+				page={data.page} startIndex={data.startIndex} {resultCount} {isLoading}
 			/>
 		</div>
 		<SearchModal bind:isDisplay={isDisplaySearchModal} action="" />
@@ -95,8 +60,8 @@
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
 		<SearchResult {runPromise} on:click={(event) => displayDetail(event.detail)} />
 		<div class="flex justify-center py-2">
-			<PagingLabel {startIndex}	{resultCount}	{isLoading}	
-        isBottom={true} on:backward={pagingBackward} on:forward={pagingForward}
+			<PagingLabel bookTitle={data.bookTitle} author={data.author} isbn={data.isbn}
+			page={data.page} startIndex={data.startIndex} {resultCount} {isLoading} isBottom={true} 
 			/>
 		</div>
 		{#if isDisplayDetail}

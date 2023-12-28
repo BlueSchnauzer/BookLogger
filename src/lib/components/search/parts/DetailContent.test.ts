@@ -6,7 +6,7 @@ import type { books_v1 } from 'googleapis';
 
 describe('DetailContent', async () => {
 	const isbn = '978-4-15-120051-9';
-	const result: books_v1.Schema$Volumes = await requestBookInfosByQueries('', '', isbn);
+	const result: books_v1.Schema$Volumes = await requestBookInfosByQueries('', '', isbn, 10, 0);
 	const item: books_v1.Schema$Volume = result.items![0];
 
 	it('レンダリング', async () => {
