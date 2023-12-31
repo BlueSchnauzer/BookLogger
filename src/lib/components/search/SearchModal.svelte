@@ -12,7 +12,7 @@
 	const colorStone700 = '#44403C';
 	let formError = false;
 
-	/**モーダル表示を切り替える*/
+	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) { dialog.showModal(); }
 
 	/**モーダルを閉じて初期化*/

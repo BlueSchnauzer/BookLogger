@@ -10,14 +10,19 @@
 
 	export let isDisplay = false;
 	export let bookInfo: BookInfo;
+	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
 	const beforeStatus = bookInfo.status;
+
+	/**モーダル表示を表示する*/
+	$: if (dialog && isDisplay) { dialog.showModal(); }
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
 		isDisplay = false;
 		isDisplayLoader = false;
+		dialog.close();
 	};
 
 	/**ローディングを表示する*/
@@ -70,7 +75,7 @@
 
 </script>
 
-<LayerZindex30 bind:isDisplay isUseBackGroundColor={true}>
+<dialog bind:this={dialog}>
 	{#if isDisplayLoader}
 		<div class="fixed m-auto inset-0 flex flex-1 justify-center items-center">
 			<span class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"></span>
@@ -102,4 +107,4 @@
       </div>
 		</div>
 	{/if}
-</LayerZindex30>
+</dialog>

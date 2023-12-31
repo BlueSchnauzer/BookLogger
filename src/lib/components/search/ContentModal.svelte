@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import LayerZindex30 from '$lib/components/common/parts/LayerZindex30.svelte';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import type { books_v1 } from 'googleapis';
@@ -11,13 +10,18 @@
 
   export let isDisplay = false;
 	export let item: books_v1.Schema$Volume = {};
+	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
+
+	/**モーダル表示を表示する*/
+	$: if (dialog && isDisplay) { dialog.showModal(); }
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
 		isDisplay = false;
 		isDisplayLoader = false;
+		dialog.close();
 	};
 
 	/**ローディングを表示する*/
@@ -52,7 +56,7 @@
 
 </script>
 
-<LayerZindex30 bind:isDisplay isUseBackGroundColor={true}>
+<dialog bind:this={dialog}>
 	{#if isDisplayLoader}
 		<div class="fixed m-auto inset-0 flex flex-1 justify-center items-center">
 			<span class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"></span>
@@ -81,4 +85,4 @@
       </div>
     </div>
 	{/if}
-</LayerZindex30>
+</dialog>
