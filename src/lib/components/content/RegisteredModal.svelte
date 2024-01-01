@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import LayerZindex30 from '$lib/components/common/parts/LayerZindex30.svelte';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import { createEventDispatcher } from "svelte";
