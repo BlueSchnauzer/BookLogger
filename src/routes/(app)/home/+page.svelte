@@ -89,9 +89,7 @@
         >
           検索する
         </button>
-        {#if isDisplaySearchModal}
-          <SearchModal bind:isDisplay={isDisplaySearchModal}/>
-        {/if}    
+        <SearchModal bind:isDisplay={isDisplaySearchModal}/>
       {/if}
     </div>
     <div data-testid="pageGraph" class="w-[90%] h-[90%] flex flex-col items-center justify-center max-lg:self-center p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100">

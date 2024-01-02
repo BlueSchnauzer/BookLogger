@@ -1,24 +1,28 @@
 <script lang="ts">
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
-	import LayerZindex30 from '$lib/components/common/parts/LayerZindex30.svelte';
 	import Icon from '@iconify/svelte';
 
 	export let isDisplay = false;
 	export let action = '/books/search';
+	let dialog: HTMLDialogElement;
 	let bookTitle = '';
 	let author = '';
 	let isbn = '';
 	const colorStone700 = '#44403C';
 	let formError = false;
 
+	/**モーダル表示を表示する*/
+	$: if (dialog && isDisplay) { dialog.showModal(); }
+
 	/**モーダルを閉じて初期化*/
 	const closeModal = () => {
-		isDisplay = !isDisplay;
 		formError = false;
 		bookTitle = '';
 		author = '';
 		isbn = '';
+		isDisplay = false;
+		dialog.close();
 	};
 
 	/**インプットタグでのEnterを無効化*/
@@ -34,11 +38,12 @@
 			formError = true;
 			return;
 		}
-		isDisplay = !isDisplay;
+		isDisplay = false;
+		dialog.close();
 	};
 </script>
 
-<LayerZindex30 bind:isDisplay isUseBackGroundColor={true}>
+<dialog bind:this={dialog}>
 	<form {action} on:submit={(e) => validateSubmit(e)}>
 		<div class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg">
 			<div class="h-14 flex flex-row justify-between items-center">
@@ -88,4 +93,4 @@
 			</div>
 		</div>
 	</form>
-</LayerZindex30>
+</dialog>
