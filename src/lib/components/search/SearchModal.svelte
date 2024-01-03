@@ -6,6 +6,7 @@
 	export let isDisplay = false;
 	export let action = '/books/search';
 	let dialog: HTMLDialogElement;
+	let query = '';
 	let bookTitle = '';
 	let author = '';
 	let isbn = '';
@@ -18,6 +19,7 @@
 	/**モーダルを閉じて初期化*/
 	const closeModal = () => {
 		formError = false;
+		query = '';
 		bookTitle = '';
 		author = '';
 		isbn = '';
@@ -62,21 +64,32 @@
 							<span class="text-red-500 font-medium">1つ以上の検索条件を入力してください。</span>
 						</li>
 					{/if}
-					<li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+					<li class="my-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+						<span class="max-sm:mb-2">検索条件</span>
+						<input class="px-2 py-1 rounded-lg"	bind:value={query}
+							name="query" aria-label="query"	type="text"	size="30"
+							on:keypress={(e) => preventSubmit(e)}
+						/>
+					</li>
+					<li class="mt-5 mb-2 flex items-center">
+						<span class="font-light text-sm text-gray-600">詳細条件</span>
+						<span class="h-[1px] flex-grow mx-2 bg-gray-400"/>
+					</li>
+					<li class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
 						<span class="max-sm:mb-2">タイトル</span>
 						<input class="px-2 py-1 rounded-lg"	bind:value={bookTitle}
 							name="booktitle" aria-label="booktitle"	type="text"	size="30"
 							on:keypress={(e) => preventSubmit(e)}
 						/>
 					</li>
-					<li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+					<li class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
 						<span class="max-sm:mb-2">著者名</span>
 						<input class="px-2 py-1 rounded-lg"
 							bind:value={author} name="author"	aria-label="author"
 							type="text"	size="30"	on:keypress={(e) => preventSubmit(e)}
 						/>
 					</li>
-					<li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+					<li class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
 						<span class="max-sm:mb-2">ISBN(ハイフン無し13桁)</span>
 						<input class="px-2 py-1 rounded-lg" 
               bind:value={isbn} name="isbn" aria-label="isbn" type="text"	size="30"
