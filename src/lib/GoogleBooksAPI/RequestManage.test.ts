@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { requestBookInfo, getThumbnailByIsbn, requestBookInfosByQueries, requestBookInfoWithPartialResource } from "./RequestManage";
+import { requestBookInfo, getThumbnailByIsbn, requestBookInfosByQueries, requestBookInfoWithPartialResource, requestBookInfoByFuzzySearch } from "./RequestManage";
 import { getTestData } from "$lib/vitest-setup";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 
@@ -80,6 +80,36 @@ describe('requestBookInfoWithPartialResource', () => {
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.smallThumbnail).toBeDefined();
   });
+});
+
+describe('requestBookInfoByFuzzySearch', () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getTestData();
+  })
+
+  it('あいまい条件で一致した書誌データを取得できるか',async () => {
+    const result = await requestBookInfoByFuzzySearch('イシグロカズオ', 10, 0);
+
+    //複数取れるので、一致させずに1件でもあればOK
+    expect(result.items).toBeDefined();
+  });
+
+  //rejectを確認
+  it('queryが無い場合にRejectされること', () => {
+    requestBookInfoByFuzzySearch('', 10, 0)
+    .catch((e: Error) => {
+      expect(e.message).toEqual('検索条件が入力されていません。');
+    });
+  });
+
+  //あいまい検索なので何を入れても基本的に引っかかる
+  // it('リクエスト結果が0件の際にRejectされること', () => {
+  //   requestBookInfoByFuzzySearch('', 10, 0)
+  //   .catch((e: Error) => {
+  //     expect(e.message).toEqual('検索条件に合う書誌情報が見つかりませんでした。');
+  //   });
+  // })
 });
 
 describe('requestBookInfosByQueries', () => {
