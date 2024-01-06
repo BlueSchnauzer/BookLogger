@@ -36,7 +36,7 @@
 
 	/**バリデーションとsubmit処理*/
 	const validateSubmit = (e: SubmitEvent) => {
-		if (!(bookTitle || author || isbn)) {
+		if (!(query || bookTitle || author || isbn)) {
 			e.preventDefault();
 			formError = true;
 			return;
