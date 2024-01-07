@@ -50,7 +50,8 @@
 			<PrimalyButton type="button" text="再検索"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel bookTitle={data.bookTitle} author={data.author} isbn={data.isbn} 
+			<PagingLabel isFuzzy={data.isFuzzy} query={data.query} 
+				bookTitle={data.bookTitle} author={data.author} isbn={data.isbn} 
 				page={data.page} startIndex={data.startIndex} {resultCount} {isLoading}
 			/>
 		</div>
@@ -60,8 +61,9 @@
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
 		<SearchResult {runPromise} on:click={(event) => displayDetail(event.detail)} />
 		<div class="flex justify-center py-2">
-			<PagingLabel bookTitle={data.bookTitle} author={data.author} isbn={data.isbn}
-			page={data.page} startIndex={data.startIndex} {resultCount} {isLoading} isBottom={true} 
+			<PagingLabel isFuzzy={data.isFuzzy} query={data.query} 
+				bookTitle={data.bookTitle} author={data.author} isbn={data.isbn}
+				page={data.page} startIndex={data.startIndex} {resultCount} {isLoading} isBottom={true} 
 			/>
 		</div>
 		{#if isDisplayDetail}
