@@ -23,6 +23,19 @@ export async function requestBookInfoWithPartialResource(queries: string[], reso
   return result;
 }
 
+/**(あいまい検索)検索条件を指定して書誌データを取得する */
+export async function requestBookInfoByFuzzySearch(query: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes> {
+  if (!query) { throw new Error('検索条件が入力されていません。'); }
+
+  const fuzzyQuery: string[] = [];
+  fuzzyQuery.push(query);
+
+  const result = await requestBookInfo(fuzzyQuery, maxResults, startIndex);
+  if (result.totalItems === 0 || !result.items) { throw new Error('検索条件に合う書誌情報が見つかりませんでした。'); }
+
+  return result;
+}
+
 /**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する */
 export async function requestBookInfosByQueries(booktitle: string, author: string, isbn_13: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes>{
   const queries: string[] = [];
