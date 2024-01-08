@@ -73,7 +73,9 @@
 							disabled={isShowDetailQueries ? true : false}
 						/>
 					</div>
-					<button class="mt-3 flex items-center w-full" type="button" on:click={() => isShowDetailQueries = !isShowDetailQueries}>
+					<button class="mt-3 flex items-center w-full" type="button" data-testid="btnDisplayDetailQueries"
+						on:click={() => isShowDetailQueries = !isShowDetailQueries}
+					>
 						<div class="flex items-center flex-grow">
 							<span class="ml-1 text-sm text-gray-600">詳細条件</span>
 							<span class="h-[1px] flex-grow mx-2 bg-gray-400"/>

@@ -4,6 +4,7 @@ test.describe('書籍検索', () => {
   test('検索結果を表示できること', async({ loginedPage }) => {
     await loginedPage.page.getByTestId('btnDisplaySearch').click();
     
+    await loginedPage.page.getByTestId('btnDisplayDetailQueries').click();
     const bookTitle = 'クイーンズ・ギャンビット';
     await loginedPage.page.getByRole('textbox', {name: 'title'}).click;
     await loginedPage.page.getByRole('textbox', {name: 'title'}).fill(bookTitle);
