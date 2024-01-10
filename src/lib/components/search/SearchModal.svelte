@@ -6,10 +6,12 @@
 	export let isDisplay = false;
 	export let action = '/books/search';
 	let dialog: HTMLDialogElement;
+	let query = '';
 	let bookTitle = '';
 	let author = '';
 	let isbn = '';
 	const colorStone700 = '#44403C';
+	let isShowDetailQueries = false;
 	let formError = false;
 
 	/**モーダル表示を表示する*/
@@ -18,6 +20,7 @@
 	/**モーダルを閉じて初期化*/
 	const closeModal = () => {
 		formError = false;
+		query = '';
 		bookTitle = '';
 		author = '';
 		isbn = '';
@@ -33,7 +36,7 @@
 
 	/**バリデーションとsubmit処理*/
 	const validateSubmit = (e: SubmitEvent) => {
-		if (!(bookTitle || author || isbn)) {
+		if (!(query || bookTitle || author || isbn)) {
 			e.preventDefault();
 			formError = true;
 			return;
@@ -56,31 +59,53 @@
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="flex-1">
-				<ul class="p-2">
+				<div class="p-2">
 					{#if formError}
-						<li class="flex items-center my-2">
+						<div class="flex items-center my-2">
 							<span class="text-red-500 font-medium">1つ以上の検索条件を入力してください。</span>
-						</li>
+						</div>
 					{/if}
-					<li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+					<div class="my-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+						<span class="max-sm:mb-2">検索条件</span>
+						<input class="px-2 py-1 rounded-lg border border-stone-300"	bind:value={query}
+							name="query" aria-label="query"	type="text"	size="30"
+							on:keypress={(e) => preventSubmit(e)}
+							disabled={isShowDetailQueries ? true : false}
+						/>
+					</div>
+					<button class="mt-3 flex items-center w-full" type="button" data-testid="btnDisplayDetailQueries"
+						on:click={() => isShowDetailQueries = !isShowDetailQueries}
+					>
+						<div class="flex items-center flex-grow">
+							<span class="ml-1 text-sm text-gray-600">詳細条件</span>
+							<span class="h-[1px] flex-grow mx-2 bg-gray-400"/>
+						</div>
+						<Icon icon="ph:caret-up-light" width="20" height="20" color={colorStone700} rotate={isShowDetailQueries ? 0 : 90}/>
+					</button>
+				</div>
+				<ul class="p-2 {isShowDetailQueries ? 'block' : 'hidden'}">
+					<li class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
 						<span class="max-sm:mb-2">タイトル</span>
-						<input class="px-2 py-1 rounded-lg"	bind:value={bookTitle}
+						<input class="px-2 py-1 rounded-lg border border-stone-300"	bind:value={bookTitle}
 							name="booktitle" aria-label="booktitle"	type="text"	size="30"
 							on:keypress={(e) => preventSubmit(e)}
+							disabled={isShowDetailQueries ? false : true}
 						/>
 					</li>
-					<li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+					<li class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
 						<span class="max-sm:mb-2">著者名</span>
-						<input class="px-2 py-1 rounded-lg"
+						<input class="px-2 py-1 rounded-lg border border-stone-300"
 							bind:value={author} name="author"	aria-label="author"
 							type="text"	size="30"	on:keypress={(e) => preventSubmit(e)}
+							disabled={isShowDetailQueries ? false : true}
 						/>
 					</li>
-					<li class="mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
+					<li class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch">
 						<span class="max-sm:mb-2">ISBN(ハイフン無し13桁)</span>
-						<input class="px-2 py-1 rounded-lg" 
+						<input class="px-2 py-1 rounded-lg border border-stone-300" 
               bind:value={isbn} name="isbn" aria-label="isbn" type="text"	size="30"
 							on:keypress={(e) => preventSubmit(e)}
+							disabled={isShowDetailQueries ? false : true}
 						/>
 					</li>
 				</ul>

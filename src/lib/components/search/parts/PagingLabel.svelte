@@ -2,6 +2,8 @@
 	import Icon from '@iconify/svelte';
 
 	export let isLoading = false;
+	export let isFuzzy: boolean;
+	export let query: string | null;
 	export let bookTitle: string | null;
 	export let author: string | null;
 	export let isbn: string | null;
@@ -37,9 +39,13 @@
 			<button	class="hover:bg-stone-300 rounded" type="submit" title="前へ" disabled={isLoading}>
 				<Icon icon="ph:caret-left" width="32" height="32" color={colorLime800} />
 			</button>	
-			<input type="hidden" value={bookTitle} name="booktitle">
-			<input type="hidden" value={author} name="author">
-			<input type="hidden" value={isbn} name="isbn">
+			{#if isFuzzy}
+				<input type="hidden" value={query} name="query">
+			{:else}
+				<input type="hidden" value={bookTitle} name="booktitle">
+				<input type="hidden" value={author} name="author">
+				<input type="hidden" value={isbn} name="isbn">
+			{/if}
 			<input type="hidden" bind:value={page} name="page">
 		</form>
 		<span class="m-auto px-2">
@@ -49,9 +55,13 @@
 			<button	class="hover:bg-stone-300 rounded" type="submit" title="次へ" disabled={isLoading}>
 				<Icon icon="ph:caret-right" width="32" height="32" color={colorLime800} />
 			</button>
-			<input type="hidden" value={bookTitle} name="booktitle">
-			<input type="hidden" value={author} name="author">
-			<input type="hidden" value={isbn} name="isbn">
+			{#if isFuzzy}
+				<input type="hidden" value={query} name="query">
+			{:else}
+				<input type="hidden" value={bookTitle} name="booktitle">
+				<input type="hidden" value={author} name="author">
+				<input type="hidden" value={isbn} name="isbn">
+			{/if}
 			<input type="hidden" bind:value={page} name="page">
 		</form>
 	</div>
