@@ -128,7 +128,6 @@
 					<input class="flex-grow p-1 mr-1 rounded-lg border-[1px] border-stone-400" type="number"
 						id="editPageCount" bind:value={bookInfo.pageCount} min="0" data-testid="editPageCount"
 					/>
-					<span>ページ</span>
 				{:else if bookInfo.pageCount}
 					<span class="flex-grow mb-2 border-b-stone-400 border-b-[1px]">{bookInfo.pageCount.toString() + 'ページ'}</span>
 				{:else}
