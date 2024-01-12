@@ -6,6 +6,7 @@
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
+	import BookShelf from '$lib/icons/BookShelf.svelte';
 
 	//モバイルメニュー(画面サイズが小さい時にサイドメニューと入れ替えで表示)
 	
@@ -14,7 +15,8 @@
 		{ icon: BookCase, ref: '/books', name: 'AllBooks' },
 		{ icon: PileOfBooks, ref: '/books/wish', name: 'Wish' },
 		{ icon: Openingbook, ref: '/books/reading', name: 'Reading' },
-		{ icon: CompleteBook, ref: '/books/complete', name: 'Complete' }
+		{ icon: CompleteBook, ref: '/books/complete', name: 'Complete' },
+		{ icon: BookShelf, ref: '/shelfs', name: 'Shelfs' }
 	];
 	const colorStone200 = '#E7E5E4';
 
