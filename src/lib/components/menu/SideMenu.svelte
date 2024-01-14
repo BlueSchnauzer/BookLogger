@@ -19,7 +19,7 @@
 		{ icon: PileOfBooks, ref: '/books/wish', name: '読みたい本'},
 		{ icon: Openingbook, ref: '/books/reading', name: '読んでいる本' },
 		{ icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' },
-		{ icon: BookShelf, ref: '/shelfs', name: '本棚' }
+		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 	];
 	const colorStone200 = '#E7E5E4';
 

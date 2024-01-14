@@ -16,7 +16,7 @@
 		{ icon: PileOfBooks, ref: '/books/wish', name: 'Wish' },
 		{ icon: Openingbook, ref: '/books/reading', name: 'Reading' },
 		{ icon: CompleteBook, ref: '/books/complete', name: 'Complete' },
-		{ icon: BookShelf, ref: '/shelfs', name: 'Shelfs' }
+		{ icon: BookShelf, ref: '/shelf', name: 'Shelf' }
 	];
 	const colorStone200 = '#E7E5E4';
 
