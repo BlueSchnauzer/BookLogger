@@ -65,14 +65,7 @@
 						<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 							<svelte:component this={data.icon} color={colorStone200} />
 						</div>
-						{#if data.icon === BookShelf}
-							<div class="ml-2.5 mr-3 flex flex-1 justify-between">
-								<span class=" text-stone-200">{data.name}</span>
-								<Icon icon="ph:arrow-down" width="24" height="24" color={colorStone200}/>
-							</div>
-						{:else}
-							<span class="ml-2.5 text-stone-200">{data.name}</span>
-						{/if}
+						<span class="ml-2.5 text-stone-200">{data.name}</span>
 					</a>
 				</li>
 			{/each}
