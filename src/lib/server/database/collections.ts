@@ -1,9 +1,11 @@
 import * as env from '$env/static/private';
 import * as mongoDB from 'mongodb';
 import type { BookInfo } from "$lib/server/models/BookInfo";
+import type { BookShelf } from '$lib/server/models/BookShelf';
 
 export type collections = {
   bookInfos?: mongoDB.Collection<BookInfo>
+  bookShelves?: mongoDB.Collection<BookShelf>
 }
 
 let isConnected = false;
@@ -25,8 +27,11 @@ async function connectToDatabase() {
     //コレクションの参照を取得
     const bookInfosCollection = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
     collections.bookInfos = bookInfosCollection;
+
+    const bookShelvesCollection = db.collection<BookShelf>(env.BOOKSHELVES_COLLECTION_NAME);
+    collections.bookShelves = bookShelvesCollection;
   
-    console.log(`Successfully connected to database: ${db.databaseName} and collection: ${bookInfosCollection.collectionName}`)
+    console.log(`Successfully connected to database: ${db.databaseName}.`)
 
     return collections;
   }

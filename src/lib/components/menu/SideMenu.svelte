@@ -7,18 +7,19 @@
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
+	import BookShelf from '$lib/icons/BookShelf.svelte';
 	import { signOut } from 'firebase/auth';
 	import { firebaseAuth } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
 
 	//PC用メニュー
-
 	const MenuItemDatas: menuItemData[] = [
 		{ icon: Home, ref: '/home', name: 'ホーム' },
 		{ icon: BookCase, ref: '/books', name: '登録した本' },
 		{ icon: PileOfBooks, ref: '/books/wish', name: '読みたい本'},
 		{ icon: Openingbook, ref: '/books/reading', name: '読んでいる本' },
-		{ icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' }
+		{ icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' },
+		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 	];
 	const colorStone200 = '#E7E5E4';
 
@@ -51,6 +52,11 @@
 	<div class="flex flex-col flex-grow justify-between pb-2">
 		<ul>
 			{#each MenuItemDatas as data (data.icon)}
+				{#if data.icon === BookShelf}
+					<li>
+						<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
+					</li>
+				{/if}
 				<li
 					class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600 
 					{data.ref === pathName ? 'border-x-lime-600 bg-stone-600 ' : ''}"
