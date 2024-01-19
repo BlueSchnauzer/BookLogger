@@ -25,3 +25,5 @@ export type selectFilterItem = {
 export type status = 'wish' | 'reading' | 'complete';
 /**一覧画面でのラベル種別 */
 export type typeForBottomLabel = 'createDate' | 'progress' | 'completeDate';
+/**検索画面での検索タイプ */
+export type searchType = 'none' | 'fuzzy' | 'detail';
