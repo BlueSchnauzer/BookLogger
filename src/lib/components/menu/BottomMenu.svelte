@@ -7,16 +7,19 @@
 	import Openingbook from '$lib/icons/OpeningBook.svelte';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import BookShelf from '$lib/icons/BookShelf.svelte';
+	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
 
 	//モバイルメニュー(画面サイズが小さい時にサイドメニューと入れ替えで表示)
 	
 	const MenuItemDatas: menuItemData[] = [
 		{ icon: Home, ref: '/home', name: 'Home' },
-		{ icon: BookCase, ref: '/books', name: 'AllBooks' },
-		{ icon: PileOfBooks, ref: '/books/wish', name: 'Wish' },
-		{ icon: Openingbook, ref: '/books/reading', name: 'Reading' },
-		{ icon: CompleteBook, ref: '/books/complete', name: 'Complete' },
-		{ icon: BookShelf, ref: '/shelf', name: 'Shelf' }
+		// { icon: BookCase, ref: '/books', name: 'AllBooks' },
+		{ icon: BookCase, ref: '/books', name: 'Library' },
+		// { icon: PileOfBooks, ref: '/books/wish', name: 'Wish' },
+		// { icon: Openingbook, ref: '/books/reading', name: 'Reading' },
+		// { icon: CompleteBook, ref: '/books/complete', name: 'Complete' },
+		{ icon: MagnifingGlass, ref: '/books/search', name: 'Search'},
+		{ icon: BookShelf, ref: '/shelf', name: 'BookShelf' }
 	];
 	const colorStone200 = '#E7E5E4';
 
