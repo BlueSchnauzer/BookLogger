@@ -12,7 +12,7 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	export let data: PageData;
-	let isDisplaySearchModal = false;
+	let isDisplaySearchModal = data.props.searchType === 'none';
 	let resultCount = 0;
 	let isLoading = false;
 
@@ -37,6 +37,7 @@
 		currentBookInfo = bookInfo;
 		isDisplayDetail = true;
 	};
+
 </script>
 
 <svelte:head>
@@ -47,23 +48,19 @@
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
 		<ContentHeader headerIcon={BookAdd} headerText={pageName} isDisplayAddButton={false} />
 		<div class="flex justify-between">
-			<PrimalyButton type="button" text="再検索"
+			<PrimalyButton type="button" text="{data.props.searchType === 'none' ? '検索' : '再検索' }"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel isFuzzy={data.isFuzzy} query={data.query} 
-				bookTitle={data.bookTitle} author={data.author} isbn={data.isbn} 
-				page={data.page} startIndex={data.startIndex} {resultCount} {isLoading}
+			<PagingLabel {...data.props} {resultCount} {isLoading}
 			/>
 		</div>
 		<SearchModal bind:isDisplay={isDisplaySearchModal} action="" />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
-		<SearchResult {runPromise} on:click={(event) => displayDetail(event.detail)} />
+		<SearchResult searchType={data.props.searchType} {runPromise} on:click={(event) => displayDetail(event.detail)} />
 		<div class="flex justify-center py-2">
-			<PagingLabel isFuzzy={data.isFuzzy} query={data.query} 
-				bookTitle={data.bookTitle} author={data.author} isbn={data.isbn}
-				page={data.page} startIndex={data.startIndex} {resultCount} {isLoading} isBottom={true} 
+			<PagingLabel {...data.props} {resultCount} {isLoading} isBottom={true} 
 			/>
 		</div>
 		{#if isDisplayDetail}
