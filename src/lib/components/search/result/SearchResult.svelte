@@ -85,6 +85,8 @@
 	{:catch error}
 		<span class="text-red-500 font-medium">{error.message}</span>
 	{/await}
+{:else}
+	<span>検索条件を入力してください。</span>
 {/if}
 
 <style>
