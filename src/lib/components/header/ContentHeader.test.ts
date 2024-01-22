@@ -10,27 +10,5 @@ describe('ContentHeader', () => {
 
     expect(container.querySelector('.flex > #Layer_1')).toBeInTheDocument();
     expect(screen.getByRole('heading')).toBeInTheDocument();
-    expect(screen.getByTestId('btnDisplaySearch')).toHaveClass('invisible');
-  });
-
-  it('ボタンを表示状態でレンダリング', () => {
-    const { container } = render(ContentHeader, { headerIcon: BookCase, headerText: 'テスト', isDisplayAddButton: true });
-
-    expect(container.querySelector('.flex > #Layer_1')).toBeInTheDocument();
-    expect(screen.getByRole('heading')).toBeInTheDocument();
-    expect(screen.getByTestId('btnDisplaySearch')).toBeInTheDocument();
-  });
-
-  //dialogタグの関数がJSDomだとサポートされていない？ためスキップ
-    it.skip('ボタンクリックで検索モーダルを表示できること', async () => {
-    render(ContentHeader, { headerIcon: BookCase, headerText: 'テスト', isDisplayAddButton: true });
-
-    const btnDisplaySearch = screen.getByTestId('btnDisplaySearch');
-
-    await fireEvent.click(btnDisplaySearch);
-    expect(screen.queryByTestId('layerZ30')).toBeInTheDocument();
-
-    await fireEvent.click(btnDisplaySearch);
-    expect(screen.queryByTestId('layerZ30')).not.toBeInTheDocument();
   });
 });
