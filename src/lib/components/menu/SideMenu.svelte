@@ -16,11 +16,7 @@
 	//PC用メニュー
 	const MenuItemDatas: menuItemData[] = [
 		{ icon: Home, ref: '/home', name: 'ホーム' },
-		// { icon: BookCase, ref: '/books', name: '登録した本' },
 		{ icon: BookCase, ref: '/books', name: 'ライブラリ' },
-		// { icon: PileOfBooks, ref: '/books/wish', name: '読みたい本'},
-		// { icon: Openingbook, ref: '/books/reading', name: '読んでいる本' },
-		// { icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' },
 		{ icon: MagnifingGlass, ref: '/books/search', name: '検索'},
 		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 	];

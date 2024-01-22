@@ -12,14 +12,10 @@
 	//モバイルメニュー(画面サイズが小さい時にサイドメニューと入れ替えで表示)
 	
 	const MenuItemDatas: menuItemData[] = [
-		{ icon: Home, ref: '/home', name: 'Home' },
-		// { icon: BookCase, ref: '/books', name: 'AllBooks' },
-		{ icon: BookCase, ref: '/books', name: 'Library' },
-		// { icon: PileOfBooks, ref: '/books/wish', name: 'Wish' },
-		// { icon: Openingbook, ref: '/books/reading', name: 'Reading' },
-		// { icon: CompleteBook, ref: '/books/complete', name: 'Complete' },
-		{ icon: MagnifingGlass, ref: '/books/search', name: 'Search'},
-		{ icon: BookShelf, ref: '/shelf', name: 'BookShelf' }
+		{ icon: Home, ref: '/home', name: 'ホーム' },
+		{ icon: BookCase, ref: '/books', name: 'ライブラリ' },
+		{ icon: MagnifingGlass, ref: '/books/search', name: '検索'},
+		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 	];
 	const colorStone200 = '#E7E5E4';
 
