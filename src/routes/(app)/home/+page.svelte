@@ -67,7 +67,7 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
   <div class="pl-2 pr-3 pt-1.5 h-14 flex flex-col justify-between">
-		<ContentHeader headerIcon={Home} headerText={pageName} isDisplayAddButton={true} />
+		<ContentHeader headerIcon={Home} headerText={pageName} />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
   <div class="flex max-lg:flex-col p-1 homeContentHeight overflow-y-auto customScroll">

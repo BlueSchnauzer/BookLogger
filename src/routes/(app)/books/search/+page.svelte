@@ -46,7 +46,7 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader headerIcon={BookAdd} headerText={pageName} isDisplayAddButton={false} />
+		<ContentHeader headerIcon={BookAdd} headerText={pageName} />
 		<div class="flex justify-between">
 			<PrimalyButton type="button" text="{data.props.searchType === 'none' ? '検索' : '再検索' }"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
