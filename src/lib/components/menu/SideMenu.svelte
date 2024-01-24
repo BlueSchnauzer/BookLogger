@@ -4,9 +4,6 @@
 	import type { menuItemData } from '$lib/customTypes';
 	import Home from '$lib/icons/Home.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
-	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
-	import Openingbook from '$lib/icons/OpeningBook.svelte';
-	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
 	import BookShelf from '$lib/icons/BookShelf.svelte';
 	import { signOut } from 'firebase/auth';
@@ -17,7 +14,7 @@
 	const MenuItemDatas: menuItemData[] = [
 		{ icon: Home, ref: '/home', name: 'ホーム' },
 		{ icon: BookCase, ref: '/books', name: 'ライブラリ' },
-		{ icon: MagnifingGlass, ref: '/books/search', name: '検索'},
+		{ icon: MagnifingGlass, ref: '/books/search', name: '書籍検索'},
 		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 	];
 	const colorStone200 = '#E7E5E4';
