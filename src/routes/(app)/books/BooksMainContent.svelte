@@ -25,7 +25,7 @@
 	/**絞り込み用のドロップダウンフィルター */
   export let selectFilterItems: selectFilterItem[];
 	/**データ0件の時に表示するメッセージ */
-	export let emptyMessage = '本が登録されていません。<br>右上の追加ボタンから本を検索して登録してください！';
+	export let emptyMessage = '本が登録されていません。<br>検索メニューから書籍を登録してください！';
 
 	let inputValue: string;
 	let selectValue: number;

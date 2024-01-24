@@ -82,7 +82,7 @@
       {:else}
         <div class="text-xl m-2 text-lime-700 font-medium">
           <p>本の登録か、読んだ記録の登録がされていません。</p>
-          <p>検索メニューから書籍を検索してください。</p>
+          <p>検索メニューから書籍を登録してください。</p>
         </div>
         <button class="px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700"
           on:click={() => isDisplaySearchModal = !isDisplaySearchModal}
