@@ -51,8 +51,7 @@
 			<PrimalyButton type="button" text="{data.props.searchType === 'none' ? '検索' : '再検索' }"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel {...data.props} {resultCount} {isLoading}
-			/>
+			<PagingLabel {...data.props} {resultCount} {isLoading} />
 		</div>
 		<SearchModal bind:isDisplay={isDisplaySearchModal} action="" />
 	</div>
@@ -60,8 +59,7 @@
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
 		<SearchResult searchType={data.props.searchType} {runPromise} on:click={(event) => displayDetail(event.detail)} />
 		<div class="flex justify-center py-2">
-			<PagingLabel {...data.props} {resultCount} {isLoading} isBottom={true} 
-			/>
+			<PagingLabel {...data.props} {resultCount} {isLoading} isBottom={true} />
 		</div>
 		{#if isDisplayDetail}
 			<ContentModal

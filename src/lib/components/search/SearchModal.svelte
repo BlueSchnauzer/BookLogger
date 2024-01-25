@@ -2,6 +2,7 @@
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
 
 	export let isDisplay = false;
 	export let action = '/books/search';
@@ -44,10 +45,23 @@
 		isDisplay = false;
 		dialog.close();
 	};
+
+	/**モーダルの範囲外をクリックした際に、モーダルを閉じる*/
+	const closeModalFromContainer = (e: MouseEvent) => {
+		const target = e.target! as HTMLElement; //closestを使うために型指定
+		if (!target.closest('#searchForm')) { closeModal(); }
+	}
+
+	onMount(() => {
+		dialog.addEventListener('click', e => closeModalFromContainer(e));
+
+		//アンマウント時にリスナーを削除
+		return dialog.removeEventListener('click', e => closeModalFromContainer(e));
+	});
 </script>
 
 <dialog bind:this={dialog}>
-	<form {action} on:submit={(e) => validateSubmit(e)}>
+	<form {action} on:submit={(e) => validateSubmit(e)} id='searchForm'>
 		<div class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg">
 			<div class="h-14 flex flex-row justify-between items-center">
 				<span class="text-xl">検索して登録する</span>
