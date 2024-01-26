@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { books_v1 } from 'googleapis';
-	import BookAdd from '$lib/icons/BookAdd.svelte';
+	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import SearchModal from '$lib/components/search/SearchModal.svelte';
@@ -46,7 +46,7 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader headerIcon={BookAdd} headerText={pageName} />
+		<ContentHeader headerIcon={MagnifingGlass} headerText={pageName} />
 		<div class="flex justify-between">
 			<PrimalyButton type="button" text="{data.props.searchType === 'none' ? '検索' : '再検索' }"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
