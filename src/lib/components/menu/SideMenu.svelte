@@ -39,34 +39,31 @@
 
 </script>
 
-<nav class="flex flex-col max-md:hidden m-2 w-56 rounded-xl shadow-2xl bg-stone-700">
-	<div class="flex p-3">
+<nav class="flex flex-col max-md:hidden m-2 w-20 rounded-xl shadow-2xl bg-stone-700">
+	<!-- <div class="flex p-3">
 		<Icon icon="ph:books-light" width="36" height="36" color={colorStone200}/>
 		<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
-	</div>
-	<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
+	</div> -->
+	<!-- <div class="mx-3 my-2 bg-stone-200 h-[1px]" /> -->
 	<div class="flex flex-col flex-grow justify-between pb-2">
-		<ul>
+		<ul class="flex flex-col flex-1 justify-center items-center">
 			{#each MenuItemDatas as data (data.icon)}
-				<li
-					class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600 
-					{data.ref === pathName ? 'border-x-lime-600 bg-stone-600 ' : ''}"
-				>
-					<a href={data.ref} class="flex flex-1 group items-center rounded-md">
-						<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
+				<li class="flex h-14 duration-300 border-transparent">
+					<a href={data.ref} title={data.name} class="flex flex-1 group items-center rounded-md">
+						<div class=" h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 							<svelte:component this={data.icon} color={colorStone200} />
 						</div>
-						<span class="ml-2.5 text-stone-200">{data.name}</span>
+						<!-- <span class="ml-2.5 text-stone-200">{data.name}</span> -->
 					</a>
 				</li>
 			{/each}
 		</ul>
-		<div class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600">
-			<button data-testid="btnLogoutInSide" class="flex flex-1 group items-center rounded-md" on:click={logout}>
+		<div class="flex justify-center h-14 duration-300 border-transparent">
+			<button data-testid="btnLogoutInSide" title="ログアウト" class="flex group items-center rounded-md" on:click={logout}>
 				<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 					<Icon icon="ph:sign-out-bold" width="24" height="24" color={colorStone200}/>
 				</div>
-				<span class="ml-2.5 text-stone-200">ログアウト</span>
+				<!-- <span class="ml-2.5 text-stone-200">ログアウト</span> -->
 			</button>
 		</div>
 	</div>
