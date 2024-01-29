@@ -76,7 +76,7 @@
 
 <style>
 	.flexWidth {
-		width: calc(100% - (224px));
+		width: calc(100% - (80px));
 	}
 	.contentHeight {
 		height: calc(100% - 96px);
