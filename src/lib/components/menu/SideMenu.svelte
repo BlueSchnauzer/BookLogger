@@ -43,8 +43,8 @@
 	<div class="flex flex-col flex-grow justify-between pb-2">
 		<ul class="flex flex-col flex-1 justify-center items-center">
 			{#each MenuItemDatas as data (data.icon)}
-				<li class="flex relative h-14 duration-300 border-transparent">
-					<a href={data.ref} title={data.name} class="flex flex-1 group items-center rounded-md
+				<li class="group flex relative h-14 duration-300 border-transparent">
+					<a href={data.ref} class="flex flex-1 group items-center rounded-md
 						after:content-[''] after:hover:block
 						after:absolute after:top-2 after:left-0 
 						after:h-2.5 after:w-2.5 after:rounded-full after:bg-lime-600
@@ -54,6 +54,14 @@
 							<svelte:component this={data.icon} color={colorStone200} />
 						</div>
 					</a>
+					<div
+						class="bg-stone-300 border border-stone-700 absolute left-full top-1/4 z-20 
+						ml-3 -translate-y-1/2 whitespace-nowrap rounded-md py-1 px-3 
+						hidden group-hover:block"
+					>
+					<span class="bg-stone-300 border-l border-b border-stone-700 absolute left-[-5px] top-1/2 -z-10 h-2 w-2 -translate-y-1/2 rotate-45"></span>
+					<span class="text-stone-700">{data.name}</span>
+			 		</div>
 				</li>
 			{/each}
 		</ul>
