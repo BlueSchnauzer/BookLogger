@@ -83,10 +83,10 @@
 			</ul>
 		{/if}
 	{:catch error}
-		<span class="text-red-500 font-medium">{error.message}</span>
+		<p class="px-1 font-medium text-red-500">{error.message}</p>
 	{/await}
 {:else}
-	<span>検索条件を入力してください。</span>
+	<p class="px-1 font-medium text-lime-700">検索条件を入力してください。</p>
 {/if}
 
 <style>
