@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 
-	const pageName = '登録した本';
+	const pageName = 'ライブラリ';
 	const toggleFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }
 	];
