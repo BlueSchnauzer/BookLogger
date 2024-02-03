@@ -58,8 +58,10 @@
 		<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
-	<div bind:this={gridContent} class="p-1 contentHeight">
+	<div bind:this={gridContent} class="p-1 relative contentHeight">
 		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
+		<div class="z-10 fixed inset-0 mx-auto mt-auto mb-14 max-sm:mb-20 w-52 h-10 bg-stone-300 rounded-full border border-stone-700">
+		</div>
 	</div>
 	{#if isDisplayDetail}
 		<RegisteredModal
