@@ -2,7 +2,7 @@ import type { ComponentType } from 'svelte';
 
 /**メニューの項目データ */
 export type menuItemData = {
-	icon: ComponentType;
+	icon?: ComponentType;
 	ref: string;
 	name: string;
 };
