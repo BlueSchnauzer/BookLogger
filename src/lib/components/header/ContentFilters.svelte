@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
+	import type { toggleFilterItem, selectFilterItem, menuItemData } from '$lib/customTypes';
 	import ToggleSwitch from '$lib/components/common/parts/ToggleSwitch.svelte';
 	import Icon from '@iconify/svelte';
 	import SimpleBar from 'simplebar';
@@ -16,6 +16,13 @@
 	export let selectFilterItems: selectFilterItem[];
 	/**リストの値*/
 	export let selectValue: number;
+
+	const MenuItemDatas: menuItemData[] = [
+		{ ref: '/books', name: '全ての本' },
+		{ ref: '/books/wish', name: '読みたい'},
+		{ ref: '/books/reading', name: '読んでいる'},
+		{ ref: '/books/complete', name: '読み終わった'}
+	];
 
 	const colorStone700 = '#44403C';
 	let isDisplayInput = false;
@@ -34,33 +41,38 @@
 		toggleFilterItems = [...toggleFilterItems];
 	};
 
-	onMount(() => {
-		//SSR時のエラー回避のためDOM生成後に実行
-		window.ResizeObserver = ResizeObserver;
-		const labelContainer = window.document.querySelector<HTMLElement>('#labelContainer');
-		if (labelContainer) {
-			new SimpleBar(labelContainer);
-		}
-	});
+	// onMount(() => {
+	// 	//SSR時のエラー回避のためDOM生成後に実行
+	// 	window.ResizeObserver = ResizeObserver;
+	// 	const labelContainer = window.document.querySelector<HTMLElement>('#labelContainer');
+	// 	if (labelContainer) {
+	// 		new SimpleBar(labelContainer);
+	// 	}
+	// });
 </script>
 
 <div class="flex justify-between items-center">
-	<div id="labelContainer" class="flex items-center w-[400px] max-lg:w-60 edgeGradiation">
-		<ul class="flex items-center">
-			<li class="flex">
-				<button	on:click={removeAllToggleCheck}
-					class={toggleFilterItems.some((item) => item.isChecked) ? '' : 'hidden'}
-				>
-					<Icon icon="ph:x" width="28" height="28" />
-				</button>
+	<ul class="flex items-center -mb-[1px]">
+		<!-- <li class="flex">
+			<button	on:click={removeAllToggleCheck}
+				class={toggleFilterItems.some((item) => item.isChecked) ? '' : 'hidden'}
+			>
+				<Icon icon="ph:x" width="28" height="28" />
+			</button>
+		</li> -->
+		{#each MenuItemDatas as item }
+			<li class="h-10 px-2 whitespace-nowrap {item.ref === '/books'? 'border-x bg-vellum' : 'border-r'} border-t border-stone-700 bg-stone-300">
+				<a href={item.ref} class="text-center">
+					<p>{item.name}</p>
+				</a>
 			</li>
-			{#each toggleFilterItems as item (item.id)}
-				<li>
-					<ToggleSwitch id={item.id} text={item.text} isVisible={item.isVisible} bind:isChecked={item.isChecked} />
-				</li>
-			{/each}
-		</ul>
-	</div>
+		{/each}
+		<!-- {#each toggleFilterItems as item (item.id)}
+			<li>
+				<ToggleSwitch id={item.id} text={item.text} isVisible={item.isVisible} bind:isChecked={item.isChecked} />
+			</li>
+		{/each} -->
+	</ul>
 	<div class="flex items-center">
 		<div class="pl-2 flex items-center">
 			<input name="filter" type="text" size="15"
