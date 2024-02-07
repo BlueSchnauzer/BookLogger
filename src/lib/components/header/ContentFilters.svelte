@@ -1,12 +1,7 @@
 <script lang="ts">
 	import type { toggleFilterItem, selectFilterItem, menuItemData } from '$lib/customTypes';
-	import ToggleSwitch from '$lib/components/common/parts/ToggleSwitch.svelte';
 	import Icon from '@iconify/svelte';
-	import SimpleBar from 'simplebar';
-	import 'simplebar/dist/simplebar.css';
-	//iOS Safariなど用に追加
-	import ResizeObserver from 'resize-observer-polyfill';
-	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	/**トグルフィルター*/
 	export let toggleFilterItems: toggleFilterItem[];
@@ -23,6 +18,10 @@
 		{ ref: '/books/reading', name: '読んでいる'},
 		{ ref: '/books/complete', name: '読み終わった'}
 	];
+
+	//ページ移動の度に対応したページにスタイルを当てる
+	let pathName: string;
+	$: pathName = $page.url.pathname;	
 
 	const colorStone700 = '#44403C';
 	let isDisplayInput = false;
@@ -41,37 +40,20 @@
 		toggleFilterItems = [...toggleFilterItems];
 	};
 
-	// onMount(() => {
-	// 	//SSR時のエラー回避のためDOM生成後に実行
-	// 	window.ResizeObserver = ResizeObserver;
-	// 	const labelContainer = window.document.querySelector<HTMLElement>('#labelContainer');
-	// 	if (labelContainer) {
-	// 		new SimpleBar(labelContainer);
-	// 	}
-	// });
 </script>
 
 <div class="flex justify-between items-center">
-	<ul class="flex items-center -mb-[1px]">
-		<!-- <li class="flex">
-			<button	on:click={removeAllToggleCheck}
-				class={toggleFilterItems.some((item) => item.isChecked) ? '' : 'hidden'}
-			>
-				<Icon icon="ph:x" width="28" height="28" />
-			</button>
-		</li> -->
+	<ul class="flex items-center -mb-[9px]">
 		{#each MenuItemDatas as item }
-			<li class="h-10 px-2 whitespace-nowrap {item.ref === '/books'? 'border-x bg-vellum' : 'border-r'} border-t border-stone-700 bg-stone-300">
-				<a href={item.ref} class="text-center">
+			<li class="h-10 px-2 whitespace-nowrap 
+				rounded-t-xl
+				{item.ref === '/books'? 'border-x bg-vellum' : 'border-r'} 
+				border-t border-stone-500 bg-stone-300">
+				<a href={item.ref} class="leading-10">
 					<p>{item.name}</p>
 				</a>
 			</li>
 		{/each}
-		<!-- {#each toggleFilterItems as item (item.id)}
-			<li>
-				<ToggleSwitch id={item.id} text={item.text} isVisible={item.isVisible} bind:isChecked={item.isChecked} />
-			</li>
-		{/each} -->
 	</ul>
 	<div class="flex items-center">
 		<div class="pl-2 flex items-center">
