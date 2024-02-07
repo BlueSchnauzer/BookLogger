@@ -57,7 +57,7 @@
 		<ContentHeader {headerIcon} {headerText} />
 		<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
 	</div>
-	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
+	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div bind:this={gridContent} class="p-1 contentHeight">
 		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
