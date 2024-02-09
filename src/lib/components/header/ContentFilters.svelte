@@ -43,7 +43,7 @@
 </script>
 
 <div class="flex justify-between items-center">
-	<ul class="flex items-center -mb-[5px]">
+	<ul class="flex items-center -mb-[1px]">
 		{#each MenuItemDatas as item }
 			<li class="h-11 px-2 whitespace-nowrap 
 				{item.ref === '/books' ? 'border-x' : 'border-r'} 
@@ -58,7 +58,7 @@
 		{/each}
 	</ul>
 	<div class="flex items-center">
-		<div class="pl-2 flex items-center">
+		<!-- <div class="pl-2 flex items-center">
 			<input name="filter" type="text" size="15"
 			 	placeholder="タイトル、著者名..."	bind:value={inputValue}
 				class="absolute -ml-40 px-2 py-1 rounded-lg duration-300 transition-all 
@@ -90,7 +90,7 @@
 					</li>
 				{/each}
 			</ul>
-		</div>
+		</div> -->
 	</div>
 </div>
 
