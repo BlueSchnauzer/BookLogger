@@ -55,7 +55,7 @@
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
 		<ContentHeader {headerIcon} {headerText} />
-		<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
+		<ContentFilters />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	<div bind:this={gridContent} class="p-1 contentHeight">
