@@ -9,8 +9,6 @@
 	export let headerText: string;
 	const colorStone700 = '#44403C';
 
-	let isDisplayModal = false;
-
 	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
 	const logout = async () => {
 		//画面サイズが小さい時に表示するので誤操作か確認する。
