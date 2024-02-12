@@ -55,7 +55,7 @@ describe('BottomMenu', () => {
 
     expect(screen.getByText('ホーム')).toBeInTheDocument();
     expect(screen.getByText('ライブラリ')).toBeInTheDocument();
-    expect(screen.getByText('検索')).toBeInTheDocument();
+    expect(screen.getByText('書籍検索')).toBeInTheDocument();
     expect(screen.getByText('本棚')).toBeInTheDocument();
   });
 });
