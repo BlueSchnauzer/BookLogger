@@ -4,7 +4,7 @@ import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
 
 describe('PagingLabel', () => {
 	it('レンダリング', () => {
-		render(PagingLabel, {isFuzzy: false, query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30});
+		render(PagingLabel, {searchType: 'detail', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30});
 
 		expect(screen.getByTitle('前へ')).toBeInTheDocument();
 		expect(screen.getByTitle('次へ')).toBeInTheDocument();
@@ -12,14 +12,46 @@ describe('PagingLabel', () => {
 	});
 
 	it('isLoadingがTruethyな場合にボタンが操作できないこと', async () => {
-		render(PagingLabel, {isFuzzy: false, query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30, isLoading: true});
+		render(PagingLabel, {searchType: 'detail', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30, isLoading: true});
 
 		expect(screen.getByTitle('前へ')).toHaveAttribute('disabled');
 		expect(screen.getByTitle('次へ')).toHaveAttribute('disabled');
 	});
 
+	it('searchTypeがDetailの場合に、booktitle用inputがレンダリングされ、query用inputがレンダリングされないこと', () => {
+		const {container} = render(PagingLabel, {searchType: 'detail', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30});
+
+		var booktitle = container.querySelector('input[name*=booktitle]');
+		var query = container.querySelector('input[name*=query]');
+		expect(booktitle).toBeInTheDocument();
+		expect(query).not.toBeInTheDocument();
+	});
+
+	it('searchTypeがFuzzyの場合に、query用inputがレンダリングされ、booktitle用inputがレンダリングされないこと', () => {
+		const {container} = render(PagingLabel, {searchType: 'fuzzy', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30});
+
+		var query = container.querySelector('input[name*=query]');
+		var booktitle = container.querySelector('input[name*=booktitle]');
+		expect(query).toBeInTheDocument();
+		expect(booktitle).not.toBeInTheDocument();
+	});
+
+	it('searchTypeがNoneの場合に、レンダリングされないこと', () => {
+		const {container} = render(PagingLabel, {searchType: 'none', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30});
+
+		const element = container.querySelector('div.flex');
+		expect(element).toBeNull;
+	});
+
 	it('isBottomとisLoadingがTruethyな場合に、レンダリングされないこと', () => {
-		const {container} = render(PagingLabel, {isFuzzy: false, query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30, isBottom: true, isLoading: true});
+		const {container} = render(PagingLabel, {searchType: 'detail', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30, isBottom: true, isLoading: true});
+
+		const element = container.querySelector('div.flex');
+		expect(element).toBeNull;
+	});
+
+	it('searchTypeがNoneで、isBottomとisLoadingがTruethyな場合に、レンダリングされないこと', () => {
+		const {container} = render(PagingLabel, {searchType: 'none', query: '', bookTitle: '', author: '', isbn: '', page: 0, startIndex: 0, resultCount: 30, isBottom: true, isLoading: true});
 
 		const element = container.querySelector('div.flex');
 		expect(element).toBeNull;
