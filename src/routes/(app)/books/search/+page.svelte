@@ -48,7 +48,7 @@
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
 		<ContentHeader headerIcon={MagnifingGlass} headerText={pageName} />
 		<div class="flex justify-between">
-			<PrimalyButton type="button" text="{data.props.searchType === 'none' ? '検索' : '再検索' }"
+			<PrimalyButton type="button" text="検索条件"
 				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
 			<PagingLabel {...data.props} {resultCount} {isLoading} />
