@@ -2,8 +2,10 @@
 	import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from 'svelte';
 	import InfoLabel from '$lib/components/common/parts/CategoryLabel.svelte';
+	import type { searchType } from '$lib/customTypes';
 
 	export let runPromise: () => Promise<books_v1.Schema$Volumes>;
+	export let searchType: searchType;
 
 	/**著者が複数名いる場合に句点で区切る*/
 	const joinArray = (arry: string[] | undefined): string => {
@@ -30,57 +32,62 @@
 	};
 </script>
 
-{#await runPromise()}
-	<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
-		<span class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent" />
-	</div>
-{:then result}
-	{#if result.items}
-		<ul data-testid="resultList">
-			{#each result.items as item (item.id)}
-				<li class="flex">
-					<button	class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md" on:click={() => handleClick(item)}>
-						{#if item.volumeInfo?.imageLinks?.thumbnail}
-							<img class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
-								title={getLabel(item.volumeInfo?.title)} src={item.volumeInfo?.imageLinks?.thumbnail}	alt="書影"
-							/>
-						{:else}
-							<div class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
-								title={getLabel(item.volumeInfo?.title)}
-							>
-								<span>No Image</span>
-							</div>
-						{/if}
-						<div class="p-2 flex flex-col items-start text-left">
-							{#if item.volumeInfo?.title}
-								<span class="text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
+<!-- ネストが深いので分割したい -->
+{#if searchType !== 'none'}
+	{#await runPromise()}
+		<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
+			<span class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent" />
+		</div>
+	{:then result}
+		{#if result.items}
+			<ul data-testid="resultList">
+				{#each result.items as item (item.id)}
+					<li class="flex">
+						<button	class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md" on:click={() => handleClick(item)}>
+							{#if item.volumeInfo?.imageLinks?.thumbnail}
+								<img class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
+									title={getLabel(item.volumeInfo?.title)} src={item.volumeInfo?.imageLinks?.thumbnail}	alt="書影"
+								/>
 							{:else}
-								<span class="text-lg font-bold text-gray-400">データ無し</span>
+								<div class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
+									title={getLabel(item.volumeInfo?.title)}
+								>
+									<span>No Image</span>
+								</div>
 							{/if}
-							<div class="p-2 flex flex-col items-start">
-								<InfoLabel
-									categoryText="著者"
-									condition={item.volumeInfo?.authors}
-									labelFunction={() => joinArray(item.volumeInfo?.authors)}
-								/>
-								<InfoLabel
-									categoryText="発売日"
-									condition={item.volumeInfo?.publishedDate}
-									labelFunction={() => item.volumeInfo?.publishedDate}
-								/>
-								<div class="p-2">
-									<p class="collapseDescription">{item.volumeInfo?.description ?? ''}</p>
+							<div class="p-2 flex flex-col items-start text-left">
+								{#if item.volumeInfo?.title}
+									<span class="text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
+								{:else}
+									<span class="text-lg font-bold text-gray-400">データ無し</span>
+								{/if}
+								<div class="p-2 flex flex-col items-start">
+									<InfoLabel
+										categoryText="著者"
+										condition={item.volumeInfo?.authors}
+										labelFunction={() => joinArray(item.volumeInfo?.authors)}
+									/>
+									<InfoLabel
+										categoryText="発売日"
+										condition={item.volumeInfo?.publishedDate}
+										labelFunction={() => item.volumeInfo?.publishedDate}
+									/>
+									<div class="p-2">
+										<p class="collapseDescription">{item.volumeInfo?.description ?? ''}</p>
+									</div>
 								</div>
 							</div>
-						</div>
-					</button>
-				</li>
-			{/each}
-		</ul>
-	{/if}
-{:catch error}
-	<span class="text-red-500 font-medium">{error.message}</span>
-{/await}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	{:catch error}
+		<p class="px-1 font-medium text-red-500">{error.message}</p>
+	{/await}
+{:else}
+	<p class="px-1 font-medium text-lime-700">検索条件を入力してください。</p>
+{/if}
 
 <style>
 	.collapseDescription {

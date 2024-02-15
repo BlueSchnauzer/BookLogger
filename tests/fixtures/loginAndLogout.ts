@@ -30,6 +30,14 @@ class TestSetup {
 		await this.page.getByTestId('btnLogoutInSide').click();
 		await this.page.getByTestId('btnLogin');
   }
+
+  /**ライブラリ画面に移動する */
+  async gotoLibrary() {
+    const pageName = 'ライブラリ';
+    await this.page.locator('[href="/books"]', {hasNotText: pageName}).click();
+    await this.page.waitForURL('/books');
+    await this.page.getByTestId('headerText');
+  }
 }
 
 export const test = base.extend<{loginedPage: TestSetup}>({

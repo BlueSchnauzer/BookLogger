@@ -1,6 +1,7 @@
 import type { PageLoad } from './$types';
 import { requestBookInfoByFuzzySearch, requestBookInfosByQueries } from '$lib/GoogleBooksAPI/RequestManage';
 import type { books_v1 } from 'googleapis';
+import type { searchType } from '$lib/customTypes';
 
 export const load = (async (params) => {
   //あいまい検索時のみ取得(form送信時にタグがdisabledに設定)
@@ -17,20 +18,24 @@ export const load = (async (params) => {
   const maxResults = 10;
   const startIndex = page > 0 ? page * maxResults : 0;
 
-
-  //あいまい検索か
-  let isFuzzy: boolean;
-
+  let searchType: searchType;
   //パラメータを条件に検索を行う関数を作成し、クライアント側に渡して実行
   let requestBookInfo: () => Promise<books_v1.Schema$Volumes>;
+
   if (query) {
-    isFuzzy = true;
+    searchType = 'fuzzy';
     requestBookInfo = async () => requestBookInfoByFuzzySearch(query!, maxResults, startIndex) as books_v1.Schema$Volumes;
   }
-  else {
-    isFuzzy = false;
+  else if (bookTitle || author || isbn) {
+    searchType = 'detail';
     requestBookInfo = async () => requestBookInfosByQueries(bookTitle!, author!, isbn!, maxResults, startIndex) as books_v1.Schema$Volumes;
   }
+  else {
+    //初回表示時
+    searchType = 'none';
+    requestBookInfo = async () => new Promise(resolve => resolve({} as books_v1.Schema$Volumes));
+  }
 
-  return { requestBookInfo, isFuzzy, query, bookTitle, author, isbn, page, startIndex };
+  //Propsはスプレッドで渡すのでオブジェクト化
+  return { requestBookInfo, props: { searchType, query, bookTitle, author, isbn, page, startIndex } };
 }) satisfies PageLoad;

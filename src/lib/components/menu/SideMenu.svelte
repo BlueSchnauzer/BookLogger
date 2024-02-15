@@ -4,9 +4,7 @@
 	import type { menuItemData } from '$lib/customTypes';
 	import Home from '$lib/icons/Home.svelte';
 	import BookCase from '$lib/icons/BookCase.svelte';
-	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
-	import Openingbook from '$lib/icons/OpeningBook.svelte';
-	import CompleteBook from '$lib/icons/CompleteBook.svelte';
+	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
 	import BookShelf from '$lib/icons/BookShelf.svelte';
 	import { signOut } from 'firebase/auth';
 	import { firebaseAuth } from '$lib/firebase.client';
@@ -15,10 +13,8 @@
 	//PC用メニュー
 	const MenuItemDatas: menuItemData[] = [
 		{ icon: Home, ref: '/home', name: 'ホーム' },
-		{ icon: BookCase, ref: '/books', name: '登録した本' },
-		{ icon: PileOfBooks, ref: '/books/wish', name: '読みたい本'},
-		{ icon: Openingbook, ref: '/books/reading', name: '読んでいる本' },
-		{ icon: CompleteBook, ref: '/books/complete', name: '読み終わった本' },
+		{ icon: BookCase, ref: '/books', name: 'ライブラリ' },
+		{ icon: MagnifingGlass, ref: '/books/search', name: '書籍検索'},
 		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 	];
 	const colorStone200 = '#E7E5E4';
@@ -43,39 +39,37 @@
 
 </script>
 
-<nav class="flex flex-col max-md:hidden m-2 w-56 rounded-xl shadow-2xl bg-stone-700">
-	<div class="flex p-3">
-		<Icon icon="ph:books-light" width="36" height="36" color={colorStone200}/>
-		<p class="ml-2.5 text-xl text-stone-200">BookLogger</p>
-	</div>
-	<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
+<nav class="flex flex-col max-md:hidden m-2 w-20 rounded-xl shadow-2xl bg-stone-700">
 	<div class="flex flex-col flex-grow justify-between pb-2">
-		<ul>
+		<ul class="flex flex-col flex-1 justify-center items-center">
 			{#each MenuItemDatas as data (data.icon)}
-				{#if data.icon === BookShelf}
-					<li>
-						<div class="mx-3 my-2 bg-stone-200 h-[1px]" />
-					</li>
-				{/if}
-				<li
-					class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600 
-					{data.ref === pathName ? 'border-x-lime-600 bg-stone-600 ' : ''}"
-				>
-					<a href={data.ref} class="flex flex-1 group items-center rounded-md">
-						<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
+				<li class="group flex relative h-14 duration-300 border-transparent">
+					<a href={data.ref} class="flex flex-1 group items-center rounded-md
+						after:content-[''] after:hover:block
+						after:absolute after:top-2 after:left-0 
+						after:h-2.5 after:w-2.5 after:rounded-full after:bg-lime-600
+						{data.ref === pathName ? 'after:block' : 'after:hidden'}"
+					>
+						<div class=" h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 							<svelte:component this={data.icon} color={colorStone200} />
 						</div>
-						<span class="ml-2.5 text-stone-200">{data.name}</span>
 					</a>
+					<div
+						class="bg-stone-300 border border-stone-700 absolute left-full top-1/4 z-20 
+						ml-3 -translate-y-1/2 whitespace-nowrap rounded-md py-1 px-3 
+						hidden group-hover:block"
+					>
+					<span class="bg-stone-300 border-l border-b border-stone-700 absolute left-[-5px] top-1/2 -z-10 h-2 w-2 -translate-y-1/2 rotate-45"></span>
+					<span class="text-stone-700">{data.name}</span>
+			 		</div>
 				</li>
 			{/each}
 		</ul>
-		<div class="flex h-14 duration-300 border-l-4 border-transparent hover:border-x-lime-600 hover:bg-stone-600">
-			<button data-testid="btnLogoutInSide" class="flex flex-1 group items-center rounded-md" on:click={logout}>
+		<div class="flex justify-center h-14 duration-300 border-transparent">
+			<button data-testid="btnLogoutInSide" title="ログアウト" class="flex group items-center rounded-md" on:click={logout}>
 				<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 					<Icon icon="ph:sign-out-bold" width="24" height="24" color={colorStone200}/>
 				</div>
-				<span class="ml-2.5 text-stone-200">ログアウト</span>
 			</button>
 		</div>
 	</div>

@@ -67,7 +67,7 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
   <div class="pl-2 pr-3 pt-1.5 h-14 flex flex-col justify-between">
-		<ContentHeader headerIcon={Home} headerText={pageName} isDisplayAddButton={true} />
+		<ContentHeader headerIcon={Home} headerText={pageName} />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
   <div class="flex max-lg:flex-col p-1 homeContentHeight overflow-y-auto customScroll">
@@ -82,7 +82,7 @@
       {:else}
         <div class="text-xl m-2 text-lime-700 font-medium">
           <p>本の登録か、読んだ記録の登録がされていません。</p>
-          <p>下のボタン、もしくは右上のアイコンから本を検索してください。</p>
+          <p>検索メニューから書籍を登録してください。</p>
         </div>
         <button class="px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700"
           on:click={() => isDisplaySearchModal = !isDisplaySearchModal}

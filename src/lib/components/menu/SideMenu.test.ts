@@ -55,7 +55,8 @@ describe('SideMenu', () => {
     render(SideMenu);
 
     expect(screen.getByText('ホーム')).toBeInTheDocument();
-    expect(screen.getByText('読み終わった本')).toBeInTheDocument();
-    expect(screen.getByText('ログアウト')).toBeInTheDocument();
+    expect(screen.getByText('ライブラリ')).toBeInTheDocument();
+    expect(screen.getByText('書籍検索')).toBeInTheDocument();
+    expect(screen.getByText('本棚')).toBeInTheDocument();
   });
 });

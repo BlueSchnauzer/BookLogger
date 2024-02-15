@@ -53,7 +53,9 @@ describe('BottomMenu', () => {
   it('レンダリング', () => {
     render(BottomMenu);
 
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Complete')).toBeInTheDocument();
+    expect(screen.getByText('ホーム')).toBeInTheDocument();
+    expect(screen.getByText('ライブラリ')).toBeInTheDocument();
+    expect(screen.getByText('書籍検索')).toBeInTheDocument();
+    expect(screen.getByText('本棚')).toBeInTheDocument();
   });
 });

@@ -25,7 +25,7 @@
 	/**絞り込み用のドロップダウンフィルター */
   export let selectFilterItems: selectFilterItem[];
 	/**データ0件の時に表示するメッセージ */
-	export let emptyMessage = '本が登録されていません。<br>右上の追加ボタンから本を検索して登録してください！';
+	export let emptyMessage = '本が登録されていません。<br>検索メニューから書籍を登録してください！';
 
 	let inputValue: string;
 	let selectValue: number;
@@ -54,10 +54,10 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader {headerIcon} {headerText} isDisplayAddButton={true} />
-		<ContentFilters bind:toggleFilterItems bind:inputValue {selectFilterItems} bind:selectValue />
+		<ContentHeader {headerIcon} {headerText} />
+		<ContentFilters />
 	</div>
-	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
+	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	<div bind:this={gridContent} class="p-1 contentHeight">
 		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
@@ -76,7 +76,7 @@
 
 <style>
 	.flexWidth {
-		width: calc(100% - (224px));
+		width: calc(100% - (80px));
 	}
 	.contentHeight {
 		height: calc(100% - 96px);
