@@ -8,12 +8,23 @@ export const applyChangesToBookInfos = (bookInfos: BookInfo[], detail: {message:
 	let appliedItems = bookInfos;
 
 	if (detail.updatedItem) {
-		const index = bookInfos.findIndex(item => item._id === detail.updatedItem._id);
-		appliedItems = [...bookInfos.slice(0, index), detail.updatedItem, ...bookInfos.slice(index + 1)];
+		const oldItem = bookInfos.find(item => item._id === detail.updatedItem._id);
+
+		if (oldItem?.status !== detail.updatedItem.status){
+			//ステータスが変わった場合は一覧から削除して、現在の表示から削除する
+			appliedItems = bookInfos.filter(item => item._id !== detail.updatedItem._id);
+		}
+		else {
+			//編集したアイテムを一覧に反映する
+			const index = bookInfos.findIndex(item => item._id === detail.updatedItem._id);
+			appliedItems = [...bookInfos.slice(0, index), detail.updatedItem, ...bookInfos.slice(index + 1)];	
+		}
 	}
-	else if (detail.deletedId) {
+	if (detail.deletedId) {
+		//削除したアイテムを一覧からも削除する
 		appliedItems = bookInfos.filter(item => item._id !== detail.deletedId);
 	}
+	
 
 	return appliedItems;
 }
