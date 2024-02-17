@@ -154,8 +154,24 @@ describe('applyChangesToBookInfos', () => {
     expect(result[0]).toBeTruthy();
   });
 
+  it('書誌データのステータスが更新された際に、書誌データ一覧から削除されること', () => {
+    const copy = structuredClone(testDatas[1]);
+    //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
+    //DBから取得した場合は内部のプロパティが無いので対応不要
+    copy._id = testData.secondId;
+    copy.status = 'complete';
 
-  it('削除データがある際に、書誌データから削除されること', () => {
+    const updateDetail = {
+      message: '', 
+      updatedItem: copy,
+      deletedId: undefined as unknown as ObjectId
+    };
+    const result = applyChangesToBookInfos(testDatas, updateDetail);
+
+    expect(result.length).toEqual(2);
+  });
+
+  it('削除データがある際に、書誌データ一覧から削除されること', () => {
     const invalidDetail = {
       message: '', 
       updatedItem: undefined as unknown as BookInfo, 
