@@ -4,14 +4,14 @@ import type { toggleFilterItem, typeForBottomLabel } from "$lib/customTypes";
 import { pushSuccessToast } from "$lib/utils/toast";
 
 /**編集内容を反映した書誌データを返す(再レンダリングに使用) */
-export const applyChangesToBookInfos = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}): BookInfo[] => {
+export const applyChangesToBookInfos = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}, isBooksRoute: boolean): BookInfo[] => {
 	let appliedItems = bookInfos;
 
 	if (detail.updatedItem) {
 		const oldItem = bookInfos.find(item => item._id === detail.updatedItem._id);
 
-		if (oldItem?.status !== detail.updatedItem.status){
-			//ステータスが変わった場合は一覧から削除して、現在の表示から削除する
+		if (!isBooksRoute && oldItem?.status !== detail.updatedItem.status){
+			//全データ表示時以外で、ステータスが変わった場合は一覧から削除して、現在の表示から削除する
 			appliedItems = bookInfos.filter(item => item._id !== detail.updatedItem._id);
 		}
 		else {
@@ -30,8 +30,8 @@ export const applyChangesToBookInfos = (bookInfos: BookInfo[], detail: {message:
 }
 
 /**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
-export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}, target: string): BookInfo[] => {
-	const appliedItems = applyChangesToBookInfos(bookInfos, detail);
+export const handleSuccess = (bookInfos: BookInfo[], detail: {message: string, updatedItem: BookInfo, deletedId: ObjectId}, target: string, isBooksRoute = false): BookInfo[] => {
+	const appliedItems = applyChangesToBookInfos(bookInfos, detail, isBooksRoute);
 	pushSuccessToast(detail.message, target);
 
 	return appliedItems;
