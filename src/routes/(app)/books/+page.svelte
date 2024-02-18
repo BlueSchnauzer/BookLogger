@@ -24,6 +24,7 @@
 	headerIcon={BookCase}
 	headerText={pageName}
 	bookInfos={data.bookInfos}
+	isBooksRoute={true}
 	{toggleFilterItems}
 	{selectFilterItems}
 />
