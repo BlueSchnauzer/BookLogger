@@ -20,6 +20,8 @@
 	export let headerText: string;
 	/**書誌データの一覧 */
   export let bookInfos: BookInfo[];
+	/**ライブラリ画面(/booksルート)用にレンダリングするか */
+	export let isBooksRoute = false;
 	/**絞り込み用のラベルフィルター */
 	export let toggleFilterItems: toggleFilterItem[];
 	/**絞り込み用のドロップダウンフィルター */
@@ -65,7 +67,7 @@
 		<RegisteredModal
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
-			on:success={(event) => (bookInfos = handleSuccess(bookInfos, event.detail, target))}
+			on:success={(event) => (bookInfos = handleSuccess(bookInfos, event.detail, target, isBooksRoute))}
 			on:failed={(event) => pushErrorToast(event.detail, target)}
 		/>
 	{/if}

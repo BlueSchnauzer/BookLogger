@@ -57,7 +57,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testDatas, updateDetail);
+    const result = applyChangesToBookInfos(testDatas, updateDetail, false);
 
     expect(result.length).toEqual(3);
     expect(result[1].isFavorite).toBeTruthy();
@@ -72,8 +72,6 @@ describe('applyChangesToBookInfos', () => {
 
   it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
     const copy = structuredClone(testDatas[0]);
-    //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
-    //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.firstId;
     copy.isFavorite = true;
     copy.pageHistory!.push({
@@ -87,7 +85,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testDatas, updateDetail);
+    const result = applyChangesToBookInfos(testDatas, updateDetail, false);
 
     expect(result.length).toEqual(3);
     expect(result[0].isFavorite).toBeTruthy();
@@ -102,8 +100,6 @@ describe('applyChangesToBookInfos', () => {
 
   it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
     const copy = structuredClone(testDatas[2]);
-    //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
-    //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.thirdId;
     copy.isFavorite = true;
     copy.pageHistory!.push({
@@ -117,7 +113,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testDatas, updateDetail);
+    const result = applyChangesToBookInfos(testDatas, updateDetail, false);
 
     expect(result.length).toEqual(3);
     expect(result[2].isFavorite).toBeTruthy();
@@ -133,8 +129,6 @@ describe('applyChangesToBookInfos', () => {
   it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
     const oneItems = [testDatas[0]];
     const copy = structuredClone(oneItems[0]);
-    //コード上でObjectIdを作った場合、structuredCloneでコピーできないので再設定
-    //DBから取得した場合は内部のプロパティが無いので対応不要
     copy._id = testData.firstId;
     copy.isFavorite = true;
     copy.pageHistory!.push({
@@ -148,20 +142,49 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: copy,
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(oneItems, updateDetail);
+    const result = applyChangesToBookInfos(oneItems, updateDetail, false);
 
     expect(result.length).toEqual(1);
     expect(result[0]).toBeTruthy();
   });
 
+  it('書誌データのステータスが更新された際に、書誌データ一覧から削除されること', () => {
+    const copy = structuredClone(testDatas[1]);
+    copy._id = testData.secondId;
+    copy.status = 'complete';
 
-  it('削除データがある際に、書誌データから削除されること', () => {
+    const updateDetail = {
+      message: '', 
+      updatedItem: copy,
+      deletedId: undefined as unknown as ObjectId
+    };
+    const result = applyChangesToBookInfos(testDatas, updateDetail, false);
+
+    expect(result.length).toEqual(2);
+  });
+
+  it('書誌データのステータスが更新された際に、booksルートのページなら一覧から削除されないこと', () => {
+    const copy = structuredClone(testDatas[1]);
+    copy._id = testData.secondId;
+    copy.status = 'complete';
+
+    const updateDetail = {
+      message: '', 
+      updatedItem: copy,
+      deletedId: undefined as unknown as ObjectId
+    };
+    const result = applyChangesToBookInfos(testDatas, updateDetail, true);
+
+    expect(result.length).toEqual(3);
+  });
+
+  it('削除データがある際に、書誌データ一覧から削除されること', () => {
     const invalidDetail = {
       message: '', 
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: testData.firstId
     };
-    const result = applyChangesToBookInfos(testDatas, invalidDetail);
+    const result = applyChangesToBookInfos(testDatas, invalidDetail, false);
 
     expect(result.length).toEqual(2);
   });
@@ -172,7 +195,7 @@ describe('applyChangesToBookInfos', () => {
       updatedItem: undefined as unknown as BookInfo, 
       deletedId: undefined as unknown as ObjectId
     };
-    const result = applyChangesToBookInfos(testDatas, invalidDetail);
+    const result = applyChangesToBookInfos(testDatas, invalidDetail, false);
 
     //同じ値か
     expect(result).toEqual(testDatas);
