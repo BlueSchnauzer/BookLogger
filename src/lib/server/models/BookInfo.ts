@@ -28,7 +28,8 @@ export class BookInfo {
 		isbn_13?: string;
 		isbn_10?: string;
 	};
-	public shelfCategory?: ObjectId[];
+	public shelfCategory?: ObjectId[]
+	public gapiId?: string;
 
 	/**GAPIのvolumeで初期化する */
 	constructor(volume: books_v1.Schema$Volume, userId: string){
