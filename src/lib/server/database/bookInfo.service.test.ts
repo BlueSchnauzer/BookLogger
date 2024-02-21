@@ -241,6 +241,20 @@ describe('insertBookInfo', () => {
   });
 });
 
+describe('isDuplicateBookInfo', () => {
+  it.skip('保存済み書誌データと同じデータを指定した際にTrueが返ること', () => {
+
+  })
+
+  it.skip('保存済みでない書誌データを指定した際にFalseが返ること', () => {
+
+  })
+
+  it.skip('', () => {
+
+  })
+});
+
 describe('updateBookInfo', () => {
   let testData: BookInfo;
   beforeEach(() => {

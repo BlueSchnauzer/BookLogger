@@ -19,7 +19,7 @@ export async function getBookInfo(collections: collections, userId: string): Pro
   return bookInfos;
 }
 
-/**直近で読んだ、ユーザIDに紐づいた書誌データを取得する */
+/**直近で読んだ、ユーザIDに紐づいた書誌データを1件取得する */
 export async function getRecentBookInfo(collections: collections, userId: string): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
   if (typeof userId !== 'string') { return bookInfos; }
@@ -96,6 +96,15 @@ export async function insertBookInfo(collections: collections, bookInfo: BookInf
   }
 
   return response;
+}
+
+/**同様の書誌データが既に保存されているか */
+async function isDuplicateBookInfo(collections: collections, bookInfo: BookInfo): Promise<boolean> {
+  let isDuplicate = true;
+
+
+  
+  return isDuplicate;
 }
 
 /**書誌データを更新する */
