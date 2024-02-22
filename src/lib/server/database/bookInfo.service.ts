@@ -99,10 +99,17 @@ export async function insertBookInfo(collections: collections, bookInfo: BookInf
 }
 
 /**同様の書誌データが既に保存されているか */
-async function isDuplicateBookInfo(collections: collections, bookInfo: BookInfo): Promise<boolean> {
-  let isDuplicate = true;
+export async function isDuplicateBookInfo(collections: collections, userId: string, gapiId: string): Promise<boolean> {
+  let isDuplicate = false;
 
-
+  try {
+    const bookInfos = await collections.bookInfos?.find({userId, gapiId}).toArray() as BookInfo[];
+    isDuplicate = bookInfos.length === 0 ? false : true;
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
   
   return isDuplicate;
 }

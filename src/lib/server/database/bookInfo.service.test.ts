@@ -242,16 +242,36 @@ describe('insertBookInfo', () => {
 });
 
 describe('isDuplicateBookInfo', () => {
-  it.skip('保存済み書誌データと同じデータを指定した際にTrueが返ること', () => {
+  let testData: BookInfo;
+  let userId: string;
+  let gapiId = 'gapiId';
+  beforeEach(async () => {
+    testData = getTestData();
+    userId = testData.userId;
 
+    testData.gapiId = gapiId;
+    const preData = await col.insertOne(testData);
+    expect(await preData.acknowledged).toBeTruthy();
   })
 
-  it.skip('保存済みでない書誌データを指定した際にFalseが返ること', () => {
-
+  it('保存済みデータに一致するユーザIDとgapiIDを指定した際にTrueが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, userId, gapiId);
+    expect(isDuplicate).toBeTruthy();
   })
 
-  it.skip('', () => {
+  it('保存済みデータに一致しないユーザIDとgapiIDを指定した際にFalseが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, `test_${userId}`, `test_${gapiId}`);
+    expect(isDuplicate).toBeFalsy();
+  })
 
+  it('保存済みデータに一致するユーザIDと、一致しないgapiIDを指定した際にFalseが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, userId, `test_${gapiId}`);
+    expect(isDuplicate).toBeFalsy();
+  })
+
+  it('保存済みデータに一致しないユーザIDと、一致するgapiIDを指定した際にFalseが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, `test_${userId}`, gapiId);
+    expect(isDuplicate).toBeFalsy();
   })
 });
 
