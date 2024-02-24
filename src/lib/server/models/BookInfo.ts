@@ -47,6 +47,7 @@ export class BookInfo {
 		this.memorandum = '';
 		this.isVisible = true;
 		this.identifier = getIdentifier(volume.volumeInfo?.industryIdentifiers);
+		this.gapiId = volume.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
 	}
 }
 
