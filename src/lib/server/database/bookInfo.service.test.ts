@@ -233,6 +233,16 @@ describe('insertBookInfo', () => {
     expect(result.ok).toBeFalsy();
   });
 
+  it('保存済み書誌情報と同じデータを保存しようとした際にエラーステータスが返ってくること', async () => {
+    const preData = await col.insertOne(testData);
+    expect(await preData.acknowledged).toBeTruthy();
+  
+    const result = await service.insertBookInfo({ bookInfos: col }, testData);
+    
+    expect(result.ok).toBeFalsy();
+    expect(result.status).toEqual(409);
+  });
+
   //MongoDB側のコレクション定義をして弾く必要があるのでスキップ
   it.skip('データが不正(undefinedを渡す)な場合にエラーステータスが返ってくること', async () => {  
     const result = await service.insertBookInfo({ bookInfos: col }, testData);
