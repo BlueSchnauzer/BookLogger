@@ -84,7 +84,7 @@ export async function getBookInfoByStatus(collections: collections, userId: stri
 export async function insertBookInfo(collections: collections, bookInfo: BookInfo): Promise<Response>{
   let response = new Response('書誌データの作成に失敗しました。', {status: 400});
   if (await isDuplicateBookInfo(collections, bookInfo.userId, bookInfo.gapiId!)){
-    return new Response('登録済みの書誌データです。', {status: 400});
+    return new Response('登録済みの書誌データです。', {status: 409}); //409conflict
   }
 
   try {
