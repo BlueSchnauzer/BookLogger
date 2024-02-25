@@ -51,7 +51,10 @@
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行
-		handleRequest(response.ok, response.ok ? '登録しました' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。');
+		const reseponseMessage = 
+			response.ok ? '登録しました' : 
+			response.status === 409 ? '登録済みの書籍です' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。';
+		handleRequest(response.ok, reseponseMessage);
 	}
 
 </script>

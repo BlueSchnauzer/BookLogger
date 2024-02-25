@@ -19,7 +19,7 @@ export async function getBookInfo(collections: collections, userId: string): Pro
   return bookInfos;
 }
 
-/**直近で読んだ、ユーザIDに紐づいた書誌データを取得する */
+/**直近で読んだ、ユーザIDに紐づいた書誌データを1件取得する */
 export async function getRecentBookInfo(collections: collections, userId: string): Promise<BookInfo[]>{
   let bookInfos: BookInfo[] = [];
   if (typeof userId !== 'string') { return bookInfos; }
@@ -83,6 +83,9 @@ export async function getBookInfoByStatus(collections: collections, userId: stri
 /**書誌データを保存する */
 export async function insertBookInfo(collections: collections, bookInfo: BookInfo): Promise<Response>{
   let response = new Response('書誌データの作成に失敗しました。', {status: 400});
+  if (await isDuplicateBookInfo(collections, bookInfo.userId, bookInfo.gapiId!)){
+    return new Response('登録済みの書誌データです。', {status: 409}); //409conflict
+  }
 
   try {
     const result = await collections.bookInfos?.insertOne(bookInfo);
@@ -96,6 +99,22 @@ export async function insertBookInfo(collections: collections, bookInfo: BookInf
   }
 
   return response;
+}
+
+/**同様の書誌データが既に保存されているか */
+export async function isDuplicateBookInfo(collections: collections, userId: string, gapiId: string): Promise<boolean> {
+  let isDuplicate = false;
+
+  try {
+    const bookInfos = await collections.bookInfos?.find({userId, gapiId}).toArray() as BookInfo[];
+    isDuplicate = bookInfos.length === 0 ? false : true;
+  }
+  catch (error) {
+    console.log(error);
+    console.log('書誌データの取得に失敗しました。');
+  }
+  
+  return isDuplicate;
 }
 
 /**書誌データを更新する */

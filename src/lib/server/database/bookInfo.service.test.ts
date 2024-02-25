@@ -233,12 +233,56 @@ describe('insertBookInfo', () => {
     expect(result.ok).toBeFalsy();
   });
 
+  it('保存済み書誌情報と同じデータを保存しようとした際にエラーステータスが返ってくること', async () => {
+    const preData = await col.insertOne(testData);
+    expect(await preData.acknowledged).toBeTruthy();
+  
+    const result = await service.insertBookInfo({ bookInfos: col }, testData);
+    
+    expect(result.ok).toBeFalsy();
+    expect(result.status).toEqual(409);
+  });
+
   //MongoDB側のコレクション定義をして弾く必要があるのでスキップ
   it.skip('データが不正(undefinedを渡す)な場合にエラーステータスが返ってくること', async () => {  
     const result = await service.insertBookInfo({ bookInfos: col }, testData);
     
     expect(result.ok).toBeFalsy();
   });
+});
+
+describe('isDuplicateBookInfo', () => {
+  let testData: BookInfo;
+  let userId: string;
+  let gapiId = 'gapiId';
+  beforeEach(async () => {
+    testData = getTestData();
+    userId = testData.userId;
+
+    testData.gapiId = gapiId;
+    const preData = await col.insertOne(testData);
+    expect(await preData.acknowledged).toBeTruthy();
+  })
+
+  it('保存済みデータに一致するユーザIDとgapiIDを指定した際にTrueが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, userId, gapiId);
+    expect(isDuplicate).toBeTruthy();
+  })
+
+  it('保存済みデータに一致しないユーザIDとgapiIDを指定した際にFalseが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, `test_${userId}`, `test_${gapiId}`);
+    expect(isDuplicate).toBeFalsy();
+  })
+
+  it('保存済みデータに一致するユーザIDと、一致しないgapiIDを指定した際にFalseが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, userId, `test_${gapiId}`);
+    expect(isDuplicate).toBeFalsy();
+  })
+
+  it('保存済みデータに一致しないユーザIDと、一致するgapiIDを指定した際にFalseが返ること', async () => {
+    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, `test_${userId}`, gapiId);
+    expect(isDuplicate).toBeFalsy();
+  })
 });
 
 describe('updateBookInfo', () => {

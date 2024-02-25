@@ -28,7 +28,8 @@ export class BookInfo {
 		isbn_13?: string;
 		isbn_10?: string;
 	};
-	public shelfCategory?: ObjectId[];
+	public shelfCategory?: ObjectId[]
+	public gapiId?: string;
 
 	/**GAPIのvolumeで初期化する */
 	constructor(volume: books_v1.Schema$Volume, userId: string){
@@ -46,6 +47,7 @@ export class BookInfo {
 		this.memorandum = '';
 		this.isVisible = true;
 		this.identifier = getIdentifier(volume.volumeInfo?.industryIdentifiers);
+		this.gapiId = volume.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
 	}
 }
 
