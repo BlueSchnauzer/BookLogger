@@ -9,10 +9,11 @@ https://book-logger-nine.vercel.app/login
 TailWind CSSでレスポンシブに実装しているため、  
 PCだけでなくスマホやタブレットでの表示にも対応しています。  
 - PC表示  
-![スクリーンショット 2023-12-13 220038](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/d1de970c-23d7-45ce-af0f-f01192df2eac)
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/ba5957d6-bab8-4390-a3a8-35f08f669179)
+
 - スマホ、タブレット表示  
 (メニューの切り替え、コンテンツ一覧のレスポンシブ対応など)
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/0d572132-ab6a-4679-a48b-f224d34ad841)
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/1ce06ec0-a2e1-4b1d-a6e6-e1a33f1f7d89)
 
 ## 📗 使い方
 アプリの利用にはGoogleアカウントが必要ですが、  
@@ -23,32 +24,32 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 画面右上のプラスアイコンから検索画面を表示できます。  
 任意の条件を入力し、書誌データを検索できます。  
 (検索結果はGoogleBooksAPIから取得しています)  
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/275db69b-7508-4954-a676-8ba9c73fb103)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/5bc110b7-00ea-4fa5-b147-99ee2c0c795a)  
 
 検索結果が表示されたら、書誌データを選択し登録を行ってください。  
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/c15f0232-b655-4242-947d-50869def76e8)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/56f7e050-faf3-4484-83b2-a001e57745b1)  
 <br>
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/6a468894-1757-42d6-bcbb-bf0b42f320b2)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/89847261-b9aa-4fc7-88dc-a704f17f5f2d)  
 
 ### 🖊️ 編集  
 登録した本はステータスに応じて、各画面に表示されます。  
 登録したばかりの本は「読みたい本」(いわゆる積読です)ページに表示されます。  
 (「登録した本」は登録済みの全ての本が表示されます)
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/0e6a2ccd-d45f-4286-adfd-e618e87189cf)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/03d1f580-a87e-4e4d-afe0-10cbe3926c40)  
 <br>
 読み進めた本や、過去に読んだ本があれば、一覧から選択し内容を編集できます。  
 ステータスは自分でも変更可能ですが、  
 基本的に操作に応じて、自動で書き換わるようになっています。  
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/9b87a78b-beda-4866-803d-553cce36d210)
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/d34015f1-ca79-49a5-a179-ffa88deeeb25)  
 
 ### 📖 管理  
 現在読んでいる本は「読んでいる本」ページに表示され、  
 どこまで読み終わっているかを、一目で確認することができます。  
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/44dac0fe-43b0-4c84-a89e-b489cf9a31a9)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/ff752764-4edf-46d1-b050-1d2a3d5ab966)  
 <br>
 また、ホーム画面では直近で読んでいる本を見れ、  
 1週間でどのくらいのページ数を読んだかをグラフで確認することができます。  
-![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/65ad400d-3eb3-4b74-8950-4ea87576c7d3)  
+![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/365f1f3d-1452-4ff0-8f7f-fbb89926e53d)  
 
 ## 🔧 開発
 アプリケーションの構成図は以下の通りです。  
