@@ -21,7 +21,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 (ユーザ認証にはFirebase Authenticationを利用しています)  
 
 ### 🔍 検索  
-画面右上のプラスアイコンから検索画面を表示できます。  
+サイドメニューから書籍検索画面を表示できます。  
 任意の条件を入力し、書誌データを検索できます。  
 (検索結果はGoogleBooksAPIから取得しています)  
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/5bc110b7-00ea-4fa5-b147-99ee2c0c795a)  
@@ -32,7 +32,7 @@ Googleアカウントを使用しない場合は、Emailとパスワードを登
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/89847261-b9aa-4fc7-88dc-a704f17f5f2d)  
 
 ### 🖊️ 編集  
-登録した本はステータスに応じて、各画面に表示されます。  
+登録した本はステータスに応じて、ライブラリ画面の各ページに表示されます。  
 登録したばかりの本は「読みたい本」(いわゆる積読です)ページに表示されます。  
 (「登録した本」は登録済みの全ての本が表示されます)
 ![image](https://github.com/BlueSchnauzer/BookLogger/assets/116731862/03d1f580-a87e-4e4d-afe0-10cbe3926c40)  
