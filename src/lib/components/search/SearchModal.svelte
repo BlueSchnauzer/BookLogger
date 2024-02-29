@@ -29,6 +29,11 @@
 		dialog.close();
 	};
 
+	/**Escキーでモーダルを閉じた際に、変数を併せて変更する*/
+	const cancelModal = () => {
+		isDisplay = false;
+	}
+
 	/**インプットタグでのEnterを無効化*/
 	const preventSubmit = (e: KeyboardEvent) => {
 		formError = false;
@@ -60,7 +65,7 @@
 	});
 </script>
 
-<dialog bind:this={dialog}>
+<dialog bind:this={dialog} on:cancel={cancelModal}>
 	<form {action} on:submit={(e) => validateSubmit(e)} id='searchForm'>
 		<div class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg">
 			<div class="h-14 flex flex-row justify-between items-center">
