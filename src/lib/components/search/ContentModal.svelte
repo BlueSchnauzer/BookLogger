@@ -24,6 +24,11 @@
 		dialog.close();
 	};
 
+	/**Escキーでモーダルを閉じた際に、変数を併せて変更する*/
+	const cancelModal = () => {
+		isDisplay = false;
+	}
+
 	/**ローディングを表示する*/
 	const displayLoader = () => {
 		isDisplayLoader = true;
@@ -59,7 +64,7 @@
 
 </script>
 
-<dialog bind:this={dialog}>
+<dialog bind:this={dialog} on:cancel={cancelModal}>
 	{#if isDisplayLoader}
 		<div class="fixed m-auto inset-0 flex flex-1 justify-center items-center">
 			<span class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"></span>
