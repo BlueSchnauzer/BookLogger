@@ -1,6 +1,7 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { status } from '$lib/customTypes';
 
+/**書誌データの取得・保存を扱うリポジトリ */
 export interface IBookInfoRepositories{
   /**ユーザIDに紐づいた書誌データを取得する */
   getBookInfo(): Promise<BookInfo[]>;

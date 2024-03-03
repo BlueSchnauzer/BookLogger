@@ -1,5 +1,8 @@
 import type { books_v1 } from "googleapis";
 
+/**書誌データの検索を行うリポジトリ
+ * GoogleBooksAPIに特化してしまっているので、汎用的な実装にはなっていない。
+ */
 export interface IBookSearchRepositories{
   /**指定した検索条件でGoogleBooksAPIにリクエストする 
    * @param queries 検索条件
