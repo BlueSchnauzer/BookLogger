@@ -1,24 +1,23 @@
-import type { books_v1 } from "googleapis";
+import type { bookInfosCollection } from "$lib/server/Infrastructure/MongoDB/MongoDBHelper";
+import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import type { status } from '$lib/customTypes';
+import type { ObjectId } from "mongodb";
 
 export interface IBookInfoRepositories{
-  /**指定した検索条件でGoogleBooksAPIにリクエストする 
-   * @param queries 検索条件
-   * @param [maxResults=10] 取得するアイテム数
-   * @param [startIndex=0] 取得を開始するインデックス
-  */
-    requestBookInfo(queries: string[], maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes>;
-
-    /**指定した検索条件でリクエストし、リソースを限定して取得する */
-    requestBookInfoWithPartialResource(queries: string[], resource?: string): Promise<books_v1.Schema$Volumes>;
-  
-    /**(あいまい検索)検索条件を指定して書誌データを取得する */
-    requestBookInfoByFuzzySearch(query: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes>;
-  
-    /**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する */
-    requestBookInfosByQueries(booktitle: string, author: string, isbn_13: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes>;
-  
-    /**GoogleBooksAPIにISBNでリクエストして書影データを取得する
-     * todo ISBNを持っていないデータもあるので代替処理が必要。
-     */
-    getThumbnailByIsbn(isbn_13: string): Promise<string>;
+  /**ユーザIDに紐づいた書誌データを取得する */
+  getBookInfo(collection: bookInfosCollection, userId: string): Promise<BookInfo[]>;
+  /**直近で読んだ、ユーザIDに紐づいた書誌データを1件取得する */
+  getRecentBookInfo(collection: bookInfosCollection, userId: string): Promise<BookInfo[]>;
+  /**ユーザIDに紐づいた書誌データから、pageHistoryのみを取得する */
+  getBookInfoWithOnlyPageHistory(collection: bookInfosCollection, userId: string): Promise<BookInfo[]>;
+  /**statusが引数と一致し、ユーザIDに紐づいた書誌データを取得する */
+  getBookInfoByStatus(collection: bookInfosCollection, userId: string, status: status): Promise<BookInfo[]>;
+  /**書誌データを保存する */
+  insertBookInfo(collection: bookInfosCollection, bookInfo: BookInfo): Promise<Response>;
+  /**同様の書誌データが既に保存されているか */
+  isDuplicateBookInfo(collection: bookInfosCollection, userId: string, gapiId: string): Promise<boolean>;
+  /**書誌データを更新する */
+  updateBookInfo(collection: bookInfosCollection, bookInfo: BookInfo, isComplete: boolean): Promise<Response>;
+  /**書誌データを削除する */
+  deleteBookInfo(collection: bookInfosCollection, _id: ObjectId): Promise<Response>;
 }
