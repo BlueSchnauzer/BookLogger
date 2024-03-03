@@ -3,15 +3,18 @@ import * as mongoDB from 'mongodb';
 import type { BookInfo } from "$lib/server/models/BookInfo";
 import type { BookShelf } from '$lib/server/models/BookShelf';
 
+export type bookInfosCollection = mongoDB.Collection<BookInfo>;
+export type bookShelvesCollection = mongoDB.Collection<BookShelf>;
+
 export type collections = {
-  bookInfos?: mongoDB.Collection<BookInfo>
-  bookShelves?: mongoDB.Collection<BookShelf>
+  bookInfos?: bookInfosCollection
+  bookShelves?: bookShelvesCollection
 }
 
 let isConnected = false;
 
 /**データベースへ接続する(接続済みの場合は何もしない) */
-async function connectToDatabase() {
+async function connectToDatabase(): Promise<collections | undefined> {
   if (isConnected) { return; }
   const collections: collections = {}
 
