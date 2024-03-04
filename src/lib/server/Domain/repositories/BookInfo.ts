@@ -3,20 +3,20 @@ import type { status } from '$lib/customTypes';
 
 /**書誌データの取得・保存を扱うリポジトリ */
 export interface IBookInfoRepositories{
-  /**ユーザIDに紐づいた書誌データを取得する */
-  getBookInfo(): Promise<BookInfo[]>;
-  /**直近で読んだ、ユーザIDに紐づいた書誌データを1件取得する */
-  getRecentBookInfo(): Promise<BookInfo[]>;
-  /**ユーザIDに紐づいた書誌データから、pageHistoryのみを取得する */
-  getBookInfoWithOnlyPageHistory(): Promise<BookInfo[]>;
-  /**statusが引数と一致し、ユーザIDに紐づいた書誌データを取得する */
-  getBookInfoByStatus(status: status): Promise<BookInfo[]>;
+  /**書誌データを取得する */
+  get(): Promise<BookInfo[]>;
+  /**statusが引数と一致した書誌データを取得する */
+  getByStatus(status: status): Promise<BookInfo[]>;
+  /**直近で読んだ、書誌データを1件取得する */
+  getRecent(): Promise<BookInfo[]>;
+  /**書誌データから、pageHistoryのみを取得する */
+  getPageHistory(): Promise<BookInfo[]>;
   /**書誌データを保存する */
-  insertBookInfo(bookInfo: BookInfo): Promise<Response>;
-  /**同様の書誌データが既に保存されているか */
-  isDuplicateBookInfo(keyId: string): Promise<boolean>;
+  insert(bookInfo: BookInfo): Promise<Response>;
   /**書誌データを更新する */
-  updateBookInfo(bookInfo: BookInfo, isCompleteBook: boolean): Promise<Response>;
+  update(bookInfo: BookInfo, isCompleteReading: boolean): Promise<Response>;
   /**書誌データを削除する */
-  deleteBookInfo(bookInfo: BookInfo): Promise<Response>;
+  delete(bookInfo: BookInfo): Promise<Response>;
+  /**同様の書誌データが既に保存されているか */
+  isDuplicate(keyId: string): Promise<boolean>;
 }
