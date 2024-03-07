@@ -8,12 +8,12 @@ export abstract class ValueObjectsBase<T> {
   }
 
   /**生成時のバリデーション */
-  abstract validate(value: T): void;
+  protected abstract validate(value: T): void;
   
   /**保持する値が同一か
    * 判定条件はValueObjectごとに定義する。
    */
-  equals(vo: ValueObjectsBase<T>): boolean {
+  public equals(vo: ValueObjectsBase<T>): boolean {
     if (vo === undefined || vo === null) {
       return false;
     }
@@ -22,5 +22,5 @@ export abstract class ValueObjectsBase<T> {
   }
 
   /**保持する値が同一かを判定する、ValueObjectごとの定義 */
-  abstract equalsCore(vo: ValueObjectsBase<T>): boolean;
+  protected abstract equalsCore(vo: ValueObjectsBase<T>): boolean;
 }
