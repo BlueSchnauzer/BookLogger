@@ -6,6 +6,7 @@ export class UserId extends ValueObjectsBase<string> {
   }
   
   validate(value: string): void {
+    if (!value) { throw Error('UserIdが設定されていません'); }
     if (typeof value !== 'string') { throw Error('UserIdの形式が文字列ではありません'); }
   }
 
