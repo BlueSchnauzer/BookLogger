@@ -1,6 +1,6 @@
 import type { IBookInfoRepositories } from "$lib/server/Domain/repositories/BookInfo";
 import type { bookInfosCollection } from "$lib/server/Infrastructure/MongoDB/MongoDBHelper";
-import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/userId";
+import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { status } from "$lib/customTypes";
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';

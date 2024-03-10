@@ -5,7 +5,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfo";
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import { getTestData, getTestDatas } from '$lib/vitest-setup';
-import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/userId';
+import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
 let con: MongoClient;

@@ -1,4 +1,4 @@
-import { ValueObjectsBase } from "../ValueObjectBase";
+import { ValueObjectsBase } from "$lib/server/Domain/ValueObjects/ValueObjectBase";
 
 export class UserId extends ValueObjectsBase<string> {
   constructor(public value: string) {
@@ -14,3 +14,4 @@ export class UserId extends ValueObjectsBase<string> {
     return this.value === vo.value;
   }
 }
+
