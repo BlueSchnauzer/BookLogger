@@ -4,13 +4,13 @@ import { getTestData } from "$lib/vitest-setup";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 
 describe('requestBookInfo', () => {
+  const searchRepo = new BookSearchGoogleBooksAPI();
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
   })
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`]);
 
     expect(result.items).toBeDefined();
@@ -18,7 +18,6 @@ describe('requestBookInfo', () => {
   });
   
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.search([`intitle:${testData.title}`]);
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
@@ -26,7 +25,6 @@ describe('requestBookInfo', () => {
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.search([`inauthor:${testData.author[0]}`]);
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
@@ -34,7 +32,6 @@ describe('requestBookInfo', () => {
   });
 
   it('複数条件で書誌データを取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`, `intitle:${testData.title}`, `inauthor:${testData.author[0]}`]);
 
     expect(result.items).toBeDefined();
@@ -42,7 +39,6 @@ describe('requestBookInfo', () => {
   });  
 
   it('検索結果が複数ある時に、取得数を制限できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const defaultCounts = await searchRepo.search([`inauthor:${testData.author[0]}`]);
     expect(defaultCounts.items).toBeDefined();
     expect(defaultCounts.items?.length).toEqual(10);
@@ -53,7 +49,6 @@ describe('requestBookInfo', () => {
   });
 
   it('検索結果が複数ある際に、ページングができるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const pageOne = await searchRepo.search([`inauthor:${testData.author[0]}`], 10, 0);
     expect(pageOne.totalItems).toBeGreaterThanOrEqual(11);
     const firstItem = pageOne.items![0].volumeInfo;
@@ -66,13 +61,13 @@ describe('requestBookInfo', () => {
 });
 
 describe('requestBookInfoWithPartialResource', () => {
+  const searchRepo = new BookSearchGoogleBooksAPI();
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
   })
 
   it('リソースを指定して取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchWithPartialResource([`isbn:${testData.identifier?.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
     
     expect(result.items).toBeDefined();
@@ -81,7 +76,6 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 
   it('リソースを指定しない場合、全てのリソースが取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchWithPartialResource([`isbn:${testData.identifier?.isbn_13}`]);
     
     expect(result.items).toBeDefined();
@@ -91,13 +85,13 @@ describe('requestBookInfoWithPartialResource', () => {
 });
 
 describe('requestBookInfoByFuzzySearch', () => {
+  const searchRepo = new BookSearchGoogleBooksAPI();
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
   })
 
   it('あいまい条件で一致した書誌データを取得できるか',async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchByFuzzySearch('イシグロカズオ', 10, 0);
 
     //複数取れるので、一致させずに1件でもあればOK
@@ -106,7 +100,6 @@ describe('requestBookInfoByFuzzySearch', () => {
 
   //rejectを確認
   it('queryが無い場合にRejectされること', () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     searchRepo.searchByFuzzySearch('', 10, 0)
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件が入力されていません。');
@@ -123,13 +116,13 @@ describe('requestBookInfoByFuzzySearch', () => {
 });
 
 describe('requestBookInfosByQueries', () => {
+  const searchRepo = new BookSearchGoogleBooksAPI();
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
   })
 
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchByQueries(testData.title, '', '', 10, 0);
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
@@ -137,7 +130,6 @@ describe('requestBookInfosByQueries', () => {
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchByQueries('', testData.author[0], '', 10, 0);
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
@@ -145,7 +137,6 @@ describe('requestBookInfosByQueries', () => {
   });
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchByQueries('', '', testData.identifier?.isbn_13!, 10, 0);
 
     expect(result.items).toBeDefined();
@@ -153,7 +144,6 @@ describe('requestBookInfosByQueries', () => {
   });
   
   it('複数条件で書誌データを取得できるか', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const result = await searchRepo.searchByQueries(testData.title, testData.author[0], testData.identifier?.isbn_13!, 10, 0);
 
     expect(result.items).toBeDefined();
@@ -162,7 +152,6 @@ describe('requestBookInfosByQueries', () => {
 
   //rejectを確認
   it('queriesが無い場合にRejectされること', () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     searchRepo.searchByQueries('', '', '', 10, 0)
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件が入力されていません。');
@@ -170,7 +159,6 @@ describe('requestBookInfosByQueries', () => {
   });
 
   it('リクエスト結果が0件の際にRejectされること', () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     searchRepo.searchByQueries('', '', '0000', 10, 0)
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件に合う書誌情報が見つかりませんでした。');
@@ -179,15 +167,15 @@ describe('requestBookInfosByQueries', () => {
 });
 
 describe('getThumbnailByIsbn', () => {
+  const searchRepo = new BookSearchGoogleBooksAPI();
+
   it('ISBNを条件にして書影を取得できること', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     const thumbnail = await searchRepo.getThumbnailByIsbn('978-4-15-120051-9');
 
     expect(thumbnail).toBeTruthy();
   });
 
   it('ISBNを持っていない場合にRejectされること', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     await searchRepo.getThumbnailByIsbn('')
     .catch((e: Error) => {
       expect(e.message).toEqual('ISBNが設定されていません。');
@@ -195,7 +183,6 @@ describe('getThumbnailByIsbn', () => {
   });
 
   it('リクエスト結果が0件の際にRejectされること', async () => {
-    const searchRepo = new BookSearchGoogleBooksAPI();
     await searchRepo.getThumbnailByIsbn('00000')
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件に合う書影が見つかりませんでした。');
