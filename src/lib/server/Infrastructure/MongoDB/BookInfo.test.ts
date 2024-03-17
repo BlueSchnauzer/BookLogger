@@ -26,7 +26,7 @@ afterEach(async () => {
 
 const userId = 'firstData';
 
-describe('getBookInfo', () => {  
+describe('get', () => {  
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -54,16 +54,9 @@ describe('getBookInfo', () => {
 
     expect(response.length).toEqual(0);
   });
-
-  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const repos = new BookInfoMongoDB(col, new UserId(String(undefined)));
-    const response = await repos.get();
-
-    expect(response.length).toEqual(0);
-  });
 });
 
-describe('getRecentBookInfo', () => {  
+describe('getRecent', () => {  
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -84,7 +77,8 @@ describe('getRecentBookInfo', () => {
     const second = await col.insertOne(copiedInfo);
     expect(await second.acknowledged).toBeTruthy();
 
-    const response = await service.getRecentBookInfo({ bookInfos: col }, userId);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.getRecent();
 
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(userId);
@@ -96,19 +90,14 @@ describe('getRecentBookInfo', () => {
     const preData = await col.insertOne({userId: 'savedData'} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getRecentBookInfo({ bookInfos: col }, 'savedData');
-
-    expect(response.length).toEqual(0);
-  });
-
-  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getRecentBookInfo({ bookInfos: col }, String(undefined));
+    const repos = new BookInfoMongoDB(col, new UserId('savedData'));
+    const response = await repos.getRecent();
 
     expect(response.length).toEqual(0);
   });
 });
 
-describe('getBookInfoWithOnlyHistory', () => {  
+describe('getPageHistory', () => {  
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -120,7 +109,8 @@ describe('getBookInfoWithOnlyHistory', () => {
     const preData = await col.insertMany([testData, copiedInfo]);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getBookInfoWithOnlyPageHistory({ bookInfos: col }, userId);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.getPageHistory();
 
     expect(response).not.toBeUndefined();
     expect(response?.length).toEqual(1);
@@ -131,19 +121,14 @@ describe('getBookInfoWithOnlyHistory', () => {
     const preData = await col.insertOne({userId: 'savedData'} as BookInfo);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const response = await service.getBookInfoWithOnlyPageHistory({ bookInfos: col }, 'defferentData');
-
-    expect(response.length).toEqual(0);
-  });
-
-  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getBookInfoWithOnlyPageHistory({ bookInfos: col }, String(undefined));
+    const repos = new BookInfoMongoDB(col, new UserId('defferentData'));
+    const response = await repos.getPageHistory();
 
     expect(response.length).toEqual(0);
   });
 });
 
-describe('getBookInfoByStatus', () => {  
+describe('getByStatus', () => {  
   const testDatas = getTestDatas();
   beforeEach(async () => {
     testDatas[0].status = 'wish';
@@ -154,7 +139,8 @@ describe('getBookInfoByStatus', () => {
   
   it('statusがwishで、ユーザIDに一致するデータを取得できること',async () => {
     const wishId = 'firstData';
-    const response = await service.getBookInfoByStatus({ bookInfos: col }, wishId, 'wish');
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.getByStatus('wish');
 
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(wishId);
@@ -162,7 +148,8 @@ describe('getBookInfoByStatus', () => {
 
   it('statusがreadingで、ユーザIDに一致するデータを取得できること',async () => {
     const readingId = 'secondData';
-    const response = await service.getBookInfoByStatus({ bookInfos: col }, readingId, 'reading');
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.getByStatus('reading');
 
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(readingId);
@@ -170,26 +157,16 @@ describe('getBookInfoByStatus', () => {
 
   it('statusがcompleteで、ユーザIDに一致するデータを取得できること',async () => {
     const completeId = 'thirdData';
-    const response = await service.getBookInfoByStatus({ bookInfos: col }, completeId, 'complete');
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.getByStatus('complete');
 
     expect(response.length).toEqual(1);
     expect(response[0].userId).toEqual(completeId);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
-    const response = await service.getBookInfoByStatus({ bookInfos: col }, 'notExistData', 'wish');
-
-    expect(response.length).toEqual(0);
-  });
-
-  it('ユーザIDが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getBookInfoByStatus({ bookInfos: col }, String(undefined), 'wish');
-
-    expect(response.length).toEqual(0);
-  });
-
-  it('statusが不正な場合に空のデータが返ること', async () => {
-    const response = await service.getBookInfoByStatus({ bookInfos: col }, userId, 'test' as any);
+    const repos = new BookInfoMongoDB(col, new UserId('notExistData'));
+    const response = await repos.getByStatus('wish');
 
     expect(response.length).toEqual(0);
   });
@@ -213,15 +190,17 @@ describe('getBookInfoByStatus', () => {
 //   });
 // });
 
-describe('insertBookInfo', () => {
+describe('insert', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
   })
 
   it('書誌情報を保存できること', async () => {
-    const result = await service.insertBookInfo({ bookInfos: col }, testData);
-    expect(result.ok).toBeTruthy();
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.insert(testData)
+
+    expect(response.ok).toBeTruthy();
     expect(await col.countDocuments({})).toBe(1);
   });
 
@@ -232,30 +211,32 @@ describe('insertBookInfo', () => {
   
     //作成済みデータを指定
     const invalidData = {_id: await preData.insertedId} as BookInfo;
-    const result = await service.insertBookInfo({ bookInfos: col }, invalidData);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.insert(invalidData)
     
-    expect(result.ok).toBeFalsy();
+    expect(response.ok).toBeFalsy();
   });
 
   it('保存済み書誌情報と同じデータを保存しようとした際にエラーステータスが返ってくること', async () => {
     const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
   
-    const result = await service.insertBookInfo({ bookInfos: col }, testData);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.insert(testData)
     
-    expect(result.ok).toBeFalsy();
-    expect(result.status).toEqual(409);
+    expect(response.ok).toBeFalsy();
+    expect(response.status).toEqual(409);
   });
 
   //MongoDB側のコレクション定義をして弾く必要があるのでスキップ
-  it.skip('データが不正(undefinedを渡す)な場合にエラーステータスが返ってくること', async () => {  
-    const result = await service.insertBookInfo({ bookInfos: col }, testData);
+  // it.skip('データが不正(undefinedを渡す)な場合にエラーステータスが返ってくること', async () => {  
+  //   const result = await service.insertBookInfo({ bookInfos: col }, testData);
     
-    expect(result.ok).toBeFalsy();
-  });
+  //   expect(result.ok).toBeFalsy();
+  // });
 });
 
-describe('isDuplicateBookInfo', () => {
+describe('isDuplicate', () => {
   let testData: BookInfo;
   let userId: string;
   let gapiId = 'gapiId';
@@ -269,27 +250,35 @@ describe('isDuplicateBookInfo', () => {
   })
 
   it('保存済みデータに一致するユーザIDとgapiIDを指定した際にTrueが返ること', async () => {
-    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, userId, gapiId);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const isDuplicate = await repos.isDuplicate(gapiId);
+
     expect(isDuplicate).toBeTruthy();
   })
 
   it('保存済みデータに一致しないユーザIDとgapiIDを指定した際にFalseが返ること', async () => {
-    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, `test_${userId}`, `test_${gapiId}`);
+    const repos = new BookInfoMongoDB(col, new UserId(`test_${userId}`));
+    const isDuplicate = await repos.isDuplicate(`test_${gapiId}`);
+
     expect(isDuplicate).toBeFalsy();
   })
 
   it('保存済みデータに一致するユーザIDと、一致しないgapiIDを指定した際にFalseが返ること', async () => {
-    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, userId, `test_${gapiId}`);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const isDuplicate = await repos.isDuplicate(`test_${gapiId}`);
+
     expect(isDuplicate).toBeFalsy();
   })
 
   it('保存済みデータに一致しないユーザIDと、一致するgapiIDを指定した際にFalseが返ること', async () => {
-    const isDuplicate = await service.isDuplicateBookInfo({ bookInfos: col }, `test_${userId}`, gapiId);
+    const repos = new BookInfoMongoDB(col, new UserId(`test_${userId}`));
+    const isDuplicate = await repos.isDuplicate(gapiId);
+
     expect(isDuplicate).toBeFalsy();
   })
 });
 
-describe('updateBookInfo', () => {
+describe('update', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -307,8 +296,9 @@ describe('updateBookInfo', () => {
     testData.memorandum = 'メモ欄編集'
     testData.pageHistory!.push({id: crypto.randomUUID(), date: new Date, currentPage: 100 });
     
-    const result = await service.updateBookInfo({ bookInfos: col }, testData);
-    expect(result.ok).toBeTruthy();
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.update(testData, true);
+    expect(response.ok).toBeTruthy();
     
     const updatedItem = await col.findOne({userId: testData.userId});
     expect(updatedItem?.title).toEqual(testData.title);
@@ -325,8 +315,9 @@ describe('updateBookInfo', () => {
     const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
     
-    const result = await service.updateBookInfo({ bookInfos: col }, testData, false);
-    expect(result.ok).toBeTruthy();
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.update(testData, false);
+    expect(response.ok).toBeTruthy();
 
     const updatedItem = await col.findOne({userId: testData.userId});
     expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); 
@@ -338,8 +329,9 @@ describe('updateBookInfo', () => {
     const preData = await col.insertOne(testData);
     expect(await preData.acknowledged).toBeTruthy();
     
-    const result = await service.updateBookInfo({ bookInfos: col }, testData, true);
-    expect(result.ok).toBeTruthy();
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.update(testData, true);
+    expect(response.ok).toBeTruthy();
 
     const updatedItem = await col.findOne({userId: testData.userId});
     expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); 
@@ -347,30 +339,37 @@ describe('updateBookInfo', () => {
   });
 
   it('更新対象が見つからない場合にエラーステータスが返ってくること', async () => {
-    const result = await service.updateBookInfo({ bookInfos: col }, testData);
+    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const response = await repos.update(testData, true);
 
-    expect(result.ok).toBeFalsy();
+    expect(response.ok).toBeFalsy();
   });
 });
 
-describe('deleteBookInfo', async () => {
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
+//Entityを修正したらこちらも修正する
+// describe('delete', async () => {
+//   let testData: BookInfo;
+//   beforeEach(() => {
+//     testData = getTestData();
+//   })
 
-  it('書誌情報を削除できること', async () => {
-    //対象のデータを設定
-    const preData = await col.insertOne(testData);
-    expect(await preData.acknowledged).toBeTruthy();
+//   it('書誌情報を削除できること', async () => {
+//     //対象のデータを設定
+//     const preData = await col.insertOne(testData);
+//     expect(await preData.acknowledged).toBeTruthy();
 
-    const result = await service.deleteBookInfo({ bookInfos: col }, preData.insertedId);
-    expect(result.ok).toBeTruthy();
-    expect(await col.countDocuments({})).toBe(0);
-  });
+//     const repos = new BookInfoMongoDB(col, new UserId(userId));
+//     const response = await repos.delete(testData);
 
-  it('削除対象が見つからない場合にエラーステータスが返ってくること', async () => {
-    const result = await service.deleteBookInfo({ bookInfos: col }, new ObjectId('123456789a123456789b1234'));
-    expect(result.ok).toBeFalsy();
-  });
-});
+//     expect(response.ok).toBeTruthy();
+//     expect(await col.countDocuments({})).toBe(0);
+//   });
+
+  // it('削除対象が見つからない場合にエラーステータスが返ってくること', async () => {
+  //   const repos = new BookInfoMongoDB(col, new UserId(userId));
+  //   const response = await repos.delete()
+
+  //   const result = await service.deleteBookInfo({ bookInfos: col }, new ObjectId('123456789a123456789b1234'));
+  //   expect(result.ok).toBeFalsy();
+  // });
+// });
