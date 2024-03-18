@@ -346,7 +346,7 @@ describe('update', () => {
   });
 });
 
-//Entityを修正したらこちらも修正する
+//ValueObjectを修正したらこちらもEntityでなくIdを使うように修正する
 // describe('delete', async () => {
 //   let testData: BookInfo;
 //   beforeEach(() => {
