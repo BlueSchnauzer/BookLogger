@@ -3,8 +3,8 @@ import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
 
 /**ISBNを保持する */
 export class Identifiers extends ValueObjectsBase<identifiers> {
-  constructor(public readonly isbn_13?: string, public readonly isbn_10?: string) {
-    super({isbn_13, isbn_10});
+  constructor(identifiers: identifiers) {
+    super(identifiers);
   }
 
   protected validate(value: identifiers): void {
@@ -13,7 +13,7 @@ export class Identifiers extends ValueObjectsBase<identifiers> {
   }
 
   protected equalsCore(vo: ValueObjectsBase<identifiers>): boolean {
-    return this.isbn_13 === vo.value.isbn_13 && this.isbn_10 === vo.value.isbn_10;
+    return this.value.isbn_13 === vo.value.isbn_13 && this.value.isbn_10 === vo.value.isbn_10;
   }
 }
 

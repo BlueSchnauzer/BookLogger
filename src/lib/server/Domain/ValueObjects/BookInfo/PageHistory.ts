@@ -3,8 +3,8 @@ import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
 
 /**読んだ記録を保持する */
 export class PageHistory extends ValueObjectsBase<pageHistory> {
-  constructor(public readonly id: string, public readonly date: Date, public readonly pageCount: number) {
-    super({ id, date, pageCount });
+  constructor(pageHistory: pageHistory) {
+    super(pageHistory);
   }
 
   protected validate(value: pageHistory): void {
