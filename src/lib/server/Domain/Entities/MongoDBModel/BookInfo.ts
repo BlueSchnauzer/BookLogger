@@ -1,9 +1,11 @@
 import type { status } from '$lib/customTypes';
 import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
+import type { pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
+import type { identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
 
-/**書誌情報 */
-export class BookInfoMongoModel {
+/**MongoDB内での書誌情報 */
+export class BookInfo {
 	public userId: string;
 	public title: string;
 	public author: string[];
@@ -17,17 +19,8 @@ export class BookInfoMongoModel {
 	public isVisible: boolean;
 	public _id?: ObjectId;
 	public completeDate?: Date;
-	public pageHistory?: 
-		{
-			id: string;
-			date: Date;
-			currentPage: number;
-		}[]
-	;
-	public identifier?: {
-		isbn_13?: string;
-		isbn_10?: string;
-	};
+	public pageHistory?: pageHistory[];
+	public identifier?: identifiers;
 	public shelfCategory?: ObjectId[]
 	public gapiId?: string;
 
@@ -48,6 +41,11 @@ export class BookInfoMongoModel {
 		this.isVisible = true;
 		this.identifier = getIdentifier(volume.volumeInfo?.industryIdentifiers);
 		this.gapiId = volume.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
+	}
+
+	/**MongoDB用モデルをEntityに変換して返す */
+	public convertEntity() {
+		
 	}
 }
 
