@@ -1,8 +1,9 @@
 import type { ObjectId } from 'mongodb';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
-import { Status, type status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import { PageHistory, type pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
-import { Identifiers, type identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
+import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import { PageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
+import { Identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
+import type { BookInfo as mongoModel } from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 
 /**書誌情報 */
 export class BookInfo {
@@ -20,31 +21,29 @@ export class BookInfo {
 	public id?: ObjectId;
 	public completeDate?: Date;
 	public pageHistories?: PageHistory[];
-	public identifiers?: Identifiers[];
+	public identifiers?: Identifiers;
 	public shelfCategories?: ObjectId[]
 	public gapiId?: string;
 
-	//MongoDBのモデルをそのまま渡して、内部でプロパティを参照するように修正する。
-	constructor(userId: string, title: string, author: string[], thumbnail: string, createDate: Date, updateDate: Date,
-		pageCount: number, isFavorite: boolean, status: status, memorandum: string, isVisible: boolean,
-		_id?: ObjectId, completeDate?: Date, pageHistories?: pageHistory[], identifiers?: identifiers[], shelfCategories?: ObjectId[], gapiId?: string) {
-		this.userId = new UserId(userId);
-		this.title = title;
-		this.author = author;
-		this.thumbnail = thumbnail;
-		this.createDate = createDate;
-		this.updateDate = updateDate;
-		this.pageCount = pageCount;
-		this.isFavorite = isFavorite;
-		this.status = new Status(status);
-		this.memorandum = memorandum;
-		this.isVisible = isVisible;
-		this.id = _id;
-		this.completeDate = completeDate;
-		this.pageHistories = pageHistories?.map(item => new PageHistory(item));
-		this.identifiers = identifiers?.map(item => new Identifiers(item));
-		this.shelfCategories = shelfCategories;
-		this.gapiId = gapiId;
+	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
+	constructor(mongoModel: mongoModel) {
+		this.userId = new UserId(mongoModel.userId);
+		this.title = mongoModel.title;
+		this.author = mongoModel.author;
+		this.thumbnail = mongoModel.thumbnail;
+		this.createDate = mongoModel.createDate;
+		this.updateDate = mongoModel.updateDate;
+		this.pageCount = mongoModel.pageCount;
+		this.isFavorite = mongoModel.isFavorite;
+		this.status = new Status(mongoModel.status);
+		this.memorandum = mongoModel.memorandum;
+		this.isVisible = mongoModel.isVisible;
+		this.id = mongoModel._id;
+		this.completeDate = mongoModel.completeDate;
+		this.pageHistories = mongoModel.pageHistory?.map(item => new PageHistory(item));
+		this.identifiers = new Identifiers(mongoModel.identifier!);
+		this.shelfCategories = mongoModel.shelfCategory;
+		this.gapiId = mongoModel.gapiId;
 	}
 }
 
