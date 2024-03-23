@@ -1,5 +1,5 @@
 import type { books_v1 } from "googleapis";
-import type { BookInfo } from "../Entities/BookInfo";
+import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 
 export interface IBookInfoAPIRequestRepository {
   /**登録済みの全書誌データ取得する */
