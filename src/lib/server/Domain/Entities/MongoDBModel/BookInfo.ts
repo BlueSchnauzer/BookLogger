@@ -3,9 +3,13 @@ import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
 import type { pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import type { identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
+import { BookInfo as BookInfoEntity } from '$lib/server/Domain/Entities/BookInfo';
 
-/**MongoDB内での書誌情報 */
-export class BookInfo {
+/**MongoDB内での書誌情報
+ * SQLを経由しないので、
+ * MongoDBのモデルに一致するクラスを作って、取得や保存時にはこのクラスを経由するようにする。
+ */
+export default class BookInfoMongoDBModel {
 	public userId: string;
 	public title: string;
 	public author: string[];
@@ -24,28 +28,50 @@ export class BookInfo {
 	public shelfCategory?: ObjectId[]
 	public gapiId?: string;
 
-	/**GAPIのvolumeで初期化する */
-	constructor(volume: books_v1.Schema$Volume, userId: string){
-		const currentDate = new Date;
+	constructor(volume: books_v1.Schema$Volume, userId: string);
+	constructor(entity: BookInfoEntity);
 
-		this.userId = userId;
-		this.title = volume.volumeInfo?.title ?? '';
-		this.author = volume.volumeInfo?.authors ?? [''];
-		this.thumbnail = volume.volumeInfo?.imageLinks?.thumbnail ?? ''; //gapi固有の情報だが、画像そのものではなく場所を表すURLを保存する。
-		this.createDate = currentDate;
-		this.updateDate = currentDate;
-		this.pageCount = volume.volumeInfo?.pageCount ?? 0;
-		this.status = 'wish';
-		this.isFavorite = false;
-		this.memorandum = '';
-		this.isVisible = true;
-		this.identifier = getIdentifier(volume.volumeInfo?.industryIdentifiers);
-		this.gapiId = volume.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
+	/**GAPIのデータもしくは書誌情報のEntityを用いて初期化する
+	 * GAPIのデータを使うので汎用的にはなっていないけど
+	 */
+	constructor(resource?: books_v1.Schema$Volume | BookInfoEntity, userId?: string){
+		if (resource instanceof BookInfoEntity) {
+			this.userId = resource.userId.value;
+			this.title = resource.title;
+			this.author = resource.author;
+			this.thumbnail = resource.thumbnail;
+			this.createDate = resource.createDate;
+			this.updateDate = resource.updateDate;
+			this.pageCount = resource.pageCount;
+			this.status = resource.status.value;
+			this.isFavorite = resource.isFavorite;
+			this.memorandum = resource.memorandum;
+			this.isVisible = resource.isVisible;
+			this.identifier = resource.identifiers?.value;
+			this.gapiId = resource.gapiId;
+		}
+		else {
+			const currentDate = new Date;
+
+			this.userId = userId!;
+			this.title = resource!.volumeInfo?.title ?? '';
+			this.author = resource!.volumeInfo?.authors ?? [''];
+			this.thumbnail = resource!.volumeInfo?.imageLinks?.thumbnail ?? ''; //gapi固有の情報だが、画像そのものではなく場所を表すURLを保存する。
+			this.createDate = currentDate;
+			this.updateDate = currentDate;
+			this.pageCount = resource!.volumeInfo?.pageCount ?? 0;
+			this.status = 'wish';
+			this.isFavorite = false;
+			this.memorandum = '';
+			this.isVisible = true;
+			this.identifier = getIdentifier(resource!.volumeInfo?.industryIdentifiers);
+			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
+		}
 	}
 
 	/**MongoDB用モデルをEntityに変換して返す */
-	public convertEntity() {
-		
+	public convertToEntity(): BookInfoEntity {
+		return new BookInfoEntity(this);
 	}
 }
 
