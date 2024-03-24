@@ -3,9 +3,9 @@ import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import { PageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import { Identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
-import type { BookInfo as mongoModel } from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
+import MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 
-/**書誌情報 */
+/**書誌情報のEntity */
 export class BookInfo {
 	public userId: UserId;
 	public title: string;
@@ -26,7 +26,7 @@ export class BookInfo {
 	public gapiId?: string;
 
 	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
-	constructor(mongoModel: mongoModel) {
+	constructor(mongoModel: MongoDBModel) {
 		this.userId = new UserId(mongoModel.userId);
 		this.title = mongoModel.title;
 		this.author = mongoModel.author;
@@ -44,6 +44,11 @@ export class BookInfo {
 		this.identifiers = new Identifiers(mongoModel.identifier!);
 		this.shelfCategories = mongoModel.shelfCategory;
 		this.gapiId = mongoModel.gapiId;
+	}
+
+	/**EntityをMongoDBのModelに変換する */
+	public convertToMongoDBModel() {
+		return new MongoDBModel(this);
 	}
 }
 
