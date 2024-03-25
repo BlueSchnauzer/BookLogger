@@ -1,12 +1,12 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import type { status } from '$lib/customTypes';
+import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 
 /**書誌データの取得・保存を扱うリポジトリ */
 export interface IBookInfoRepositories{
   /**書誌データを取得する */
   get(): Promise<BookInfo[]>;
   /**statusが引数と一致した書誌データを取得する */
-  getByStatus(status: status): Promise<BookInfo[]>;
+  getByStatus(status: Status): Promise<BookInfo[]>;
   /**直近で読んだ、書誌データを1件取得する */
   getRecent(): Promise<BookInfo[]>;
   /**書誌データから、pageHistoryのみを取得する */
