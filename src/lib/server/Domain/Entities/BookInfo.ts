@@ -1,6 +1,7 @@
 import type { ObjectId } from 'mongodb';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import { Id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
 import { PageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import { Identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
 import MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
@@ -18,7 +19,7 @@ export class BookInfo {
 	public status: Status;
 	public memorandum: string;
 	public isVisible: boolean;
-	public id?: ObjectId;
+	public id?: Id;
 	public completeDate?: Date;
 	public pageHistories?: PageHistory[];
 	public identifiers?: Identifiers;
@@ -38,7 +39,7 @@ export class BookInfo {
 		this.status = new Status(mongoModel.status);
 		this.memorandum = mongoModel.memorandum;
 		this.isVisible = mongoModel.isVisible;
-		this.id = mongoModel._id;
+		this.id = new Id(mongoModel._id!);
 		this.completeDate = mongoModel.completeDate;
 		this.pageHistories = mongoModel.pageHistory?.map(item => new PageHistory(item));
 		this.identifiers = new Identifiers(mongoModel.identifier!);
