@@ -4,6 +4,7 @@ import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type MongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
 import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
 
 /**MongoDBでの書誌データ操作を管理する */
@@ -154,11 +155,11 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     return response;
   }
 
-  async delete(bookInfo: BookInfo): Promise<Response> {
+  async delete(id: Id): Promise<Response> {
     let response = new Response('書誌データの削除に失敗しました。', {status: 400});
 
     try {
-      const result = await this._collection.deleteOne({_id: new ObjectId(bookInfo.convertToMongoDBModel()._id)});
+      const result = await this._collection.deleteOne({_id: new ObjectId(id.value)});
       if (result && result.deletedCount){
         response = new Response('書誌データの削除に成功しました。', {status: 202} );
       } 

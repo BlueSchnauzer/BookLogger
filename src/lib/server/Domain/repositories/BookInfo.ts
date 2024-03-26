@@ -1,5 +1,6 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 
 /**書誌データの取得・保存を扱うリポジトリ */
 export interface IBookInfoRepositories{
@@ -16,7 +17,7 @@ export interface IBookInfoRepositories{
   /**書誌データを更新する */
   update(bookInfo: BookInfo, isCompleteReading: boolean): Promise<Response>;
   /**書誌データを削除する */
-  delete(bookInfo: BookInfo): Promise<Response>;
+  delete(id: Id): Promise<Response>;
   /**同様の書誌データが既に保存されているか */
   isDuplicate(keyId: string): Promise<boolean>;
 }
