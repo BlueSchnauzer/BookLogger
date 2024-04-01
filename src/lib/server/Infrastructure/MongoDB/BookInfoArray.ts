@@ -30,8 +30,12 @@ export class BookInfoMongoDBArray implements IBookInfoArray {
   toggleFavorite(bookInfos: BookInfo[]): BookInfo[] {
     throw new Error("Method not implemented.");
   }
-  handleSuccess(detail: { message: string; updatedItem: BookInfo; deletedId: Id; }, target: string, isBooksRoute: boolean): BookInfo[] {
-    throw new Error("Method not implemented.");
+
+  handleSuccess(bookInfos: BookInfo[], detail: { message: string; updatedItem: BookInfo; deletedId: Id; }, target: string, isBooksRoute = false): BookInfo[] {
+    const appliedItems = this.applyChange(bookInfos, detail, isBooksRoute);
+    //pushSuccessToast(detail.message, target);
+  
+    return appliedItems;
   }
 
 }
