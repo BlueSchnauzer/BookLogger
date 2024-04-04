@@ -78,14 +78,14 @@ export class BookInfoSvelteAPIRequest implements IBookInfoAPIRequestRepository {
     //各書誌データのHistoryを確認して1日に読んだページ数を取得
     bookInfos.forEach(bookInfo => {
       //今週分のhistoryを取得し、日付の重複を排除する(残すのは最大のページ数)
-      const historyInCurrentWeek = bookInfo.pageHistory?.filter(item => new Date(item.date) >= lastDate);
+      const historyInCurrentWeek = bookInfo.pageHistories?.filter(item => new Date(item.value.date) >= lastDate);
       const historyMap = new Map<string, number>();
   
       historyInCurrentWeek?.forEach(item => {
         //DBから取ったデータは文字列になっているため変換
-        const key = new Date(item.date).toLocaleDateString('ja-JP');
-        if (!historyMap.has(key) || historyMap.get(key)! < item.currentPage) {
-          historyMap.set(key, item.currentPage);
+        const key = new Date(item.value.date).toLocaleDateString('ja-JP');
+        if (!historyMap.has(key) || historyMap.get(key)! < item.value.pageCount) {
+          historyMap.set(key, item.value.pageCount);
         }
       });
   
@@ -131,7 +131,7 @@ export class BookInfoSvelteAPIRequest implements IBookInfoAPIRequestRepository {
   async delete(bookInfo: BookInfo): Promise<{ isSuccess: boolean, message: string }> {
     const { ok: isSuccess } = await fetch('/api/bookinfo', {
       method: 'DELETE',
-      body: JSON.stringify(bookInfo._id),
+      body: JSON.stringify(bookInfo.id),
       headers: { 'Content-type': 'application/json' }
     });
     const message = isSuccess ? '削除しました' : '削除に失敗しました。\<br\>時間をおいて再度登録してください。';
