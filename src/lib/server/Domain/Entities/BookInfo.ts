@@ -52,19 +52,3 @@ export class BookInfo {
 		return new MongoDBModel(this);
 	}
 }
-
-type industryIdentifiers = {
-	identifier?: string | undefined;
-	type?: string | undefined;
-}[] | undefined
-
-/**ISBNを取得する(存在しない場合はundefined) */
-const getIdentifier = (identifiers: industryIdentifiers) => {
-	const isbn_13 = identifiers?.find(id => id.type === 'ISBN_13')?.identifier;
-	if (isbn_13) { return { isbn_13 }; }
-
-	const isbn_10 = identifiers?.find(id => id.type === 'ISBN_10')?.identifier;
-	if (isbn_10) { return { isbn_10 }; }
-
-	return undefined;
-}
