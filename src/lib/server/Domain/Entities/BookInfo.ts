@@ -8,23 +8,23 @@ import MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 
 /**書誌情報のEntity */
 export class BookInfo {
-	public userId: UserId;
-	public title: string;
-	public author: string[];
-	public thumbnail: string;
-	public createDate: Date;
-	public updateDate: Date;
-	public pageCount: number;
-	public isFavorite: boolean;
-	public status: Status;
-	public memorandum: string;
-	public isVisible: boolean;
-	public id?: Id;
-	public completeDate?: Date;
-	public pageHistories?: PageHistory[];
-	public identifiers?: Identifiers;
-	public shelfCategories?: ObjectId[]
-	public gapiId?: string;
+	public readonly userId: UserId;
+	public readonly title: string;
+	public readonly author: string[];
+	public readonly thumbnail: string;
+	public readonly createDate: Date;
+	public readonly updateDate: Date;
+	public readonly pageCount: number;
+	public readonly isFavorite: boolean;
+	public readonly status: Status;
+	public readonly memorandum: string;
+	public readonly isVisible: boolean;
+	public readonly id?: Id;
+	public readonly completeDate?: Date;
+	public readonly pageHistories?: PageHistory[];
+	public readonly identifiers?: Identifiers;
+	public readonly shelfCategories?: ObjectId[]
+	public readonly gapiId?: string;
 
 	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
 	constructor(mongoModel: MongoDBModel) {
