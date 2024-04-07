@@ -3,6 +3,7 @@ import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import { error } from "@sveltejs/kit";
 import type { books_v1 } from "googleapis";
 
+/**書誌データの操作を管理するUseCase */
 export class BookInfoUseCase {
   /**登録済みの全書誌データ取得する */
   public async getAll(): Promise<BookInfo[]> {
