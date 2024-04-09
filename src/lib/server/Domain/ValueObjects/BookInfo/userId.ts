@@ -15,4 +15,3 @@ export class UserId extends ValueObjectsBase<string> {
     return this.value === vo.value;
   }
 }
-

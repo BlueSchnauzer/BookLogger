@@ -8,7 +8,7 @@ export class PageHistory extends ValueObjectsBase<pageHistory> {
   }
 
   protected validate(value: pageHistory): void {
-    if (!value || (!value.id || !value.date || !value.pageCount)) { throw new ValidationError('PageHistoryの値が設定されていません'); }
+    if (!value || (!value.id || !value.date || value.pageCount < 0 )) { throw new ValidationError('PageHistoryの値が設定されていません'); }
     if (typeof value.id !== 'string' || !(value.date instanceof Date) || typeof value.pageCount !== 'number' ) { throw new ValidationError('PageHistoryの型が不正です'); }
   }
 

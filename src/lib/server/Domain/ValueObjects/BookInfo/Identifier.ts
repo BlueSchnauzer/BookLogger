@@ -8,8 +8,11 @@ export class Identifiers extends ValueObjectsBase<identifiers> {
   }
 
   protected validate(value: identifiers): void {
-    if (!value || (!value.isbn_13 || !value.isbn_10)) { throw new ValidationError('ISBNが設定されていません'); }
-    if (typeof value.isbn_13 !== 'string' || typeof value.isbn_10 !== 'string') { throw new ValidationError('ISBNの形式が文字列ではありません'); }
+    if (!value || (!value.isbn_13 && !value.isbn_10)) { throw new ValidationError('ISBNが設定されていません'); }
+    if (!(value.isbn_13 && typeof value.isbn_13 === 'string')
+      && !(value.isbn_10 && typeof value.isbn_10 === 'string')) {
+      throw new ValidationError('ISBNの形式が文字列ではありません');
+    }
   }
 
   protected equalsCore(vo: ValueObjectsBase<identifiers>): boolean {
