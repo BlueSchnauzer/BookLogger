@@ -4,20 +4,21 @@ import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfo";
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
-import { getTestData, getTestDatas } from '$lib/vitest-setup';
+import type BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
+import { getTestData, getEntityTestData, getTestDatas, getEntityTestDatas } from '$lib/vitest-setup';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
 let con: MongoClient;
 let mongoServer: MongoMemoryServer;
 let db: Db;
-let col: Collection<BookInfo>;
+let col: Collection<BookInfoModel>;
 
 beforeEach(async () => {
   mongoServer = await MongoMemoryServer.create();
   con = await MongoClient.connect(mongoServer.getUri(), {});
   db = con.db(mongoServer.instanceInfo?.dbName);
-  col = db.collection<BookInfo>(env.BOOKINFOS_COLLECTION_NAME);
+  col = db.collection<BookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
 });
 afterEach(async () => {
   if (con) { await con.close(); }
@@ -27,22 +28,20 @@ afterEach(async () => {
 const userId = 'firstData';
 
 describe('get', () => {  
-  let testData: BookInfo;
+  let testDatas: BookInfo[];
   beforeEach(() => {
-    testData = getTestData();
+    testDatas = getEntityTestDatas();
   })
 
   it('ユーザIDに一致するデータを取得できること',async () => {
-    const copiedInfo = structuredClone(testData);
-    copiedInfo.userId = 'copiedData'
-    const preData = await col.insertMany([testData, copiedInfo]);
+    const preData = await col.insertMany([testDatas[0].convertToMongoDBModel(), testDatas[1].convertToMongoDBModel()]);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const repos = new BookInfoMongoDB(col, new UserId(userId));
+    const repos = new BookInfoMongoDB(col, testDatas[0].userId);
     const response = await repos.get();
 
     expect(response.length).toEqual(1);
-    expect(response[0].userId).toEqual(userId);
+    expect(response[0].userId).toEqual(testDatas[0].userId);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {

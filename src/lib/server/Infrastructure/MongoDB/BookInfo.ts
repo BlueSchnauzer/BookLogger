@@ -1,7 +1,7 @@
 import type { IBookInfoRepositories } from "$lib/server/Domain/repositories/BookInfo";
 import type { bookInfosCollection } from "$lib/server/Infrastructure/MongoDB/MongoDBHelper";
-import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import type MongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
+import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import MongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
 import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
@@ -21,14 +21,14 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     let mongoDBModel: MongoDBModel[] = [];
   
     try {
-      mongoDBModel = await this._collection.find({userId: this._userId}).toArray() as MongoDBModel[];  
+      mongoDBModel = await this._collection.find({userId: this._userId.value}).toArray() as MongoDBModel[];  
     }
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
     }
   
-    return mongoDBModel.map(item => item.convertToEntity());
+    return mongoDBModel.map(item => BookInfo.fromDBModel(item));
   }
 
   async getByStatus(status: Status): Promise<BookInfo[]> {
