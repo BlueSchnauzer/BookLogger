@@ -34,7 +34,7 @@ describe('get', () => {
   })
 
   it('ユーザIDに一致するデータを取得できること',async () => {
-    const preData = await col.insertMany([testDatas[0].convertToMongoDBModel(), testDatas[1].convertToMongoDBModel()]);
+    const preData = await col.insertMany([new BookInfoModel(testDatas[0]), new BookInfoModel(testDatas[1])]);
     expect(await preData.acknowledged).toBeTruthy();
 
     const repos = new BookInfoMongoDB(col, testDatas[0].userId);

@@ -68,11 +68,6 @@ export default class BookInfoMongoDBModel {
 			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
 		}
 	}
-
-	/**MongoDB用モデルをEntityに変換して返す */
-	public convertToEntity(): BookInfoEntity {
-		return new BookInfoEntity(this);
-	}
 }
 
 type industryIdentifiers = {
