@@ -37,7 +37,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     try {
       const filter: Filter<MongoDBModel> = {
         $and: [
-          {userId: this._userId},
+          {userId: this._userId.value},
           {status: status.value}
         ]
       };
@@ -48,7 +48,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
       console.log('書誌データの取得に失敗しました。');
     }
   
-    return mongoDBModel.map(item => item.convertToEntity());
+    return mongoDBModel.map(item => BookInfo.fromDBModel(item));
   }
 
   async getRecent(): Promise<BookInfo[]> {
@@ -57,7 +57,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     try {
       //pageHistoryが0より大きいデータを、更新日を降順にしてから、1個だけ取る
       mongoDBModel = await this._collection.find({
-          userId: this._userId,
+          userId: this._userId.value,
           "pageHistory.0": { $exists: true}
         }).sort({updateDate: -1}).limit(1).toArray() as MongoDBModel[];  
     }
@@ -66,7 +66,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
       console.log('書誌データの取得に失敗しました。');
     }
 
-    return mongoDBModel.map(item => item.convertToEntity());
+    return mongoDBModel.map(item => BookInfo.fromDBModel(item));
   }
 
   async getPageHistory(): Promise<BookInfo[]> {
@@ -76,7 +76,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     try {
       //pageHistoryのみを取得(_idは指定無しでも取れるので、取らないように明示する)
       const projection = { _id: 0, pageHistory: 1};
-      histories = await this._collection.find({userId: this._userId}).project(projection).toArray() as BookInfo[];  
+      histories = await this._collection.find({userId: this._userId.value}).project(projection).toArray() as BookInfo[];  
     }
     catch (error) {
       console.log(error);
@@ -93,7 +93,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     }
   
     try {
-      const result = await this._collection?.insertOne(bookInfo.convertToMongoDBModel());
+      const result = await this._collection?.insertOne(new MongoDBModel(bookInfo));
       if (result?.acknowledged){
         response = new Response('書誌データの作成に成功しました。', {status: 201} );
       }
@@ -108,7 +108,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
 
   async update(bookInfo: BookInfo, isCompleteReading: boolean): Promise<Response> {
     let response = new Response('書誌データの更新に失敗しました。', {status: 400});
-    const mongoDBModel = bookInfo.convertToMongoDBModel();
+    const mongoDBModel = new MongoDBModel(bookInfo);
 
     try{
       //読み終わっている場合のみcompleteDateを更新対象にする
