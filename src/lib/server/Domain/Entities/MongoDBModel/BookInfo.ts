@@ -47,6 +47,7 @@ export default class BookInfoMongoDBModel {
 			this.isFavorite = resource.isFavorite;
 			this.memorandum = resource.memorandum;
 			this.isVisible = resource.isVisible;
+			this.pageHistories = resource.pageHistories?.map(item => item.value);
 			this.identifiers = resource.identifiers?.value;
 			this.gapiId = resource.gapiId;
 		}
@@ -64,6 +65,7 @@ export default class BookInfoMongoDBModel {
 			this.isFavorite = false;
 			this.memorandum = '';
 			this.isVisible = true;
+			this.pageHistories = undefined;
 			this.identifiers = getIdentifier(resource!.volumeInfo?.industryIdentifiers);
 			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
 		}

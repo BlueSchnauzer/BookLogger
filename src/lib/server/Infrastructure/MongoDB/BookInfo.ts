@@ -58,7 +58,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
       //pageHistoryが0より大きいデータを、更新日を降順にしてから、1個だけ取る
       mongoDBModel = await this._collection.find({
           userId: this._userId.value,
-          "pageHistory.0": { $exists: true}
+          "pageHistories.0": { $exists: true}
         }).sort({updateDate: -1}).limit(1).toArray() as MongoDBModel[];  
     }
     catch (error) {
@@ -134,7 +134,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
         isFavorite: mongoDBModel.isFavorite,
         pageCount: mongoDBModel.pageCount,
         status: mongoDBModel.status,
-        pageHistory: mongoDBModel.pageHistory,
+        pageHistories: mongoDBModel.pageHistories,
         memorandum: mongoDBModel.memorandum
       }
   
