@@ -208,11 +208,7 @@ export const getEntityTestDatas = (): BookInfoEntity[] => {
     memorandum: 'memo3',
     isVisible: true,
     completeDate: undefined,
-    pageHistories: [{
-      id: crypto.randomUUID(),
-      date: new Date,
-      pageCount: 0
-    }],
+    pageHistories: undefined,
     identifiers: {
       isbn_13: '978-4-16-791019-8'
     },
