@@ -63,9 +63,9 @@ export class BookInfo {
 				memorandum: mongoModel.memorandum,
 				isVisible: mongoModel.isVisible,
 				completeDate: mongoModel.completeDate,
-				pageHistories: mongoModel.pageHistory,
-				identifiers: mongoModel.identifier,
-				shelfCategories: mongoModel.shelfCategory,
+				pageHistories: mongoModel.pageHistories,
+				identifiers: mongoModel.identifiers,
+				shelfCategories: mongoModel.shelfCategories,
 				gapiId: mongoModel.gapiId
 			}
 		);

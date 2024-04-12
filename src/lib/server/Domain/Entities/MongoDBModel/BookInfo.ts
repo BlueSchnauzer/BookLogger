@@ -23,9 +23,9 @@ export default class BookInfoMongoDBModel {
 	public isVisible: boolean;
 	public _id?: ObjectId;
 	public completeDate?: Date;
-	public pageHistory?: pageHistory[];
-	public identifier?: identifiers;
-	public shelfCategory?: ObjectId[]
+	public pageHistories?: pageHistory[];
+	public identifiers?: identifiers;
+	public shelfCategories?: ObjectId[]
 	public gapiId?: string;
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
@@ -47,7 +47,7 @@ export default class BookInfoMongoDBModel {
 			this.isFavorite = resource.isFavorite;
 			this.memorandum = resource.memorandum;
 			this.isVisible = resource.isVisible;
-			this.identifier = resource.identifiers?.value;
+			this.identifiers = resource.identifiers?.value;
 			this.gapiId = resource.gapiId;
 		}
 		else {
@@ -64,7 +64,7 @@ export default class BookInfoMongoDBModel {
 			this.isFavorite = false;
 			this.memorandum = '';
 			this.isVisible = true;
-			this.identifier = getIdentifier(resource!.volumeInfo?.industryIdentifiers);
+			this.identifiers = getIdentifier(resource!.volumeInfo?.industryIdentifiers);
 			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
 		}
 	}
