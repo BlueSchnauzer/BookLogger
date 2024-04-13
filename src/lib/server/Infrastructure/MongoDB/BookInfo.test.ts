@@ -295,7 +295,7 @@ describe('update', () => {
     expect(updatedItem?.pageCount).toEqual(testData.pageCount);
     expect(updatedItem?.status).toEqual('complete');
     expect(updatedItem?.memorandum).toBeTruthy();
-    expect(updatedItem?.pageHistory!.length).toEqual(2);
+    expect(updatedItem?.pageHistories!.length).toEqual(2);
     expect(updatedItem?.updateDate).not.toEqual(testData.updateDate); //更新日は自動更新
   });
 
