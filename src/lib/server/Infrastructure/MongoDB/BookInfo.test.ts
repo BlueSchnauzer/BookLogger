@@ -5,8 +5,9 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfo";
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
-import { getTestData, getEntityTestData, getTestDatas, getEntityTestDatas } from '$lib/vitest-setup';
+import { getTestData, getEntityTestData, getTestDatas, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
+import { Status } from '$lib/server/Domain/ValueObjects/BookInfo/Status';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
 let con: MongoClient;
@@ -117,66 +118,42 @@ describe('getPageHistory', () => {
 });
 
 describe('getByStatus', () => {  
-  const testDatas = getTestDatas();
+  const testDatas = getEntityTestDatas();
   beforeEach(async () => {
-    testDatas[0].status = 'wish';
-    testDatas[1].status = 'reading';
-    testDatas[2].status = 'complete';
-    await col.insertMany(testDatas);
+    await col.insertMany([new BookInfoModel(testDatas[0]), new BookInfoModel(testDatas[1]), new BookInfoModel(testDatas[2])]);
   });
   
   it('statusがwishで、ユーザIDに一致するデータを取得できること',async () => {
-    const wishId = 'firstData';
-    const repos = new BookInfoMongoDB(col, new UserId(userId));
-    const response = await repos.getByStatus('wish');
+    const repos = new BookInfoMongoDB(col, testDatas[0].userId);
+    const response = await repos.getByStatus(new Status('wish'));
 
     expect(response.length).toEqual(1);
-    expect(response[0].userId).toEqual(wishId);
+    expect(response[0].userId).toEqual(testDatas[0].userId);
   });
 
   it('statusがreadingで、ユーザIDに一致するデータを取得できること',async () => {
-    const readingId = 'secondData';
-    const repos = new BookInfoMongoDB(col, new UserId(userId));
-    const response = await repos.getByStatus('reading');
+    const repos = new BookInfoMongoDB(col, testDatas[1].userId);
+    const response = await repos.getByStatus(new Status('reading'));
 
     expect(response.length).toEqual(1);
-    expect(response[0].userId).toEqual(readingId);
+    expect(response[0].userId).toEqual(testDatas[1].userId);
   });
 
   it('statusがcompleteで、ユーザIDに一致するデータを取得できること',async () => {
-    const completeId = 'thirdData';
-    const repos = new BookInfoMongoDB(col, new UserId(userId));
-    const response = await repos.getByStatus('complete');
+    const repos = new BookInfoMongoDB(col, testDatas[2].userId);
+    const response = await repos.getByStatus(new Status('complete'));
 
     expect(response.length).toEqual(1);
-    expect(response[0].userId).toEqual(completeId);
+    expect(response[0].userId).toEqual(testDatas[2].userId);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
     const repos = new BookInfoMongoDB(col, new UserId('notExistData'));
-    const response = await repos.getByStatus('wish');
+    const response = await repos.getByStatus(new Status('wish'));
 
     expect(response.length).toEqual(0);
   });
 });
-
-// describe('getBookInfoByFavorite', () => {
-//   it('お気に入りがTrueで、ユーザIDに一致するデータのみが取得できること', async () => {
-//     //対象のデータを設定
-//     const dummyData = [{userId, isFavorite: true}, {userId, isFavorite: true}, {userId, isFavorite: false}];
-//     const preData = await col.insertMany( dummyData as BookInfo[]);
-//     expect(await preData.acknowledged).toBeTruthy();
-
-//     const response = await service.getBookInfoByFavorite({ bookInfos: col }, userId);
-
-//     expect(response.length).toEqual(2);
-//     expect(response[0].userId).toEqual(userId);
-//   });
-
-//   it('一致するデータが無い場合に空のデータが返ること', () => {
-
-//   });
-// });
 
 describe('insert', () => {
   let testData: BookInfo;
