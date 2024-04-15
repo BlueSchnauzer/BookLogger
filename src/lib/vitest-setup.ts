@@ -13,6 +13,9 @@ const firstId_test = '651451ed67241f439ce8a1af';
 const secondId_test = '651451ed67241f439ce8a1b0';
 const thirdId_test = '651451ed67241f439ce8a1b1';
 
+export const testUserId1 = 'testUserId1';
+export const testUserId2 = 'testUserId2';
+export const testUserId3 = 'testUserId3';
 
 /**テスト用書誌データ(1件) */
 export const getTestData = () => {
@@ -42,10 +45,11 @@ export const getTestData = () => {
   return testData;
 }
 
-export const getEntityTestData = () => {
+/**テスト用書誌データのEntity(1件) */
+export const getEntityTestData = (userId = testUserId1) => {
   return new BookInfoEntity({
       id: firstId_test,
-      userId: 'firstData',
+      userId: userId,
       title: 'わたしを離さないで', 
       author: ['イシグロカズオ'],
       thumbnail: '',
@@ -143,10 +147,13 @@ export const getTestDatas = () => {
   return testDatas;
 }
 
-export const getEntityTestDatas = (): BookInfoEntity[] => {
+/**テスト用書誌データのEntity(3件)
+ * デフォルトでは全て同じUserIdを持つ
+ */
+export const getEntityTestDatas = (userId1 = testUserId1, userId2 = testUserId1, userId3 = testUserId1): BookInfoEntity[] => {
   const testProperties: bookInfoProperties[] = [{
     id: firstId_test,
-    userId: 'firstData',
+    userId: userId1,
     title: 'わたしを離さないで', 
     author: ['イシグロカズオ'],
     thumbnail: '',
@@ -171,7 +178,7 @@ export const getEntityTestDatas = (): BookInfoEntity[] => {
   },
   {
     id: secondId_test,
-    userId: 'secondData',
+    userId: userId2,
     title: 'エピローグ',
     author: ['円城塔'],
     thumbnail: '',
@@ -179,7 +186,7 @@ export const getEntityTestDatas = (): BookInfoEntity[] => {
     updateDate: new Date,
     pageCount: -1,
     isFavorite: false,
-    status: 'wish',
+    status: 'reading',
     memorandum: 'memo2',
     isVisible: true,
     completeDate: undefined,
@@ -196,7 +203,7 @@ export const getEntityTestDatas = (): BookInfoEntity[] => {
   },
   {
     id: thirdId_test,
-    userId: 'thirdData',
+    userId: userId3,
     title: 'プロローグ',
     author: ['円城塔'],
     thumbnail: '',
@@ -204,7 +211,7 @@ export const getEntityTestDatas = (): BookInfoEntity[] => {
     updateDate: new Date,
     pageCount: -1,
     isFavorite: false,
-    status: 'wish',
+    status: 'complete',
     memorandum: 'memo3',
     isVisible: true,
     completeDate: undefined,
