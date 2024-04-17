@@ -185,6 +185,8 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
+      
+      throw error;
     }
     
     return isDuplicate;
