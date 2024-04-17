@@ -11,14 +11,15 @@
 		"sourceMap": true,
 		"strict": true
 		
-		,
-		"baseUrl": ".",
-		"paths": {
-		  "$lib": ["src/lib"],
-		  "$lib/*": ["src/lib/*"],
-		//   "$app/*": ["tests/e2e/mocks/app/*"],
-		//   "$env/*": ["tests/e2e/mocks/env/*"]
-		}
+		//Playwrightでコンポーネントをテストするために追加したが、Svelteだと上手くいかないのでコメントアウト
+		// ,
+		// "baseUrl": ".",
+		// "paths": {
+		//   "$lib": ["src/lib"],
+		//   "$lib/*": ["src/lib/*"],
+		// //   "$app/*": ["tests/e2e/mocks/app/*"],
+		// //   "$env/*": ["tests/e2e/mocks/env/*"]
+		// }
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
