@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongodb';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import { Status, type status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import { Id, type id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
+import { Id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
 import { PageHistory, type pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import { Identifiers, type identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
 import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
@@ -50,7 +50,7 @@ export class BookInfo {
 	/**MongoDBModelからEntityを生成する */
 	public static fromDBModel(mongoModel: MongoDBModel) {
 		return new BookInfo({
-				id: mongoModel._id!,
+				id: mongoModel._id?.toString()!,
 				userId: mongoModel.userId,
 				title: mongoModel.title,
 				author: mongoModel.author,
@@ -74,7 +74,7 @@ export class BookInfo {
 
 /**書誌情報のEntityを生成するためのプロパティ */
 export type bookInfoProperties = {
-	id: id,
+	id: string,
 	userId: string,
 	title: string,
 	author: string[], 

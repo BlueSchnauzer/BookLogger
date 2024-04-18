@@ -4,21 +4,17 @@ import type { ObjectId } from "mongodb";
 
 //一旦、StringとObjectID。あまり複数の型を指定できるのは良くない？
 
-export class Id extends ValueObjectsBase<id> {
-  constructor(public value: id) {
+export class Id extends ValueObjectsBase<string> {
+  constructor(public value: string) {
     super(value);
   }
   
-  validate(value: id): void {
+  validate(value: string): void {
     if (!value) { throw new ValidationError('Idが設定されていません'); }
-    
-    //ObjectIdの判定方法が分からないので保留
-    // if (typeof value !== 'string' || value instanceof ObjectId) { throw new ValidationError('Idの形式が文字列またはObjectIdではありません'); }
+    if (typeof value !== 'string') { throw new ValidationError('Idの形式が文字列ではありません'); }
   }
 
-  equalsCore(vo: ValueObjectsBase<id>): boolean {
+  equalsCore(vo: ValueObjectsBase<string>): boolean {
     return this.value === vo.value;
   }
 }
-
-export type id = string | ObjectId;
