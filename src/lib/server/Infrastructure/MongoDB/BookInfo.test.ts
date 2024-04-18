@@ -208,41 +208,36 @@ describe('insert', () => {
 
 describe('isDuplicate', () => {
   let testData: BookInfo;
-  let userId: string;
-  let gapiId = 'gapiId';
   beforeEach(async () => {
-    testData = getTestData();
-    userId = testData.userId;
-
-    testData.gapiId = gapiId;
-    const preData = await col.insertOne(testData);
+    testData = getEntityTestData();
+    const preData = await col.insertOne(new BookInfoModel(testData));
     expect(await preData.acknowledged).toBeTruthy();
   })
 
   it('保存済みデータに一致するユーザIDとgapiIDを指定した際にTrueが返ること', async () => {
-    const repos = new BookInfoMongoDB(col, new UserId(userId));
-    const isDuplicate = await repos.isDuplicate(gapiId);
+    const repos = new BookInfoMongoDB(col, testData.userId);
+    const isDuplicate = await repos.isDuplicate(testData.gapiId!);
 
     expect(isDuplicate).toBeTruthy();
   })
 
   it('保存済みデータに一致しないユーザIDとgapiIDを指定した際にFalseが返ること', async () => {
-    const repos = new BookInfoMongoDB(col, new UserId(`test_${userId}`));
-    const isDuplicate = await repos.isDuplicate(`test_${gapiId}`);
+    const repos = new BookInfoMongoDB(col, new UserId('test'));
+    const isDuplicate = await repos.isDuplicate('test');
 
     expect(isDuplicate).toBeFalsy();
   })
 
   it('保存済みデータに一致するユーザIDと、一致しないgapiIDを指定した際にFalseが返ること', async () => {
-    const repos = new BookInfoMongoDB(col, new UserId(userId));
-    const isDuplicate = await repos.isDuplicate(`test_${gapiId}`);
+    const repos = new BookInfoMongoDB(col, testData.userId);
+    const isDuplicate = await repos.isDuplicate('test');
 
     expect(isDuplicate).toBeFalsy();
   })
 
   it('保存済みデータに一致しないユーザIDと、一致するgapiIDを指定した際にFalseが返ること', async () => {
-    const repos = new BookInfoMongoDB(col, new UserId(`test_${userId}`));
-    const isDuplicate = await repos.isDuplicate(gapiId);
+    const repos = new BookInfoMongoDB(col, new UserId('test'));
+    const isDuplicate = await repos.isDuplicate(testData.gapiId!);
 
     expect(isDuplicate).toBeFalsy();
   })
