@@ -174,26 +174,23 @@ describe('insert', () => {
     expect(await col.countDocuments({})).toBe(1);
   });
 
-  it.skip('データが不正(同じ_idで作成済み)な場合にエラーステータスが返ってくること', async () => {
+  it('データが不正(同じ_idで作成済み)な場合にエラーステータスが返ってくること', async () => {
     //事前にデータを作成
     const repos = new BookInfoMongoDB(col, user1.userId);
     await repos.insert(user1)
   
-    //再度同じデータを作成 → エラーになってほしいがそのままいけちゃう
     const response = await repos.insert(user1)
     
     expect(response.ok).toBeFalsy();
   });
 
-  it.skip('保存済み書誌情報と同じデータを保存しようとした際にエラーステータスが返ってくること', async () => {
+  it('保存済み書誌情報と同じデータを保存しようとした際にエラーステータスが返ってくること', async () => {
     const preData = await col.insertOne(new BookInfoModel(user1));
     expect(await preData.acknowledged).toBeTruthy();
   
     const repos = new BookInfoMongoDB(col, user1.userId);
     const response = await repos.insert(user1);
     
-    //なぜか登録できちゃうので調べる
-
     expect(response.ok).toBeFalsy();
     expect(response.status).toEqual(409);
   });
