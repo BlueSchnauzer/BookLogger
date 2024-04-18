@@ -309,29 +309,31 @@ describe('update', () => {
 });
 
 //ValueObjectを修正したらこちらもEntityでなくIdを使うように修正する
-// describe('delete', async () => {
-//   let testData: BookInfo;
-//   beforeEach(() => {
-//     testData = getTestData();
-//   })
+describe('delete', async () => {
+  let testData: BookInfo;
+  beforeEach(() => {
+    testData = getEntityTestData();
+  })
 
-//   it('書誌情報を削除できること', async () => {
-//     //対象のデータを設定
-//     const preData = await col.insertOne(testData);
-//     expect(await preData.acknowledged).toBeTruthy();
+  it('書誌情報を削除できること', async () => {
+    //対象のデータを設定
+    const preData = await col.insertOne(new BookInfoModel(testData));
+    expect(await preData.acknowledged).toBeTruthy();
 
-//     const repos = new BookInfoMongoDB(col, new UserId(userId));
-//     const response = await repos.delete(testData);
+    //Idはinsert時に設定されるので、testDataからではなくpreDataから取る
+    const id = new Id(preData.insertedId.toString());
 
-//     expect(response.ok).toBeTruthy();
-//     expect(await col.countDocuments({})).toBe(0);
-//   });
+    const repos = new BookInfoMongoDB(col, testData.userId);
+    const response = await repos.delete(id);
 
-  // it('削除対象が見つからない場合にエラーステータスが返ってくること', async () => {
-  //   const repos = new BookInfoMongoDB(col, new UserId(userId));
-  //   const response = await repos.delete()
+    expect(response.ok).toBeTruthy();
+    expect(await col.countDocuments({})).toBe(0);
+  });
 
-  //   const result = await service.deleteBookInfo({ bookInfos: col }, new ObjectId('123456789a123456789b1234'));
-  //   expect(result.ok).toBeFalsy();
-  // });
-// });
+  it('削除対象が見つからない場合にエラーステータスが返ってくること', async () => {
+    const repos = new BookInfoMongoDB(col, testData.userId);
+    const response = await repos.delete(testData.id)
+
+    expect(response.ok).toBeFalsy();
+  });
+});
