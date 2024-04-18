@@ -179,7 +179,7 @@ export class BookInfoMongoDB implements IBookInfoRepositories {
     let isDuplicate = false;
 
     try {
-      const mongoDBModel = await this._collection.find({userId: this._userId, gapiId: keyId}).toArray() as MongoDBModel[];
+      const mongoDBModel = await this._collection.find({userId: this._userId.value, gapiId: keyId}).toArray() as MongoDBModel[];
       isDuplicate = mongoDBModel.length === 0 ? false : true;
     }
     catch (error) {
