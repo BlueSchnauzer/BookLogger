@@ -8,6 +8,7 @@ import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { getTestData, getEntityTestData, getTestDatas, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import { Status } from '$lib/server/Domain/ValueObjects/BookInfo/Status';
+import { Id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
 let con: MongoClient;
