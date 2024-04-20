@@ -5,7 +5,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfo";
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
-import { getTestData, getEntityTestData, getTestDatas, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
+import { getEntityTestData, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import { Status } from '$lib/server/Domain/ValueObjects/BookInfo/Status';
 import { Id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
