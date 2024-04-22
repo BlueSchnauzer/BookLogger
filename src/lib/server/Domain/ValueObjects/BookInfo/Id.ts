@@ -2,19 +2,19 @@ import { ValueObjectsBase } from "$lib/server/Domain/ValueObjects/ValueObjectBas
 import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
 import type { ObjectId } from "mongodb";
 
-//一旦、StringとObjectID。あまり複数の型を指定できるのは良くない？
-
-export class Id extends ValueObjectsBase<string> {
-  constructor(public value: string) {
+export class Id extends ValueObjectsBase<id> {
+  constructor(public value: id) {
     super(value);
   }
   
-  validate(value: string): void {
+  validate(value: id): void {
     if (!value) { throw new ValidationError('Idが設定されていません'); }
     if (typeof value !== 'string') { throw new ValidationError('Idの形式が文字列ではありません'); }
   }
 
-  equalsCore(vo: ValueObjectsBase<string>): boolean {
+  equalsCore(vo: ValueObjectsBase<id>): boolean {
     return this.value === vo.value;
   }
 }
+
+export type id = string;
