@@ -1,11 +1,11 @@
+import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
 import type { IBookInfoDBRepositories } from "$lib/server/Domain/repositories/BookInfoDB";
 import type { bookInfosCollection } from "$lib/server/Infrastructure/MongoDB/MongoDBHelper";
-import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import MongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
+import DBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
+import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
-import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
+import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import type { pageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 
 /**MongoDBでの書誌データ操作を管理する */
 export class BookInfoMongoDB implements IBookInfoDBRepositories {
@@ -17,66 +17,66 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
   constructor (private readonly _collection: bookInfosCollection, private readonly _userId: UserId) {
   }
   
-  async get(): Promise<BookInfo[]> {
-    let mongoDBModel: MongoDBModel[] = [];
+  async get(): Promise<DBModel[]> {
+    let mongoDBModel: DBModel[] = [];
   
     try {
-      mongoDBModel = await this._collection.find({userId: this._userId.value}).toArray() as MongoDBModel[];  
+      mongoDBModel = await this._collection.find({userId: this._userId.value}).toArray() as DBModel[];  
     }
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
     }
   
-    return mongoDBModel.map(item => BookInfo.fromDBModel(item));
+    return mongoDBModel;
   }
 
-  async getByStatus(status: Status): Promise<BookInfo[]> {
-    let mongoDBModel: MongoDBModel[] = [];
+  async getByStatus(status: status): Promise<DBModel[]> {
+    let mongoDBModel: DBModel[] = [];
   
     try {
-      const filter: Filter<MongoDBModel> = {
+      const filter: Filter<DBModel> = {
         $and: [
           {userId: this._userId.value},
-          {status: status.value}
+          {status: status}
         ]
       };
-      mongoDBModel = await this._collection.find(filter).toArray() as MongoDBModel[];  
+      mongoDBModel = await this._collection.find(filter).toArray() as DBModel[];  
     }
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
     }
   
-    return mongoDBModel.map(item => BookInfo.fromDBModel(item));
+    return mongoDBModel;
   }
 
-  async getRecent(): Promise<BookInfo[]> {
-    let mongoDBModel: MongoDBModel[] = [];
+  async getRecent(): Promise<DBModel[]> {
+    let mongoDBModel: DBModel[] = [];
 
     try {
       //pageHistoryが0より大きいデータを、更新日を降順にしてから、1個だけ取る
       mongoDBModel = await this._collection.find({
           userId: this._userId.value,
           "pageHistories.0": { $exists: true}
-        }).sort({updateDate: -1}).limit(1).toArray() as MongoDBModel[];  
+        }).sort({updateDate: -1}).limit(1).toArray() as DBModel[];  
     }
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
     }
 
-    return mongoDBModel.map(item => BookInfo.fromDBModel(item));
+    return mongoDBModel;
   }
 
-  async getPageHistory(): Promise<BookInfo[]> {
-    //pageHistoryだけ取得するが、まとめて1つの配列にはできないので書誌データごとに取得する。
-    let histories: BookInfo[] = [];
+  async getPageHistory(): Promise<pageHistory[]> {
+    let histories: pageHistory[] = [];
 
     try {
-      //pageHistoryのみを取得(_idは指定無しでも取れるので、取らないように明示する)
-      const projection = { _id: 0, pageHistory: 1};
-      histories = await this._collection.find({userId: this._userId.value}).project(projection).toArray() as BookInfo[];  
+      //pageHistoriesのみを取得(_idは指定無しでも取れるので、取らないように明示する)
+      const projection = { _id: 0, pageHistories: 1};
+      const document = await this._collection.find({userId: this._userId.value}).project(projection).toArray();  
+      histories = document.flatMap(item => item.pageHistories);
     }
     catch (error) {
       console.log(error);
@@ -86,14 +86,14 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
     return histories;
   }
 
-  async insert(bookInfo: BookInfo): Promise<Response> {
+  async insert(bookInfo: DBModel): Promise<Response> {
     let response = new Response('書誌データの作成に失敗しました。', {status: 400});
     if (await this.isDuplicate(bookInfo.gapiId!)){
       return new Response('登録済みの書誌データです。', {status: 409}); //409conflict
     }
   
     try {
-      const result = await this._collection?.insertOne(new MongoDBModel(bookInfo));
+      const result = await this._collection?.insertOne(bookInfo);
       if (result?.acknowledged){
         response = new Response('書誌データの作成に成功しました。', {status: 201} );
       }
@@ -106,9 +106,8 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
     return response;
   }
 
-  async update(bookInfo: BookInfo, isCompleteReading: boolean): Promise<Response> {
+  async update(bookInfo: DBModel, isCompleteReading: boolean): Promise<Response> {
     let response = new Response('書誌データの更新に失敗しました。', {status: 400});
-    const mongoDBModel = new MongoDBModel(bookInfo);
 
     try{
       //読み終わっている場合のみcompleteDateを更新対象にする
@@ -120,25 +119,25 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
             updateDate: true,
             completeDate: true
           }
-        } as UpdateFilter<MongoDBModel>
+        } as UpdateFilter<DBModel>
       } else {
         updateFilter = {
           $currentDate: {
             updateDate: true
           }
-        } as UpdateFilter<MongoDBModel>
+        } as UpdateFilter<DBModel>
       }
   
       //(日付以外は)以下の項目のみ更新
       updateFilter.$set = {
-        isFavorite: mongoDBModel.isFavorite,
-        pageCount: mongoDBModel.pageCount,
-        status: mongoDBModel.status,
-        pageHistories: mongoDBModel.pageHistories,
-        memorandum: mongoDBModel.memorandum
+        isFavorite: bookInfo.isFavorite,
+        pageCount: bookInfo.pageCount,
+        status: bookInfo.status,
+        pageHistories: bookInfo.pageHistories,
+        memorandum: bookInfo.memorandum
       }
   
-      const result = await this._collection.updateOne({_id: new ObjectId(mongoDBModel._id)}, updateFilter);
+      const result = await this._collection.updateOne({_id: new ObjectId(bookInfo._id)}, updateFilter);
   
       if (result?.matchedCount === 0){
         return response;
@@ -155,11 +154,11 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
     return response;
   }
 
-  async delete(id: Id): Promise<Response> {
+  async delete(id: id): Promise<Response> {
     let response = new Response('書誌データの削除に失敗しました。', {status: 400});
 
     try {
-      const result = await this._collection.deleteOne({_id: new ObjectId(id.value)});
+      const result = await this._collection.deleteOne({_id: new ObjectId(id)});
       if (result && result.deletedCount){
         response = new Response('書誌データの削除に成功しました。', {status: 202} );
       } 
@@ -179,7 +178,7 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
     let isDuplicate = false;
 
     try {
-      const mongoDBModel = await this._collection.find({userId: this._userId.value, gapiId: keyId}).toArray() as MongoDBModel[];
+      const mongoDBModel = await this._collection.find({userId: this._userId.value, gapiId: keyId}).toArray() as DBModel[];
       isDuplicate = mongoDBModel.length === 0 ? false : true;
     }
     catch (error) {
