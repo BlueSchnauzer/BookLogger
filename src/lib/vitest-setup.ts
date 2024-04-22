@@ -48,30 +48,37 @@ export const getTestData = () => {
 /**テスト用書誌データのEntity(1件) */
 export const getEntityTestData = (userId = testUserId1) => {
   return new BookInfoEntity({
-      id: firstId_test,
-      userId: userId,
-      title: 'わたしを離さないで', 
-      author: ['イシグロカズオ'],
-      thumbnail: '',
-      createDate: new Date,
-      updateDate: new Date,
-      pageCount: 300,
-      isFavorite: false,
-      status: 'wish',
-      memorandum: 'memo1',
-      isVisible: true,
-      completeDate: undefined,
-      pageHistories: [{
+    id: firstId_test,
+    userId: userId,
+    title: 'わたしを離さないで',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: 300,
+    isFavorite: false,
+    status: 'wish',
+    memorandum: 'memo1',
+    isVisible: true,
+    completeDate: undefined,
+    pageHistories: [
+      {
         id: crypto.randomUUID(),
         date: new Date,
         pageCount: 0
-      }],
-      identifiers: {
-        isbn_13: '978-4-15-120051-9'
       },
-      shelfCategories: undefined,
-      gapiId: 'firstData'
-    }
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 10
+      }
+    ],
+    identifiers: {
+      isbn_13: '978-4-15-120051-9'
+    },
+    shelfCategories: undefined,
+    gapiId: 'firstData'
+  }
   );
 }
 
@@ -154,7 +161,7 @@ export const getEntityTestDatas = (userId1 = testUserId1, userId2 = testUserId1,
   const testProperties: bookInfoProperties[] = [{
     id: firstId_test,
     userId: userId1,
-    title: 'わたしを離さないで', 
+    title: 'わたしを離さないで',
     author: ['イシグロカズオ'],
     thumbnail: '',
     createDate: new Date,
@@ -165,11 +172,18 @@ export const getEntityTestDatas = (userId1 = testUserId1, userId2 = testUserId1,
     memorandum: 'memo1',
     isVisible: true,
     completeDate: undefined,
-    pageHistories: [{
-      id: crypto.randomUUID(),
-      date: new Date,
-      pageCount: 0
-    }],
+    pageHistories: [
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 0
+      },
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 10
+      }
+    ],
     identifiers: {
       isbn_13: '978-4-15-120051-9'
     },
