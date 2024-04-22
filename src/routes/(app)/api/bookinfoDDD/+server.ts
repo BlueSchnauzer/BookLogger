@@ -7,6 +7,7 @@ import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import type { books_v1 } from 'googleapis';
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import { ObjectId, type UpdateFilter } from 'mongodb';
+import { BookInfoMongoDB } from '$lib/server/Infrastructure/MongoDB/BookInfoDB';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
   let mongoDBModel: DBModel[] = [];

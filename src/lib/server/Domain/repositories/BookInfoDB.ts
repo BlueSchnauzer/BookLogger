@@ -3,7 +3,7 @@ import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 
 /**書誌データの取得・保存を扱うリポジトリ */
-export interface IBookInfoRepositories{
+export interface IBookInfoDBRepositories{
   /**書誌データを取得する */
   get(): Promise<BookInfo[]>;
   /**statusが引数と一致した書誌データを取得する */

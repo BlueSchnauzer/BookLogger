@@ -2,7 +2,7 @@ import * as env from '$env/static/private';
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfo";
+import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfoDB";
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { getEntityTestData, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
@@ -244,12 +244,12 @@ describe('isDuplicate', () => {
 describe('update', () => {
   let testData: BookInfo;
   beforeEach(() => {
-    testData = getTestData();
+    testData = getEntityTestData();
   })
 
   it('書誌情報を更新できること', async () => {
     //事前にデータを作成
-    const preData = await col.insertOne(testData);
+    const preData = await col.insertOne(new BookInfoModel(testData));
     expect(await preData.acknowledged).toBeTruthy();
 
     //以下の4つだけ更新可能

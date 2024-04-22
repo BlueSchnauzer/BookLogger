@@ -1,4 +1,4 @@
-import type { IBookInfoRepositories } from "$lib/server/Domain/repositories/BookInfo";
+import type { IBookInfoDBRepositories } from "$lib/server/Domain/repositories/BookInfoDB";
 import type { bookInfosCollection } from "$lib/server/Infrastructure/MongoDB/MongoDBHelper";
 import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import MongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
@@ -8,7 +8,7 @@ import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
 
 /**MongoDBでの書誌データ操作を管理する */
-export class BookInfoMongoDB implements IBookInfoRepositories {
+export class BookInfoMongoDB implements IBookInfoDBRepositories {
   /**
    * MongoDB接続用コンストラクタ
    * @param collection MongoDBのBookInfoコレクションへの接続情報
