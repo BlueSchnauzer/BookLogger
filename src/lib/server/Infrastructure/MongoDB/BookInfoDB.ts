@@ -18,6 +18,9 @@ export class BookInfoMongoDB implements IBookInfoDBRepositories {
   }
   
   async get(): Promise<DBModel[]> {
+    //これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
+
+    
     let mongoDBModel: DBModel[] = [];
   
     try {
