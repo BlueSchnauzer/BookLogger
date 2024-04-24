@@ -5,7 +5,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { BookInfoMongoDB } from "$lib/server/Infrastructure/MongoDB/BookInfoDB";
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
-import { getEntityTestData, getEntityTestDatas, testUserId1, testUserId2 } from '$lib/vitest-setup';
+import { getEntityTestData, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
 import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
@@ -58,28 +58,26 @@ describe('get', () => {
 });
 
 describe('getRecent', () => {  
-  let user1: BookInfo;
+  let testDatas: BookInfo[];
   beforeEach(() => {
-    user1 = getEntityTestData(testUserId1);
+    testDatas = getEntityTestDatas();
   });
 
   it('直前に編集し、読んだ記録が保存されている、ユーザIDに一致するデータを1件のみ取得できること',async () => {
-    const user2 = getEntityTestData(testUserId2);
-
-    const preData = await col.insertMany([new BookInfoModel(user1), new BookInfoModel(user2)]);
+    const preData = await col.insertMany([new BookInfoModel(testDatas[0]), new BookInfoModel(testDatas[2])]);
     expect(await preData.acknowledged).toBeTruthy();
 
-    const repos = new BookInfoMongoDB(col, user1.userId);
+    const repos = new BookInfoMongoDB(col, testDatas[0].userId);
     const response = await repos.getRecent();
 
     expect(response.length).toEqual(1);
-    expect(response[0].userId).toEqual(user1.userId.value);
-    expect(response[0].title).toEqual(user1.title);
-    expect(response[0].pageHistories?.length).toEqual(1);
+    expect(response[0].userId).toEqual(testDatas[0].userId.value);
+    expect(response[0].title).toEqual(testDatas[0].title);
+    expect(response[0].pageHistories?.length).toEqual(2);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
-    const preData = await col.insertOne(new BookInfoModel(user1));
+    const preData = await col.insertOne(new BookInfoModel(testDatas[0]));
     expect(await preData.acknowledged).toBeTruthy();
 
     const repos = new BookInfoMongoDB(col, new UserId(testUserId2));
