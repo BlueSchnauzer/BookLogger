@@ -1,4 +1,4 @@
-import type { RequestHandler } from '../bookinfo/$types';
+import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 import { verifyAndGetUid } from '$lib/server/verification';
 import collections from '$lib/server/database/collections';
@@ -8,23 +8,42 @@ import type { books_v1 } from 'googleapis';
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import { ObjectId, type UpdateFilter } from 'mongodb';
 import { BookInfoMongoDB } from '$lib/server/Infrastructure/MongoDB/BookInfoDB';
+import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
+import type { IBookInfoDBRepositories } from '$lib/server/Domain/repositories/BookInfoDB';
 
+/**書誌データを取得する
+ * クエリパラメータに応じて返却するデータを変更する。
+ */
 export const GET: RequestHandler = async ({ url, cookies }) => {
-  let mongoDBModel: DBModel[] = [];
+  let repos: IBookInfoDBRepositories;
 
   try {
-    const idToken = await verifyAndGetUid(cookies.get('idToken'));
-    const userId = new UserId(idToken!);
-    if (!collections) { return new Response('サーバーエラー', { status: 500 }); }  
-    
-    mongoDBModel = await collections.bookInfos!.find({userId: userId.value}).toArray() as DBModel[];  
+    const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
+    if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
+
+    repos = new BookInfoMongoDB(collections.bookInfos!, userId!);
   }
   catch (error) {
     console.log(error);
     console.log('書誌データの取得に失敗しました。');
+    return new Response('サーバーエラー', { status: 500 });
   }
 
-  return json(mongoDBModel, {status: 200});    
+  //クエリパラメータに応じてデータを変更
+  let mongoDBModel: DBModel[] = [];
+  if (url.searchParams.get('recent') === 'true') {
+    mongoDBModel = await repos.getRecent();
+  } else if (url.searchParams.get('wish') === 'true') {
+    mongoDBModel = await repos.getByStatus('wish');
+  } else if (url.searchParams.get('reading') === 'true') {
+    mongoDBModel = await repos.getByStatus('reading');
+  } else if (url.searchParams.get('complete') === 'true') {
+    mongoDBModel = await repos.getByStatus('complete');
+  } else {
+    mongoDBModel = await repos.get();
+  }
+
+  return json(mongoDBModel, { status: 200 });
 };
 
 /**DBに書誌データを保存する */
