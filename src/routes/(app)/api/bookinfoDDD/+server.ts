@@ -15,19 +15,10 @@ import type { IBookInfoDBRepositories } from '$lib/server/Domain/repositories/Bo
  * クエリパラメータに応じて返却するデータを変更する。
  */
 export const GET: RequestHandler = async ({ url, cookies }) => {
-  let repos: IBookInfoDBRepositories;
+  const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
+  if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
-  try {
-    const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
-    if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
-
-    repos = new BookInfoMongoDB(collections.bookInfos!, userId!);
-  }
-  catch (error) {
-    console.log(error);
-    console.log('書誌データの取得に失敗しました。');
-    return new Response('サーバーエラー', { status: 500 });
-  }
+  const repos: IBookInfoDBRepositories = new BookInfoMongoDB(collections.bookInfos!, userId!);
 
   //クエリパラメータに応じてデータを変更
   let mongoDBModel: DBModel[] = [];
