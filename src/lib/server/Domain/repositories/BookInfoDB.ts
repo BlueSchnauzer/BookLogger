@@ -1,10 +1,13 @@
-import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type MongoDBModel from "../Entities/MongoDBModel/BookInfo";
 import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import type { pageHistory } from "../ValueObjects/BookInfo/PageHistory";
 
-/**書誌データの取得・保存を扱うリポジトリ */
+/**DBとの書誌データの取得・保存を扱うリポジトリ
+ * 返却する値はDBモデルかプリミティブ型(のみを含んだ型)
+ * SvelteのAPIルートから呼び出されることを想定しているので、
+ * クラス形式のEntityではなく、プレーンオブジェクトのみを返す。
+ */
 export interface IBookInfoDBRepositories{
   /**書誌データを取得する */
   get(): Promise<MongoDBModel[]>;
