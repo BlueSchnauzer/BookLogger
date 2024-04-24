@@ -4,7 +4,7 @@ import { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
 //verifyAndGetUid()はどっかのタイミングで共通関数で置きなおす。
 
 /**クッキー内のidTokenを検証してUserId型にして返す */
-export const verifyAndGetUserId = async (idToken: string) => {
+export const verifyAndCreateUserId = async (idToken: string) => {
   let userId;
 
   try {
