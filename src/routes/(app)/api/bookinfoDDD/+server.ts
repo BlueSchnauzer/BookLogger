@@ -17,18 +17,26 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
   const repos = new BookInfoMongoDB(collections.bookInfos!, userId!);
 
+  const param = url.searchParams;
+  const getType = param.get('recent') === 'true' ? 'recent' :
+                  param.get('wish') === 'true' ? 'wish' :
+                  param.get('reading') === 'true' ? 'reading' :
+                  param.get('complete') === 'true' ? 'complete' : 'default';
+
   //クエリパラメータに応じてデータを変更
   let mongoDBModel: DBModel[] = [];
-  if (url.searchParams.get('recent') === 'true') {
-    mongoDBModel = await repos.getRecent();
-  } else if (url.searchParams.get('wish') === 'true') {
-    mongoDBModel = await repos.getByStatus('wish');
-  } else if (url.searchParams.get('reading') === 'true') {
-    mongoDBModel = await repos.getByStatus('reading');
-  } else if (url.searchParams.get('complete') === 'true') {
-    mongoDBModel = await repos.getByStatus('complete');
-  } else {
-    mongoDBModel = await repos.get();
+  switch (getType) {
+    case 'recent':
+      mongoDBModel = await repos.getRecent();
+      break;
+    case 'wish': 
+    case 'reading': 
+    case 'complete': 
+      mongoDBModel = await repos.getByStatus(getType);
+      break;
+    default:  
+      mongoDBModel = await repos.get();
+      break;
   }
 
   return json(mongoDBModel, { status: 200 });
