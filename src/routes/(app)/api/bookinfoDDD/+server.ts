@@ -66,12 +66,12 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
   if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
   //Postされたデータの型はモデルではなくEntity
-  const item = await request.json() as { bookInfo: BookInfo, isComplete: boolean };
+  const item = await request.json() as { bookInfo: BookInfo, isCompleteReading: boolean };
   const repos = new BookInfoMongoDB(collections.bookInfos!, userId);
 
   //作り直してから呼ぶ
   //if (!validatePutItem(item)) { return new Response('データが不正です', { status: 400}); }
-  return await repos.update(new DBModel(item.bookInfo), item.isComplete);
+  return await repos.update(new DBModel(item.bookInfo), item.isCompleteReading);
 }
 
 /**DBの書誌データを削除する */
