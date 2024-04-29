@@ -229,7 +229,7 @@ export const getEntityTestDatas = (userId1 = testUserId1, userId2 = testUserId1,
     memorandum: 'memo3',
     isVisible: true,
     completeDate: undefined,
-    pageHistories: undefined,
+    pageHistories: [],
     identifiers: {
       isbn_13: '978-4-16-791019-8'
     },

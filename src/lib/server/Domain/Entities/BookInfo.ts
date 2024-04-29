@@ -41,7 +41,7 @@ export class BookInfo {
 		this.memorandum = properties.memorandum;
 		this.isVisible = properties.isVisible;
 		this.completeDate = properties.completeDate;
-		this.pageHistories = properties.pageHistories?.map(item => new PageHistory(item));
+		this.pageHistories = properties.pageHistories ? properties.pageHistories?.map(item => new PageHistory(item)) : [];
 		this.identifiers = properties.identifiers != undefined ? new Identifiers(properties.identifiers) : undefined;
 		this.shelfCategories = properties.shelfCategories;
 		this.gapiId = properties.gapiId;
@@ -69,6 +69,17 @@ export class BookInfo {
 				gapiId: mongoModel.gapiId
 			}
 		);
+	}
+
+	/**編集可能なValueObjectを更新する */
+	public update(pageCount: number, isFavorite: boolean, status: status, memorandum: string, pageHistories: pageHistory[],): void {
+		try {
+			
+		}
+		catch (error) {
+			console.log(error);
+			throw error;
+		}
 	}
 }
 

@@ -1,6 +1,6 @@
 import type { status } from '$lib/customTypes';
 import type { books_v1 } from 'googleapis';
-import type { ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import type { pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import type { identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
 import { BookInfo as BookInfoEntity } from '$lib/server/Domain/Entities/BookInfo';
@@ -47,7 +47,8 @@ export default class BookInfoMongoDBModel {
 			this.isFavorite = resource.isFavorite;
 			this.memorandum = resource.memorandum;
 			this.isVisible = resource.isVisible;
-			this.pageHistories = resource.pageHistories?.map(item => item.value);
+			this._id = new ObjectId(resource.id.value);
+			this.pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => item.value) : [];
 			this.identifiers = resource.identifiers?.value;
 			this.gapiId = resource.gapiId;
 		}
