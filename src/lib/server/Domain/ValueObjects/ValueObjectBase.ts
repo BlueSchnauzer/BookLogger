@@ -4,11 +4,16 @@
 export abstract class ValueObjectsBase<T> {
   constructor(public readonly value: T) {
     this.validate(value);
-    this.value = value;
+    this.value = this.convertValue(value);
   }
 
   /**生成時のバリデーション */
   protected abstract validate(value: T): void;
+
+  /**生成時に引数の値をValueObjectに合うように変換する */
+  protected convertValue(value: T): T {
+    return value;
+  }
   
   /**保持する値が同一か
    * 判定条件はValueObjectごとに定義する。
