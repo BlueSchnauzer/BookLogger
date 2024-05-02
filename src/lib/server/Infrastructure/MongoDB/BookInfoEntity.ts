@@ -17,15 +17,15 @@ export class BookInfoEntity implements IBookInfoEntityRepository {
   }
 
   async getByStatus(status: status): Promise<BookInfo[]> {
-    //eg. '/api/bookinfo?wish=true'
-    const response = await fetch(`${this.requestUrl}?${status}=true`);
+    //eg. '/api/bookinfo?type=wish'
+    const response = await fetch(`${this.requestUrl}?type=${status}`);
     const dbModels = await response.json() as DBModel[];
 
     return dbModels.map(item => BookInfo.fromDBModel(item));
   }
 
   async getRecent(): Promise<BookInfo[]> {
-    const response = await fetch(`${this.requestUrl}?recent=true`);
+    const response = await fetch(`${this.requestUrl}?type=recent`);
     const dbModels = await response.json() as DBModel[];
 
     return dbModels.map(item => BookInfo.fromDBModel(item));

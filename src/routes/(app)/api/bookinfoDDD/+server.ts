@@ -18,10 +18,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
   const repos = new BookInfoMongoDB(collections.bookInfos!, userId!);
 
   const param = url.searchParams;
-  const getType = param.get('recent') === 'true' ? 'recent' :
-                  param.get('wish') === 'true' ? 'wish' :
-                  param.get('reading') === 'true' ? 'reading' :
-                  param.get('complete') === 'true' ? 'complete' : 'default';
+  const getType = param.get('type');
 
   //クエリパラメータに応じてデータを変更
   let mongoDBModel: DBModel[] = [];
