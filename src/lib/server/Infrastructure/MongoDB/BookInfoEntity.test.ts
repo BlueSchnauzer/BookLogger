@@ -1,8 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { BookInfoEntity } from "./BookInfoEntity";
-import { getEntityTestData } from "$lib/vitest-setup";
+import { getEntityTestData, getEntityTestDatas } from "$lib/vitest-setup";
 import { json } from "@sveltejs/kit";
 import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
+import { URLSearchParams } from "url";
 
 describe('get', () => {
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {
@@ -24,22 +25,80 @@ describe('get', () => {
 });
 
 describe('getByStatus', () => {
-  it('statusにwishを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', () => {
+  const requestUrl = '/api/bookinfo';
+  const datas = getEntityTestDatas();
+  const dbModels = datas.map(item => new BookInfoMongoDBModel(item));
 
+  beforeAll(() => {
+    const mockFetch = vi.spyOn(global, 'fetch');
+    //inputにurlが入るので、ifで分岐させて返すデータを変える。
+    mockFetch.mockImplementation(async input => {
+      if (input === `${requestUrl}?type=wish`) {
+        return json([dbModels[0]], { status: 200 });
+      } 
+      else if (input === `${requestUrl}?type=reading`) {
+        return json([dbModels[1]], { status: 200 });
+      }
+      else if (input === `${requestUrl}?type=complete`) {
+        return json([dbModels[2]], { status: 200 });
+      }
+      else if (input === `${requestUrl}?type=recent`) {
+        return json([dbModels[0]], { status: 200 });
+      }
+
+      return new Response('データが見つかりません', { status: 400 });
+    });
   });
 
-  it('statusにreadingを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', () => {
+  it('statusにwishを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', async () => {
+    const repos = new BookInfoEntity();
+    const response = await repos.getByStatus('wish');
 
+    expect(response.length).toEqual(1);
+    expect(response[0].status.value).toEqual('wish');
   });
 
-  it('statusにcompleteを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', () => {
+  it('statusにreadingを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', async () => {
+    const repos = new BookInfoEntity();
+    const response = await repos.getByStatus('reading');
 
+    expect(response.length).toEqual(1);
+    expect(response[0].status.value).toEqual('reading');
+  });
+
+  it('statusにcompleteを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', async () => {
+    const repos = new BookInfoEntity();
+    const response = await repos.getByStatus('complete');
+
+    expect(response.length).toEqual(1);
+    expect(response[0].status.value).toEqual('complete');
   });
 });
 
 describe('getRecent', () => {
-  it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', () => {
+  const requestUrl = '/api/bookinfo';
+  const datas = getEntityTestDatas();
+  const dbModels = datas.map(item => new BookInfoMongoDBModel(item));
 
+  //inputにurlが入るので、ifで分岐させて返すデータを変える。
+  beforeAll(() => {
+    const mockFetch = vi.spyOn(global, 'fetch');
+    //inputにurlが入るので、ifで分岐させて返すデータを変える。
+    mockFetch.mockImplementation(async input => {
+      if (input === `${requestUrl}?type=recent`) {
+        return json([dbModels[0]], { status: 200 });
+      } 
+
+      return new Response('データが見つかりません', { status: 400 });
+    });
+  });
+  
+  it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {
+    const repos = new BookInfoEntity();
+    const response = await repos.getRecent();
+
+    expect(response.length).toEqual(1);
+    expect(response[0].pageHistories?.length).toEqual(2);
   });
 });
 
