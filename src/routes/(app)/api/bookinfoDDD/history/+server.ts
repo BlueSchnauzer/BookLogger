@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
   if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
   if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
-  const response = new BookInfoEntity().getPageHistory();
+  const response = await new BookInfoEntity().getPageHistory();
 
   return json(response, { status: 200 });
 };
