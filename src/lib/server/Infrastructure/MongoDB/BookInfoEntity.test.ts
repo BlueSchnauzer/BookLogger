@@ -102,8 +102,17 @@ describe('getRecent', () => {
 });
 
 describe('getPageHistory', () => {
-  it('SvelteAPIへのリクエストが成功した際に、レスポンスをValueObjectに変換して戻り値で返すこと', () => {
+  it('SvelteAPIへのリクエストが成功した際に、レスポンスをValueObjectに変換して戻り値で返すこと', async () => {
+    const data = new BookInfoMongoDBModel(getEntityTestData());
+    const mockFetch = vi.spyOn(global, 'fetch');
+    mockFetch.mockImplementation(async () => json(data.pageHistories, { status: 200 }));
 
+    const repos = new BookInfoEntity();
+    const response = await repos.getPageHistory();
+    
+    expect(response.length).toEqual(2);
+    expect(response[0].value.pageCount).toEqual(data.pageHistories![0].pageCount);
+    expect(response[1].value.pageCount).toEqual(data.pageHistories![1].pageCount)
   });
 });
 
