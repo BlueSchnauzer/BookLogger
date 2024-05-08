@@ -68,10 +68,10 @@ describe('getRecent', () => {
     const repos = new BookInfoMongoDBResource(col, testDatas[0].userId);
     const response = await repos.getRecent();
 
-    expect(response.length).toEqual(1);
-    expect(response[0].userId).toEqual(testDatas[0].userId.value);
-    expect(response[0].title).toEqual(testDatas[0].title);
-    expect(response[0].pageHistories?.length).toEqual(2);
+    expect(response).not.toBeUndefined();
+    expect(response!.userId).toEqual(testDatas[0].userId.value);
+    expect(response!.title).toEqual(testDatas[0].title);
+    expect(response!.pageHistories?.length).toEqual(2);
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {
@@ -81,7 +81,7 @@ describe('getRecent', () => {
     const repos = new BookInfoMongoDBResource(col, new UserId(testUserId2));
     const response = await repos.getRecent();
 
-    expect(response.length).toEqual(0);
+    expect(response).toBeUndefined();
   });
 });
 

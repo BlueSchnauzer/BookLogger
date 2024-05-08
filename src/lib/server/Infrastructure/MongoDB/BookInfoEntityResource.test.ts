@@ -77,8 +77,8 @@ describe('getByStatus', () => {
 
 describe('getRecent', () => {
   const requestUrl = '/api/bookinfo';
-  const datas = getEntityTestDatas();
-  const dbModels = datas.map(item => new BookInfoMongoDBModel(item));
+  const data = getEntityTestData();
+  const dbModel = new BookInfoMongoDBModel(data);
 
   //inputにurlが入るので、ifで分岐させて返すデータを変える。
   beforeAll(() => {
@@ -86,7 +86,7 @@ describe('getRecent', () => {
     //inputにurlが入るので、ifで分岐させて返すデータを変える。
     mockFetch.mockImplementation(async input => {
       if (input === `${requestUrl}?type=recent`) {
-        return json([dbModels[0]], { status: 200 });
+        return json(dbModel, { status: 200 });
       } 
 
       return new Response('データが見つかりません', { status: 400 });
@@ -97,8 +97,8 @@ describe('getRecent', () => {
     const repos = new BookInfoEntityResource();
     const response = await repos.getRecent();
 
-    expect(response.length).toEqual(1);
-    expect(response[0].pageHistories?.length).toEqual(2);
+    expect(response).not.toBeUndefined();
+    expect(response!.pageHistories?.length).toEqual(2);
   });
 });
 
