@@ -8,7 +8,7 @@ import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import type { pageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 
 /**MongoDBでの書誌データ操作を管理する */
-export class BookInfoMongoDB implements IBookInfoDBRepositories {
+export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
   /**
    * MongoDB接続用コンストラクタ
    * @param collection MongoDBのBookInfoコレクションへの接続情報

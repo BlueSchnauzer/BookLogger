@@ -6,7 +6,7 @@ import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import type { books_v1 } from "googleapis";
 import type DBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 
-export class BookInfoEntity implements IBookInfoEntityRepository {
+export class BookInfoEntityResource implements IBookInfoEntityRepository {
   private readonly requestUrl = '/api/bookinfo';
 
   async get(): Promise<BookInfo[]> {

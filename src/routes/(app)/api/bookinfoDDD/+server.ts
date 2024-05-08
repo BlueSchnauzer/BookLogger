@@ -3,7 +3,7 @@ import { json } from '@sveltejs/kit';
 import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
 import collections from '$lib/server/database/collections';
 import DBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
-import { BookInfoMongoDB } from '$lib/server/Infrastructure/MongoDB/BookInfoDB';
+import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import type { books_v1 } from 'googleapis';
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
   if (!userId) { return new Response('ログイン情報が不正です', { status: 400 }); }
   if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
-  const repos = new BookInfoMongoDB(collections.bookInfos!, userId!);
+  const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId!);
 
   const param = url.searchParams;
   const getType = param.get('type');
@@ -45,7 +45,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   if (!userId) { return new Response('ログイン情報が不正です', { status: 400 }); }
   if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
-  const repos = new BookInfoMongoDB(collections.bookInfos!, userId!);
+  const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId!);
 
   //重複確認
   // if (await this.isDuplicate(bookInfo.gapiId!)){
@@ -64,7 +64,7 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 
   //Postされたデータの型はモデルではなくEntity
   const item = await request.json() as { bookInfo: BookInfo, isCompleteReading: boolean };
-  const repos = new BookInfoMongoDB(collections.bookInfos!, userId);
+  const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
 
   //作り直してから呼ぶ
   //if (!validatePutItem(item)) { return new Response('データが不正です', { status: 400}); }
@@ -80,7 +80,7 @@ export const DELETE: RequestHandler = async ({ request, cookies }) => {
   const id: string = await request.json();
   if (!id) { return new Response('データが不正です', { status: 400 }); }
 
-  const repos = new BookInfoMongoDB(collections.bookInfos!, userId);
+  const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
 
   return await repos.delete(id);
 };
