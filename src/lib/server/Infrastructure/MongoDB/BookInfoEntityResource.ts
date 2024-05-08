@@ -24,11 +24,11 @@ export class BookInfoEntityResource implements IBookInfoEntityRepository {
     return dbModels.map(item => BookInfo.fromDBModel(item));
   }
 
-  async getRecent(): Promise<BookInfo[]> {
+  async getRecent(): Promise<BookInfo | undefined> {
     const response = await fetch(`${this.requestUrl}?type=recent`);
-    const dbModels = await response.json() as DBModel[];
+    const dbModel = await response.json() as DBModel;
 
-    return dbModels.map(item => BookInfo.fromDBModel(item));
+    return dbModel ? BookInfo.fromDBModel(dbModel) : undefined;
   }
 
   async getPageHistory(): Promise<PageHistory[]> {

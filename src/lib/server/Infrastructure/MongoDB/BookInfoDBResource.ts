@@ -54,15 +54,16 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
     return mongoDBModel;
   }
 
-  async getRecent(): Promise<DBModel[]> {
-    let mongoDBModel: DBModel[] = [];
+  async getRecent(): Promise<DBModel | undefined> {
+    let mongoDBModel: DBModel | undefined;
 
     try {
       //pageHistoryが0より大きいデータを、更新日を降順にしてから、1個だけ取る
-      mongoDBModel = await this._collection.find({
+      const cursor = await this._collection.find({
           userId: this._userId.value,
           "pageHistories.0": { $exists: true}
-        }).sort({updateDate: -1}).limit(1).toArray() as DBModel[];  
+        }).sort({updateDate: -1}).limit(1);  
+      mongoDBModel = await cursor.hasNext() ? await cursor.next() as DBModel : undefined;
     }
     catch (error) {
       console.log(error);

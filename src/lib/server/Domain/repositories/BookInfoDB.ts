@@ -14,7 +14,7 @@ export interface IBookInfoDBRepositories{
   /**statusが引数と一致した書誌データを取得する */
   getByStatus(status: status): Promise<MongoDBModel[]>;
   /**直近で読んだ、書誌データを1件取得する */
-  getRecent(): Promise<MongoDBModel[]>;
+  getRecent(): Promise<MongoDBModel | undefined>;
   /**書誌データから、pageHistoryのみを取得する */
   getPageHistory(): Promise<pageHistory[]>;
   /**書誌データを保存する */

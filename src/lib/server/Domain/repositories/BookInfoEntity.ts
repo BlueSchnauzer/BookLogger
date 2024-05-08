@@ -14,7 +14,7 @@ export interface IBookInfoEntityRepository {
   /**statusが引数と一致した書誌データを取得する */
   getByStatus(status: status): Promise<BookInfo[]>;
   /**直近で読んだ、書誌データを1件取得する */
-  getRecent(): Promise<BookInfo[]>;
+  getRecent(): Promise<BookInfo | undefined>;
   /**書誌データから、pageHistoryのみを取得する */
   getPageHistory(): Promise<PageHistory[]>;
   /**書誌データを保存する */
