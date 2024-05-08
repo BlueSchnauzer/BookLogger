@@ -1,16 +1,15 @@
 import type { RequestHandler } from "../../bookinfo/$types";
-import { verifyAndGetUid } from "$lib/server/verification";
+import { verifyAndCreateUserId } from "$lib/server/Helpers/SvelteAPI";
 import collections from '$lib/server/database/collections';
 import { json } from '@sveltejs/kit';
-import { BookInfoEntityResource } from "$lib/server/Infrastructure/MongoDB/BookInfoEntityResource";
+import { BookInfoMongoDBResource } from "$lib/server/Infrastructure/MongoDB/BookInfoDBResource";
 
 export const GET: RequestHandler = async ({ cookies }) => {
-  const userId = await verifyAndGetUid(cookies.get('idToken'));
-    
-  if (!userId) { return json('ログイン情報が不正です', {status: 400}); }
+  const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
+  if (!userId) { return new Response('ログイン情報が不正です', { status: 400 }); }
   if (!collections) { return new Response('サーバーエラー', { status: 500 }); }
 
-  const response = await new BookInfoEntityResource().getPageHistory();
+  const response = await new BookInfoMongoDBResource(collections.bookInfos!, userId).getPageHistory();
 
   return json(response, { status: 200 });
 };
