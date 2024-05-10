@@ -19,7 +19,7 @@ export interface IBookSearchRepositories{
    * @param resultCount 取得件数
    * @param startIndex データ取得開始位置
    */
-  searchByFuzzySearch(query: string, resultCount: number, startIndex: number): Promise<books_v1.Schema$Volumes>;
+  searchByFuzzyQuery(query: string, resultCount: number, startIndex: number): Promise<books_v1.Schema$Volumes>;
 
   /**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する
    * @param resultCount 取得件数

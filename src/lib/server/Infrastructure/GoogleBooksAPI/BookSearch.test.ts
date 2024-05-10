@@ -84,7 +84,7 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 });
 
-describe('requestBookInfoByFuzzySearch', () => {
+describe('searchByFuzzyQuery', () => {
   const searchRepo = new BookSearchGoogleBooksAPI();
   let testData: BookInfo;
   beforeEach(() => {
@@ -92,7 +92,7 @@ describe('requestBookInfoByFuzzySearch', () => {
   })
 
   it('あいまい条件で一致した書誌データを取得できるか',async () => {
-    const result = await searchRepo.searchByFuzzySearch('イシグロカズオ', 10, 0);
+    const result = await searchRepo.searchByFuzzyQuery('イシグロカズオ', 10, 0);
 
     //複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
@@ -100,7 +100,7 @@ describe('requestBookInfoByFuzzySearch', () => {
 
   //rejectを確認
   it('queryが無い場合にRejectされること', () => {
-    searchRepo.searchByFuzzySearch('', 10, 0)
+    searchRepo.searchByFuzzyQuery('', 10, 0)
     .catch((e: Error) => {
       expect(e.message).toEqual('検索条件が入力されていません。');
     });
@@ -115,7 +115,7 @@ describe('requestBookInfoByFuzzySearch', () => {
   // })
 });
 
-describe('requestBookInfosByQueries', () => {
+describe('searchByQueries', () => {
   const searchRepo = new BookSearchGoogleBooksAPI();
   let testData: BookInfo;
   beforeEach(() => {

@@ -19,7 +19,7 @@ export class BookSearchGoogleBooksAPI implements IBookSearchRepositories {
     return result;
   }
 
-  async searchByFuzzySearch(query: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes> {
+  async searchByFuzzyQuery(query: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes> {
     if (!query) { throw new Error('検索条件が入力されていません。'); }
 
     const fuzzyQuery: string[] = [];
