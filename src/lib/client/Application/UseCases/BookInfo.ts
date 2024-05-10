@@ -1,8 +1,6 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import type { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 import type { BookInfoEntityResource } from "$lib/server/Infrastructure/MongoDB/BookInfoEntityResource";
-import { error } from "@sveltejs/kit";
 import type { books_v1 } from "googleapis";
 
 /**書誌データの操作を管理するUseCase */
