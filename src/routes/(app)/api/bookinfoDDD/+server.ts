@@ -1,11 +1,12 @@
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
-import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
 import collections from '$lib/server/database/collections';
 import DBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import type { books_v1 } from 'googleapis';
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
+import { verifyAndGetUid } from '$lib/server/verification';
+import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 
 /**書誌データを取得する
  * クエリパラメータに応じて返却するデータを変更する。
@@ -114,4 +115,20 @@ const validatePutItem = ({ bookInfo, isComplete }: { bookInfo: BookInfo, isCompl
   }
 
   return result;
+}
+
+const verifyAndCreateUserId = async (idToken: string) => {
+  let userId;
+
+  try {
+    const token = await verifyAndGetUid(idToken);
+    userId = new UserId(token!);
+  }
+  catch (error) {
+    console.log(error);
+    console.log('UserIdの取得に失敗しました。');
+    return undefined;
+  }
+  
+  return userId;
 }
