@@ -21,22 +21,23 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
   const getType = param.get('type');
 
   //クエリパラメータに応じてデータを変更
-  let mongoDBModel: DBModel[] = [];
+  let mongoDBModels: DBModel[] = [];
   switch (getType) {
     case 'recent':
-      mongoDBModel = await repos.getRecent();
+      const mongoDBModel = await repos.getRecent();
+      return json(mongoDBModel, { status: 200 });
       break;
     case 'wish': 
     case 'reading': 
     case 'complete': 
-      mongoDBModel = await repos.getByStatus(getType);
+      mongoDBModels = await repos.getByStatus(getType);
+      return json(mongoDBModels, { status: 200 });
       break;
     default:  
-      mongoDBModel = await repos.get();
+      mongoDBModels = await repos.get();
+      return json(mongoDBModels, { status: 200 });
       break;
   }
-
-  return json(mongoDBModel, { status: 200 });
 };
 
 /**DBに書誌データを保存する */
