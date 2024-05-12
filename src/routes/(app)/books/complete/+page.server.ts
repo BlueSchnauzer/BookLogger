@@ -3,7 +3,7 @@ import type { BookInfo } from '$lib/server/models/BookInfo';
 import { error } from '@sveltejs/kit';
 
 export const load = (async ({ fetch }) => {
-  //読んでいる本のみを取得
+  //読み終わった本のみを取得
   const response = await fetch('/api/bookinfo/complete');
   if (!response.ok) {
     throw error(response.status);

@@ -1,11 +1,21 @@
 //マッチ関数を簡略化するために追加
 import 'vitest-dom/extend-expect'
 import type { BookInfo } from '$lib/server/models/BookInfo';
+import { BookInfo as BookInfoEntity, type bookInfoProperties } from '$lib/server/Domain/Entities/BookInfo';
+import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { ObjectId } from 'mongodb'
 
 export const firstId = new ObjectId('651451ed67241f439ce8a1af');
 export const secondId = new ObjectId('651451ed67241f439ce8a1b0');
 export const thirdId = new ObjectId('651451ed67241f439ce8a1b1');
+
+const firstId_test = '651451ed67241f439ce8a1af';
+const secondId_test = '651451ed67241f439ce8a1b0';
+const thirdId_test = '651451ed67241f439ce8a1b1';
+
+export const testUserId1 = 'testUserId1';
+export const testUserId2 = 'testUserId2';
+export const testUserId3 = 'testUserId3';
 
 /**テスト用書誌データ(1件) */
 export const getTestData = () => {
@@ -33,6 +43,43 @@ export const getTestData = () => {
   }
 
   return testData;
+}
+
+/**テスト用書誌データのEntity(1件) */
+export const getEntityTestData = (userId = testUserId1) => {
+  return new BookInfoEntity({
+    id: firstId_test,
+    userId: userId,
+    title: 'わたしを離さないで',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: 300,
+    isFavorite: false,
+    status: 'wish',
+    memorandum: 'memo1',
+    isVisible: true,
+    completeDate: undefined,
+    pageHistories: [
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 0
+      },
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 10
+      }
+    ],
+    identifiers: {
+      isbn_13: '978-4-15-120051-9'
+    },
+    shelfCategories: undefined,
+    gapiId: 'firstData'
+  }
+  );
 }
 
 /**テスト用書誌データ(3件) */
@@ -105,4 +152,90 @@ export const getTestDatas = () => {
   }]
 
   return testDatas;
+}
+
+/**テスト用書誌データのEntity(3件)
+ * デフォルトでは全て同じUserIdを持つ
+ */
+export const getEntityTestDatas = (userId1 = testUserId1, userId2 = testUserId1, userId3 = testUserId1): BookInfoEntity[] => {
+  const testProperties: bookInfoProperties[] = [{
+    id: firstId_test,
+    userId: userId1,
+    title: 'わたしを離さないで',
+    author: ['イシグロカズオ'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: 300,
+    isFavorite: false,
+    status: 'wish',
+    memorandum: 'memo1',
+    isVisible: true,
+    completeDate: undefined,
+    pageHistories: [
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 0
+      },
+      {
+        id: crypto.randomUUID(),
+        date: new Date,
+        pageCount: 10
+      }
+    ],
+    identifiers: {
+      isbn_13: '978-4-15-120051-9'
+    },
+    shelfCategories: undefined,
+    gapiId: 'firstData'
+  },
+  {
+    id: secondId_test,
+    userId: userId2,
+    title: 'エピローグ',
+    author: ['円城塔'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: -1,
+    isFavorite: false,
+    status: 'reading',
+    memorandum: 'memo2',
+    isVisible: true,
+    completeDate: undefined,
+    pageHistories: [{
+      id: crypto.randomUUID(),
+      date: new Date,
+      pageCount: 0
+    }],
+    identifiers: {
+      isbn_13: '978-4-15-031316-6'
+    },
+    shelfCategories: undefined,
+    gapiId: 'secondData'
+  },
+  {
+    id: thirdId_test,
+    userId: userId3,
+    title: 'プロローグ',
+    author: ['円城塔'],
+    thumbnail: '',
+    createDate: new Date,
+    updateDate: new Date,
+    pageCount: -1,
+    isFavorite: false,
+    status: 'complete',
+    memorandum: 'memo3',
+    isVisible: true,
+    completeDate: undefined,
+    pageHistories: [],
+    identifiers: {
+      isbn_13: '978-4-16-791019-8'
+    },
+    shelfCategories: undefined,
+    gapiId: 'thirdData'
+  }]
+
+  return testProperties.map(item => new BookInfoEntity(item));
 }
