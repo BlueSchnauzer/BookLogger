@@ -88,25 +88,25 @@ describe('getRecent', () => {
 describe('getPageHistory', () => {  
   let datas: BookInfo[];
   beforeEach(() => {
-    datas = getEntityTestDatas(testUserId1, testUserId2, testUserId3);
+    datas = getEntityTestDatas();
   });
 
  it('ユーザIDに一致するデータの、historyのみを取得できること',async () => {
-    const user2 = getEntityTestData(testUserId2);
-
-    const preData = await col.insertMany([new BookInfoModel(datas[0]), new BookInfoModel(datas[1])]);
+    const preData = await col.insertMany([new BookInfoModel(datas[0]), new BookInfoModel(datas[1]), new BookInfoModel(datas[2])]);
     expect(await preData.acknowledged).toBeTruthy();
 
     const repos = new BookInfoMongoDBResource(col, datas[0].userId);
     const response = await repos.getPageHistory();
 
-    expect(response.length).toEqual(2);   
-    expect(response[0].id).toEqual(datas[0].pageHistories![0].value.id);   
-    expect(response[0].date).toEqual(datas[0].pageHistories![0].value.date);   
-    expect(response[0].pageCount).toEqual(datas[0].pageHistories![0].value.pageCount);   
-    expect(response[1].id).toEqual(datas[0].pageHistories![1].value.id);   
-    expect(response[1].date).toEqual(datas[0].pageHistories![1].value.date);   
-    expect(response[1].pageCount).toEqual(datas[0].pageHistories![1].value.pageCount);   
+    expect(response.length).toEqual(3);
+    expect(response[0].pageHistories.length).toEqual(datas[0].pageHistories?.length);   
+    expect(response[0].pageHistories[0].id).toEqual(datas[0].pageHistories![0].value.id);
+
+    expect(response[1].pageHistories.length).toEqual(datas[1].pageHistories?.length);   
+    expect(response[1].pageHistories[0].id).toEqual(datas[1].pageHistories![0].value.id);   
+
+    //3つ目は要素が0個
+    expect(response[2].pageHistories.length).toEqual(datas[2].pageHistories?.length);   
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {

@@ -1,7 +1,7 @@
 import type MongoDBModel from "../Entities/MongoDBModel/BookInfo";
 import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import type { pageHistory } from "../ValueObjects/BookInfo/PageHistory";
+import type { pageHistoryArray } from "../ValueObjects/BookInfo/PageHistory";
 
 /**DBとの書誌データの取得・保存を扱うリポジトリ
  * 返却する値はDBモデルかプリミティブ型(のみを含んだ型)
@@ -16,7 +16,7 @@ export interface IBookInfoDBRepositories{
   /**直近で読んだ、書誌データを1件取得する */
   getRecent(): Promise<MongoDBModel | undefined>;
   /**書誌データから、pageHistoryのみを取得する */
-  getPageHistory(): Promise<pageHistory[]>;
+  getPageHistory(): Promise<pageHistoryArray>;
   /**書誌データを保存する */
   insert(bookInfo: MongoDBModel): Promise<Response>;
   /**書誌データを更新する */
