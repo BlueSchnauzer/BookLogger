@@ -99,14 +99,14 @@ describe('getPageHistory', () => {
     const response = await repos.getPageHistory();
 
     expect(response.length).toEqual(3);
-    expect(response[0].pageHistories.length).toEqual(datas[0].pageHistories?.length);   
-    expect(response[0].pageHistories[0].id).toEqual(datas[0].pageHistories![0].value.id);
+    expect(response[0].length).toEqual(datas[0].pageHistories?.length);   
+    expect(response[0][0].id).toEqual(datas[0].pageHistories![0].value.id);
 
-    expect(response[1].pageHistories.length).toEqual(datas[1].pageHistories?.length);   
-    expect(response[1].pageHistories[0].id).toEqual(datas[1].pageHistories![0].value.id);   
+    expect(response[1].length).toEqual(datas[1].pageHistories?.length);   
+    expect(response[1][0].id).toEqual(datas[1].pageHistories![0].value.id);   
 
     //3つ目は要素が0個
-    expect(response[2].pageHistories.length).toEqual(datas[2].pageHistories?.length);   
+    expect(response[2].length).toEqual(datas[2].pageHistories?.length);   
   });
 
   it('一致するデータが無い場合に空のデータが返ること', async () => {

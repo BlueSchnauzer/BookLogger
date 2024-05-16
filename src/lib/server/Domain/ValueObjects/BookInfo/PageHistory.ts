@@ -40,6 +40,3 @@ export type pageHistory = {
   date: Date | string,
   pageCount: number
 }
-
-/**pageHistoryのみをMongoDBから取得する際のtype */
-export type pageHistoryArray = Array<{pageHistories: pageHistory[]}>;

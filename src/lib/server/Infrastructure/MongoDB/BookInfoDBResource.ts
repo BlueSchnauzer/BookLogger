@@ -5,7 +5,7 @@ import DBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
 import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import type { pageHistoryArray } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
+import type { pageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 
 /**MongoDBでの書誌データ操作を管理する */
 export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
@@ -73,20 +73,20 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
     return mongoDBModel;
   }
 
-  async getPageHistory(): Promise<pageHistoryArray> {
-    let histories: pageHistoryArray = [];
+  async getPageHistory(): Promise<Array<pageHistory[]>> {
+    let histories: Array<{pageHistories: pageHistory[]}> = [];
 
     try {
       //pageHistoriesのみを取得(_idは指定無しでも取れるので、取らないように明示する)
       const projection = { _id: 0, pageHistories: 1};
-      histories = await this._collection.find({userId: this._userId.value}).project(projection).toArray() as pageHistoryArray;  
+      histories = await this._collection.find({userId: this._userId.value}).project(projection).toArray() as Array<{pageHistories: pageHistory[]}>;  
     }
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
     }
 
-    return histories;
+    return histories.map(item => item.pageHistories);
   }
 
   async insert(bookInfo: DBModel): Promise<Response> {
