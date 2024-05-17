@@ -40,7 +40,7 @@ export class BookInfoUseCase {
   }
 
   /**書誌データの配列から、文字列の日付と、ページ数を持つmapを作成する */
-  private getPageCountInCurrentWeek(pageHistory: PageHistory[]): Map<string, number> {
+  private getPageCountInCurrentWeek(pageHistory: PageHistory[][]): Map<string, number> {
     const today = new Date();
     const pageMap = new Map<string, number>();
     for (let i = 6; i >= 0; i--) {
@@ -56,9 +56,9 @@ export class BookInfoUseCase {
     const lastDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     
     //各書誌データのHistoryを確認して1日に読んだページ数を取得
-    pageHistory.forEach(bookInfo => {
+    pageHistory.forEach(item => {
       //今週分のhistoryを取得し、日付の重複を排除する(残すのは最大のページ数)
-      const historyInCurrentWeek = bookInfo.pageHistories?.filter(item => new Date(item.value.date) >= lastDate);
+      const historyInCurrentWeek = item.filter(pageHistory => new Date(pageHistory.value.date) >= lastDate);
       const historyMap = new Map<string, number>();
   
       historyInCurrentWeek?.forEach(item => {
