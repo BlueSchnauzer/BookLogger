@@ -16,7 +16,7 @@ export interface IBookInfoEntityRepository {
   /**直近で読んだ、書誌データを1件取得する */
   getRecent(): Promise<BookInfo | undefined>;
   /**書誌データから、pageHistoryのみを取得する */
-  getPageHistory(): Promise<PageHistory[]>;
+  getPageHistory(): Promise<Array<PageHistory[]>>;
   /**書誌データを保存する */
   insert(item: books_v1.Schema$Volumes): Promise<Response>;
   /**書誌データを更新する */
