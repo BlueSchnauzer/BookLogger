@@ -16,7 +16,7 @@ export interface IBookInfoDBRepositories{
   /**直近で読んだ、書誌データを1件取得する */
   getRecent(): Promise<MongoDBModel | undefined>;
   /**書誌データから、pageHistoryのみを取得する */
-  getPageHistory(): Promise<pageHistory[]>;
+  getPageHistory(): Promise<Array<pageHistory[]>>;
   /**書誌データを保存する */
   insert(bookInfo: MongoDBModel): Promise<Response>;
   /**書誌データを更新する */

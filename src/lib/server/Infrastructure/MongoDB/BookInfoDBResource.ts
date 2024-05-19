@@ -73,21 +73,20 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
     return mongoDBModel;
   }
 
-  async getPageHistory(): Promise<pageHistory[]> {
-    let histories: pageHistory[] = [];
+  async getPageHistory(): Promise<Array<pageHistory[]>> {
+    let histories: Array<{pageHistories: pageHistory[]}> = [];
 
     try {
       //pageHistoriesのみを取得(_idは指定無しでも取れるので、取らないように明示する)
       const projection = { _id: 0, pageHistories: 1};
-      const document = await this._collection.find({userId: this._userId.value}).project(projection).toArray();  
-      histories = document.flatMap(item => item.pageHistories);
+      histories = await this._collection.find({userId: this._userId.value}).project(projection).toArray() as Array<{pageHistories: pageHistory[]}>;  
     }
     catch (error) {
       console.log(error);
       console.log('書誌データの取得に失敗しました。');
     }
 
-    return histories;
+    return histories.map(item => item.pageHistories);
   }
 
   async insert(bookInfo: DBModel): Promise<Response> {

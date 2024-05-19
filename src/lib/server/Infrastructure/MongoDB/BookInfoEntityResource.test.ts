@@ -4,6 +4,7 @@ import { getEntityTestData, getEntityTestDatas } from "$lib/vitest-setup";
 import { json } from "@sveltejs/kit";
 import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import type { books_v1 } from "googleapis";
+import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 
 describe('get', () => {
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {
@@ -106,14 +107,16 @@ describe('getPageHistory', () => {
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをValueObjectに変換して戻り値で返すこと', async () => {
     const data = new BookInfoMongoDBModel(getEntityTestData());
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => json(data.pageHistories, { status: 200 }));
+
+    const pageHistory = [data.pageHistories];
+    mockFetch.mockImplementation(async () => json(pageHistory, { status: 200 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.getPageHistory();
     
-    expect(response.length).toEqual(2);
-    expect(response[0].value.pageCount).toEqual(data.pageHistories![0].pageCount);
-    expect(response[1].value.pageCount).toEqual(data.pageHistories![1].pageCount)
+    expect(response[0].length).toEqual(2);
+    expect(response[0][0].value.pageCount).toEqual(data.pageHistories![0].pageCount);
+    expect(response[0][1].value.pageCount).toEqual(data.pageHistories![1].pageCount);
   });
 });
 
