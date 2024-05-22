@@ -5,8 +5,16 @@ import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 export class BookInfoView {
   constructor(public bookInfos: BookInfo[]){}
 
+  /**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
+  public handleSuccess(bookInfos: BookInfo[], detail: { message: string; updatedItem: BookInfo; deletedId: Id; }, target: string, isBooksRoute = false): void {
+    const appliedItems = this.applyChange(bookInfos, detail, isBooksRoute);
+    //pushSuccessToast(detail.message, target);
+  
+    this.bookInfos = appliedItems;
+  }
+
   /**編集内容を反映した書誌データを返す(再レンダリングに使用) */
-  public applyChange(bookInfos: BookInfo[], detail: { message: string; updatedItem: BookInfo; deletedId: Id }, isBooksRoute: boolean): void {
+  private applyChange(bookInfos: BookInfo[], detail: { message: string; updatedItem: BookInfo; deletedId: Id }, isBooksRoute: boolean): BookInfo[] {
     let appliedItems: BookInfo[] = [];
 
     if (detail.updatedItem) {
@@ -27,19 +35,11 @@ export class BookInfoView {
       appliedItems = bookInfos.filter(item => item.id !== detail.deletedId);
     }
      
-    this.bookInfos = appliedItems;
+    return appliedItems;
   }
 
   // /**お気に入り状態の書誌データのみを表示状態にして返す(再レンダリングに使用) */
   // toggleFavorite(bookInfos: BookInfo[]): BookInfo[] {
   //   throw new Error("Method not implemented.");
-  // }
-
-  // /**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
-  // handleSuccess(bookInfos: BookInfo[], detail: { message: string; updatedItem: BookInfo; deletedId: Id; }, target: string, isBooksRoute = false): BookInfo[] {
-  //   const appliedItems = this.applyChange(bookInfos, detail, isBooksRoute);
-  //   //pushSuccessToast(detail.message, target);
-  
-  //   return appliedItems;
   // }
 }
