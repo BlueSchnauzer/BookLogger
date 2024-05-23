@@ -1,5 +1,6 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
+import { pushSuccessToast } from "$lib/client/Application/Utils/toast";
 
 /**BookInfoを配列で受け取り、画面表示用に操作するView */
 export class BookInfoView {
@@ -8,7 +9,7 @@ export class BookInfoView {
   /**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
   public handleSuccess(bookInfos: BookInfo[], detail: { message: string; updatedItem: BookInfo; deletedId: Id; }, target: string, isBooksRoute = false): void {
     const appliedItems = this.applyChange(bookInfos, detail, isBooksRoute);
-    //pushSuccessToast(detail.message, target);
+    pushSuccessToast(detail.message, target);
   
     this.bookInfos = appliedItems;
   }
