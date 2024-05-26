@@ -1,3 +1,4 @@
+import type { typeForBottomLabel } from "$lib/customTypes";
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
@@ -8,7 +9,7 @@ export class BookInfoView {
   public insertBookInfo() {
 
   }
-  
+
   /**書誌データを更新する。 */
   public updateBookInfo() {
 
@@ -45,7 +46,14 @@ export class BookInfoView {
   }
 
   /**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-  public getTypeForBottomLabel() {
+  public getTypeForBottomLabel(pathName: string): typeForBottomLabel {
+    const typeForLabel =
+      pathName === '/home' ? 'progress'
+        : pathName === '/books' ? 'createDate'
+          : pathName === '/books/wish' ? 'createDate'
+            : pathName === '/books/reading' ? 'progress'
+              : 'completeDate';
 
+    return typeForLabel;
   }
 }
