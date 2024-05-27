@@ -47,13 +47,17 @@ export class BookInfoView {
 
   /**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
   public getTypeForBottomLabel(pathName: string): typeForBottomLabel {
-    const typeForLabel =
-      pathName === '/home' ? 'progress'
-        : pathName === '/books' ? 'createDate'
-          : pathName === '/books/wish' ? 'createDate'
-            : pathName === '/books/reading' ? 'progress'
-              : 'completeDate';
-
-    return typeForLabel;
+    switch (pathName) {
+      case '/home':
+        return 'progress';
+      case '/books':
+        return 'createDate';
+      case '/books/wish':
+        return 'createDate';
+      case '/books/reading':
+        return 'progress';
+      default:
+        return 'completeDate';
+    }
   }
 }
