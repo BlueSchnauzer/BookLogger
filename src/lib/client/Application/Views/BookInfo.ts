@@ -27,12 +27,13 @@ export class BookInfoView {
 
   /**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
   public changeToComplete() {
+    // if (this.bookInfo.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
 
-  }
+    // readingDate = setCurrentDate();
+    // readingCount = bookInfo.pageCount;
+    // addHistory();
 
-  /**最終ページのpageHistoryがあるかを確認する。 */
-  private hasCompleteHistory() {
-
+    // pushToast('最後のページまでの読んだ記録を追加しました。', target);
   }
 
   /**タイトルを取得する(存在しなければ「データ無し」を返す) */
@@ -41,8 +42,24 @@ export class BookInfoView {
   }
 
   /**書誌データの日付を画面表示用の形式に変換する。 */
-  public getDateLabel() {
+  public getDateLabel(dateType: 'create' | 'update' | 'complete', useYear = true): string {
+    let target: Date | undefined;
+    switch (dateType) {
+      case 'create':
+        target = this.bookInfo.createDate;
+        break;
+      case 'update':
+        target = this.bookInfo.updateDate;
+        break;
+      case 'complete':
+        target = this.bookInfo.completeDate;
+        break;
+    }
+    if (!target) { return 'データ無し'; }
 
+    //DBから取った書誌データは文字列で日付を持ってるため
+    if (typeof target === 'string') { target = new Date(target); }
+    return `${useYear ? `${target.getFullYear()}/` : ''}${target.getMonth() + 1}/${target.getDate()}`;
   }
 
   /**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
