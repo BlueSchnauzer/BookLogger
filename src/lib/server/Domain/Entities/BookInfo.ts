@@ -50,36 +50,53 @@ export class BookInfo {
 	/**MongoDBModelからEntityを生成する */
 	public static fromDBModel(mongoModel: MongoDBModel) {
 		return new BookInfo({
-				id: mongoModel._id?.toString()!,
-				userId: mongoModel.userId,
-				title: mongoModel.title,
-				author: mongoModel.author,
-				thumbnail: mongoModel.thumbnail,
-				createDate: mongoModel.createDate,
-				updateDate: mongoModel.updateDate,
-				pageCount: mongoModel.pageCount,
-				isFavorite: mongoModel.isFavorite,
-				status: mongoModel.status,
-				memorandum: mongoModel.memorandum,
-				isVisible: mongoModel.isVisible,
-				completeDate: mongoModel.completeDate,
-				pageHistories: mongoModel.pageHistories,
-				identifiers: mongoModel.identifiers,
-				shelfCategories: mongoModel.shelfCategories,
-				gapiId: mongoModel.gapiId
-			}
+			id: mongoModel._id?.toString()!,
+			userId: mongoModel.userId,
+			title: mongoModel.title,
+			author: mongoModel.author,
+			thumbnail: mongoModel.thumbnail,
+			createDate: mongoModel.createDate,
+			updateDate: mongoModel.updateDate,
+			pageCount: mongoModel.pageCount,
+			isFavorite: mongoModel.isFavorite,
+			status: mongoModel.status,
+			memorandum: mongoModel.memorandum,
+			isVisible: mongoModel.isVisible,
+			completeDate: mongoModel.completeDate,
+			pageHistories: mongoModel.pageHistories,
+			identifiers: mongoModel.identifiers,
+			shelfCategories: mongoModel.shelfCategories,
+			gapiId: mongoModel.gapiId
+		}
 		);
 	}
 
 	/**編集可能なValueObjectを更新する */
 	public update(pageCount: number, isFavorite: boolean, status: status, memorandum: string, pageHistories: pageHistory[],): void {
 		try {
-			
+
 		}
 		catch (error) {
 			console.log(error);
 			throw error;
 		}
+	}
+
+	/**最終ページのpageHistoryがあるかを確認する。 */
+	public hasCompleteHistory(): boolean {
+		if (!this.pageHistories?.length) { return false; }
+
+		let result = false;
+		this.pageHistories!.forEach(item => {
+			if (item.value.pageCount === this.pageCount) { result = true; }
+		})
+
+		return result;
+	}
+	
+  /**pageHistoryの中から最大のページ数を取得する。*/
+	public getMaxPageCount(): number {
+		return this.pageHistories!.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
 	}
 }
 
@@ -88,18 +105,18 @@ export type bookInfoProperties = {
 	id: string,
 	userId: string,
 	title: string,
-	author: string[], 
-	thumbnail: string, 
-	createDate: Date, 
+	author: string[],
+	thumbnail: string,
+	createDate: Date,
 	updateDate: Date,
-	pageCount: number, 
-	isFavorite: boolean, 
-	status: status, 
-	memorandum: string, 
-	isVisible: boolean, 
+	pageCount: number,
+	isFavorite: boolean,
+	status: status,
+	memorandum: string,
+	isVisible: boolean,
 	completeDate?: Date,
-	pageHistories?: pageHistory[], 
-	identifiers?: identifiers, 
-	shelfCategories?: ObjectId[], 
+	pageHistories?: pageHistory[],
+	identifiers?: identifiers,
+	shelfCategories?: ObjectId[],
 	gapiId?: string
 }
