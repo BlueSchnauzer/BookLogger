@@ -1,12 +1,12 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import type { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
-import type { BookInfoEntityResource } from "$lib/server/Infrastructure/MongoDB/BookInfoEntityResource";
+import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
 import type { books_v1 } from "googleapis";
 
 /**書誌データの操作を管理するUseCase */
 export class BookInfoUseCase {
-  constructor(private readonly repos: BookInfoEntityResource) { }
+  constructor(private readonly repos: IBookInfoEntityRepository) { }
 
   /**登録済みの全書誌データ取得する */
   public async getAll(): Promise<BookInfo[]> {
