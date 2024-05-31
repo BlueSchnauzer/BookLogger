@@ -53,8 +53,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   //   return new Response('登録済みの書誌データです。', {status: 409}); //409conflict
   // }
 
-  const item = await request.json() as books_v1.Schema$Volume;
-  return await repos.insert(new DBModel(item!, userId!.value));
+  const item = await request.json() as BookInfo;
+  return await repos.insert(new DBModel(item));
 };
 
 /**DBの書誌データを更新する */
