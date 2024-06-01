@@ -5,10 +5,11 @@ import { Id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
 import { PageHistory, type pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import { Identifiers, type identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
 import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
+import type { books_v1 } from 'googleapis';
 
 /**書誌情報のEntity */
 export class BookInfo {
-	public readonly id: Id;
+	public readonly id?: Id;
 	public readonly userId: UserId;
 	public readonly title: string;
 	public readonly author: string[];
@@ -26,25 +27,47 @@ export class BookInfo {
 	public readonly shelfCategories?: ObjectId[]
 	public readonly gapiId?: string;
 
+	constructor(volume: books_v1.Schema$Volume, userId: string);
+	constructor(properties: bookInfoProperties);
+
 	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
-	constructor(properties: bookInfoProperties) {
-		this.id = new Id(properties.id);
-		this.userId = new UserId(properties.userId);
-		this.title = properties.title;
-		this.author = properties.author;
-		this.thumbnail = properties.thumbnail;
-		this.createDate = properties.createDate;
-		this.updateDate = properties.updateDate;
-		this.pageCount = properties.pageCount;
-		this.isFavorite = properties.isFavorite;
-		this.status = new Status(properties.status);
-		this.memorandum = properties.memorandum;
-		this.isVisible = properties.isVisible;
-		this.completeDate = properties.completeDate;
-		this.pageHistories = properties.pageHistories ? properties.pageHistories?.map(item => new PageHistory(item)) : [];
-		this.identifiers = properties.identifiers != undefined ? new Identifiers(properties.identifiers) : undefined;
-		this.shelfCategories = properties.shelfCategories;
-		this.gapiId = properties.gapiId;
+	constructor(resource: bookInfoProperties | books_v1.Schema$Volume, userId?: string) {
+		if (isBookInfoProperties(resource)){
+			this.id = new Id(resource.id);
+			this.userId = new UserId(resource.userId);
+			this.title = resource.title;
+			this.author = resource.author;
+			this.thumbnail = resource.thumbnail;
+			this.createDate = resource.createDate;
+			this.updateDate = resource.updateDate;
+			this.pageCount = resource.pageCount;
+			this.isFavorite = resource.isFavorite;
+			this.status = new Status(resource.status);
+			this.memorandum = resource.memorandum;
+			this.isVisible = resource.isVisible;
+			this.completeDate = resource.completeDate;
+			this.pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => new PageHistory(item)) : [];
+			this.identifiers = resource.identifiers != undefined ? new Identifiers(resource.identifiers) : undefined;
+			this.shelfCategories = resource.shelfCategories;
+			this.gapiId = resource.gapiId;
+		}
+		else {
+			const currentDate = new Date;
+
+			this.userId = new UserId(userId!);
+			this.title = resource!.volumeInfo?.title ?? '';
+			this.author = resource!.volumeInfo?.authors ?? [''];
+			this.thumbnail = resource!.volumeInfo?.imageLinks?.thumbnail ?? ''; //gapi固有の情報だが、画像そのものではなく場所を表すURLを保存する。
+			this.createDate = currentDate;
+			this.updateDate = currentDate;
+			this.pageCount = resource!.volumeInfo?.pageCount ?? 0;
+			this.isFavorite = false;
+			this.status = new Status('wish');
+			this.memorandum = '';
+			this.isVisible = true;
+			this.identifiers = new Identifiers(getIdentifier(resource!.volumeInfo?.industryIdentifiers)!);
+			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
+		}
 	}
 
 	/**MongoDBModelからEntityを生成する */
@@ -119,4 +142,24 @@ export type bookInfoProperties = {
 	identifiers?: identifiers,
 	shelfCategories?: ObjectId[],
 	gapiId?: string
+}
+
+const isBookInfoProperties = (obj: any): obj is bookInfoProperties => {
+	return 'userId' in obj;
+}
+
+type industryIdentifiers = {
+	identifier?: string | undefined;
+	type?: string | undefined;
+} [] | undefined
+
+/**ISBNを取得する(存在しない場合はundefined) */
+const getIdentifier = (identifiers: industryIdentifiers) => {
+	const isbn_13 = identifiers?.find(id => id.type === 'ISBN_13')?.identifier;
+	if (isbn_13) { return {isbn_13}; }
+	
+	const isbn_10 = identifiers?.find(id => id.type === 'ISBN_10')?.identifier;
+	if (isbn_10) { return {isbn_10}; }
+
+	return undefined;
 }
