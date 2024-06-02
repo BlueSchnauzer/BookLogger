@@ -5,9 +5,9 @@ import type { books_v1 } from "googleapis";
 export class BookSearchView {
   private readonly _usecase: BookSearchGoogleBooksAPIUseCase;
 
-  constructor(private readonly _repos: IBookSearchRepositories) {
-    this._usecase = new BookSearchGoogleBooksAPIUseCase(_repos);
-  }
+  constructor(private readonly repos: IBookSearchRepositories) {
+    this._usecase = new BookSearchGoogleBooksAPIUseCase(repos);
+  }  
 
   /**Usecaseを呼び出してあいまい検索を行う */
   public async searcyByFuzzyQuery(query: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes> {

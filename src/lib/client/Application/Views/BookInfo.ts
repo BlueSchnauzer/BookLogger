@@ -1,22 +1,27 @@
 import type { typeForBottomLabel } from "$lib/customTypes";
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
+import { BookInfoUseCase } from "../UseCases/BookInfo";
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
 export class BookInfoView {
-  constructor(public bookInfo: BookInfo) { }
+  private readonly _usecase: BookInfoUseCase;
 
-  /**書誌データを保存する。 */
-  public insertBookInfo() {
+  constructor(public bookInfo: BookInfo, repos: IBookInfoEntityRepository) {
+    this._usecase = new BookInfoUseCase(repos);
+  }
 
+  public insert() {
+    
   }
 
   /**書誌データを更新する。 */
-  public updateBookInfo() {
+  public update() {
 
   }
 
   /**書誌データを削除する。 */
-  public deleteBookInfo() {
+  public delete() {
 
   }
 
