@@ -328,7 +328,7 @@ describe('delete', async () => {
 
   it('削除対象が見つからない場合にエラーステータスが返ってくること', async () => {
     const repos = new BookInfoMongoDBResource(col, testData.userId);
-    const response = await repos.delete(testData.id.value)
+    const response = await repos.delete(testData.id!.value)
 
     expect(response.ok).toBeFalsy();
   });
