@@ -18,7 +18,7 @@ export interface IBookInfoEntityRepository {
   /**書誌データから、pageHistoryのみを取得する */
   getPageHistory(): Promise<Array<PageHistory[]>>;
   /**書誌データを保存する */
-  insert(item: books_v1.Schema$Volumes): Promise<Response>;
+  insert(bookInfo: BookInfo): Promise<Response>;
   /**書誌データを更新する */
   update(bookInfo: BookInfo, isCompleteReading: boolean): Promise<Response>;
   /**書誌データを削除する */
