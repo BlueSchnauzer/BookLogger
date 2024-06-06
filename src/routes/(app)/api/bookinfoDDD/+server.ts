@@ -27,13 +27,13 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
       const mongoDBModel = await repos.getRecent();
       return json(mongoDBModel, { status: 200 });
       break;
-    case 'wish': 
-    case 'reading': 
-    case 'complete': 
+    case 'wish':
+    case 'reading':
+    case 'complete':
       mongoDBModels = await repos.getByStatus(getType);
       return json(mongoDBModels, { status: 200 });
       break;
-    default:  
+    default:
       mongoDBModels = await repos.get();
       return json(mongoDBModels, { status: 200 });
       break;

@@ -3,8 +3,8 @@ import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import { PageHistory, type pageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import type { books_v1 } from "googleapis";
 import type DBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
+import type { books_v1 } from "googleapis";
 
 export class BookInfoEntityResource implements IBookInfoEntityRepository {
   private readonly requestUrl = '/api/bookinfo';
@@ -35,7 +35,7 @@ export class BookInfoEntityResource implements IBookInfoEntityRepository {
     const response = await fetch(`${this.requestUrl}/history`);
     const pageHistory = await response.json() as Array<pageHistory[]>;
 
-    return pageHistory.map(item => 
+    return pageHistory.map(item =>
       item.map(pageHistory => new PageHistory(pageHistory))
     );
   }
