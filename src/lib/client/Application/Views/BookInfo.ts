@@ -11,20 +11,6 @@ export class BookInfoView {
     this._usecase = new BookInfoUseCase(repos);
   }
 
-  public insert() {
-    
-  }
-
-  /**書誌データを更新する。 */
-  public update() {
-
-  }
-
-  /**書誌データを削除する。 */
-  public delete() {
-
-  }
-
   /**pageHisotryを追加する。 */
   public addPageHistory() {
 
