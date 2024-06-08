@@ -11,22 +11,6 @@ export class BookInfoView {
     this._usecase = new BookInfoUseCase(repos);
   }
 
-  /**pageHisotryを追加する。 */
-  public addPageHistory() {
-
-  }
-
-  /**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
-  public changeToComplete() {
-    // if (this.bookInfo.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
-
-    // readingDate = setCurrentDate();
-    // readingCount = bookInfo.pageCount;
-    // addHistory();
-
-    // pushToast('最後のページまでの読んだ記録を追加しました。', target);
-  }
-
   /**タイトルを取得する(存在しなければ「データ無し」を返す) */
   public getTitleLabel() {
     return this.bookInfo.title ?? 'データ無し';

@@ -94,16 +94,21 @@ export class BookInfo {
 		);
 	}
 
-	/**編集可能なValueObjectを更新する */
-	public update(pageCount: number, isFavorite: boolean, status: status, memorandum: string, pageHistories: pageHistory[],): void {
-		try {
+  /**pageHisotryを追加する。 */
+  public addPageHistory() {
 
-		}
-		catch (error) {
-			console.log(error);
-			throw error;
-		}
-	}
+  }
+
+  /**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
+  public changeToComplete() {
+    // if (this.bookInfo.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
+
+    // readingDate = setCurrentDate();
+    // readingCount = bookInfo.pageCount;
+    // addHistory();
+
+    // pushToast('最後のページまでの読んだ記録を追加しました。', target);
+  }
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	public hasCompleteHistory(): boolean {
