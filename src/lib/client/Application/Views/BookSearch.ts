@@ -5,7 +5,7 @@ import type { books_v1 } from "googleapis";
 export class BookSearchView {
   private readonly _usecase: BookSearchGoogleBooksAPIUseCase;
 
-  constructor(public booksVolume: books_v1.Schema$Volume, private readonly repos: IBookSearchRepositories) {
+  constructor(public readonly booksVolume: books_v1.Schema$Volume, private readonly repos: IBookSearchRepositories) {
     this._usecase = new BookSearchGoogleBooksAPIUseCase(repos);
   }
 
