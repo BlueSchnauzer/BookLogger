@@ -3,7 +3,7 @@ import type { books_v1 } from "googleapis";
 
 /**書誌データの操作を管理するUseCase */
 export class BookSearchGoogleBooksAPIUseCase {
-  constructor(private readonly repos: IBookSearchRepositories) {}
+  constructor(private readonly repos: IBookSearchRepositories) { }
 
   /**(あいまい検索)検索条件を指定して書誌データを取得する */
   public async searcyByFuzzyQuery(query: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes> {

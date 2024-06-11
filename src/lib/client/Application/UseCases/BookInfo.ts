@@ -9,7 +9,7 @@ export class BookInfoUseCase {
   constructor(private readonly repos: IBookInfoEntityRepository) { }
 
   /**登録済みの全書誌データ取得する */
-  public async getAll(): Promise<BookInfo[]> {
+  public async get(): Promise<BookInfo[]> {
     return await this.repos.get();
   }
 
