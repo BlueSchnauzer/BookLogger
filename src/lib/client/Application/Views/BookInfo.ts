@@ -5,11 +5,7 @@ import { BookInfoUseCase } from "../UseCases/BookInfo";
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
 export class BookInfoView {
-  private readonly _usecase: BookInfoUseCase;
-
-  constructor(public bookInfo: BookInfo, repos: IBookInfoEntityRepository) {
-    this._usecase = new BookInfoUseCase(repos);
-  }
+  constructor(public bookInfo: BookInfo) { }
 
   /**タイトルを取得する(存在しなければ「データ無し」を返す) */
   public getTitleLabel() {
