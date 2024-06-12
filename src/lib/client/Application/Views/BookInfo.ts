@@ -1,7 +1,5 @@
 import type { typeForBottomLabel } from "$lib/customTypes";
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
-import { BookInfoUseCase } from "../UseCases/BookInfo";
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
 export class BookInfoView {
