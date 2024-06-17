@@ -2,7 +2,7 @@ import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { ObjectId } from "mongodb";
 import type { EventDispatcher } from "svelte";
 
-const handleBookInfoRequest = (dispatch: EventDispatcher<any>, isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: ObjectId) => {
+export const handleBookInfoRequest = (dispatch: EventDispatcher<any>, isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: ObjectId) => {
   if (isSuccess){
     dispatch('success', {message, updatedItem, deletedId});
   } else {
@@ -10,7 +10,7 @@ const handleBookInfoRequest = (dispatch: EventDispatcher<any>, isSuccess: boolea
   }
 };
 
-const handleBookSearchRequest = (dispatch: EventDispatcher<any>, isSuccess: boolean, message: string) => {
+export const handleBookSearchRequest = (dispatch: EventDispatcher<any>, isSuccess: boolean, message: string) => {
   if (isSuccess){
     dispatch('success', {message});
   } else {
