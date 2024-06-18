@@ -1,18 +1,30 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { ObjectId } from "mongodb";
-import type { EventDispatcher } from "svelte";
+import { createEventDispatcher } from "svelte";
 
-export const handleBookInfoRequest = (dispatch: EventDispatcher<any>, isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: ObjectId) => {
-  if (isSuccess){
-    dispatch('success', {message, updatedItem, deletedId});
+export interface bookInfoEvents {
+  success: { message: string, updatedItem?: BookInfo, deletedId?: ObjectId };
+  failed: string;
+}
+
+export interface bookSearchEvents {
+  success: string;
+  failed: string;
+}
+
+export const handleBookInfoRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: ObjectId) => {
+  const dispatch = createEventDispatcher<bookInfoEvents>();
+  if (isSuccess) {
+    dispatch('success', { message, updatedItem, deletedId });
   } else {
     dispatch('failed', message);
   }
 };
 
-export const handleBookSearchRequest = (dispatch: EventDispatcher<any>, isSuccess: boolean, message: string) => {
-  if (isSuccess){
-    dispatch('success', {message});
+export const handleBookSearchRequest = (isSuccess: boolean, message: string) => {
+  const dispatch = createEventDispatcher<bookSearchEvents>();
+  if (isSuccess) {
+    dispatch('success', message);
   } else {
     dispatch('failed', message);
   }
