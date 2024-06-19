@@ -48,11 +48,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
   const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId!);
 
-  //重複確認
-  // if (await this.isDuplicate(bookInfo.gapiId!)){
-  //   return new Response('登録済みの書誌データです。', {status: 409}); //409conflict
-  // }
-
   const item = await request.json() as books_v1.Schema$Volume;
   return await repos.insert(new DBModel(item, userId.value));
 };
