@@ -2,8 +2,14 @@ import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { ObjectId } from "mongodb";
 import { createEventDispatcher } from "svelte";
 
+export interface bookInfoDispatchParameter {
+  message: string,
+  updatedItem?: BookInfo,
+  deletedId?: ObjectId
+}
+
 export interface bookInfoEvents {
-  success: { message: string, updatedItem?: BookInfo, deletedId?: ObjectId };
+  success: bookInfoDispatchParameter;
   failed: string;
 }
 
