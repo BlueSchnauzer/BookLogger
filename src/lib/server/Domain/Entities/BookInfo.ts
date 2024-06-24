@@ -10,23 +10,23 @@ import { validateReadingDate } from '$lib/client/Application/Utils/validation';
 
 /**書誌情報のEntity */
 export class BookInfo {
-	public readonly id?: Id;
-	public readonly userId: UserId;
-	public readonly title: string;
-	public readonly author: string[];
-	public readonly thumbnail: string;
-	public readonly createDate: Date;
-	public readonly updateDate: Date;
-	public readonly pageCount: number;
-	public readonly isFavorite: boolean;
-	public readonly status: Status;
-	public readonly memorandum: string;
-	public readonly isVisible: boolean;
-	public readonly completeDate?: Date;
-	public readonly pageHistories?: PageHistory[];
-	public readonly identifiers?: Identifiers;
-	public readonly shelfCategories?: ObjectId[]
-	public readonly gapiId?: string;
+	public id?: Id;
+	public userId: UserId;
+	public title: string;
+	public author: string[];
+	public thumbnail: string;
+	public createDate: Date;
+	public updateDate: Date;
+	public pageCount: number;
+	public isFavorite: boolean;
+	public status: Status;
+	public memorandum: string;
+	public isVisible: boolean;
+	public completeDate?: Date;
+	public pageHistories?: PageHistory[];
+	public identifiers?: Identifiers;
+	public shelfCategories?: ObjectId[]
+	public gapiId?: string;
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
