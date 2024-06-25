@@ -127,20 +127,20 @@ export class BookInfo {
 		//追加した記録を反映させるため変更を通知
 		bookInfo = bookInfo;
 
-		//入力値の自動変更があればトーストで通知。
-		if (toastMessage) { pushToast(toastMessage, target); }
-  }
+		// //入力値の自動変更があればトーストで通知。
+		// if (toastMessage) { pushToast(toastMessage, target); }
+	}
 
-  /**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
-  public changeToComplete() {
-    // if (this.bookInfo.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
+	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
+	private addCompleteHistory() {
+		// if (this.bookInfo.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
 
-    // readingDate = setCurrentDate();
-    // readingCount = bookInfo.pageCount;
-    // addHistory();
+		// readingDate = setCurrentDate();
+		// readingCount = bookInfo.pageCount;
+		// addHistory();
 
-    // pushToast('最後のページまでの読んだ記録を追加しました。', target);
-  }
+		// pushToast('最後のページまでの読んだ記録を追加しました。', target);
+	}
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	public hasCompleteHistory(): boolean {
