@@ -142,6 +142,13 @@ export class BookInfo {
 		// pushToast('最後のページまでの読んだ記録を追加しました。', target);
 	}
 
+	public changeStatus(status: Status) {
+		if (this.status.equals(status)) { return; }
+		if (status.value === 'complete') { this.addCompleteHistory(); }
+
+		this.status = status;
+	}
+
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	public hasCompleteHistory(): boolean {
 		if (!this.pageHistories?.length) { return false; }
