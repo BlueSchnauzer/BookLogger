@@ -131,23 +131,23 @@ export class BookInfo {
 		// if (toastMessage) { pushToast(toastMessage, target); }
 	}
 
-	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
-	private addCompleteHistory() {
-		// if (this.bookInfo.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
-
-		// readingDate = setCurrentDate();
-		// readingCount = bookInfo.pageCount;
-		// addHistory();
-
-		// pushToast('最後のページまでの読んだ記録を追加しました。', target);
-	}
-
 	public changeStatus(status: Status) {
 		if (this.status.equals(status)) { return; }
 		if (status.value === 'complete') { this.addCompleteHistory(); }
 
 		this.status = status;
 	}
+
+	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
+	private addCompleteHistory() {
+		if (this.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
+
+		const readingDate = setCurrentDate();
+		const readingCount = this.pageCount;
+		// addHistory();
+
+		// pushToast('最後のページまでの読んだ記録を追加しました。', target);
+	}	
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	public hasCompleteHistory(): boolean {
@@ -187,6 +187,10 @@ export type bookInfoProperties = {
 	shelfCategories?: ObjectId[],
 	gapiId?: string
 }
+
+const date = new Date();
+const setCurrentDate = () =>
+	`${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
 
 const isBookInfoProperties = (obj: any): obj is bookInfoProperties => {
 	return 'userId' in obj;
