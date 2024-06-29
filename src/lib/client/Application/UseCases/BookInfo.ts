@@ -115,4 +115,15 @@ export class BookInfoUseCase {
 
     return { isSuccess, message };
   }
+
+  public addPageHistory() {
+    //日付とページ数が妥当かを判定
+
+    //ヒストリーデータを作成
+    //ステータスとヒストリーを比較して、必要ならステータスとトーストメッセージを作成
+
+    //Entityの更新処理を呼び出し
+  }
+
+  public changeStatus() {
 }
