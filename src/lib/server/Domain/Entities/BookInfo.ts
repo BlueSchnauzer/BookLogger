@@ -33,7 +33,7 @@ export class BookInfo {
 
 	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
 	constructor(resource: bookInfoProperties | books_v1.Schema$Volume, userId?: string) {
-		if (isBookInfoProperties(resource)){
+		if (isBookInfoProperties(resource)) {
 			this.id = new Id(resource.id);
 			this.userId = new UserId(resource.userId);
 			this.title = resource.title;
@@ -95,8 +95,8 @@ export class BookInfo {
 		);
 	}
 
-  /**pageHisotryを追加する。 */
-  public addPageHistory(readingDate: string, readingCount: number) {
+	/**pageHistoryを追加する。 */
+	public addPageHistory(readingDate: string, readingCount: number) {
 		// isValidDate = validateReadingDate(readingDate);
 		// isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
 		// if (!isValidDate || !isValidCount) { return; }
@@ -147,7 +147,7 @@ export class BookInfo {
 		// addHistory();
 
 		// pushToast('最後のページまでの読んだ記録を追加しました。', target);
-	}	
+	}
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	public hasCompleteHistory(): boolean {
@@ -163,8 +163,8 @@ export class BookInfo {
 
 		return result;
 	}
-	
-  /**pageHistoryの中から最大のページ数を取得する。*/
+
+	/**pageHistoryの中から最大のページ数を取得する。*/
 	public getMaxPageCount(): number {
 		return this.pageHistories!.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
 	}
@@ -203,15 +203,15 @@ const isBookInfoProperties = (obj: any): obj is bookInfoProperties => {
 type industryIdentifiers = {
 	identifier?: string | undefined;
 	type?: string | undefined;
-} [] | undefined
+}[] | undefined
 
 /**ISBNを取得する(存在しない場合はundefined) */
 const getIdentifier = (identifiers: industryIdentifiers) => {
 	const isbn_13 = identifiers?.find(id => id.type === 'ISBN_13')?.identifier;
-	if (isbn_13) { return {isbn_13}; }
-	
+	if (isbn_13) { return { isbn_13 }; }
+
 	const isbn_10 = identifiers?.find(id => id.type === 'ISBN_10')?.identifier;
-	if (isbn_10) { return {isbn_10}; }
+	if (isbn_10) { return { isbn_10 }; }
 
 	return undefined;
 }
