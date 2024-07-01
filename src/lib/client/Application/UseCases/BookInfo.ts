@@ -5,6 +5,10 @@ import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/
 import type { books_v1 } from "googleapis";
 import { BookInfoArrayView } from "$lib/client/Application/Views/BookInfoArray";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
+export interface bookInfoChangeResponse {
+  isSuccess: boolean,
+  message: string
+}
 
 /**書誌データの操作を管理するUseCase */
 export class BookInfoUseCase {
@@ -91,7 +95,7 @@ export class BookInfoUseCase {
   }
 
   /**書誌データを保存する */
-  public async create(postData: books_v1.Schema$Volumes): Promise<{ isSuccess: boolean, message: string }> {
+  public async create(postData: books_v1.Schema$Volumes): Promise<bookInfoChangeResponse> {
     const { ok: isSuccess, status } = await this.repos.insert(postData);
     const message =
       isSuccess ? '登録しました' :
@@ -101,7 +105,7 @@ export class BookInfoUseCase {
   }
 
   /**書誌データを更新する */
-  public async update(bookInfo: BookInfo, isComplete: boolean): Promise<{ isSuccess: boolean, message: string }> {
+  public async update(bookInfo: BookInfo, isComplete: boolean): Promise<bookInfoChangeResponse> {
     const { ok: isSuccess } = await this.repos.update(bookInfo, isComplete);
     const message = isSuccess ? '更新しました。' : '更新に失敗しました。\<br\>時間をおいてから再度お試しください。';
 
@@ -109,7 +113,7 @@ export class BookInfoUseCase {
   }
 
   /**書誌データを削除する */
-  public async delete(id: Id): Promise<{ isSuccess: boolean, message: string }> {
+  public async delete(id: Id): Promise<bookInfoChangeResponse> {
     const { ok: isSuccess } = await this.repos.delete(id.value);
     const message = isSuccess ? '削除しました' : '削除に失敗しました。\<br\>時間をおいて再度登録してください。';
 
