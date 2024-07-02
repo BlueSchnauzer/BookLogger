@@ -1,10 +1,14 @@
 import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import type { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
+import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
 import type { books_v1 } from "googleapis";
 import { BookInfoArrayView } from "$lib/client/Application/Views/BookInfoArray";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
+import { validateReadingCount, validateReadingDate } from "$lib/client/Application/Utils/validation";
+import { convertReadingDateToDate } from "$lib/client/Application/Utils/date";
+import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+
 export interface bookInfoChangeResponse {
   isSuccess: boolean,
   message: string
@@ -120,14 +124,34 @@ export class BookInfoUseCase {
     return { isSuccess, message };
   }
 
-  public addPageHistory() {
-    //日付とページ数が妥当かを判定
+  public addPageHistory(bookInfo: BookInfo, readingDate: string, readingCount: number): bookInfoChangeResponse {
+    const isValidDate = validateReadingDate(readingDate);
+    const isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
+    if (!isValidDate || !isValidCount) { return { isSuccess: false, message: '' }; }
 
-    //ヒストリーデータを作成
-    //ステータスとヒストリーを比較して、必要ならステータスとトーストメッセージを作成
+    const item = new PageHistory({
+      id: crypto.randomUUID(),
+      date: convertReadingDateToDate(readingDate),
+      pageCount: readingCount
+    });
 
-    //Entityの更新処理を呼び出し
+    let message = '';
+    let status = undefined;
+    if (bookInfo.status.value === 'wish' && bookInfo.pageHistories?.length === 1) {
+      status = new Status('reading');
+      message = 'ステータスを「読んでいる本」に変更しました。';
+    } else if (bookInfo.status.value !== 'complete' && readingCount === bookInfo.pageCount) {
+      status = new Status('complete');
+      message = 'ステータスを「読み終わった本」に変更しました。';
+    }
+
+    bookInfo.updatePageHistory(item);
+    if (status) { bookInfo.changeStatus(status); }
+
+    return { isSuccess: true, message };
   }
 
   public changeStatus() {
+    //いらない？
+  }
 }
