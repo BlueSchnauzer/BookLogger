@@ -96,39 +96,12 @@ export class BookInfo {
 	}
 
 	/**pageHistoryを追加する。 */
-	public addPageHistory(readingDate: string, readingCount: number) {
-		// isValidDate = validateReadingDate(readingDate);
-		// isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
-		// if (!isValidDate || !isValidCount) { return; }
-
-		const item = {
-      id: crypto.randomUUID(),
-			date: convertReadingDateToDate(),
-			currentPage: readingCount
-		};
-		if (bookInfo.pageHistory) {
-			bookInfo.pageHistory.push(item);
+	public updatePageHistory(item: PageHistory) {
+		if (this.pageHistories) {
+			this.pageHistories.push(item);
 		} else {
-			bookInfo.pageHistory = [item];
+			this.pageHistories = [item];
 		}
-
-		//読んだ記録と現在のステータスが一致しない場合に自動で変更する。
-		let toastMessage = '';
-		if (bookInfo.status === 'wish' && bookInfo.pageHistory.length === 1) {
-			bookInfo.status = 'reading';
-			toastMessage = 'ステータスを「読んでいる本」に変更しました。';
-		}	else if (bookInfo.status !== 'complete' && readingCount === bookInfo.pageCount) {
-			bookInfo.status = 'complete';
-			toastMessage = 'ステータスを「読み終わった本」に変更しました。';
-		}
-
-		readingDate = setCurrentDate();
-		readingCount = 0;
-		//追加した記録を反映させるため変更を通知
-		bookInfo = bookInfo;
-
-		// //入力値の自動変更があればトーストで通知。
-		// if (toastMessage) { pushToast(toastMessage, target); }
 	}
 
 	public changeStatus(status: Status) {
