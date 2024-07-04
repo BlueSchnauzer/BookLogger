@@ -4,6 +4,7 @@ import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
 /**読んだ記録を保持する */
 export class PageHistory extends ValueObjectsBase<pageHistory> {
   constructor(pageHistory: pageHistory) {
+    if (!pageHistory.id) { pageHistory.id = crypto.randomUUID(); }
     super(pageHistory);
   }
 
@@ -36,7 +37,7 @@ export class PageHistory extends ValueObjectsBase<pageHistory> {
 }
 
 export type pageHistory = {
-  id: string,
+  id?: string,
   date: Date | string,
   pageCount: number
 }
