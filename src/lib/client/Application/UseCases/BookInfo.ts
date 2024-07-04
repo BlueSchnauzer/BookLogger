@@ -130,7 +130,6 @@ export class BookInfoUseCase {
     if (!isValidDate || !isValidCount) { return { isSuccess: false, message: '' }; }
 
     const item = new PageHistory({
-      id: crypto.randomUUID(),
       date: convertReadingDateToDate(readingDate),
       pageCount: readingCount
     });
