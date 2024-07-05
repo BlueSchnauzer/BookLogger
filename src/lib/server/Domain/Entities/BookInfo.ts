@@ -95,7 +95,6 @@ export class BookInfo {
 		);
 	}
 
-	/**pageHistoryを追加する。 */
 	public updatePageHistory(item: PageHistory) {
 		if (this.pageHistories) {
 			this.pageHistories.push(item);
@@ -117,20 +116,18 @@ export class BookInfo {
 
 		const readingDate = setCurrentDate();
 		const readingCount = this.pageCount;
-		// addHistory();
-
-		// pushToast('最後のページまでの読んだ記録を追加しました。', target);
+		
+		this.updatePageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
 	}
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
-	public hasCompleteHistory(): boolean {
+	public hasCompleteHistory() {
 		if (!this.pageHistories?.length) { return false; }
 
 		let result = false;
 		this.pageHistories!.forEach(item => {
 			if (item.value.pageCount === this.pageCount) {
-				result = true;
-				return;
+				return true;
 			}
 		})
 
