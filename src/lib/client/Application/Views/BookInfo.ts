@@ -46,4 +46,15 @@ export class BookInfoView {
         return 'completeDate';
     }
   }
+
+  public isDisplayableProgress() {
+    return (this.bookInfo.pageCount && this.bookInfo.pageCount > 0) && (this.bookInfo.pageHistories && this.bookInfo.pageHistories?.length > 0)
+  }
+
+  /**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
+  public getProgressByPercent() {
+    //小数点を抜いて、パーセントに変換する。
+    const ratio = Math.trunc(this.bookInfo.getMaxPageCount()! / this.bookInfo.pageCount * 100);
+    return `${ratio.toString()}%`;
+  }
 }
