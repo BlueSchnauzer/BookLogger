@@ -125,7 +125,7 @@ export class BookInfo {
 		if (!this.pageHistories?.length) { return false; }
 
 		let result = false;
-		this.pageHistories!.forEach(item => {
+		this.pageHistories?.forEach(item => {
 			if (item.value.pageCount === this.pageCount) {
 				return true;
 			}
@@ -135,8 +135,8 @@ export class BookInfo {
 	}
 
 	/**pageHistoryの中から最大のページ数を取得する。*/
-	public getMaxPageCount(): number {
-		return this.pageHistories!.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
+	public getMaxPageCount(): number | undefined {
+		return this.pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
 	}
 }
 
