@@ -4,7 +4,6 @@ import { getEntityTestData, getEntityTestDatas } from "$lib/vitest-setup";
 import { json } from "@sveltejs/kit";
 import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import type { books_v1 } from "googleapis";
-import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 
 describe('get', () => {
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {

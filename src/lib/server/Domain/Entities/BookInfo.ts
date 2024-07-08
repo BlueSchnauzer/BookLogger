@@ -6,7 +6,6 @@ import { PageHistory, type pageHistory } from '$lib/server/Domain/ValueObjects/B
 import { Identifiers, type identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
 import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import type { books_v1 } from 'googleapis';
-import { validateReadingDate } from '$lib/client/Application/Utils/validation';
 
 /**書誌情報のEntity */
 export class BookInfo {

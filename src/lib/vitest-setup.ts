@@ -2,7 +2,6 @@
 import 'vitest-dom/extend-expect'
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import { BookInfo as BookInfoEntity, type bookInfoProperties } from '$lib/server/Domain/Entities/BookInfo';
-import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { ObjectId } from 'mongodb'
 
 export const firstId = new ObjectId('651451ed67241f439ce8a1af');
