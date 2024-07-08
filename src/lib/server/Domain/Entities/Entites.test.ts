@@ -1,17 +1,38 @@
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
+import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from "$lib/vitest-setup";
+import { BookSearchGoogleBooksAPI } from "$lib/server/Infrastructure/GoogleBooksAPI/BookSearch";
+import type { IBookSearchRepositories } from "$lib/server/Domain/repositories/BookSearch";
+import BookInfoMongoDBModel from "./MongoDBModel/BookInfo";
 
 describe('BookInfoEntity', () => {
   describe('Entity生成', () => {
     it('bookInfoPropertiesからEntityを生成できること', () => {
+      const entity = new BookInfo(bookInfoPropertiesMock);
 
+      expect(entity).toBeDefined();
+      expect(entity.id?.value).toEqual(bookInfoPropertiesMock.id);
     });
   
-    it('gapiオブジェクトからEntityを生成できること', () => {
-  
+    it('gapiオブジェクトからEntityを生成できること', async () => {
+      const bookSearchRepos: IBookSearchRepositories = new BookSearchGoogleBooksAPI();
+      const result = await bookSearchRepos.search([`isbn:${bookInfoPropertiesMock.identifiers?.isbn_13}`], 10, 0);
+
+      const entity = new BookInfo(result.items![0], testUserId1);
+
+      expect(entity).toBeDefined();
+      expect(entity.userId.value).toEqual(testUserId1);
+      expect(entity.title).toEqual(result.items![0].volumeInfo?.title);
     });
   
     it('MongoDBModelからEntityを生成できること', () => {
-  
+      const dbModel = new BookInfoMongoDBModel(getEntityTestData());
+
+      const entity = BookInfo.fromDBModel(dbModel);
+
+      expect(entity).toBeDefined();
+      expect(entity.id?.value).toEqual(dbModel._id?.toString());
+      expect(entity.title).toEqual(dbModel.title);
     });  
   });
 
