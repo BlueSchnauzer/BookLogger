@@ -144,7 +144,7 @@ export class BookInfoUseCase {
       message = 'ステータスを「読み終わった本」に変更しました。';
     }
 
-    bookInfo.updatePageHistory(item);
+    bookInfo.addPageHistory(item);
     if (status) { bookInfo.changeStatus(status); }
 
     return { isSuccess: true, message };

@@ -94,7 +94,7 @@ export class BookInfo {
 		);
 	}
 
-	public updatePageHistory(item: PageHistory) {
+	public addPageHistory(item: PageHistory) {
 		if (this.pageHistories) {
 			this.pageHistories.push(item);
 		} else {
@@ -116,7 +116,7 @@ export class BookInfo {
 		const readingDate = setCurrentDate();
 		const readingCount = this.pageCount;
 		
-		this.updatePageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
+		this.addPageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
 	}
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
