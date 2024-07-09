@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import { BookInfo, type bookInfoProperties } from "$lib/server/Domain/Entities/BookInfo";
 import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from "$lib/vitest-setup";
 import { BookSearchGoogleBooksAPI } from "$lib/server/Infrastructure/GoogleBooksAPI/BookSearch";
 import type { IBookSearchRepositories } from "$lib/server/Domain/repositories/BookSearch";
 import BookInfoMongoDBModel from "./MongoDBModel/BookInfo";
+import { PageHistory } from "../ValueObjects/BookInfo/PageHistory";
 
 describe('BookInfoEntity', () => {
   describe('Entity生成', () => {
@@ -36,13 +37,24 @@ describe('BookInfoEntity', () => {
     });  
   });
 
-  describe('updatePageHistory', () => {
+  describe('addPageHistory', () => {
     it('指定したPageHistoryをEntityに追加できること', () => {
+      const entity = new BookInfo(bookInfoPropertiesMock);
+      entity.addPageHistory(new PageHistory({date: new Date, pageCount: 100}));
 
+      expect(entity.pageHistories?.length).toEqual(3);
+      expect(entity.pageHistories![2].value.pageCount).toEqual(100);
     });
 
     it('EntityのPageHistoriesがFalthyの場合、指定したPageHistoryを持った配列をEntityに追加できること', () => {
+      const copiedMock: bookInfoProperties = {...bookInfoPropertiesMock, pageHistories: undefined}
+      const entity = new BookInfo(copiedMock);
+      //expect(entity.pageHistories).not.toBeDefined();
 
+      entity.addPageHistory(new PageHistory({date: new Date, pageCount: 100}));
+      expect(entity.pageHistories).toBeDefined();
+      expect(entity.pageHistories?.length).toEqual(1);
+      expect(entity.pageHistories![0].value.pageCount).toEqual(100);
     });
   });
 
