@@ -65,6 +65,7 @@ export class BookInfo {
 			this.status = new Status('wish');
 			this.memorandum = '';
 			this.isVisible = true;
+			this.pageHistories = [];
 			this.identifiers = new Identifiers(getIdentifier(resource!.volumeInfo?.industryIdentifiers)!);
 			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
 		}
