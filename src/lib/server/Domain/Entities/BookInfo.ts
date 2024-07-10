@@ -127,7 +127,7 @@ export class BookInfo {
 		let result = false;
 		this.pageHistories?.forEach(item => {
 			if (item.value.pageCount === this.pageCount) {
-				return true;
+				result = true;
 			}
 		})
 
