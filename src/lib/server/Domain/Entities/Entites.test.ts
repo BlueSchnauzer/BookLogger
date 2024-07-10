@@ -87,12 +87,20 @@ describe('BookInfoEntity', () => {
   });
 
   describe('getMaxPageCount', () => {
-    it('PageHistories内の最大のページ数を取得できること', () => {
+    it('PageHistories内の最大のページ数を取得できること', () => { 
+      const entity = new BookInfo(bookInfoPropertiesMock);
 
+      expect(entity.getMaxPageCount()).toEqual(bookInfoPropertiesMock.pageHistories![1].pageCount);
     });
 
-    it('PageHistoriesがFalthyな場合にUndefinedが返ること', () => {
+    it('PageHistoriesがFalthyな場合にUndefinedが返ること', () => { 
+      const copiedMock: bookInfoProperties = {
+        ...bookInfoPropertiesMock,
+        pageHistories: undefined
+      };
+      const entity = new BookInfo(copiedMock);
 
+      expect(entity.getMaxPageCount()).not.toBeDefined();
     });
   });
 });
