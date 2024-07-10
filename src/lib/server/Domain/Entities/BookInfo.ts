@@ -112,11 +112,11 @@ export class BookInfo {
 
 	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
 	private addCompleteHistory() {
-		if (this.status.value !== 'complete' || this.hasCompleteHistory()) { return; }
+		if (this.hasCompleteHistory()) { return; }
 
 		const readingDate = setCurrentDate();
 		const readingCount = this.pageCount;
-		
+
 		this.addPageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
 	}
 
