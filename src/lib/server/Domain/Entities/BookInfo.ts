@@ -136,6 +136,7 @@ export class BookInfo {
 
 	/**pageHistoryの中から最大のページ数を取得する。*/
 	public getMaxPageCount(): number | undefined {
+		if (!this.pageHistories?.length) { return undefined; }
 		return this.pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
 	}
 }
