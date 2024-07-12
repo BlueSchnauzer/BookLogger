@@ -1,10 +1,14 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import { pushSuccessToast } from "$lib/client/Application/Utils/toast";
 import type { bookInfoDispatchParameter } from "../Utils/dispatcher";
+import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 
 /**BookInfoを配列で受け取り、画面表示用に操作するView */
 export class BookInfoArrayView {
-  constructor(public bookInfos: BookInfo[]) { }
+  public bookInfoViews: BookInfoView[];
+  constructor(public bookInfos: BookInfo[]) {
+    this.bookInfoViews = bookInfos.map(item => new BookInfoView(item));
+  }
 
   /**成功用トーストを表示し、編集内容を反映した書誌データを返す(再レンダリングに使用) */
   public handleSuccess(bookInfos: BookInfo[], detail: bookInfoDispatchParameter, target: string, isBooksRoute = false): void {
