@@ -18,7 +18,7 @@ export interface bookSearchEvents {
   failed: string;
 }
 
-export const handleBookInfoRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: Id) => {
+export const dispatchBookInfoRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: Id) => {
   const dispatch = createEventDispatcher<bookInfoEvents>();
   if (isSuccess) {
     dispatch('success', { message, updatedItem, deletedId });
@@ -27,7 +27,7 @@ export const handleBookInfoRequest = (isSuccess: boolean, message: string, updat
   }
 };
 
-export const handleBookSearchRequest = (isSuccess: boolean, message: string) => {
+export const dispatchBookSearchRequest = (isSuccess: boolean, message: string) => {
   const dispatch = createEventDispatcher<bookSearchEvents>();
   if (isSuccess) {
     dispatch('success', message);
