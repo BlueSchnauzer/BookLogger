@@ -1,13 +1,12 @@
 import { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
+import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
 import type { books_v1 } from "googleapis";
-import { BookInfoArrayView } from "$lib/client/Application/Views/BookInfoArray";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import { validateReadingCount, validateReadingDate } from "$lib/client/Application/Utils/validation";
 import { convertReadingDateToDate } from "$lib/client/Application/Utils/date";
-import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 
 export interface bookInfoChangeResponse {
   isSuccess: boolean,
@@ -19,27 +18,27 @@ export class BookInfoUseCase {
   constructor(private readonly repos: IBookInfoEntityRepository) { }
 
   /**登録済みの全書誌データ取得する */
-  public async get(): Promise<BookInfoArrayView> {
+  public async get(): Promise<BookInfoView[]> {
     const bookInfos = await this.repos.get();
-    return new BookInfoArrayView(bookInfos);
+    return bookInfos.map(item => new BookInfoView(item));
   }
 
   /**読みたい本ステータスの書誌データを取得する */
-  public async getWish(): Promise<BookInfoArrayView> {
+  public async getWish(): Promise<BookInfoView[]> {
     const bookInfos = await this.repos.getByStatus('wish');
-    return new BookInfoArrayView(bookInfos);
+    return bookInfos.map(item => new BookInfoView(item));
   }
 
   /**読んでいる本ステータスの書誌データを取得する */
-  public async getReading(): Promise<BookInfoArrayView> {
+  public async getReading(): Promise<BookInfoView[]> {
     const bookInfos = await this.repos.getByStatus('reading');
-    return new BookInfoArrayView(bookInfos);
+    return bookInfos.map(item => new BookInfoView(item));
   }
 
   /**読み終わった本ステータスの書誌データを取得する */
-  public async getComplete(): Promise<BookInfoArrayView> {
+  public async getComplete(): Promise<BookInfoView[]> {
     const bookInfos = await this.repos.getByStatus('complete');
-    return new BookInfoArrayView(bookInfos);
+    return bookInfos.map(item => new BookInfoView(item));
   }
 
   /**直近で読んだ書誌データを取得する */
