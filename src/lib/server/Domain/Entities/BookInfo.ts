@@ -9,23 +9,41 @@ import type { books_v1 } from 'googleapis';
 
 /**書誌情報のEntity */
 export class BookInfo {
-	public id?: Id;
-	public userId: UserId;
-	public title: string;
-	public author: string[];
-	public thumbnail: string;
-	public createDate: Date;
-	public updateDate: Date;
-	public pageCount: number;
-	public isFavorite: boolean;
-	public status: Status;
-	public memorandum: string;
-	public isVisible: boolean;
-	public completeDate?: Date;
-	public pageHistories?: PageHistory[];
-	public identifiers?: Identifiers;
-	public shelfCategories?: ObjectId[]
-	public gapiId?: string;
+	private id?: Id;
+	private userId: UserId;
+	private title: string;
+	private author: string[];
+	private thumbnail: string;
+	private createDate: Date;
+	private updateDate: Date;
+	private pageCount: number;
+	private isFavorite: boolean;
+	private status: Status;
+	private memorandum: string;
+	private isVisible: boolean;
+	private completeDate?: Date;
+	private pageHistories?: PageHistory[];
+	private identifiers?: Identifiers;
+	private shelfCategories?: ObjectId[]
+	private gapiId?: string;
+
+	public getId() { return this.id; }
+	public getUserId() { return this.userId; }
+	public getTitle() { return this.title; }
+	public getAuthor() { return this.author; }
+	public getThumbnail() { return this.thumbnail; }
+	public getCreateDate() { return this.createDate; }
+	public getUpdateDate() { return this.updateDate; }
+	public getPageCount() { return this.pageCount; }
+	public getIsFavorite() { return this.isFavorite; }
+	public getStatus() { return this.status; }
+	public getMemorandum() { return this.memorandum; }
+	public getIsVisible() { return this.isVisible; }
+	public getCompleteDate() { return this.completeDate; }
+	public getPageHistories() { return this.pageHistories; }
+	public getIdentifiers() { return this.identifiers; }
+	public getShelfCategories() { return this.shelfCategories; }
+	public getGapiId() { return this.gapiId; }
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
