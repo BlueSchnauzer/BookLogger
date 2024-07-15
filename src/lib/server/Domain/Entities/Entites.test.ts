@@ -13,7 +13,7 @@ describe('BookInfoEntity', () => {
       const entity = new BookInfo(bookInfoPropertiesMock);
 
       expect(entity).toBeDefined();
-      expect(entity.id?.value).toEqual(bookInfoPropertiesMock.id);
+      expect(entity.getId()?.value).toEqual(bookInfoPropertiesMock.id);
     });
 
     it('gapiオブジェクトからEntityを生成できること', async () => {
@@ -27,8 +27,8 @@ describe('BookInfoEntity', () => {
       const entity = new BookInfo(result.items![0], testUserId1);
 
       expect(entity).toBeDefined();
-      expect(entity.userId.value).toEqual(testUserId1);
-      expect(entity.title).toEqual(result.items![0].volumeInfo?.title);
+      expect(entity.getUserId().value).toEqual(testUserId1);
+      expect(entity.getTitle()).toEqual(result.items![0].volumeInfo?.title);
     });
 
     it('MongoDBModelからEntityを生成できること', () => {
@@ -37,8 +37,8 @@ describe('BookInfoEntity', () => {
       const entity = BookInfo.fromDBModel(dbModel);
 
       expect(entity).toBeDefined();
-      expect(entity.id?.value).toEqual(dbModel._id?.toString());
-      expect(entity.title).toEqual(dbModel.title);
+      expect(entity.getId()?.value).toEqual(dbModel._id?.toString());
+      expect(entity.getTitle()).toEqual(dbModel.title);
     });
   });
 
@@ -47,8 +47,8 @@ describe('BookInfoEntity', () => {
       const entity = new BookInfo(bookInfoPropertiesMock);
       entity.addPageHistory(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-      expect(entity.pageHistories?.length).toEqual(3);
-      expect(entity.pageHistories![2].value.pageCount).toEqual(100);
+      expect(entity.getPageHistories()?.length).toEqual(3);
+      expect(entity.getPageHistories()![2].value.pageCount).toEqual(100);
     });
 
     it('EntityのPageHistoriesがFalthyの場合、指定したPageHistoryを持った配列をEntityに追加できること', () => {
@@ -60,9 +60,9 @@ describe('BookInfoEntity', () => {
       //expect(entity.pageHistories).not.toBeDefined();
 
       entity.addPageHistory(new PageHistory({ date: new Date(), pageCount: 100 }));
-      expect(entity.pageHistories).toBeDefined();
-      expect(entity.pageHistories?.length).toEqual(1);
-      expect(entity.pageHistories![0].value.pageCount).toEqual(100);
+      expect(entity.getPageHistories()).toBeDefined();
+      expect(entity.getPageHistories()?.length).toEqual(1);
+      expect(entity.getPageHistories()![0].value.pageCount).toEqual(100);
     });
   });
 
@@ -71,7 +71,7 @@ describe('BookInfoEntity', () => {
       const entity = new BookInfo(bookInfoPropertiesMock);
       entity.changeStatus(new Status('reading'));
 
-      expect(entity.status.value).toEqual('reading');
+      expect(entity.getStatus().value).toEqual('reading');
     });
 
     it('指定したStatusと現在のStatusが同じ場合、更新がされないこと', () => {
@@ -79,14 +79,14 @@ describe('BookInfoEntity', () => {
       const entityB = new BookInfo(bookInfoPropertiesMock);
       entityA.changeStatus(new Status('wish'));
 
-      expect(entityA.status.equals(entityB.status)).toBeTruthy();
+      expect(entityA.getStatus().equals(entityB.getStatus())).toBeTruthy();
     });
 
     it('StatusがComplete以外からCompleteに変更した場合、最終ページまでのPageHistoryが追加されること', () => {
       const entity = new BookInfo(bookInfoPropertiesMock);
       entity.changeStatus(new Status('complete'));
 
-      expect(entity.status.value).toEqual('complete');
+      expect(entity.getStatus().value).toEqual('complete');
       expect(entity.hasCompleteHistory()).toBeTruthy();
     });
   });
