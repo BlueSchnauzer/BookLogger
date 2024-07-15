@@ -26,17 +26,14 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
     case 'recent':
       const mongoDBModel = await repos.getRecent();
       return json(mongoDBModel, { status: 200 });
-      break;
     case 'wish':
     case 'reading':
     case 'complete':
       mongoDBModels = await repos.getByStatus(getType);
       return json(mongoDBModels, { status: 200 });
-      break;
     default:
       mongoDBModels = await repos.get();
       return json(mongoDBModels, { status: 200 });
-      break;
   }
 };
 
@@ -87,8 +84,8 @@ const validatePutItem = ({ bookInfo, isComplete }: { bookInfo: BookInfo, isCompl
   let result = true;
 
   //作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
-  if (!bookInfo.pageHistories) { return result; }
-  bookInfo.pageHistories.forEach(item => {
+  if (!bookInfo.getPageHistories()) { return result; }
+  bookInfo.getPageHistories()?.forEach(item => {
     if (!result) { return; }
 
     if (!item.value.date) {
@@ -104,7 +101,7 @@ const validatePutItem = ({ bookInfo, isComplete }: { bookInfo: BookInfo, isCompl
 
   //読み終わっている場合、最終ページの記録があるか確認
   if (isComplete && result) {
-    const isExist = bookInfo.pageHistories.findIndex(item => item.value.pageCount === bookInfo.pageCount);
+    const isExist = bookInfo.getPageHistories()?.findIndex(item => item.value.pageCount === bookInfo.getPageCount());
     result = isExist !== -1 ? true : false;
   }
 

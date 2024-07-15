@@ -7,7 +7,7 @@ export class BookInfoView {
 
   /**タイトルを取得する(存在しなければ「データ無し」を返す) */
   public getTitleLabel() {
-    return this.bookInfo.title ?? 'データ無し';
+    return this.bookInfo.getTitle() ?? 'データ無し';
   }
 
   /**書誌データの日付を画面表示用の形式に変換する。 */
@@ -15,13 +15,13 @@ export class BookInfoView {
     let target: Date | undefined;
     switch (dateType) {
       case 'create':
-        target = this.bookInfo.createDate;
+        target = this.bookInfo.getCreateDate();
         break;
       case 'update':
-        target = this.bookInfo.updateDate;
+        target = this.bookInfo.getUpdateDate();
         break;
       case 'complete':
-        target = this.bookInfo.completeDate;
+        target = this.bookInfo.getCompleteDate();
         break;
     }
     if (!target) { return 'データ無し'; }
@@ -48,13 +48,13 @@ export class BookInfoView {
   }
 
   public isDisplayableProgress() {
-    return (this.bookInfo.pageCount && this.bookInfo.pageCount > 0) && (this.bookInfo.pageHistories && this.bookInfo.pageHistories?.length > 0)
+    return (this.bookInfo.getPageCount() && this.bookInfo.getPageCount() > 0) && (this.bookInfo.getPageHistories() && this.bookInfo.getPageHistories()!.length > 0)
   }
 
   /**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
   public getProgressByPercent() {
     //小数点を抜いて、パーセントに変換する。
-    const ratio = Math.trunc(this.bookInfo.getMaxPageCount()! / this.bookInfo.pageCount * 100);
+    const ratio = Math.trunc(this.bookInfo.getMaxPageCount()! / this.bookInfo.getPageCount() * 100);
     return `${ratio.toString()}%`;
   }
 }

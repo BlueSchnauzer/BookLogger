@@ -20,21 +20,21 @@ const applyChange = (bookInfoViews: BookInfoView[], detail: bookInfoDispatchPara
   let appliedItems: BookInfo[] = [];
 
   if (detail.updatedItem) {
-    const oldItem = bookInfos.find(item => item.id?.equals(detail.updatedItem?.id!));
+    const oldItem = bookInfos.find(item => item.getId()?.equals(detail.updatedItem?.getId()!));
 
-    if (!isBooksRoute && !oldItem?.status.equals(detail.updatedItem.status)) {
+    if (!isBooksRoute && !oldItem?.getStatus().equals(detail.updatedItem.getStatus())) {
       //全データ表示時以外で、ステータスが変わった場合は一覧から削除して、現在の表示から削除する
-      appliedItems = bookInfos.filter(item => item.id?.equals(detail.updatedItem?.id!));
+      appliedItems = bookInfos.filter(item => item.getId()?.equals(detail.updatedItem?.getId()!));
     }
     else {
       //編集したアイテムを一覧に反映する
-      const index = bookInfos.findIndex(item => item.id?.equals(detail.updatedItem?.id!));
+      const index = bookInfos.findIndex(item => item.getId()?.equals(detail.updatedItem?.getId()!));
       appliedItems = [...bookInfos.slice(0, index), detail.updatedItem, ...bookInfos.slice(index + 1)];
     }
   }
   if (detail.deletedId) {
     //削除したアイテムを一覧からも削除する
-    appliedItems = bookInfos.filter(item => item.id?.equals(detail.deletedId!));
+    appliedItems = bookInfos.filter(item => item.getId()?.equals(detail.deletedId!));
   }
 
   return appliedItems.map(item => new BookInfoView(item));
