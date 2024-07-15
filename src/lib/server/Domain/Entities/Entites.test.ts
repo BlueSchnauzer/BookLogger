@@ -41,6 +41,31 @@ describe('BookInfoEntity', () => {
       expect(entity.getTitle()).toEqual(dbModel.title);
     });
   });
+  
+  describe('changeStatus', () => {
+    it('指定したStatusでEntityのStatusを更新できること', () => {
+      const entity = new BookInfo(bookInfoPropertiesMock);
+      entity.setStatus(new Status('reading'));
+
+      expect(entity.getStatus().value).toEqual('reading');
+    });
+
+    it('指定したStatusと現在のStatusが同じ場合、更新がされないこと', () => {
+      const entityA = new BookInfo(bookInfoPropertiesMock);
+      const entityB = new BookInfo(bookInfoPropertiesMock);
+      entityA.setStatus(new Status('wish'));
+
+      expect(entityA.getStatus().equals(entityB.getStatus())).toBeTruthy();
+    });
+
+    it('StatusがComplete以外からCompleteに変更した場合、最終ページまでのPageHistoryが追加されること', () => {
+      const entity = new BookInfo(bookInfoPropertiesMock);
+      entity.setStatus(new Status('complete'));
+
+      expect(entity.getStatus().value).toEqual('complete');
+      expect(entity.hasCompleteHistory()).toBeTruthy();
+    });
+  });
 
   describe('addPageHistory', () => {
     it('指定したPageHistoryをEntityに追加できること', () => {
@@ -49,13 +74,13 @@ describe('BookInfoEntity', () => {
 
       expect(entity.getPageHistories()?.length).toEqual(3);
       expect(entity.getPageHistories()![2].value.pageCount).toEqual(100);
-    });
+    });  
 
     it('EntityのPageHistoriesがFalthyの場合、指定したPageHistoryを持った配列をEntityに追加できること', () => {
       const copiedMock: bookInfoProperties = {
         ...bookInfoPropertiesMock,
         pageHistories: undefined
-      };
+      };  
       const entity = new BookInfo(copiedMock);
       //expect(entity.pageHistories).not.toBeDefined();
 
@@ -63,33 +88,8 @@ describe('BookInfoEntity', () => {
       expect(entity.getPageHistories()).toBeDefined();
       expect(entity.getPageHistories()?.length).toEqual(1);
       expect(entity.getPageHistories()![0].value.pageCount).toEqual(100);
-    });
-  });
-
-  describe('changeStatus', () => {
-    it('指定したStatusでEntityのStatusを更新できること', () => {
-      const entity = new BookInfo(bookInfoPropertiesMock);
-      entity.changeStatus(new Status('reading'));
-
-      expect(entity.getStatus().value).toEqual('reading');
-    });
-
-    it('指定したStatusと現在のStatusが同じ場合、更新がされないこと', () => {
-      const entityA = new BookInfo(bookInfoPropertiesMock);
-      const entityB = new BookInfo(bookInfoPropertiesMock);
-      entityA.changeStatus(new Status('wish'));
-
-      expect(entityA.getStatus().equals(entityB.getStatus())).toBeTruthy();
-    });
-
-    it('StatusがComplete以外からCompleteに変更した場合、最終ページまでのPageHistoryが追加されること', () => {
-      const entity = new BookInfo(bookInfoPropertiesMock);
-      entity.changeStatus(new Status('complete'));
-
-      expect(entity.getStatus().value).toEqual('complete');
-      expect(entity.hasCompleteHistory()).toBeTruthy();
-    });
-  });
+    });  
+  });  
 
   describe('hasCompleteHistory', () => {
     it('PageHistoriesに最終ページまでの記録がある場合、Truethyが返ること', () => {
@@ -120,7 +120,7 @@ describe('BookInfoEntity', () => {
     it('PageHistories内の最大のページ数を取得できること', () => { 
       const entity = new BookInfo(bookInfoPropertiesMock);
 
-      expect(entity.getMaxPageCount()).toEqual(bookInfoPropertiesMock.pageHistories![1].pageCount);
+      expect(entity.getMaxPageCountFromHistory()).toEqual(bookInfoPropertiesMock.pageHistories![1].pageCount);
     });
 
     it('PageHistoriesがFalthyな場合にUndefinedが返ること', () => { 
@@ -130,7 +130,7 @@ describe('BookInfoEntity', () => {
       };
       const entity = new BookInfo(copiedMock);
 
-      expect(entity.getMaxPageCount()).not.toBeDefined();
+      expect(entity.getMaxPageCountFromHistory()).not.toBeDefined();
     });
   });
 });

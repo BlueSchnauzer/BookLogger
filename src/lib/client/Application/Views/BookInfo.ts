@@ -54,7 +54,7 @@ export class BookInfoView {
   /**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
   public getProgressByPercent() {
     //小数点を抜いて、パーセントに変換する。
-    const ratio = Math.trunc(this.bookInfo.getMaxPageCount()! / this.bookInfo.getPageCount() * 100);
+    const ratio = Math.trunc(this.bookInfo.getMaxPageCountFromHistory()! / this.bookInfo.getPageCount() * 100);
     return `${ratio.toString()}%`;
   }
 }

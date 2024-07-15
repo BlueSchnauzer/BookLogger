@@ -144,7 +144,7 @@ export class BookInfoUseCase {
     }
 
     bookInfo.addPageHistory(item);
-    if (status) { bookInfo.changeStatus(status); }
+    if (status) { bookInfo.setStatus(status); }
 
     return { isSuccess: true, message };
   }

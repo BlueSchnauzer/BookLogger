@@ -9,41 +9,41 @@ import type { books_v1 } from 'googleapis';
 
 /**書誌情報のEntity */
 export class BookInfo {
-	private id?: Id;
-	private userId: UserId;
-	private title: string;
-	private author: string[];
-	private thumbnail: string;
-	private createDate: Date;
-	private updateDate: Date;
-	private pageCount: number;
-	private isFavorite: boolean;
-	private status: Status;
-	private memorandum: string;
-	private isVisible: boolean;
-	private completeDate?: Date;
-	private pageHistories?: PageHistory[];
-	private identifiers?: Identifiers;
-	private shelfCategories?: ObjectId[]
-	private gapiId?: string;
+	private _id?: Id;
+	private _userId: UserId;
+	private _title: string;
+	private _author: string[];
+	private _thumbnail: string;
+	private _createDate: Date;
+	private _updateDate: Date;
+	private _pageCount: number;
+	private _isFavorite: boolean;
+	private _status: Status;
+	private _memorandum: string;
+	private _isVisible: boolean;
+	private _completeDate?: Date;
+	private _pageHistories?: PageHistory[];
+	private _identifiers?: Identifiers;
+	private _shelfCategories?: ObjectId[]
+	private _gapiId?: string;
 
-	public getId() { return this.id; }
-	public getUserId() { return this.userId; }
-	public getTitle() { return this.title; }
-	public getAuthor() { return this.author; }
-	public getThumbnail() { return this.thumbnail; }
-	public getCreateDate() { return this.createDate; }
-	public getUpdateDate() { return this.updateDate; }
-	public getPageCount() { return this.pageCount; }
-	public getIsFavorite() { return this.isFavorite; }
-	public getStatus() { return this.status; }
-	public getMemorandum() { return this.memorandum; }
-	public getIsVisible() { return this.isVisible; }
-	public getCompleteDate() { return this.completeDate; }
-	public getPageHistories() { return this.pageHistories; }
-	public getIdentifiers() { return this.identifiers; }
-	public getShelfCategories() { return this.shelfCategories; }
-	public getGapiId() { return this.gapiId; }
+	public getId() { return this._id; }
+	public getUserId() { return this._userId; }
+	public getTitle() { return this._title; }
+	public getAuthor() { return this._author; }
+	public getThumbnail() { return this._thumbnail; }
+	public getCreateDate() { return this._createDate; }
+	public getUpdateDate() { return this._updateDate; }
+	public getPageCount() { return this._pageCount; }
+	public getIsFavorite() { return this._isFavorite; }
+	public getStatus() { return this._status; }
+	public getMemorandum() { return this._memorandum; }
+	public getIsVisible() { return this._isVisible; }
+	public getCompleteDate() { return this._completeDate; }
+	public getPageHistories() { return this._pageHistories; }
+	public getIdentifiers() { return this._identifiers; }
+	public getShelfCategories() { return this._shelfCategories; }
+	public getGapiId() { return this._gapiId; }
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
@@ -51,41 +51,41 @@ export class BookInfo {
 	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
 	constructor(resource: bookInfoProperties | books_v1.Schema$Volume, userId?: string) {
 		if (isBookInfoProperties(resource)) {
-			this.id = new Id(resource.id);
-			this.userId = new UserId(resource.userId);
-			this.title = resource.title;
-			this.author = resource.author;
-			this.thumbnail = resource.thumbnail;
-			this.createDate = resource.createDate;
-			this.updateDate = resource.updateDate;
-			this.pageCount = resource.pageCount;
-			this.isFavorite = resource.isFavorite;
-			this.status = new Status(resource.status);
-			this.memorandum = resource.memorandum;
-			this.isVisible = resource.isVisible;
-			this.completeDate = resource.completeDate;
-			this.pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => new PageHistory(item)) : [];
-			this.identifiers = resource.identifiers != undefined ? new Identifiers(resource.identifiers) : undefined;
-			this.shelfCategories = resource.shelfCategories;
-			this.gapiId = resource.gapiId;
+			this._id = new Id(resource.id);
+			this._userId = new UserId(resource.userId);
+			this._title = resource.title;
+			this._author = resource.author;
+			this._thumbnail = resource.thumbnail;
+			this._createDate = resource.createDate;
+			this._updateDate = resource.updateDate;
+			this._pageCount = resource.pageCount;
+			this._isFavorite = resource.isFavorite;
+			this._status = new Status(resource.status);
+			this._memorandum = resource.memorandum;
+			this._isVisible = resource.isVisible;
+			this._completeDate = resource.completeDate;
+			this._pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => new PageHistory(item)) : [];
+			this._identifiers = resource.identifiers != undefined ? new Identifiers(resource.identifiers) : undefined;
+			this._shelfCategories = resource.shelfCategories;
+			this._gapiId = resource.gapiId;
 		}
 		else {
 			const currentDate = new Date;
 
-			this.userId = new UserId(userId!);
-			this.title = resource!.volumeInfo?.title ?? '';
-			this.author = resource!.volumeInfo?.authors ?? [''];
-			this.thumbnail = resource!.volumeInfo?.imageLinks?.thumbnail ?? ''; //gapi固有の情報だが、画像そのものではなく場所を表すURLを保存する。
-			this.createDate = currentDate;
-			this.updateDate = currentDate;
-			this.pageCount = resource!.volumeInfo?.pageCount ?? 0;
-			this.isFavorite = false;
-			this.status = new Status('wish');
-			this.memorandum = '';
-			this.isVisible = true;
-			this.pageHistories = [];
-			this.identifiers = new Identifiers(getIdentifier(resource!.volumeInfo?.industryIdentifiers)!);
-			this.gapiId = resource!.id ?? this.title; //gapi固有の情報なので入れたら微妙な感じではある
+			this._userId = new UserId(userId!);
+			this._title = resource!.volumeInfo?.title ?? '';
+			this._author = resource!.volumeInfo?.authors ?? [''];
+			this._thumbnail = resource!.volumeInfo?.imageLinks?.thumbnail ?? ''; //gapi固有の情報だが、画像そのものではなく場所を表すURLを保存する。
+			this._createDate = currentDate;
+			this._updateDate = currentDate;
+			this._pageCount = resource!.volumeInfo?.pageCount ?? 0;
+			this._isFavorite = false;
+			this._status = new Status('wish');
+			this._memorandum = '';
+			this._isVisible = true;
+			this._pageHistories = [];
+			this._identifiers = new Identifiers(getIdentifier(resource!.volumeInfo?.industryIdentifiers)!);
+			this._gapiId = resource!.id ?? this._title; //gapi固有の情報なので入れたら微妙な感じではある
 		}
 	}
 
@@ -113,38 +113,50 @@ export class BookInfo {
 		);
 	}
 
-	public addPageHistory(item: PageHistory) {
-		if (this.pageHistories) {
-			this.pageHistories.push(item);
-		} else {
-			this.pageHistories = [item];
-		}
+	public setPageCount(pageCount: number) {
+		this._pageCount = pageCount;
 	}
 
-	public changeStatus(status: Status) {
-		if (this.status.equals(status)) { return; }
+	public changeFavorite() {
+		this._isFavorite = !this._isFavorite;
+	}
+
+	public setStatus(status: Status) {
+		if (this._status.equals(status)) { return; }
 		if (status.value === 'complete') { this.addCompleteHistory(); }
 
-		this.status = status;
+		this._status = status;
 	}
+
+	public setMemorandum(memorandum: string) {
+		this._memorandum = memorandum;
+	}
+
+	public addPageHistory(item: PageHistory) {
+		if (this._pageHistories) {
+			this._pageHistories.push(item);
+		} else {
+			this._pageHistories = [item];
+		}	
+	}	
 
 	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
 	private addCompleteHistory() {
 		if (this.hasCompleteHistory()) { return; }
 
 		const readingDate = setCurrentDate();
-		const readingCount = this.pageCount;
+		const readingCount = this._pageCount;
 
 		this.addPageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
 	}
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	public hasCompleteHistory() {
-		if (!this.pageHistories?.length) { return false; }
+		if (!this._pageHistories?.length) { return false; }
 
 		let result = false;
-		this.pageHistories?.forEach(item => {
-			if (item.value.pageCount === this.pageCount) {
+		this._pageHistories?.forEach(item => {
+			if (item.value.pageCount === this._pageCount) {
 				result = true;
 			}
 		})
@@ -153,9 +165,9 @@ export class BookInfo {
 	}
 
 	/**pageHistoryの中から最大のページ数を取得する。*/
-	public getMaxPageCount(): number | undefined {
-		if (!this.pageHistories?.length) { return undefined; }
-		return this.pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
+	public getMaxPageCountFromHistory(): number | undefined {
+		if (!this._pageHistories?.length) { return undefined; }
+		return this._pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
 	}
 }
 
