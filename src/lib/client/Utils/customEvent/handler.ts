@@ -1,6 +1,6 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import type { bookInfoDispatchParameter } from "$lib/client/Application/Utils/customEvent/dispatcher";
-import { pushSuccessToast, pushErrorToast } from "$lib/client/Application/Utils/toast";
+import type { bookInfoDispatchParameter } from "$lib/client/Utils/customEvent/dispatcher";
+import { pushSuccessToast, pushErrorToast } from "$lib/client/Utils/toast";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 
 export const handleSuccess = (bookInfoViews: BookInfoView[], detail: bookInfoDispatchParameter, target: string, isBooksRoute = false) => {

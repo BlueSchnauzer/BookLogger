@@ -6,7 +6,7 @@ import DBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import type { books_v1 } from 'googleapis';
 import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
-import { validatePutBookInfo, validateReadingCount } from '$lib/client/Application/Utils/validation';
+import { validatePutBookInfo } from '$lib/client/Utils/validation';
 
 /**書誌データを取得する
  * クエリパラメータに応じて返却するデータを変更する。

@@ -5,8 +5,8 @@ import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistor
 import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
 import type { books_v1 } from "googleapis";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
-import { validateReadingCount, validateReadingDate } from "$lib/client/Application/Utils/validation";
-import { convertReadingDateToDate } from "$lib/client/Application/Utils/date";
+import { validateReadingCount, validateReadingDate } from "$lib/client/Utils/validation";
+import { convertReadingDateToDate } from "$lib/client/Utils/date";
 
 export interface bookInfoChangeResponse {
   isSuccess: boolean,
