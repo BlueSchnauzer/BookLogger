@@ -11,39 +11,39 @@ describe('requestBookInfo', () => {
   })
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`]);
+    const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`], 10, 0);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });
   
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
-    const result = await searchRepo.search([`intitle:${testData.title}`]);
+    const result = await searchRepo.search([`intitle:${testData.title}`], 10, 0);
 
     //タイトル指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('著者名を条件にして一致した書誌データを取得できるか', async () => {
-    const result = await searchRepo.search([`inauthor:${testData.author[0]}`]);
+    const result = await searchRepo.search([`inauthor:${testData.author[0]}`], 10, 0);
 
     //著者指定は複数取れるので、一致させずに1件でもあればOK
     expect(result.items).toBeDefined();
   });
 
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`, `intitle:${testData.title}`, `inauthor:${testData.author[0]}`]);
+    const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`, `intitle:${testData.title}`, `inauthor:${testData.author[0]}`], 10, 0);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });  
 
   it('検索結果が複数ある時に、取得数を制限できるか', async () => {
-    const defaultCounts = await searchRepo.search([`inauthor:${testData.author[0]}`]);
+    const defaultCounts = await searchRepo.search([`inauthor:${testData.author[0]}`], 10, 0);
     expect(defaultCounts.items).toBeDefined();
     expect(defaultCounts.items?.length).toEqual(10);
 
-    const twenty = await searchRepo.search([`inauthor:${testData.author[0]}`], 20);
+    const twenty = await searchRepo.search([`inauthor:${testData.author[0]}`], 20, 0);
     expect(twenty.items).toBeDefined();
     expect(twenty.items?.length).toEqual(20);
   });
