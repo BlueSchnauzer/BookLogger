@@ -2,18 +2,16 @@ import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 
 /**日付(読んだ記録)チェック */
 export const validateReadingDate = (readingDate: string): boolean => {
-	if (!readingDate) { return false; }
-
-	return true;
+  return !!readingDate;
 }
 
 /**ページ数(読んだ記録)チェック */
 export const validateReadingCount = (readingCount: number, pageCount: number): boolean => {
-	if (!readingCount || readingCount < 1 || pageCount < readingCount) {
-		return false;
-	}
+  if (!readingCount || readingCount < 1 || pageCount < readingCount) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 export const validatePutBookInfo = ({ bookInfo, isCompleteReading }: { bookInfo: BookInfo, isCompleteReading: boolean }): boolean => {
@@ -29,8 +27,8 @@ export const validatePutBookInfo = ({ bookInfo, isCompleteReading }: { bookInfo:
       return;
     }
     if (!validateReadingCount(item.value.pageCount, bookInfo.getPageCount())) {
-        result = false;
-        return;
+      result = false;
+      return;
     }
   });
 
