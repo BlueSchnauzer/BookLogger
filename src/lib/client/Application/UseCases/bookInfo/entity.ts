@@ -1,5 +1,5 @@
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo"
-import type { bookInfoChangeResponse } from "$lib/client/Utils/interface.ts/bookInfo";
+import type { bookInfoChangeResponse } from "$lib/client/Application/UseCases/interface";
 import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
 import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
 import { convertReadingDateToDate } from "$lib/client/Utils/date";
@@ -8,7 +8,9 @@ import { validateReadingCount, validateReadingDate } from "$lib/client/Utils/val
 export class BookInfoEntityUseCase {
   constructor(private _entity: BookInfo) { }
 
-  public getEntity() { return this._entity; }
+  public getEntity() {
+    return this._entity;
+  }
 
   public setPageCount(pageCount: number) {
     this._entity.setPageCount(pageCount);

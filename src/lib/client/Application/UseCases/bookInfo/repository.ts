@@ -1,6 +1,6 @@
 import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
-import type { bookInfoChangeResponse } from "$lib/client/Utils/interface.ts/bookInfo";
+import type { bookInfoChangeResponse } from "$lib/client/Application/UseCases/interface";
 import { getPageHistoryMapInCurrentWeek } from "$lib/client/Utils/pageHistory";
 import type { books_v1 } from "googleapis";
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
