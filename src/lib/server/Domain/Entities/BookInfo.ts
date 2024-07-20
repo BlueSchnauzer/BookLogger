@@ -151,7 +151,7 @@ export class BookInfo {
 	}
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
-	public hasCompleteHistory() {
+	private hasCompleteHistory() {
 		if (!this._pageHistories?.length) { return false; }
 
 		let result = false;
