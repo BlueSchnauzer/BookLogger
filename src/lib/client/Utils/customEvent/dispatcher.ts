@@ -1,10 +1,10 @@
-import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import type { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import { createEventDispatcher } from "svelte";
 
 export interface bookInfoDispatchParameter {
   message: string,
-  updatedItem?: BookInfo,
+  updatedItem?: BookInfoView,
   deletedId?: Id
 }
 
@@ -18,7 +18,7 @@ export interface bookSearchEvents {
   failed: string;
 }
 
-export const dispatchBookInfoRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: Id) => {
+export const dispatchBookInfoRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfoView, deletedId?: Id) => {
   const dispatch = createEventDispatcher<bookInfoEvents>();
   if (isSuccess) {
     dispatch('success', { message, updatedItem, deletedId });

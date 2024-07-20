@@ -16,26 +16,27 @@ export const handleFailure = (message: string, target: string) => {
 
 const applyChange = (bookInfoViews: BookInfoView[], detail: bookInfoDispatchParameter, isBooksRoute: boolean) => {
   //一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
-  let bookInfos = bookInfoViews.map(item => item.bookInfo);
-  let appliedItems: BookInfo[] = [];
+  let copiedViews = [...bookInfoViews];
+  let appliedViews: BookInfoView[] = [];
 
+  //updatedItemがBookInfoViewなので、上手く動くか確認
   if (detail.updatedItem) {
-    const oldItem = bookInfos.find(item => item.getId()?.equals(detail.updatedItem?.getId()!));
+    const oldItem = copiedViews.find(item => item.id?.equals(detail.updatedItem?.id!));
 
-    if (!isBooksRoute && !oldItem?.getStatus().equals(detail.updatedItem.getStatus())) {
+    if (!isBooksRoute && !oldItem?.status.equals(detail.updatedItem.status)) {
       //全データ表示時以外で、ステータスが変わった場合は一覧から削除して、現在の表示から削除する
-      appliedItems = bookInfos.filter(item => item.getId()?.equals(detail.updatedItem?.getId()!));
+      appliedViews = copiedViews.filter(item => item.id?.equals(detail.updatedItem?.id!));
     }
     else {
       //編集したアイテムを一覧に反映する
-      const index = bookInfos.findIndex(item => item.getId()?.equals(detail.updatedItem?.getId()!));
-      appliedItems = [...bookInfos.slice(0, index), detail.updatedItem, ...bookInfos.slice(index + 1)];
+      const index = copiedViews.findIndex(item => item.id?.equals(detail.updatedItem?.id!));
+      appliedViews = [...copiedViews.slice(0, index), detail.updatedItem, ...copiedViews.slice(index + 1)];
     }
   }
   if (detail.deletedId) {
     //削除したアイテムを一覧からも削除する
-    appliedItems = bookInfos.filter(item => item.getId()?.equals(detail.deletedId!));
+    appliedViews = copiedViews.filter(item => item.id?.equals(detail.deletedId!));
   }
 
-  return appliedItems.map(item => new BookInfoView(item));
+  return appliedViews;
 }
