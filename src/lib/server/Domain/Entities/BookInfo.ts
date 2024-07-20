@@ -163,12 +163,6 @@ export class BookInfo {
 
 		return result;
 	}
-
-	/**pageHistoryの中から最大のページ数を取得する。*/
-	public getMaxPageCountFromHistory(): number | undefined {
-		if (!this._pageHistories?.length) { return undefined; }
-		return this._pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
-	}
 }
 
 /**書誌情報のEntityを生成するためのプロパティ */

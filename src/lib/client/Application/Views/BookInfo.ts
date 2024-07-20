@@ -96,7 +96,13 @@ export class BookInfoView {
   /**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
   public getProgressByPercent() {
     //小数点を抜いて、パーセントに変換する。
-    const ratio = Math.trunc(this.bookInfo.getMaxPageCountFromHistory()! / this.bookInfo.getPageCount() * 100);
+    const ratio = Math.trunc(this.getMaxPageCountFromHistory()! / this.pageCount * 100);
     return `${ratio.toString()}%`;
   }
+
+  /**pageHistoryの中から最大のページ数を取得する。*/
+	private getMaxPageCountFromHistory(): number | undefined {
+		if (!this.pageHistories?.length) { return undefined; }
+		return this.pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
+	}
 }
