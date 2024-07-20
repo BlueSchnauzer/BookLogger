@@ -1,0 +1,54 @@
+import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo"
+import type { bookInfoChangeResponse } from "$lib/client/Utils/interface.ts/bookInfo";
+import { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
+import { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import { convertReadingDateToDate } from "$lib/client/Utils/date";
+import { validateReadingCount, validateReadingDate } from "$lib/client/Utils/validation";
+
+export class BookInfoEntityUseCase {
+  constructor(private _entity: BookInfo) { }
+
+  public getEntity() { return this._entity; }
+
+  public setPageCount(pageCount: number) {
+    this._entity.setPageCount(pageCount);
+  }
+
+  public changeFavorite() {
+    this._entity.changeFavorite();
+  }
+
+  public setStatus(status: Status) {
+    this._entity.setStatus(status);
+  }
+
+  public setMemorandum(memorandum: string) {
+    this._entity.setMemorandum(memorandum);
+  }
+
+  public addPageHistory(readingDate: string, readingCount: number): bookInfoChangeResponse {
+    const isValidDate = validateReadingDate(readingDate);
+    const isValidCount = validateReadingCount(readingCount, this._entity.getPageCount());
+    if (!isValidDate || !isValidCount) { return { isSuccess: false, message: '' }; }
+
+    const item = new PageHistory({
+      date: convertReadingDateToDate(readingDate),
+      pageCount: readingCount
+    });
+
+    let message = '';
+    let status = undefined;
+    if (this._entity.getStatus().value === 'wish' && this._entity.getPageHistories()?.length === 1) {
+      status = new Status('reading');
+      message = 'ステータスを「読んでいる本」に変更しました。';
+    } else if (this._entity.getStatus().value !== 'complete' && readingCount === this._entity.getPageCount()) {
+      status = new Status('complete');
+      message = 'ステータスを「読み終わった本」に変更しました。';
+    }
+
+    this._entity.addPageHistory(item);
+    if (status) { this._entity.setStatus(status); }
+
+    return { isSuccess: true, message };
+  }
+}
