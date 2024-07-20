@@ -1,13 +1,55 @@
 import type { typeForBottomLabel } from "$lib/customTypes";
 import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
+import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
+import type { Identifiers } from "$lib/server/Domain/ValueObjects/BookInfo/Identifier";
+import type { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
+import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
+import type { ObjectId } from "mongodb";
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
 export class BookInfoView {
-  constructor(public bookInfo: BookInfo) { }
+  public readonly id?: Id;
+	public readonly userId: UserId;
+	public readonly title: string;
+	public readonly author: string[];
+	public readonly thumbnail: string;
+	public readonly createDate: Date;
+	public readonly updateDate: Date;
+	public readonly pageCount: number;
+	public readonly isFavorite: boolean;
+	public readonly status: Status;
+	public readonly memorandum: string;
+	public readonly isVisible: boolean;
+	public readonly completeDate?: Date;
+	public readonly pageHistories?: PageHistory[];
+	public readonly identifiers?: Identifiers;
+	public readonly shelfCategories?: ObjectId[]
+	public readonly gapiId?: string;
+
+  constructor(bookInfo: BookInfo) {
+    this.id = bookInfo.getId();
+    this.userId = bookInfo.getUserId();
+    this.title = bookInfo.getTitle();
+    this.author = bookInfo.getAuthor();
+    this.thumbnail = bookInfo.getThumbnail();
+    this.createDate = bookInfo.getCreateDate();
+    this.updateDate = bookInfo.getUpdateDate();
+    this.pageCount = bookInfo.getPageCount();
+    this.isFavorite = bookInfo.getIsFavorite();
+    this.status = bookInfo.getStatus();
+    this.memorandum = bookInfo.getMemorandum();
+    this.isVisible = bookInfo.getIsVisible();
+    this.completeDate = bookInfo.getCompleteDate();
+    this.pageHistories = bookInfo.getPageHistories();
+    this.identifiers = bookInfo.getIdentifiers();
+    this.shelfCategories = bookInfo.getShelfCategories();
+    this.gapiId = bookInfo.getGapiId();
+  }
 
   /**タイトルを取得する(存在しなければ「データ無し」を返す) */
   public getTitleLabel() {
-    return this.bookInfo.getTitle() ?? 'データ無し';
+    return this.title ?? 'データ無し';
   }
 
   /**書誌データの日付を画面表示用の形式に変換する。 */
@@ -15,13 +57,13 @@ export class BookInfoView {
     let target: Date | undefined;
     switch (dateType) {
       case 'create':
-        target = this.bookInfo.getCreateDate();
+        target = this.createDate;
         break;
       case 'update':
-        target = this.bookInfo.getUpdateDate();
+        target = this.updateDate;
         break;
       case 'complete':
-        target = this.bookInfo.getCompleteDate();
+        target = this.completeDate;
         break;
     }
     if (!target) { return 'データ無し'; }
@@ -48,7 +90,7 @@ export class BookInfoView {
   }
 
   public isDisplayableProgress() {
-    return (this.bookInfo.getPageCount() && this.bookInfo.getPageCount() > 0) && (this.bookInfo.getPageHistories() && this.bookInfo.getPageHistories()!.length > 0)
+    return (this.pageCount && this.pageCount > 0) && (this.pageHistories && this.pageHistories?.length > 0)
   }
 
   /**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
