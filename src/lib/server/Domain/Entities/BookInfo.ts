@@ -27,23 +27,23 @@ export class BookInfo {
 	private _shelfCategories?: ObjectId[]
 	private _gapiId?: string;
 
-	public getId() { return this._id; }
-	public getUserId() { return this._userId; }
-	public getTitle() { return this._title; }
-	public getAuthor() { return this._author; }
-	public getThumbnail() { return this._thumbnail; }
-	public getCreateDate() { return this._createDate; }
-	public getUpdateDate() { return this._updateDate; }
-	public getPageCount() { return this._pageCount; }
-	public getIsFavorite() { return this._isFavorite; }
-	public getStatus() { return this._status; }
-	public getMemorandum() { return this._memorandum; }
-	public getIsVisible() { return this._isVisible; }
-	public getCompleteDate() { return this._completeDate; }
-	public getPageHistories() { return this._pageHistories; }
-	public getIdentifiers() { return this._identifiers; }
-	public getShelfCategories() { return this._shelfCategories; }
-	public getGapiId() { return this._gapiId; }
+	get id() { return this._id; }
+	get userId() { return this._userId; }
+	get title() { return this._title; }
+	get author() { return this._author; }
+	get thumbnail() { return this._thumbnail; }
+	get createDate() { return this._createDate; }
+	get updateDate() { return this._updateDate; }
+	get pageCount() { return this._pageCount; }
+	get isFavorite() { return this._isFavorite; }
+	get status() { return this._status; }
+	get memorandum() { return this._memorandum; }
+	get isVisible() { return this._isVisible; }
+	get completeDate() { return this._completeDate; }
+	get pageHistories() { return this._pageHistories; }
+	get identifiers() { return this._identifiers; }
+	get shelfCategories() { return this._shelfCategories; }
+	get gapiId() { return this._gapiId; }
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);

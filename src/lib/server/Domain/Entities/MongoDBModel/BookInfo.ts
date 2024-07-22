@@ -1,9 +1,9 @@
 import type { status } from '$lib/customTypes';
+import { BookInfo as BookInfoEntity } from '$lib/server/Domain/Entities/BookInfo';
+import type { identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
+import type { pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
 import type { books_v1 } from 'googleapis';
 import { ObjectId } from 'mongodb';
-import type { pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
-import type { identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
-import { BookInfo as BookInfoEntity } from '$lib/server/Domain/Entities/BookInfo';
 
 /**MongoDB内での書誌情報
  * SQLを経由しないので、
@@ -36,21 +36,21 @@ export default class BookInfoMongoDBModel {
 	 */
 	constructor(resource?: books_v1.Schema$Volume | BookInfoEntity, userId?: string) {
 		if (resource instanceof BookInfoEntity) {
-			this.userId = resource.getUserId().value;
-			this.title = resource.getTitle();
-			this.author = resource.getAuthor();
-			this.thumbnail = resource.getThumbnail();
-			this.createDate = resource.getCreateDate();
-			this.updateDate = resource.getUpdateDate();
-			this.pageCount = resource.getPageCount();
-			this.status = resource.getStatus().value;
-			this.isFavorite = resource.getIsFavorite();
-			this.memorandum = resource.getMemorandum();
-			this.isVisible = resource.getIsVisible();
-			this._id = resource.getId() ? new ObjectId(resource.getId()?.value) : undefined;
-			this.pageHistories = resource.getPageHistories() ? resource.getPageHistories()?.map(item => item.value) : [];
-			this.identifiers = resource.getIdentifiers()?.value;
-			this.gapiId = resource.getGapiId();
+			this.userId = resource.userId.value;
+			this.title = resource.title;
+			this.author = resource.author;
+			this.thumbnail = resource.thumbnail;
+			this.createDate = resource.createDate;
+			this.updateDate = resource.updateDate;
+			this.pageCount = resource.pageCount;
+			this.status = resource.status.value;
+			this.isFavorite = resource.isFavorite;
+			this.memorandum = resource.memorandum;
+			this.isVisible = resource.isVisible;
+			this._id = resource.id ? new ObjectId(resource.id?.value) : undefined;
+			this.pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => item.value) : [];
+			this.identifiers = resource.identifiers?.value;
+			this.gapiId = resource.gapiId;
 		}
 		else {
 			const currentDate = new Date;

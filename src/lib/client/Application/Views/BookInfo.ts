@@ -28,23 +28,23 @@ export class BookInfoView {
 	public readonly gapiId?: string;
 
   constructor(bookInfo: BookInfo) {
-    this.id = bookInfo.getId();
-    this.userId = bookInfo.getUserId();
-    this.title = bookInfo.getTitle();
-    this.author = bookInfo.getAuthor();
-    this.thumbnail = bookInfo.getThumbnail();
-    this.createDate = bookInfo.getCreateDate();
-    this.updateDate = bookInfo.getUpdateDate();
-    this.pageCount = bookInfo.getPageCount();
-    this.isFavorite = bookInfo.getIsFavorite();
-    this.status = bookInfo.getStatus();
-    this.memorandum = bookInfo.getMemorandum();
-    this.isVisible = bookInfo.getIsVisible();
-    this.completeDate = bookInfo.getCompleteDate();
-    this.pageHistories = bookInfo.getPageHistories();
-    this.identifiers = bookInfo.getIdentifiers();
-    this.shelfCategories = bookInfo.getShelfCategories();
-    this.gapiId = bookInfo.getGapiId();
+    this.id = bookInfo.id;
+    this.userId = bookInfo.userId;
+    this.title = bookInfo.title;
+    this.author = bookInfo.author;
+    this.thumbnail = bookInfo.thumbnail;
+    this.createDate = bookInfo.createDate;
+    this.updateDate = bookInfo.updateDate;
+    this.pageCount = bookInfo.pageCount;
+    this.isFavorite = bookInfo.isFavorite;
+    this.status = bookInfo.status;
+    this.memorandum = bookInfo.memorandum;
+    this.isVisible = bookInfo.isVisible;
+    this.completeDate = bookInfo.completeDate;
+    this.pageHistories = bookInfo.pageHistories;
+    this.identifiers = bookInfo.identifiers;
+    this.shelfCategories = bookInfo.shelfCategories;
+    this.gapiId = bookInfo.gapiId;
   }
 
   /**タイトルを取得する(存在しなければ「データ無し」を返す) */

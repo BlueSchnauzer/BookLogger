@@ -30,7 +30,7 @@ export class BookInfoEntityUseCase {
 
   public addPageHistory(readingDate: string, readingCount: number): bookInfoChangeResponse {
     const isValidDate = validateReadingDate(readingDate);
-    const isValidCount = validateReadingCount(readingCount, this._entity.getPageCount());
+    const isValidCount = validateReadingCount(readingCount, this._entity.pageCount);
     if (!isValidDate || !isValidCount) { return { isSuccess: false, message: '' }; }
 
     const item = new PageHistory({
@@ -40,10 +40,10 @@ export class BookInfoEntityUseCase {
 
     let message = '';
     let status = undefined;
-    if (this._entity.getStatus().value === 'wish' && this._entity.getPageHistories()?.length === 1) {
+    if (this._entity.status.value === 'wish' && this._entity.pageHistories?.length === 1) {
       status = new Status('reading');
       message = 'ステータスを「読んでいる本」に変更しました。';
-    } else if (this._entity.getStatus().value !== 'complete' && readingCount === this._entity.getPageCount()) {
+    } else if (this._entity.status.value !== 'complete' && readingCount === this._entity.pageCount) {
       status = new Status('complete');
       message = 'ステータスを「読み終わった本」に変更しました。';
     }

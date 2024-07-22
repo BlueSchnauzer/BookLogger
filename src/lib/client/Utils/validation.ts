@@ -18,15 +18,15 @@ export const validatePutBookInfo = ({ bookInfo, isCompleteReading }: { bookInfo:
   let result = true;
 
   //作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
-  if (!bookInfo.getPageHistories()) { return result; }
-  bookInfo.getPageHistories()?.forEach(item => {
+  if (!bookInfo.pageHistories) { return result; }
+  bookInfo.pageHistories?.forEach(item => {
     if (!result) { return; }
 
     if (!item.value.date) {
       result = false;
       return;
     }
-    if (!validateReadingCount(item.value.pageCount, bookInfo.getPageCount())) {
+    if (!validateReadingCount(item.value.pageCount, bookInfo.pageCount)) {
       result = false;
       return;
     }
@@ -34,7 +34,7 @@ export const validatePutBookInfo = ({ bookInfo, isCompleteReading }: { bookInfo:
 
   //読み終わっている場合、最終ページの記録があるか確認
   if (isCompleteReading && result) {
-    const isExist = bookInfo.getPageHistories()?.findIndex(item => item.value.pageCount === bookInfo.getPageCount());
+    const isExist = bookInfo.pageHistories?.findIndex(item => item.value.pageCount === bookInfo.pageCount);
     result = isExist !== -1 ? true : false;
   }
 
