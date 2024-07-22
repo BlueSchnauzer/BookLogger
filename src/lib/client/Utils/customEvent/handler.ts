@@ -1,6 +1,6 @@
-import type { bookInfoEvent, updateBookInfoParameter, deletionBookInfoParameter } from "$lib/client/Utils/customEvent/dispatcher";
-import { pushSuccessToast, pushErrorToast } from "$lib/client/Utils/toast";
 import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
+import type { deletionBookInfoParameter, updateBookInfoParameter } from "$lib/client/Utils/customEvent/dispatcher";
+import { pushErrorToast, pushSuccessToast } from "$lib/client/Utils/toast";
 
 export const handleUpdateSuccess = (bookInfoViews: BookInfoView[], paramter: updateBookInfoParameter, targetToast: string, isBooksRoute = false) => {
   //一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
