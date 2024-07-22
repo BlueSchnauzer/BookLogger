@@ -1,5 +1,5 @@
 import type { IBookSearchRepositories } from "$lib/server/Domain/repositories/BookSearch";
-import { BookSearchView } from "$lib/client/Application/Views/BookSearch";
+import { BookSearchView } from "$lib/client/Application/Views/bookSearch";
 
 /**書誌データの操作を管理するUseCase */
 export class BookSearchGoogleBooksAPIUseCase {

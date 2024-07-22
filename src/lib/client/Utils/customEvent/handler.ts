@@ -1,4 +1,4 @@
-import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
+import { BookInfoView } from "$lib/client/Application/Views/bookInfo";
 import type { deletionBookInfoParameter, updateBookInfoParameter } from "$lib/client/Utils/customEvent/dispatcher";
 import { pushErrorToast, pushSuccessToast } from "$lib/client/Utils/toast";
 
