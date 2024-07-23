@@ -14,21 +14,25 @@ export class BookInfoEntityUseCase {
 
   public setPageCount(pageCount: number) {
     this._entity.setPageCount(pageCount);
+    return new BookInfoView(this._entity);
   }
 
   public changeFavorite() {
     this._entity.changeFavorite();
+    return new BookInfoView(this._entity);
   }
 
   public setStatus(status: Status) {
     this._entity.setStatus(status);
+    return new BookInfoView(this._entity);
   }
 
   public setMemorandum(memorandum: string) {
     this._entity.setMemorandum(memorandum);
+    return new BookInfoView(this._entity);
   }
 
-  public addPageHistory(readingDate: string, readingCount: number): bookInfoChangeResponse {
+  public addPageHistory(readingDate: string, readingCount: number) {
     const isValidDate = validateReadingDate(readingDate);
     const isValidCount = validateReadingCount(readingCount, this._entity.pageCount);
     if (!isValidDate || !isValidCount) { return { isSuccess: false, message: '' }; }
@@ -51,6 +55,6 @@ export class BookInfoEntityUseCase {
     this._entity.addPageHistory(item);
     if (status) { this._entity.setStatus(status); }
 
-    return { isSuccess: true, message };
+    return { isSuccess: true, message, view: new BookInfoView(this._entity) };
   }
 }
