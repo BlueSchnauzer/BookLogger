@@ -16,7 +16,7 @@ describe('get', () => {
     const response = await repos.get();
 
     expect(response.length).toEqual(1);
-    expect(response[0].title()).toEqual(dbModels[0].title);
+    expect(response[0].title).toEqual(dbModels[0].title);
   });
 
   it('エラーになった時に対応した戻り値を返すこと？', () => {
@@ -55,7 +55,7 @@ describe('getByStatus', () => {
     const response = await repos.getByStatus('wish');
 
     expect(response.length).toEqual(1);
-    expect(response[0].status().value).toEqual('wish');
+    expect(response[0].status.value).toEqual('wish');
   });
 
   it('statusにreadingを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', async () => {
@@ -63,7 +63,7 @@ describe('getByStatus', () => {
     const response = await repos.getByStatus('reading');
 
     expect(response.length).toEqual(1);
-    expect(response[0].status().value).toEqual('reading');
+    expect(response[0].status.value).toEqual('reading');
   });
 
   it('statusにcompleteを指定してリクエストした際に、対応したレスポンスを戻り値で返すこと', async () => {
@@ -71,7 +71,7 @@ describe('getByStatus', () => {
     const response = await repos.getByStatus('complete');
 
     expect(response.length).toEqual(1);
-    expect(response[0].status().value).toEqual('complete');
+    expect(response[0].status.value).toEqual('complete');
   });
 });
 
@@ -98,7 +98,7 @@ describe('getRecent', () => {
     const response = await repos.getRecent();
 
     expect(response).not.toBeUndefined();
-    expect(response!.pageHistories()?.length).toEqual(2);
+    expect(response!.pageHistories?.length).toEqual(2);
   });
 });
 

@@ -253,9 +253,9 @@ describe('update', () => {
 
     //以下の5つだけ更新可能
     testData.changeFavorite();
-    testData.setPageCount(500);
+    testData.pageCount = 500;
     testData.setStatus(new Status('complete'));
-    testData.setMemorandum('メモ欄編集');
+    testData.memorandum = 'メモ欄編集';
     testData.addPageHistory(new PageHistory({ date: new Date, pageCount: 100 }));
 
     const repos = new BookInfoMongoDBResource(col, testData.userId);

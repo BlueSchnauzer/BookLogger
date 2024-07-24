@@ -13,7 +13,7 @@ export class BookInfoEntityUseCase {
   }
 
   public setPageCount(pageCount: number) {
-    this._entity.setPageCount(pageCount);
+    this._entity.pageCount = pageCount;
     return new BookInfoView(this._entity);
   }
 
@@ -28,7 +28,7 @@ export class BookInfoEntityUseCase {
   }
 
   public setMemorandum(memorandum: string) {
-    this._entity.setMemorandum(memorandum);
+    this._entity.memorandum = memorandum;
     return new BookInfoView(this._entity);
   }
 

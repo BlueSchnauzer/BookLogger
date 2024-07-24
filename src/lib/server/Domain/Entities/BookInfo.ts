@@ -45,6 +45,9 @@ export class BookInfo {
 	get shelfCategories() { return this._shelfCategories; }
 	get gapiId() { return this._gapiId; }
 
+	set pageCount(pageCount: number) { this._pageCount = pageCount; }
+	set memorandum(memorandum: string) { this._memorandum = memorandum; }
+
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
 
@@ -113,10 +116,6 @@ export class BookInfo {
 		);
 	}
 
-	public setPageCount(pageCount: number) {
-		this._pageCount = pageCount;
-	}
-
 	public changeFavorite() {
 		this._isFavorite = !this._isFavorite;
 	}
@@ -128,17 +127,13 @@ export class BookInfo {
 		this._status = status;
 	}
 
-	public setMemorandum(memorandum: string) {
-		this._memorandum = memorandum;
-	}
-
 	public addPageHistory(item: PageHistory) {
 		if (this._pageHistories) {
 			this._pageHistories.push(item);
 		} else {
 			this._pageHistories = [item];
-		}	
-	}	
+		}
+	}
 
 	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
 	private addCompleteHistory() {
