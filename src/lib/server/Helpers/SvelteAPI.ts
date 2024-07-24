@@ -1,5 +1,5 @@
 import { verifyAndGetUid } from "$lib/server/verification";
-import { UserId } from "../Domain/ValueObjects/BookInfo/UserId";
+import { UserId } from "$lib/client/Domain/ValueObjects/BookInfo/UserId";
 
 //verifyAndGetUid()はどっかのタイミングで共通関数で置きなおす。
 
@@ -16,6 +16,6 @@ export const verifyAndCreateUserId = async (idToken: string) => {
     console.log('UserIdの取得に失敗しました。');
     return undefined;
   }
-  
+
   return userId;
 }

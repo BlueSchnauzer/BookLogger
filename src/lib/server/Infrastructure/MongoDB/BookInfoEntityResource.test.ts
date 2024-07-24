@@ -1,16 +1,16 @@
-import { beforeAll, describe, expect, it, vi } from "vitest";
-import { BookInfoEntityResource } from "./BookInfoEntityResource";
+import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import { getEntityTestData, getEntityTestDatas } from "$lib/vitest-setup";
 import { json } from "@sveltejs/kit";
-import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 import type { books_v1 } from "googleapis";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import { BookInfoEntityResource } from "./BookInfoEntityResource";
 
 describe('get', () => {
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
     const dbModels: BookInfoMongoDBModel[] = [];
     dbModels.push(new BookInfoMongoDBModel(getEntityTestData()));
-    mockFetch.mockImplementation(async () => json(dbModels, {status: 200}));
+    mockFetch.mockImplementation(async () => json(dbModels, { status: 200 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.get();
@@ -35,7 +35,7 @@ describe('getByStatus', () => {
     mockFetch.mockImplementation(async input => {
       if (input === `${requestUrl}?type=wish`) {
         return json([dbModels[0]], { status: 200 });
-      } 
+      }
       else if (input === `${requestUrl}?type=reading`) {
         return json([dbModels[1]], { status: 200 });
       }
@@ -87,12 +87,12 @@ describe('getRecent', () => {
     mockFetch.mockImplementation(async input => {
       if (input === `${requestUrl}?type=recent`) {
         return json(dbModel, { status: 200 });
-      } 
+      }
 
       return new Response('データが見つかりません', { status: 400 });
     });
   });
-  
+
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {
     const repos = new BookInfoEntityResource();
     const response = await repos.getRecent();
@@ -112,7 +112,7 @@ describe('getPageHistory', () => {
 
     const repos = new BookInfoEntityResource();
     const response = await repos.getPageHistory();
-    
+
     expect(response[0].length).toEqual(2);
     expect(response[0][0].value.pageCount).toEqual(data.pageHistories![0].pageCount);
     expect(response[0][1].value.pageCount).toEqual(data.pageHistories![1].pageCount);
@@ -122,7 +122,7 @@ describe('getPageHistory', () => {
 describe('insert', () => {
   it('SvelteAPIへのリクエストが成功した際に、成功のレスポンスを返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('書誌データの作成に成功しました。', {status: 201} ));
+    mockFetch.mockImplementation(async () => new Response('書誌データの作成に成功しました。', { status: 201 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.insert({} as books_v1.Schema$Volume);
@@ -132,7 +132,7 @@ describe('insert', () => {
 
   it('SvelteAPIへのリクエストが失敗した際に、失敗のレスポンスを返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('書誌データの作成に失敗しました。', {status: 500} ));
+    mockFetch.mockImplementation(async () => new Response('書誌データの作成に失敗しました。', { status: 500 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.insert({} as books_v1.Schema$Volume);
@@ -144,7 +144,7 @@ describe('insert', () => {
 describe('update', () => {
   it('SvelteAPIへのリクエストが成功した際に、成功のレスポンスを返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('書誌データの更新に成功しました。', {status: 200} ));
+    mockFetch.mockImplementation(async () => new Response('書誌データの更新に成功しました。', { status: 200 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.update(getEntityTestData(), true);
@@ -154,7 +154,7 @@ describe('update', () => {
 
   it('SvelteAPIへのリクエストが失敗した際に、失敗のレスポンスを返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('書誌データの更新に失敗しました。', {status: 500} ));
+    mockFetch.mockImplementation(async () => new Response('書誌データの更新に失敗しました。', { status: 500 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.update(getEntityTestData(), true);
@@ -166,7 +166,7 @@ describe('update', () => {
 describe('delete', () => {
   it('SvelteAPIへのリクエストが成功した際に、成功のレスポンスを返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('書誌データの削除に成功しました。', {status: 200} ));
+    mockFetch.mockImplementation(async () => new Response('書誌データの削除に成功しました。', { status: 200 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.delete('test');
@@ -176,7 +176,7 @@ describe('delete', () => {
 
   it('SvelteAPIへのリクエストが失敗した際に、失敗のレスポンスを返すこと', async () => {
     const mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('書誌データの削除に失敗しました。', {status: 500} ));
+    mockFetch.mockImplementation(async () => new Response('書誌データの削除に失敗しました。', { status: 500 }));
 
     const repos = new BookInfoEntityResource();
     const response = await repos.delete('test');

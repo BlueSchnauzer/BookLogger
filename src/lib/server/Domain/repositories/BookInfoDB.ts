@@ -1,14 +1,14 @@
-import type MongoDBModel from "../Entities/MongoDBModel/BookInfo";
-import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import type { pageHistory } from "../ValueObjects/BookInfo/PageHistory";
+import type { id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
+import type { pageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
+import type { status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
+import type MongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
 
 /**DBとの書誌データの取得・保存を扱うリポジトリ
  * 返却する値はDBモデルかプリミティブ型(のみを含んだ型)
  * SvelteのAPIルートから呼び出されることを想定しているので、
  * クラス形式のEntityではなく、プレーンオブジェクトのみを返す。
  */
-export interface IBookInfoDBRepositories{
+export interface IBookInfoDBRepositories {
   /**書誌データを取得する */
   get(): Promise<MongoDBModel[]>;
   /**statusが引数と一致した書誌データを取得する */

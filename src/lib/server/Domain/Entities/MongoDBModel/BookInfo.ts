@@ -1,7 +1,7 @@
-import type { status } from '$lib/customTypes';
-import { BookInfo as BookInfoEntity } from '$lib/server/Domain/Entities/BookInfo';
-import type { identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
-import type { pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
+import { BookInfo as BookInfoEntity } from '$lib/client/Domain/Entities/BookInfo';
+import type { identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
+import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { books_v1 } from 'googleapis';
 import { ObjectId } from 'mongodb';
 

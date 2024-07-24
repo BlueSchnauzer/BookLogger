@@ -1,5 +1,5 @@
 //マッチ関数を簡略化するために追加
-import { BookInfo as BookInfoEntity, type bookInfoProperties } from '$lib/server/Domain/Entities/BookInfo';
+import { BookInfo as BookInfoEntity, type bookInfoProperties } from '$lib/client/Domain/Entities/BookInfo';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 import { ObjectId } from 'mongodb';
 import 'vitest-dom/extend-expect';

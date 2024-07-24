@@ -1,5 +1,5 @@
 import type { BookInfoView } from "$lib/client/Application/Views/bookInfo";
-import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
+import type { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
 import { createEventDispatcher } from "svelte";
 
 export interface bookInfoEvent<T> {

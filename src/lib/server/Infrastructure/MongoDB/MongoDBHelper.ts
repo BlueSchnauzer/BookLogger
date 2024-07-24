@@ -1,7 +1,7 @@
 import * as env from '$env/static/private';
 import * as mongoDB from 'mongodb';
 import type BookInfoModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
-import type { BookShelf } from '$lib/server/Domain/Entities/BookShelf';
+import type BookShelf from '$lib/server/Domain/Entities/MongoDBModel/BookShelf';
 
 //EntityでなくMongoDB用のModelを設定する
 export type bookInfosCollection = mongoDB.Collection<BookInfoModel>;

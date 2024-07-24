@@ -1,7 +1,7 @@
-import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import type { id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import type { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
-import type { status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
+import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
+import type { id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
+import type { PageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
+import type { status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
 import type { books_v1 } from "googleapis";
 
 /**書誌データのEntityの取得や更新を扱うリポジトリ

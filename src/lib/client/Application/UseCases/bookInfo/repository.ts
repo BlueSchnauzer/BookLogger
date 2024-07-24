@@ -1,9 +1,9 @@
 import type { bookInfoChangeResponse } from "$lib/client/Application/UseCases/interface";
 import { BookInfoView } from "$lib/client/Application/Views/bookInfo";
+import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
+import type { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
 import { getPageHistoryMapInCurrentWeek } from "$lib/client/Utils/pageHistory";
-import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
 import type { IBookInfoEntityRepository } from "$lib/server/Domain/repositories/BookInfoEntity";
-import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
 import type { books_v1 } from "googleapis";
 
 /**書誌データの操作を管理するUseCase */

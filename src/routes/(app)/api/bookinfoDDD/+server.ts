@@ -1,6 +1,6 @@
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { validatePutBookInfo } from '$lib/client/Utils/validation';
 import collections from '$lib/server/database/collections';
-import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
 import DBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
@@ -60,7 +60,7 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
   const item = await request.json() as { bookInfo: BookInfo, isCompleteReading: boolean };
   const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
 
-  if (!validatePutBookInfo(item)) { return new Response('データが不正です', { status: 400}); }
+  if (!validatePutBookInfo(item)) { return new Response('データが不正です', { status: 400 }); }
   return await repos.update(new DBModel(item.bookInfo), item.isCompleteReading);
 }
 

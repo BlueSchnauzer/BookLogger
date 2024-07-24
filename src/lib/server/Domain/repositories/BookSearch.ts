@@ -3,7 +3,7 @@ import type { books_v1 } from "googleapis";
 /**書誌データの検索を行うリポジトリ
  * GoogleBooksAPIに特化してしまっているので、汎用的な実装にはなっていない。
  */
-export interface IBookSearchRepositories{
+export interface IBookSearchRepositories {
   /**指定した検索条件で書誌APIにリクエストする
    * @param queries 検索条件
    * @param maxResults 取得件数
@@ -26,7 +26,7 @@ export interface IBookSearchRepositories{
    * @param startIndex データ取得開始位置
    */
   searchByQueries(booktitle: string, author: string, isbn_13: string, maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes>;
-  
+
   /**ISBNでリクエストして書影データを取得する */
   getThumbnailByIsbn(isbn_13: string): Promise<string>;
 }

@@ -1,9 +1,9 @@
 import * as env from '$env/static/private';
-import type { BookInfo } from '$lib/server/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
-import { PageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/server/Domain/ValueObjects/BookInfo/Status';
-import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
 import { BookInfoMongoDBResource } from "$lib/server/Infrastructure/MongoDB/BookInfoDBResource";
 import { getEntityTestData, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
 import { Collection, Db, MongoClient } from "mongodb";

@@ -1,31 +1,31 @@
+import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
+import type { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
+import type { Identifiers } from "$lib/client/Domain/ValueObjects/BookInfo/Identifier";
+import type { PageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
+import type { Status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
+import type { UserId } from "$lib/client/Domain/ValueObjects/BookInfo/UserId";
 import type { typeForBottomLabel } from "$lib/customTypes";
-import type { BookInfo } from "$lib/server/Domain/Entities/BookInfo";
-import type { Id } from "$lib/server/Domain/ValueObjects/BookInfo/Id";
-import type { Identifiers } from "$lib/server/Domain/ValueObjects/BookInfo/Identifier";
-import type { PageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
-import type { Status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import type { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
 import type { ObjectId } from "mongodb";
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
 export class BookInfoView {
   public readonly id?: Id;
-	public readonly userId: UserId;
-	public readonly title: string;
-	public readonly author: string[];
-	public readonly thumbnail: string;
-	public readonly createDate: Date;
-	public readonly updateDate: Date;
-	public readonly pageCount: number;
-	public readonly isFavorite: boolean;
-	public readonly status: Status;
-	public readonly memorandum: string;
-	public readonly isVisible: boolean;
-	public readonly completeDate?: Date;
-	public readonly pageHistories?: PageHistory[];
-	public readonly identifiers?: Identifiers;
-	public readonly shelfCategories?: ObjectId[]
-	public readonly gapiId?: string;
+  public readonly userId: UserId;
+  public readonly title: string;
+  public readonly author: string[];
+  public readonly thumbnail: string;
+  public readonly createDate: Date;
+  public readonly updateDate: Date;
+  public readonly pageCount: number;
+  public readonly isFavorite: boolean;
+  public readonly status: Status;
+  public readonly memorandum: string;
+  public readonly isVisible: boolean;
+  public readonly completeDate?: Date;
+  public readonly pageHistories?: PageHistory[];
+  public readonly identifiers?: Identifiers;
+  public readonly shelfCategories?: ObjectId[]
+  public readonly gapiId?: string;
 
   constructor(bookInfo: BookInfo) {
     this.id = bookInfo.id;
@@ -101,8 +101,8 @@ export class BookInfoView {
   }
 
   /**pageHistoryの中から最大のページ数を取得する。*/
-	private getMaxPageCountFromHistory(): number | undefined {
-		if (!this.pageHistories?.length) { return undefined; }
-		return this.pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
-	}
+  private getMaxPageCountFromHistory(): number | undefined {
+    if (!this.pageHistories?.length) { return undefined; }
+    return this.pageHistories?.reduce((max, item) => Math.max(max, item.value.pageCount), -Infinity)!;
+  }
 }
