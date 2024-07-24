@@ -1,5 +1,5 @@
 import { PUBLIC_BOOKSAPI_LIST } from "$env/static/public";
-import type { IBookSearchRepositories } from "$lib/server/Domain/Repositories/BookSearch";
+import type { IBookSearchRepositories } from "$lib/server/Domain/Repositories/IBookSearch";
 import type { books_v1 } from "googleapis";
 
 export class BookSearchGoogleBooksAPI implements IBookSearchRepositories {

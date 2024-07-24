@@ -2,7 +2,7 @@ import { BookInfo, type bookInfoProperties } from '$lib/client/Domain/Entities/B
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import BookInfoMongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
-import type { IBookSearchRepositories } from '$lib/server/Domain/Repositories/BookSearch';
+import type { IBookSearchRepositories } from '$lib/server/Domain/Repositories/IBookSearch';
 import { BookSearchGoogleBooksAPI } from '$lib/server/Infrastructure/GoogleBooksAPI/BookSearch';
 import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from '$lib/vitest-setup';
 import { describe, expect, it } from 'vitest';
