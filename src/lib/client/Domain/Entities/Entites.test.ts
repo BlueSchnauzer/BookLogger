@@ -1,11 +1,11 @@
-import { BookInfo, type bookInfoProperties } from '$lib/server/Domain/Entities/BookInfo';
+import { BookInfo, type bookInfoProperties } from '$lib/client/Domain/Entities/BookInfo';
+import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import BookInfoMongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import type { IBookSearchRepositories } from '$lib/server/Domain/repositories/BookSearch';
-import { PageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/server/Domain/ValueObjects/BookInfo/Status';
 import { BookSearchGoogleBooksAPI } from '$lib/server/Infrastructure/GoogleBooksAPI/BookSearch';
 import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from '$lib/vitest-setup';
 import { describe, expect, it } from 'vitest';
-import BookInfoMongoDBModel from './MongoDBModel/BookInfo';
 
 describe('BookInfoEntity', () => {
   describe('Entity生成', () => {
@@ -41,7 +41,7 @@ describe('BookInfoEntity', () => {
       expect(entity.title).toEqual(dbModel.title);
     });
   });
-  
+
   describe('changeStatus', () => {
     it('指定したStatusでEntityのStatusを更新できること', () => {
       const entity = new BookInfo(bookInfoPropertiesMock);
@@ -73,13 +73,13 @@ describe('BookInfoEntity', () => {
 
       expect(entity.pageHistories?.length).toEqual(3);
       expect(entity.pageHistories![2].value.pageCount).toEqual(100);
-    });  
+    });
 
     it('EntityのPageHistoriesがFalthyの場合、指定したPageHistoryを持った配列をEntityに追加できること', () => {
       const copiedMock: bookInfoProperties = {
         ...bookInfoPropertiesMock,
         pageHistories: undefined
-      };  
+      };
       const entity = new BookInfo(copiedMock);
       //expect(entity.pageHistories).not.toBeDefined();
 
@@ -87,8 +87,8 @@ describe('BookInfoEntity', () => {
       expect(entity.pageHistories).toBeDefined();
       expect(entity.pageHistories?.length).toEqual(1);
       expect(entity.pageHistories![0].value.pageCount).toEqual(100);
-    });  
-  });  
+    });
+  });
 
   // describe('getMaxPageCount', () => {
   //   it('PageHistories内の最大のページ数を取得できること', () => { 

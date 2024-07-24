@@ -1,11 +1,11 @@
-import type { ObjectId } from 'mongodb';
-import { UserId } from '$lib/server/Domain/ValueObjects/BookInfo/UserId';
-import { Status, type status } from "$lib/server/Domain/ValueObjects/BookInfo/Status";
-import { Id } from '$lib/server/Domain/ValueObjects/BookInfo/Id';
-import { PageHistory, type pageHistory } from '$lib/server/Domain/ValueObjects/BookInfo/PageHistory';
-import { Identifiers, type identifiers } from '$lib/server/Domain/ValueObjects/BookInfo/Identifier';
+import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import { Identifiers, type identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
+import { PageHistory, type pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status, type status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
+import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import type { books_v1 } from 'googleapis';
+import type { ObjectId } from 'mongodb';
 
 /**書誌情報のEntity */
 export class BookInfo {
