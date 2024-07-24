@@ -3,7 +3,7 @@ import type { pageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageH
 import type { status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
 import type { UserId } from "$lib/client/Domain/ValueObjects/BookInfo/UserId";
 import DBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
-import type { IBookInfoDBRepositories } from "$lib/server/Domain/repositories/BookInfoDB";
+import type { IBookInfoDBRepositories } from "$lib/server/Domain/Repositories/BookInfoDB";
 import type { bookInfosCollection } from "$lib/server/Infrastructure/MongoDB/MongoDBHelper";
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
 

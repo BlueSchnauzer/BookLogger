@@ -1,4 +1,4 @@
-import type { IBookSearchRepositories } from "$lib/server/Domain/repositories/BookSearch";
+import type { IBookSearchRepositories } from "$lib/server/Domain/Repositories/BookSearch";
 import { BookSearchView } from "$lib/client/Application/Views/bookSearch";
 
 /**書誌データの操作を管理するUseCase */
