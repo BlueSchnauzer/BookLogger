@@ -1,5 +1,5 @@
-import { ValueObjectsBase } from "$lib/server/Domain/ValueObjects/ValueObjectBase";
-import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
+import { ValueObjectsBase } from "$lib/client/Domain/ValueObjects/ValueObjectBase";
+import { ValidationError } from "$lib/client/Domain/Exceptions/ValidationError";
 
 /**ISBNを保持する */
 export class Identifiers extends ValueObjectsBase<identifiers> {

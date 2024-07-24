@@ -1,10 +1,10 @@
+import { ValidationError } from "$lib/client/Domain/Exceptions/ValidationError";
+import { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
+import { Identifiers } from "$lib/client/Domain/ValueObjects/BookInfo/Identifier";
+import { PageHistory, type pageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
+import { Status, type status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
+import { UserId } from "$lib/client/Domain/ValueObjects/BookInfo/UserId";
 import { describe, expect, it } from "vitest";
-import { UserId } from "$lib/server/Domain/ValueObjects/BookInfo/UserId";
-import { Identifiers } from "$lib/server/Domain/ValueObjects/BookInfo/Identifier";
-import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
-import { PageHistory, type pageHistory } from "$lib/server/Domain/ValueObjects/BookInfo/PageHistory";
-import { Id } from "./Id";
-import { Status, type status } from "./Status";
 
 describe('Id', () => {
   const testId = 'testId';

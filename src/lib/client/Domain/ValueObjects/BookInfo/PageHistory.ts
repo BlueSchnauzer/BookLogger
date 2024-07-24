@@ -1,5 +1,5 @@
-import { ValueObjectsBase } from "$lib/server/Domain/ValueObjects/ValueObjectBase";
-import { ValidationError } from "$lib/server/Domain/Exceptions/ValidationError";
+import { ValueObjectsBase } from "$lib/client/Domain/ValueObjects/ValueObjectBase";
+import { ValidationError } from "$lib/client/Domain/Exceptions/ValidationError";
 
 /**読んだ記録を保持する */
 export class PageHistory extends ValueObjectsBase<pageHistory> {
@@ -9,8 +9,8 @@ export class PageHistory extends ValueObjectsBase<pageHistory> {
   }
 
   protected validate(value: pageHistory): void {
-    if (!value || (!value.id || !value.date || value.pageCount < 0 )) { throw new ValidationError('PageHistoryの値が設定されていません'); }
-    if (typeof value.id !== 'string' || !this.validateDate(value.date) || typeof value.pageCount !== 'number' ) { throw new ValidationError('PageHistoryの型が不正です'); }
+    if (!value || (!value.id || !value.date || value.pageCount < 0)) { throw new ValidationError('PageHistoryの値が設定されていません'); }
+    if (typeof value.id !== 'string' || !this.validateDate(value.date) || typeof value.pageCount !== 'number') { throw new ValidationError('PageHistoryの型が不正です'); }
   }
 
   protected equalsCore(vo: ValueObjectsBase<pageHistory>): boolean {
@@ -31,7 +31,7 @@ export class PageHistory extends ValueObjectsBase<pageHistory> {
 
   protected convertValue(value: pageHistory): pageHistory {
     if (typeof value.date === 'string') { value.date = new Date(value.date); }
-    
+
     return value;
   }
 }
