@@ -1,4 +1,4 @@
-import type { BookInfoView } from "$lib/client/Application/Views/bookInfo";
+import type { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import type { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
 import { createEventDispatcher } from "svelte";
 

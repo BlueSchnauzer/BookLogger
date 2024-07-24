@@ -1,5 +1,5 @@
-import type { bookInfoChangeResponse } from "$lib/client/Application/UseCases/interface";
-import { BookInfoView } from "$lib/client/Application/Views/bookInfo";
+import type { bookInfoChangeResponse } from "$lib/client/Application/UseCases/Interface";
+import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
 import type { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
 import { getPageHistoryMapInCurrentWeek } from "$lib/client/Utils/pageHistory";

@@ -1,4 +1,4 @@
-import { BookInfoView } from "$lib/client/Application/Views/bookInfo";
+import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
 import { PageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
 import { Status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
