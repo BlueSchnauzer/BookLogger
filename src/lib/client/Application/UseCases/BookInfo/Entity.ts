@@ -2,8 +2,8 @@ import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
 import { PageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
 import { Status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
-import { convertReadingDateToDate } from "$lib/client/Utils/date";
-import { validateReadingCount, validateReadingDate } from "$lib/client/Utils/validation";
+import { convertReadingDateToDate } from "$lib/client/Utils/Date";
+import { validateReadingCount, validateReadingDate } from "$lib/client/Utils/Validation";
 
 export class BookInfoEntityUseCase {
   constructor(private _entity: BookInfo) { }

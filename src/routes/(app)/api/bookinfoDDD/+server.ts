@@ -1,5 +1,5 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import { validatePutBookInfo } from '$lib/client/Utils/validation';
+import { validatePutBookInfo } from '$lib/client/Utils/Validation';
 import collections from '$lib/server/database/collections';
 import DBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
