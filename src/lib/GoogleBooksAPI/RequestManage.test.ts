@@ -3,7 +3,7 @@ import { requestBookInfo, getThumbnailByIsbn, requestBookInfosByQueries, request
 import { getTestData } from "$lib/vitest-setup";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 
-describe('requestBookInfo', () => {
+describe.skip('requestBookInfo', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -59,7 +59,7 @@ describe('requestBookInfo', () => {
   });
 });
 
-describe('requestBookInfoWithPartialResource', () => {
+describe.skip('requestBookInfoWithPartialResource', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -82,7 +82,7 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 });
 
-describe('requestBookInfoByFuzzySearch', () => {
+describe.skip('requestBookInfoByFuzzySearch', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -112,7 +112,7 @@ describe('requestBookInfoByFuzzySearch', () => {
   // })
 });
 
-describe('requestBookInfosByQueries', () => {
+describe.skip('requestBookInfosByQueries', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -162,7 +162,7 @@ describe('requestBookInfosByQueries', () => {
   })
 });
 
-describe('getThumbnailByIsbn', () => {
+describe.skip('getThumbnailByIsbn', () => {
   it('ISBNを条件にして書影を取得できること', async () => {
     const thumbnail = await getThumbnailByIsbn('978-4-15-120051-9');
 

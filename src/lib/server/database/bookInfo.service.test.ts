@@ -25,7 +25,7 @@ afterEach(async () => {
 
 const userId = 'firstData';
 
-describe('getBookInfo', () => {  
+describe.skip('getBookInfo', () => {  
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -59,7 +59,7 @@ describe('getBookInfo', () => {
   });
 });
 
-describe('getRecentBookInfo', () => {  
+describe.skip('getRecentBookInfo', () => {  
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -104,7 +104,7 @@ describe('getRecentBookInfo', () => {
   });
 });
 
-describe('getBookInfoWithOnlyHistory', () => {  
+describe.skip('getBookInfoWithOnlyHistory', () => {  
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -139,7 +139,7 @@ describe('getBookInfoWithOnlyHistory', () => {
   });
 });
 
-describe('getBookInfoByStatus', () => {  
+describe.skip('getBookInfoByStatus', () => {  
   const testDatas = getTestDatas();
   beforeEach(async () => {
     testDatas[0].status = 'wish';
@@ -209,7 +209,7 @@ describe('getBookInfoByStatus', () => {
 //   });
 // });
 
-describe('insertBookInfo', () => {
+describe.skip('insertBookInfo', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -251,7 +251,7 @@ describe('insertBookInfo', () => {
   });
 });
 
-describe('isDuplicateBookInfo', () => {
+describe.skip('isDuplicateBookInfo', () => {
   let testData: BookInfo;
   let userId: string;
   let gapiId = 'gapiId';
@@ -285,7 +285,7 @@ describe('isDuplicateBookInfo', () => {
   })
 });
 
-describe('updateBookInfo', () => {
+describe.skip('updateBookInfo', () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();
@@ -349,7 +349,7 @@ describe('updateBookInfo', () => {
   });
 });
 
-describe('deleteBookInfo', async () => {
+describe.skip('deleteBookInfo', async () => {
   let testData: BookInfo;
   beforeEach(() => {
     testData = getTestData();

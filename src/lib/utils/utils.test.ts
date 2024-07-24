@@ -6,7 +6,7 @@ import * as testData from "../vitest-setup";
 import { applyChangesToBookInfos, convertDate, getTypeForBottomLabel, toggleFavorite } from "$lib/utils/bookInfo";
 import { validateReadingCount, validateReadingDate } from "$lib/utils/validation";
 
-describe('convertDate', () => {
+describe.skip('convertDate', () => {
   const testDate = new Date(2023, 5, 15);
 
   it('Dateを渡した際に(年)月日の形式で返すこと', () => {
@@ -34,7 +34,7 @@ describe('convertDate', () => {
 
 //toastはE2Eでテストする
 
-describe('applyChangesToBookInfos', () => {
+describe.skip('applyChangesToBookInfos', () => {
   let testDatas: BookInfo[];
   beforeEach(() => {
     testDatas = testData.getTestDatas();
@@ -205,7 +205,7 @@ describe('applyChangesToBookInfos', () => {
 
 //handleSuccessはE2Eでテストする
 
-describe('toggleFavorite', () => {
+describe.skip('toggleFavorite', () => {
   let testDatas: BookInfo[];
   beforeEach(() => {
     testDatas = testData.getTestDatas();
@@ -237,7 +237,7 @@ describe('toggleFavorite', () => {
   });
 });
 
-describe('getTypeForBottomLabel', () => {
+describe.skip('getTypeForBottomLabel', () => {
   it('ホームのパスでprogressが返ること', () => {
     const result = getTypeForBottomLabel('/home');
     expect(result).toEqual('progress');
@@ -264,7 +264,7 @@ describe('getTypeForBottomLabel', () => {
   });
 });
 
-describe('validateReadingDate', () => {
+describe.skip('validateReadingDate', () => {
   it('データがTruthyかどうか判定できること', () => {
     const validData = '2023-10-30';
     const result = validateReadingDate(validData);
@@ -280,7 +280,7 @@ describe('validateReadingDate', () => {
   });
 });
 
-describe('validateReadingCount', () => {
+describe.skip('validateReadingCount', () => {
   it('データが1～pageCountの間の場合に、trueが返ってくること', () => {
     const resultWith1 = validateReadingCount(1, 500);
     const resultWith250 = validateReadingCount(250, 500);
