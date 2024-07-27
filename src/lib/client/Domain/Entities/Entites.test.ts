@@ -20,11 +20,7 @@ describe('BookInfoEntity', () => {
 
     it('gapiオブジェクトからEntityを生成できること', async () => {
       const bookSearchRepos: IBookSearchRepository<books_v1.Schema$Volumes> = new BookSearchGoogleBooksAPI();
-      const result = await bookSearchRepos.search(
-        [`isbn:${bookInfoPropertiesMock.identifiers?.isbn_13}`],
-        10,
-        0
-      );
+      const result = await bookSearchRepos.searchByFuzzyQuery(`isbn:${bookInfoPropertiesMock.identifiers?.isbn_13}`, 10, 0);
 
       const entity = new BookInfo(result.items![0], testUserId1);
 
