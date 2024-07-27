@@ -1,7 +1,6 @@
-import type { IBookSearchRepository } from "$lib/client/Domain/Repositories/IBookSearch";
-import { BookSearchView } from "$lib/client/Application/Views/BookSearch";
-import { BookSearchGoogleBooksAPI } from "$lib/client/Infrastructure/GoogleBooksAPI/BookSearch";
 import type { BookSearchResultType } from "$lib/client/Application/Interface";
+import { BookSearchView } from "$lib/client/Application/Views/BookSearch";
+import type { IBookSearchRepository } from "$lib/client/Domain/Repositories/IBookSearch";
 
 /**書誌データの操作を管理するUseCase */
 export class BookSearchGoogleBooksAPIUseCase<T extends BookSearchResultType> {

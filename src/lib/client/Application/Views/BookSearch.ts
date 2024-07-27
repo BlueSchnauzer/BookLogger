@@ -1,4 +1,3 @@
-import type { books_v1 } from "googleapis";
 import type { BookSearchResultType } from "$lib/client/Application/Interface";
 
 export class BookSearchView<T extends BookSearchResultType> {
