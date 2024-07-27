@@ -1,10 +1,9 @@
 import * as env from '$env/static/private';
 import * as mongoDB from 'mongodb';
-import type BookInfoModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
-import type BookShelf from '$lib/server/Domain/Entities/MongoDBModel/BookShelf';
+import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type BookShelf from '$lib/server/Domain/Entities/MongoDB/BookShelfModel';
 
-//EntityでなくMongoDB用のModelを設定する
-export type bookInfosCollection = mongoDB.Collection<BookInfoModel>;
+export type bookInfosCollection = mongoDB.Collection<IBookInfoModel>;
 export type bookShelvesCollection = mongoDB.Collection<BookShelf>;
 
 export type collections = {
@@ -29,7 +28,7 @@ async function connectToDatabase(): Promise<collections | undefined> {
     const db: mongoDB.Db = client.db(env.DB_NAME);
   
     //コレクションの参照を取得
-    const bookInfosCollection = db.collection<BookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
+    const bookInfosCollection = db.collection<IBookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
     collections.bookInfos = bookInfosCollection;
 
     const bookShelvesCollection = db.collection<BookShelf>(env.BOOKSHELVES_COLLECTION_NAME);

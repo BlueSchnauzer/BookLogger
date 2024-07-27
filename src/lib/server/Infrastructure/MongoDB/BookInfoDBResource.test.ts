@@ -3,7 +3,8 @@ import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import BookInfoModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
+import BookInfoModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
 import { BookInfoMongoDBResource } from "$lib/server/Infrastructure/MongoDB/BookInfoDBResource";
 import { getEntityTestData, getEntityTestDatas, testUserId1, testUserId2, testUserId3 } from '$lib/vitest-setup';
 import { Collection, Db, MongoClient } from "mongodb";
@@ -14,13 +15,13 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 let con: MongoClient;
 let mongoServer: MongoMemoryServer;
 let db: Db;
-let col: Collection<BookInfoModel>;
+let col: Collection<IBookInfoModel>;
 
 beforeEach(async () => {
   mongoServer = await MongoMemoryServer.create();
   con = await MongoClient.connect(mongoServer.getUri(), {});
   db = con.db(mongoServer.instanceInfo?.dbName);
-  col = db.collection<BookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
+  col = db.collection<IBookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
 });
 afterEach(async () => {
   if (con) { await con.close(); }

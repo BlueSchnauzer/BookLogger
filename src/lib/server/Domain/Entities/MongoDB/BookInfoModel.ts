@@ -1,3 +1,4 @@
+import { type IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
 import { BookInfo as BookInfoEntity } from '$lib/client/Domain/Entities/BookInfo';
 import type { identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
@@ -10,7 +11,7 @@ import { ObjectId } from 'mongodb';
  * SQLを経由しないので、
  * MongoDBのモデルに一致するクラスを作って、取得や保存時にはこのクラスを経由するようにする。
  */
-export default class BookInfoMongoDBModel {
+export default class BookInfoModel implements IBookInfoModel {
 	public userId: string;
 	public title: string;
 	public author: string[];

@@ -4,7 +4,7 @@ import { PageHistory, type pageHistory } from '$lib/client/Domain/ValueObjects/B
 import { Status, type status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import { getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
-import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
+import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
 import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
 
@@ -94,27 +94,26 @@ export class BookInfo {
 	}
 
 	/**MongoDBModelからEntityを生成する */
-	public static fromDBModel(mongoModel: MongoDBModel) {
+	public static fromDBModel(mongoDBModel: IBookInfoModel) {
 		return new BookInfo({
-			id: mongoModel._id?.toString()!,
-			userId: mongoModel.userId,
-			title: mongoModel.title,
-			author: mongoModel.author,
-			thumbnail: mongoModel.thumbnail,
-			createDate: mongoModel.createDate,
-			updateDate: mongoModel.updateDate,
-			pageCount: mongoModel.pageCount,
-			isFavorite: mongoModel.isFavorite,
-			status: mongoModel.status,
-			memorandum: mongoModel.memorandum,
-			isVisible: mongoModel.isVisible,
-			completeDate: mongoModel.completeDate,
-			pageHistories: mongoModel.pageHistories,
-			identifiers: mongoModel.identifiers,
-			shelfCategories: mongoModel.shelfCategories,
-			gapiId: mongoModel.gapiId
-		}
-		);
+			id: mongoDBModel._id?.toString()!,
+			userId: mongoDBModel.userId,
+			title: mongoDBModel.title,
+			author: mongoDBModel.author,
+			thumbnail: mongoDBModel.thumbnail,
+			createDate: mongoDBModel.createDate,
+			updateDate: mongoDBModel.updateDate,
+			pageCount: mongoDBModel.pageCount,
+			isFavorite: mongoDBModel.isFavorite,
+			status: mongoDBModel.status,
+			memorandum: mongoDBModel.memorandum,
+			isVisible: mongoDBModel.isVisible,
+			completeDate: mongoDBModel.completeDate,
+			pageHistories: mongoDBModel.pageHistories,
+			identifiers: mongoDBModel.identifiers,
+			shelfCategories: mongoDBModel.shelfCategories,
+			gapiId: mongoDBModel.gapiId
+		});
 	}
 
 	public changeFavorite() {

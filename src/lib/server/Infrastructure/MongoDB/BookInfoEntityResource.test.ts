@@ -1,4 +1,4 @@
-import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDBModel/BookInfo";
+import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDB/BookInfoModel";
 import { getEntityTestData, getEntityTestDatas } from "$lib/vitest-setup";
 import { json } from "@sveltejs/kit";
 import type { books_v1 } from "googleapis";
