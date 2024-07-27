@@ -1,9 +1,9 @@
+import { BookInfoEntityResource } from "$lib/client/Infrastructure/MongoDB/BookInfoEntityResource";
 import BookInfoMongoDBModel from "$lib/server/Domain/Entities/MongoDB/BookInfoModel";
 import { getEntityTestData, getEntityTestDatas } from "$lib/vitest-setup";
 import { json } from "@sveltejs/kit";
 import type { books_v1 } from "googleapis";
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import { BookInfoEntityResource } from "$lib/server/Infrastructure/MongoDB/BookInfoEntityResource";
 
 describe('get', () => {
   it('SvelteAPIへのリクエストが成功した際に、レスポンスをEntityに変換して戻り値で返すこと', async () => {

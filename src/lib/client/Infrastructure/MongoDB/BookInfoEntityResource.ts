@@ -1,9 +1,9 @@
 import { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
+import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { IBookInfoEntityRepository } from "$lib/client/Domain/Repositories/IBookInfoEntity";
 import type { id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
 import { PageHistory, type pageHistory } from "$lib/client/Domain/ValueObjects/BookInfo/PageHistory";
 import type { status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
-import type { IBookInfoEntityRepository } from "$lib/server/Domain/Repositories/IBookInfoEntity";
 import type { books_v1 } from "googleapis";
 
 export class BookInfoEntityResource implements IBookInfoEntityRepository {

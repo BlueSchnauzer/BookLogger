@@ -3,10 +3,11 @@ import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistor
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import BookInfoMongoDBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
-import type { IBookSearchRepositories } from '$lib/server/Domain/Repositories/IBookSearch';
-import { BookSearchGoogleBooksAPI } from '$lib/server/Infrastructure/GoogleBooksAPI/BookSearch';
+import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
+import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
 import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from '$lib/vitest-setup';
 import { describe, expect, it } from 'vitest';
+import type { books_v1 } from 'googleapis';
 
 describe('BookInfoEntity', () => {
   describe('Entity生成', () => {
@@ -18,7 +19,7 @@ describe('BookInfoEntity', () => {
     });
 
     it('gapiオブジェクトからEntityを生成できること', async () => {
-      const bookSearchRepos: IBookSearchRepositories = new BookSearchGoogleBooksAPI();
+      const bookSearchRepos: IBookSearchRepository = new BookSearchGoogleBooksAPI();
       const result = await bookSearchRepos.search(
         [`isbn:${bookInfoPropertiesMock.identifiers?.isbn_13}`],
         10,

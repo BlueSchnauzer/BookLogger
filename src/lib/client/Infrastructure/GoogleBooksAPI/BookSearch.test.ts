@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { BookSearchGoogleBooksAPI } from "$lib/server/Infrastructure/GoogleBooksAPI/BookSearch";
+import { BookSearchGoogleBooksAPI } from "$lib/client/Infrastructure/GoogleBooksAPI/BookSearch";
 import { getTestData } from "$lib/vitest-setup";
 import type { BookInfo } from "$lib/server/models/BookInfo";
 

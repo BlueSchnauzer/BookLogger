@@ -3,7 +3,7 @@ import { BookInfoView } from "$lib/client/Application/Views/BookInfo";
 import type { BookInfo } from "$lib/client/Domain/Entities/BookInfo";
 import type { Id } from "$lib/client/Domain/ValueObjects/BookInfo/Id";
 import { getPageHistoryMapInCurrentWeek } from "$lib/client/Utils/PageHistory";
-import type { IBookInfoEntityRepository } from "$lib/server/Domain/Repositories/IBookInfoEntity";
+import type { IBookInfoEntityRepository } from "$lib/client/Domain/Repositories/IBookInfoEntity";
 import type { books_v1 } from "googleapis";
 
 /**書誌データの操作を管理するUseCase */

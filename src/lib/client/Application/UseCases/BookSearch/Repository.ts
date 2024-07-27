@@ -1,9 +1,9 @@
-import type { IBookSearchRepositories } from "$lib/server/Domain/Repositories/IBookSearch";
+import type { IBookSearchRepository } from "$lib/client/Domain/Repositories/IBookSearch";
 import { BookSearchView } from "$lib/client/Application/Views/BookSearch";
 
 /**書誌データの操作を管理するUseCase */
 export class BookSearchGoogleBooksAPIUseCase {
-  constructor(private readonly repos: IBookSearchRepositories) { }
+  constructor(private readonly repos: IBookSearchRepository) { }
 
   /**(あいまい検索)検索条件を指定して書誌データを取得する */
   public async searcyByFuzzyQuery(query: string, maxResults = 10, startIndex = 0): Promise<BookSearchView> {

@@ -1,8 +1,8 @@
 import { PUBLIC_BOOKSAPI_LIST } from "$env/static/public";
-import type { IBookSearchRepositories } from "$lib/server/Domain/Repositories/IBookSearch";
+import type { IBookSearchRepository } from "$lib/client/Domain/Repositories/IBookSearch";
 import type { books_v1 } from "googleapis";
 
-export class BookSearchGoogleBooksAPI implements IBookSearchRepositories {
+export class BookSearchGoogleBooksAPI implements IBookSearchRepository {
   async search(queries: string[], maxResults: number, startIndex: number): Promise<books_v1.Schema$Volumes> {
     const response = await fetch(`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}&maxResults=${maxResults}&startIndex=${startIndex}`);
     const result: books_v1.Schema$Volumes = await response.json();
