@@ -3,7 +3,7 @@ import { BookSearchView } from "$lib/client/Application/Views/BookSearch";
 import type { IBookSearchRepository } from "$lib/client/Domain/Repositories/IBookSearch";
 
 /**書誌データの操作を管理するUseCase */
-export class BookSearchGoogleBooksAPIUseCase<T extends BookSearchResultType> {
+export class BookSearchUseCase<T extends BookSearchResultType> {
   constructor(private readonly repos: IBookSearchRepository<T>) { }
 
   /**(あいまい検索)検索条件を指定して書誌データを取得する */
