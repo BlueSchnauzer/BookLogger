@@ -1,17 +1,13 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { BookSearchGoogleBooksAPI } from "$lib/client/Infrastructure/GoogleBooksAPI/BookSearch";
-import { getTestData } from "$lib/vitest-setup";
-import type { BookInfo } from "$lib/server/models/BookInfo";
+import { getEntityTestData } from "$lib/vitest-setup";
 
 describe('requestBookInfo', () => {
   const searchRepo = new BookSearchGoogleBooksAPI();
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
+  const testData = getEntityTestData();
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`], 10, 0);
+    const result = await searchRepo.search([`isbn:${testData.identifiers?.value.isbn_13!}`], 10, 0);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
@@ -32,7 +28,7 @@ describe('requestBookInfo', () => {
   });
 
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await searchRepo.search([`isbn:${testData.identifier?.isbn_13}`, `intitle:${testData.title}`, `inauthor:${testData.author[0]}`], 10, 0);
+    const result = await searchRepo.search([`isbn:${testData.identifiers?.value.isbn_13}`, `intitle:${testData.title}`, `inauthor:${testData.author[0]}`], 10, 0);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
@@ -62,13 +58,10 @@ describe('requestBookInfo', () => {
 
 describe('requestBookInfoWithPartialResource', () => {
   const searchRepo = new BookSearchGoogleBooksAPI();
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
+  const testData = getEntityTestData();
 
   it('リソースを指定して取得できるか', async () => {
-    const result = await searchRepo.searchWithPartialResource([`isbn:${testData.identifier?.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
+    const result = await searchRepo.searchWithPartialResource([`isbn:${testData.identifiers?.value.isbn_13}`], 'items(volumeInfo/imageLinks/thumbnail)');
     
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
@@ -76,7 +69,7 @@ describe('requestBookInfoWithPartialResource', () => {
   });
 
   it('リソースを指定しない場合、全てのリソースが取得できるか', async () => {
-    const result = await searchRepo.searchWithPartialResource([`isbn:${testData.identifier?.isbn_13}`]);
+    const result = await searchRepo.searchWithPartialResource([`isbn:${testData.identifiers?.value.isbn_13}`]);
     
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.imageLinks?.thumbnail).toBeDefined();
@@ -86,10 +79,6 @@ describe('requestBookInfoWithPartialResource', () => {
 
 describe('searchByFuzzyQuery', () => {
   const searchRepo = new BookSearchGoogleBooksAPI();
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
 
   it('あいまい条件で一致した書誌データを取得できるか',async () => {
     const result = await searchRepo.searchByFuzzyQuery('イシグロカズオ', 10, 0);
@@ -117,10 +106,7 @@ describe('searchByFuzzyQuery', () => {
 
 describe('searchByQueries', () => {
   const searchRepo = new BookSearchGoogleBooksAPI();
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
+  const testData = getEntityTestData();
 
   it('タイトルを条件にして一致した書誌データを取得できるか',async () => {
     const result = await searchRepo.searchByQueries(testData.title, '', '', 10, 0);
@@ -137,14 +123,14 @@ describe('searchByQueries', () => {
   });
 
   it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
-    const result = await searchRepo.searchByQueries('', '', testData.identifier?.isbn_13!, 10, 0);
+    const result = await searchRepo.searchByQueries('', '', testData.identifiers?.value.isbn_13!, 10, 0);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
   });
   
   it('複数条件で書誌データを取得できるか', async () => {
-    const result = await searchRepo.searchByQueries(testData.title, testData.author[0], testData.identifier?.isbn_13!, 10, 0);
+    const result = await searchRepo.searchByQueries(testData.title, testData.author[0], testData.identifiers?.value.isbn_13!, 10, 0);
 
     expect(result.items).toBeDefined();
     expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
