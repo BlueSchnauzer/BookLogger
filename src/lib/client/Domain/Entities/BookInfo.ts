@@ -3,6 +3,7 @@ import { Identifiers, type identifiers } from '$lib/client/Domain/ValueObjects/B
 import { PageHistory, type pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status, type status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+import { getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
 import type MongoDBModel from '$lib/server/Domain/Entities/MongoDBModel/BookInfo';
 import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
@@ -188,20 +189,4 @@ const setCurrentDate = () => {
 
 const isBookInfoProperties = (obj: any): obj is bookInfoProperties => {
 	return 'userId' in obj;
-}
-
-type industryIdentifiers = {
-	identifier?: string | undefined;
-	type?: string | undefined;
-}[] | undefined
-
-/**ISBNを取得する(存在しない場合はundefined) */
-const getIdentifier = (identifiers: industryIdentifiers) => {
-	const isbn_13 = identifiers?.find(id => id.type === 'ISBN_13')?.identifier;
-	if (isbn_13) { return { isbn_13 }; }
-
-	const isbn_10 = identifiers?.find(id => id.type === 'ISBN_10')?.identifier;
-	if (isbn_10) { return { isbn_10 }; }
-
-	return undefined;
 }
