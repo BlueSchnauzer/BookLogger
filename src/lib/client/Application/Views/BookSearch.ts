@@ -1,7 +1,8 @@
 import type { books_v1 } from "googleapis";
+import type { BookSearchResultType } from "$lib/client/Application/Interface";
 
-export class BookSearchView {
-	constructor(public readonly searchResult: books_v1.Schema$Volume) { }
+export class BookSearchView<T extends BookSearchResultType> {
+	constructor(public readonly searchResult: T) { }
 
 	/**タイトルを取得する(存在しなければ「データ無し」を返す) */
 	public getTitleLabel() {
