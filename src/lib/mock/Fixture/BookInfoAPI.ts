@@ -47,15 +47,23 @@ export const setGetRouteFetch = (getType: getType) => {
 };
 
 /**Postルートのレスポンスを定義する(成功失敗の両方を返すためbeforeAllなどは使わずfetchのmockのみ定義) */
-export const setPostRouteFetch = (status: 'success' | 'failed') => {
+export const setPostRouteFetch = (status: 'success' | 'failed' | 'duplicted') => {
 	const mockFetch = vi.spyOn(global, 'fetch');
-	status === 'success'
-		? mockFetch.mockImplementation(
+	switch (status) {
+		case 'success':
+			mockFetch.mockImplementation(
 				async () => new Response('書誌データの作成に成功しました。', { status: 201 })
-			)
-		: mockFetch.mockImplementation(
+			);
+			break;
+		case 'failed':
+			mockFetch.mockImplementation(
 				async () => new Response('書誌データの作成に失敗しました。', { status: 500 })
 			);
+			break;
+		case 'duplicted':
+			mockFetch.mockImplementation(async () => new Response('登録済みの書籍です', { status: 409 }));
+			break;
+	}
 };
 
 /**Putルートのレスポンスを定義する(成功失敗の両方を返すためbeforeAllなどは使わずfetchのmockのみ定義) */

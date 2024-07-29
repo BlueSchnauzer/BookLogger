@@ -1,10 +1,9 @@
 import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
+import { getEntityTestData } from '$lib/mock/Data';
 import { BookInfoAPIMock } from '$lib/mock/Fixture/index';
 import BookInfoMongoDBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import { getEntityTestData } from '$lib/mock/Data';
 import { json } from '@sveltejs/kit';
-import type { books_v1 } from 'googleapis';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('get', () => {
 	const dbModels = BookInfoAPIMock.setGetRouteFetch('get');
@@ -81,7 +80,7 @@ describe('insert', () => {
 		BookInfoAPIMock.setPostRouteFetch('success');
 
 		const repos = new BookInfoEntityResource();
-		const response = await repos.insert({} as books_v1.Schema$Volume);
+		const response = await repos.insert({});
 
 		expect(response.ok).toBeTruthy();
 	});
@@ -90,7 +89,16 @@ describe('insert', () => {
 		BookInfoAPIMock.setPostRouteFetch('failed');
 
 		const repos = new BookInfoEntityResource();
-		const response = await repos.insert({} as books_v1.Schema$Volume);
+		const response = await repos.insert({});
+
+		expect(response.ok).toBeFalsy();
+	});
+
+	it('SvelteAPIへのリクエストが失敗(重複登録)した際に、失敗のレスポンスを返すこと', async () => {
+		BookInfoAPIMock.setPostRouteFetch('duplicted');
+
+		const repos = new BookInfoEntityResource();
+		const response = await repos.insert({});
 
 		expect(response.ok).toBeFalsy();
 	});
