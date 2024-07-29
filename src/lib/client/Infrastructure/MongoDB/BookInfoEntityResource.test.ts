@@ -59,19 +59,15 @@ describe('getRecent', () => {
 });
 
 describe('getPageHistory', () => {
+	const dbModels = BookInfoAPIMock.setGetRouteFetch('getPageHistory');
+
 	it('SvelteAPIへのリクエストが成功した際に、レスポンスをValueObjectに変換して戻り値で返すこと', async () => {
-		const data = new BookInfoMongoDBModel(getEntityTestData());
-		const mockFetch = vi.spyOn(global, 'fetch');
-
-		const pageHistory = [data.pageHistories];
-		mockFetch.mockImplementation(async () => json(pageHistory, { status: 200 }));
-
 		const repos = new BookInfoEntityResource();
 		const response = await repos.getPageHistory();
 
 		expect(response[0].length).toEqual(2);
-		expect(response[0][0].value.pageCount).toEqual(data.pageHistories![0].pageCount);
-		expect(response[0][1].value.pageCount).toEqual(data.pageHistories![1].pageCount);
+		expect(response[0][0].value.pageCount).toEqual(dbModels[0].pageHistories![0].pageCount);
+		expect(response[0][1].value.pageCount).toEqual(dbModels[0].pageHistories![1].pageCount);
 	});
 });
 
