@@ -1,7 +1,10 @@
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers, type identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
-import { PageHistory, type pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status, type status } from "$lib/client/Domain/ValueObjects/BookInfo/Status";
+import {
+	PageHistory,
+	type pageHistory
+} from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import { getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
 import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
@@ -25,29 +28,67 @@ export class BookInfo {
 	private _completeDate?: Date;
 	private _pageHistories?: PageHistory[];
 	private _identifiers?: Identifiers;
-	private _shelfCategories?: ObjectId[]
+	private _shelfCategories?: ObjectId[];
 	private _gapiId?: string;
 
-	get id() { return this._id; }
-	get userId() { return this._userId; }
-	get title() { return this._title; }
-	get author() { return this._author; }
-	get thumbnail() { return this._thumbnail; }
-	get createDate() { return this._createDate; }
-	get updateDate() { return this._updateDate; }
-	get pageCount() { return this._pageCount; }
-	get isFavorite() { return this._isFavorite; }
-	get status() { return this._status; }
-	get memorandum() { return this._memorandum; }
-	get isVisible() { return this._isVisible; }
-	get completeDate() { return this._completeDate; }
-	get pageHistories() { return this._pageHistories; }
-	get identifiers() { return this._identifiers; }
-	get shelfCategories() { return this._shelfCategories; }
-	get gapiId() { return this._gapiId; }
+	get id() {
+		return this._id;
+	}
+	get userId() {
+		return this._userId;
+	}
+	get title() {
+		return this._title;
+	}
+	get author() {
+		return this._author;
+	}
+	get thumbnail() {
+		return this._thumbnail;
+	}
+	get createDate() {
+		return this._createDate;
+	}
+	get updateDate() {
+		return this._updateDate;
+	}
+	get pageCount() {
+		return this._pageCount;
+	}
+	get isFavorite() {
+		return this._isFavorite;
+	}
+	get status() {
+		return this._status;
+	}
+	get memorandum() {
+		return this._memorandum;
+	}
+	get isVisible() {
+		return this._isVisible;
+	}
+	get completeDate() {
+		return this._completeDate;
+	}
+	get pageHistories() {
+		return this._pageHistories;
+	}
+	get identifiers() {
+		return this._identifiers;
+	}
+	get shelfCategories() {
+		return this._shelfCategories;
+	}
+	get gapiId() {
+		return this._gapiId;
+	}
 
-	set pageCount(pageCount: number) { this._pageCount = pageCount; }
-	set memorandum(memorandum: string) { this._memorandum = memorandum; }
+	set pageCount(pageCount: number) {
+		this._pageCount = pageCount;
+	}
+	set memorandum(memorandum: string) {
+		this._memorandum = memorandum;
+	}
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
@@ -68,13 +109,15 @@ export class BookInfo {
 			this._memorandum = resource.memorandum;
 			this._isVisible = resource.isVisible;
 			this._completeDate = resource.completeDate;
-			this._pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => new PageHistory(item)) : [];
-			this._identifiers = resource.identifiers != undefined ? new Identifiers(resource.identifiers) : undefined;
+			this._pageHistories = resource.pageHistories
+				? resource.pageHistories?.map((item) => new PageHistory(item))
+				: [];
+			this._identifiers =
+				resource.identifiers != undefined ? new Identifiers(resource.identifiers) : undefined;
 			this._shelfCategories = resource.shelfCategories;
 			this._gapiId = resource.gapiId;
-		}
-		else {
-			const currentDate = new Date;
+		} else {
+			const currentDate = new Date();
 
 			this._userId = new UserId(userId!);
 			this._title = resource!.volumeInfo?.title ?? '';
@@ -88,7 +131,9 @@ export class BookInfo {
 			this._memorandum = '';
 			this._isVisible = true;
 			this._pageHistories = [];
-			this._identifiers = new Identifiers(getIdentifier(resource!.volumeInfo?.industryIdentifiers)!);
+			this._identifiers = new Identifiers(
+				getIdentifier(resource!.volumeInfo?.industryIdentifiers)!
+			);
 			this._gapiId = resource!.id ?? this._title; //gapi固有の情報なので入れたら微妙な感じではある
 		}
 	}
@@ -121,8 +166,12 @@ export class BookInfo {
 	}
 
 	public setStatus(status: Status) {
-		if (this._status.equals(status)) { return; }
-		if (status.value === 'complete') { this.addCompleteHistory(); }
+		if (this._status.equals(status)) {
+			return;
+		}
+		if (status.value === 'complete') {
+			this.addCompleteHistory();
+		}
 
 		this._status = status;
 	}
@@ -135,9 +184,18 @@ export class BookInfo {
 		}
 	}
 
+	public deletePageHistory(id: string) {
+		if (!this._pageHistories?.length) {
+			return;
+		}
+		this._pageHistories = this._pageHistories?.filter((item) => item.value.id !== id);
+	}
+
 	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
 	private addCompleteHistory() {
-		if (this.hasCompleteHistory()) { return; }
+		if (this.hasCompleteHistory()) {
+			return;
+		}
 
 		const readingDate = setCurrentDate();
 		const readingCount = this._pageCount;
@@ -147,14 +205,16 @@ export class BookInfo {
 
 	/**最終ページのpageHistoryがあるかを確認する。 */
 	private hasCompleteHistory() {
-		if (!this._pageHistories?.length) { return false; }
+		if (!this._pageHistories?.length) {
+			return false;
+		}
 
 		let result = false;
-		this._pageHistories?.forEach(item => {
+		this._pageHistories?.forEach((item) => {
 			if (item.value.pageCount === this._pageCount) {
 				result = true;
 			}
-		})
+		});
 
 		return result;
 	}
@@ -162,30 +222,30 @@ export class BookInfo {
 
 /**書誌情報のEntityを生成するためのプロパティ */
 export type bookInfoProperties = {
-	id: string,
-	userId: string,
-	title: string,
-	author: string[],
-	thumbnail: string,
-	createDate: Date,
-	updateDate: Date,
-	pageCount: number,
-	isFavorite: boolean,
-	status: status,
-	memorandum: string,
-	isVisible: boolean,
-	completeDate?: Date,
-	pageHistories?: pageHistory[],
-	identifiers?: identifiers,
-	shelfCategories?: ObjectId[],
-	gapiId?: string
-}
+	id: string;
+	userId: string;
+	title: string;
+	author: string[];
+	thumbnail: string;
+	createDate: Date;
+	updateDate: Date;
+	pageCount: number;
+	isFavorite: boolean;
+	status: status;
+	memorandum: string;
+	isVisible: boolean;
+	completeDate?: Date;
+	pageHistories?: pageHistory[];
+	identifiers?: identifiers;
+	shelfCategories?: ObjectId[];
+	gapiId?: string;
+};
 
 const setCurrentDate = () => {
 	const date = new Date();
-	return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`
-}
+	return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+};
 
 const isBookInfoProperties = (obj: any): obj is bookInfoProperties => {
 	return 'userId' in obj;
-}
+};
