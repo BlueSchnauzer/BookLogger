@@ -1,6 +1,10 @@
-import { isGAPIResult, type BookSearchResultType } from '$lib/client/Application/Interface';
+import {
+	isGAPIResult,
+	type BookSearchResultListType,
+	type BookSearchResultType
+} from '$lib/client/Application/Interface';
 
-export class BookSearchView<T extends BookSearchResultType> {
+export class BookSearchView<T extends BookSearchResultType<BookSearchResultListType>> {
 	public readonly title?: string;
 	public readonly authors?: string[];
 	public readonly publisher?: string;
