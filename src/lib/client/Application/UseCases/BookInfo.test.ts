@@ -1,14 +1,14 @@
 import type { IBookInfoEntityRepository } from '$lib/client/Domain/Repositories/IBookInfoEntity';
 import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
 import { describe, expect, it } from 'vitest';
-import { BookInfoRepositoryUseCase } from '$lib/client/Application/UseCases/BookInfo/Repository';
+import { BookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
 import { BookInfoAPIMock } from '$lib/mock/Fixture/index';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 
 const repos: IBookInfoEntityRepository = new BookInfoEntityResource();
-const usecase = new BookInfoRepositoryUseCase(repos);
+const usecase = new BookInfoUseCase(repos);
 
 describe('getAllBooks', () => {
 	BookInfoAPIMock.setGetRouteFetch('get');

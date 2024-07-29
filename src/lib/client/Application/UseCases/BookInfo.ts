@@ -1,4 +1,4 @@
-import type { bookInfoChangeResponse } from '$lib/client/Application/UseCases/Interface';
+import type { bookInfoChangeResponse } from '$lib/client/Application/Interface';
 import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
@@ -7,7 +7,7 @@ import type { IBookInfoEntityRepository } from '$lib/client/Domain/Repositories/
 import type { books_v1 } from 'googleapis';
 
 /**書誌データの操作を管理するUseCase */
-export class BookInfoRepositoryUseCase {
+export class BookInfoUseCase {
 	constructor(private readonly repos: IBookInfoEntityRepository) {}
 
 	/**登録済みの全書誌データ取得する */

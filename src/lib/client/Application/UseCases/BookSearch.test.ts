@@ -3,7 +3,7 @@ import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooks
 import { getEntityTestData } from '$lib/mock/Data';
 import type { books_v1 } from 'googleapis';
 import { describe, expect, it } from 'vitest';
-import { BookSearchUseCase } from './Repository';
+import { BookSearchUseCase } from '$lib/client/Application/UseCases/BookSearch';
 
 describe('BookSearchUseCase', () => {
 	const testData = getEntityTestData();
