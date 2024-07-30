@@ -83,13 +83,6 @@ export class BookInfo {
 		return this._gapiId;
 	}
 
-	set pageCount(pageCount: number) {
-		this._pageCount = pageCount;
-	}
-	set memorandum(memorandum: string) {
-		this._memorandum = memorandum;
-	}
-
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
 
@@ -160,64 +153,6 @@ export class BookInfo {
 			gapiId: mongoDBModel.gapiId
 		});
 	}
-
-	public changeFavorite() {
-		this._isFavorite = !this._isFavorite;
-	}
-
-	public setStatus(status: Status) {
-		if (this._status.equals(status)) {
-			return;
-		}
-		if (status.value === 'complete') {
-			this.addCompleteHistory();
-		}
-
-		this._status = status;
-	}
-
-	public addPageHistory(item: PageHistory) {
-		if (this._pageHistories) {
-			this._pageHistories.push(item);
-		} else {
-			this._pageHistories = [item];
-		}
-	}
-
-	public deletePageHistory(id: string) {
-		if (!this._pageHistories?.length) {
-			return;
-		}
-		this._pageHistories = this._pageHistories?.filter((item) => item.value.id !== id);
-	}
-
-	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
-	private addCompleteHistory() {
-		if (this.hasCompleteHistory()) {
-			return;
-		}
-
-		const readingDate = setCurrentDate();
-		const readingCount = this._pageCount;
-
-		this.addPageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
-	}
-
-	/**最終ページのpageHistoryがあるかを確認する。 */
-	private hasCompleteHistory() {
-		if (!this._pageHistories?.length) {
-			return false;
-		}
-
-		let result = false;
-		this._pageHistories?.forEach((item) => {
-			if (item.value.pageCount === this._pageCount) {
-				result = true;
-			}
-		});
-
-		return result;
-	}
 }
 
 /**書誌情報のEntityを生成するためのプロパティ */
@@ -239,11 +174,6 @@ export type bookInfoProperties = {
 	identifiers?: identifiers;
 	shelfCategories?: ObjectId[];
 	gapiId?: string;
-};
-
-const setCurrentDate = () => {
-	const date = new Date();
-	return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
 };
 
 const isBookInfoProperties = (obj: any): obj is bookInfoProperties => {
