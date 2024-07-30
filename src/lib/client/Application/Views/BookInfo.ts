@@ -2,12 +2,11 @@ import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import { convertReadingDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
 import { pushToast } from '$lib/client/Utils/Toast';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
-import type { typeForBottomLabel } from '$lib/customTypes';
 import type { ObjectId } from 'mongodb';
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
@@ -50,7 +49,6 @@ export class BookInfoView {
 		this.gapiId = bookInfo.gapiId;
 	}
 
-	/**タイトルを取得する(存在しなければ「データ無し」を返す) */
 	get titleLabel() {
 		return this.title ?? 'データ無し';
 	}
@@ -96,7 +94,7 @@ export class BookInfoView {
 	}
 
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	getTypeForBottomLabel(pathName: string): typeForBottomLabel {
+	getTypeForBottomLabel(pathName: string) {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
@@ -115,37 +113,32 @@ export class BookInfoView {
 		const isValidDate = validateReadingDate(readingDate);
 		const isValidCount = validateReadingCount(readingCount, this.pageCount);
 		if (!isValidDate || !isValidCount) {
-			const message = !isValidDate
+			const errorMessage = !isValidDate
 				? '日付が未入力です'
 				: `ページ数は1～${this.pageCount}ページで入力してください`;
-			return { isSuccess: false, message };
+			return { isSuccess: false, errorMessage };
 		}
 
 		const item = new PageHistory({
 			date: convertReadingDateToDate(readingDate),
 			pageCount: readingCount
 		});
+
 		if (this.pageHistories && this.pageHistories.length) {
 			this.pageHistories.push(item);
 		} else {
 			this.pageHistories = [item];
 		}
 
-		let message = '';
-		let status = undefined;
 		if (this.status.value === 'wish' && this.pageHistories.length === 1) {
-			status = new Status('reading');
-			message = 'ステータスを「読んでいる本」に変更しました。';
+			this.status = new Status('reading');
+			pushToast('ステータスを「読んでいる本」に変更しました。');
 		} else if (this.status.value !== 'complete' && readingCount === this.pageCount) {
-			status = new Status('complete');
-			message = 'ステータスを「読み終わった本」に変更しました。';
+			this.status = new Status('complete');
+			pushToast('ステータスを「読み終わった本」に変更しました。');
 		}
 
-		if (status) {
-			this.status = status;
-		}
-
-		return { isSuccess: true, message };
+		return { isSuccess: true };
 	}
 
 	deletePageHistory(id: string) {
