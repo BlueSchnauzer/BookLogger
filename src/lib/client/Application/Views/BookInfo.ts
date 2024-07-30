@@ -50,11 +50,11 @@ export class BookInfoView {
 	}
 
 	get titleLabel() {
-		return this.title ?? 'データ無し';
+		return !!this.title ? this.title : 'データ無し';
 	}
 
 	get pageCountLabel() {
-		return `${this.pageCount}ページ`;
+		return !!this.pageCount ? `${this.pageCount}ページ` : '0ページ';
 	}
 
 	get isDisplayableProgress() {
