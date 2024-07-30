@@ -1,31 +1,34 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
-import type { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import type { status, Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+import { convertReadingDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
+import { pushToast } from '$lib/client/Utils/Toast';
+import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 import type { typeForBottomLabel } from '$lib/customTypes';
 import type { ObjectId } from 'mongodb';
 
 /**単一のBookInfoを受け取り、画面表示用に操作するView */
 export class BookInfoView {
-	public id?: Id;
-	public userId: UserId;
-	public title: string;
-	public author: string[];
-	public thumbnail: string;
-	public createDate: Date;
-	public updateDate: Date;
-	public pageCount: number;
-	public isFavorite: boolean;
-	public status: Status;
-	public memorandum: string;
-	public isVisible: boolean;
-	public completeDate?: Date;
-	public pageHistories?: PageHistory[];
-	public identifiers?: Identifiers;
-	public shelfCategories?: ObjectId[];
-	public gapiId?: string;
+	id?: Id;
+	userId: UserId;
+	title: string;
+	author: string[];
+	thumbnail: string;
+	createDate: Date;
+	updateDate: Date;
+	pageCount: number;
+	isFavorite: boolean;
+	status: Status;
+	memorandum: string;
+	isVisible: boolean;
+	completeDate?: Date;
+	pageHistories?: PageHistory[];
+	identifiers?: Identifiers;
+	shelfCategories?: ObjectId[];
+	gapiId?: string;
 
 	constructor(bookInfo: BookInfo) {
 		this.id = bookInfo.id;
@@ -48,12 +51,27 @@ export class BookInfoView {
 	}
 
 	/**タイトルを取得する(存在しなければ「データ無し」を返す) */
-	public getTitleLabel() {
+	get titleLabel() {
 		return this.title ?? 'データ無し';
 	}
 
+	get pageCountLabel() {
+		return `${this.pageCount}ページ`;
+	}
+
+	get isDisplayableProgress() {
+		return this.pageCount > 0 && !!this.pageHistories && this.pageHistories?.length > 0;
+	}
+
+	/**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
+	get progressByPercent() {
+		//小数点を抜いて、パーセントに変換する。
+		const ratio = Math.trunc((this.maxPageCountFromHistory! / this.pageCount) * 100);
+		return `${ratio.toString()}%`;
+	}
+
 	/**書誌データの日付を画面表示用の形式に変換する。 */
-	public getDateLabel(dateType: 'create' | 'update' | 'complete', useYear = true): string {
+	getDateLabel(dateType: 'create' | 'update' | 'complete', useYear = true): string {
 		let target: Date | undefined;
 		switch (dateType) {
 			case 'create':
@@ -77,12 +95,8 @@ export class BookInfoView {
 		return `${useYear ? `${target.getFullYear()}/` : ''}${target.getMonth() + 1}/${target.getDate()}`;
 	}
 
-	public getPageCountLabel() {
-		return `${this.pageCount}ページ`;
-	}
-
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	public getTypeForBottomLabel(pathName: string): typeForBottomLabel {
+	getTypeForBottomLabel(pathName: string): typeForBottomLabel {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
@@ -97,21 +111,61 @@ export class BookInfoView {
 		}
 	}
 
-	public isDisplayableProgress() {
-		return (
-			this.pageCount && this.pageCount > 0 && this.pageHistories && this.pageHistories?.length > 0
-		);
+	addPageHistory(readingDate: string, readingCount: number) {
+		const isValidDate = validateReadingDate(readingDate);
+		const isValidCount = validateReadingCount(readingCount, this.pageCount);
+		if (!isValidDate || !isValidCount) {
+			const message = !isValidDate
+				? '日付が未入力です'
+				: `ページ数は1～${this.pageCount}ページで入力してください`;
+			return { isSuccess: false, message };
+		}
+
+		const item = new PageHistory({
+			date: convertReadingDateToDate(readingDate),
+			pageCount: readingCount
+		});
+		if (this.pageHistories && this.pageHistories.length) {
+			this.pageHistories.push(item);
+		} else {
+			this.pageHistories = [item];
+		}
+
+		let message = '';
+		let status = undefined;
+		if (this.status.value === 'wish' && this.pageHistories.length === 1) {
+			status = new Status('reading');
+			message = 'ステータスを「読んでいる本」に変更しました。';
+		} else if (this.status.value !== 'complete' && readingCount === this.pageCount) {
+			status = new Status('complete');
+			message = 'ステータスを「読み終わった本」に変更しました。';
+		}
+
+		if (status) {
+			this.status = status;
+		}
+
+		return { isSuccess: true, message };
 	}
 
-	/**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
-	public getProgressByPercent() {
-		//小数点を抜いて、パーセントに変換する。
-		const ratio = Math.trunc((this.getMaxPageCountFromHistory()! / this.pageCount) * 100);
-		return `${ratio.toString()}%`;
+	deletePageHistory(id: string) {
+		if (!id || !this.pageHistories?.length) {
+			return;
+		}
+
+		this.pageHistories = this.pageHistories?.filter((item) => item.value.id !== id);
 	}
 
-	/**pageHistoryの中から最大のページ数を取得する。*/
-	private getMaxPageCountFromHistory(): number | undefined {
+	addPageHistoryWhenComplete() {
+		if (this.status.value !== 'complete' || this.hasCompleteHistory) {
+			return;
+		}
+		this.addPageHistory(getCurrentDateString(), this.pageCount);
+
+		pushToast('最後のページまでの読んだ記録を追加しました。');
+	}
+
+	private get maxPageCountFromHistory(): number | undefined {
 		if (!this.pageHistories?.length) {
 			return undefined;
 		}
@@ -119,5 +173,20 @@ export class BookInfoView {
 			(max, item) => Math.max(max, item.value.pageCount),
 			-Infinity
 		)!;
+	}
+
+	private get hasCompleteHistory() {
+		if (!this.pageHistories?.length) {
+			return false;
+		}
+
+		let result = false;
+		this.pageHistories?.forEach((item) => {
+			if (item.value.pageCount === this.pageCount) {
+				result = true;
+			}
+		});
+
+		return result;
 	}
 }
