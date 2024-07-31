@@ -8,7 +8,7 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 	public readonly title?: string;
 	public readonly authors?: string[];
 	public readonly publisher?: string;
-	public readonly publishDate?: string;
+	public readonly publishedDate?: string;
 	public readonly pageCount?: number;
 	public readonly thumbnail?: string;
 	public readonly description?: string;
@@ -18,7 +18,7 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 			this.title = searchResult.volumeInfo?.title;
 			this.authors = searchResult.volumeInfo?.authors;
 			this.publisher = searchResult.volumeInfo?.publisher;
-			this.publishDate = searchResult.volumeInfo?.publishedDate;
+			this.publishedDate = searchResult.volumeInfo?.publishedDate;
 			this.pageCount = searchResult.volumeInfo?.pageCount;
 			this.thumbnail = searchResult.volumeInfo?.imageLinks?.thumbnail;
 			this.description = searchResult.volumeInfo?.description;
@@ -26,12 +26,12 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 	}
 
 	/**タイトルを取得する(存在しなければ「データ無し」を返す) */
-	public getTitleLabel() {
-		return this.searchResult.volumeInfo?.title ?? 'データ無し';
+	get titleLabel() {
+		return !!this.title ? this.title : 'データ無し';
 	}
 
 	/**著者が複数名いる場合に句点で区切る*/
-	public getJoinedAuthorNames = (): string => {
+	get joinedAuthorNames() {
 		let authors = this.searchResult.volumeInfo?.authors;
 		if (!authors) {
 			return '';
@@ -46,9 +46,9 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 		}
 
 		return result;
-	};
+	}
 
-	public getPageCountLabel() {
-		return `${this.pageCount}ページ`;
+	get pageCountLabel() {
+		return !!this.pageCount ? `${this.pageCount}ページ` : '0ページ';
 	}
 }
