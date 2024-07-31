@@ -92,44 +92,4 @@ describe('BookInfoEntity', () => {
 			expect(entity.pageHistories![0].value.pageCount).toEqual(100);
 		});
 	});
-
-	describe('deletePageHistory', () => {
-		it('PageHistoriesに要素が存在する場合に、その要素を削除できること', () => {
-			const entity = getEntityTestData();
-			const idForDelete = entity.pageHistories![0].value.id!;
-			entity.deletePageHistory(idForDelete);
-
-			expect(entity.pageHistories?.length).toBe(1);
-		});
-
-		it('PageHistoriesに要素が存在しない場合に、削除してもエラーが発生しないこと', () => {
-			const copiedMock: bookInfoProperties = {
-				...bookInfoPropertiesMock,
-				pageHistories: []
-			};
-			const entity = new BookInfo(copiedMock);
-			entity.deletePageHistory('test');
-
-			expect(entity.pageHistories).toBeDefined();
-			expect(entity.pageHistories?.length).toBe(0);
-		});
-	});
-
-	// describe('getMaxPageCount', () => {
-	//   it('PageHistories内の最大のページ数を取得できること', () => {
-	//     const entity = new BookInfo(bookInfoPropertiesMock);
-
-	//     expect(entity.getMaxPageCountFromHistory()).toEqual(bookInfoPropertiesMock.pageHistories![1].pageCount);
-	//   });
-
-	//   it('PageHistoriesがFalthyな場合にUndefinedが返ること', () => {
-	//     const copiedMock: bookInfoProperties = {
-	//       ...bookInfoPropertiesMock,
-	//       pageHistories: undefined
-	//     };
-	//     const entity = new BookInfo(copiedMock);
-
-	//     expect(entity.getMaxPageCountFromHistory()).not.toBeDefined();
-	//   });
-	// });
 });

@@ -1,3 +1,4 @@
+import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers, type identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import {
@@ -6,8 +7,8 @@ import {
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+import { getCurrentDateString } from '$lib/client/Helpers/Date';
 import { getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
 import type { books_v1 } from 'googleapis';
 import type { ObjectId } from 'mongodb';
 
@@ -83,6 +84,13 @@ export class BookInfo {
 		return this._gapiId;
 	}
 
+	set pageCount(pageCount: number) {
+		this._pageCount = pageCount;
+	}
+	set memorandum(memorandum: string) {
+		this._memorandum = memorandum;
+	}
+
 	constructor(volume: books_v1.Schema$Volume, userId: string);
 	constructor(properties: bookInfoProperties);
 
@@ -152,6 +160,57 @@ export class BookInfo {
 			shelfCategories: mongoDBModel.shelfCategories,
 			gapiId: mongoDBModel.gapiId
 		});
+	}
+
+	public changeFavorite() {
+		this._isFavorite = !this._isFavorite;
+	}
+
+	public setStatus(status: Status) {
+		if (this._status.equals(status)) {
+			return;
+		}
+		if (status.value === 'complete') {
+			this.addCompleteHistory();
+		}
+
+		this._status = status;
+	}
+
+	public addPageHistory(item: PageHistory) {
+		if (this._pageHistories) {
+			this._pageHistories.push(item);
+		} else {
+			this._pageHistories = [item];
+		}
+	}
+
+	/**StatusがCompleteに変更された際に、最終ページまでの記録が無ければ追加する。 */
+	private addCompleteHistory() {
+		if (this.hasCompleteHistory()) {
+			return;
+		}
+
+		const readingDate = getCurrentDateString();
+		const readingCount = this._pageCount;
+
+		this.addPageHistory(new PageHistory({ date: readingDate, pageCount: readingCount }));
+	}
+
+	/**最終ページのpageHistoryがあるかを確認する。 */
+	private hasCompleteHistory() {
+		if (!this._pageHistories?.length) {
+			return false;
+		}
+
+		let result = false;
+		this._pageHistories?.forEach((item) => {
+			if (item.value.pageCount === this._pageCount) {
+				result = true;
+			}
+		});
+
+		return result;
 	}
 }
 
