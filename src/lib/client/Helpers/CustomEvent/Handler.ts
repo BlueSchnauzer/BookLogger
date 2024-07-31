@@ -2,8 +2,8 @@ import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type {
 	deletionBookInfoParameter,
 	updateBookInfoParameter
-} from '$lib/client/Utils/CustomEvent/Dispatcher';
-import { pushErrorToast, pushSuccessToast } from '$lib/client/Utils/Toast';
+} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+import { pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
 
 export const handleUpdateSuccess = (
 	bookInfoViews: BookInfoView[],

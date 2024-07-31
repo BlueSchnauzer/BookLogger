@@ -5,7 +5,7 @@ import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistor
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import { convertReadingDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
-import { pushToast } from '$lib/client/Utils/Toast';
+import { pushToast } from '$lib/client/Helpers/Toast';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 import type { ObjectId } from 'mongodb';
 

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { BookSearchView } from './BookSearch';
+import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 import { gapiTestDatas } from '$lib/mock/Data';
-import type { BookSearchResultListType, BookSearchResultType } from '../Interface';
 import type { books_v1 } from 'googleapis';
 
 describe('BookInfoView', () => {
