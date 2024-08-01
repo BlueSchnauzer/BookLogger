@@ -12,38 +12,38 @@ import { getTestData } from '$lib/vitest-setup';
 import type { BookInfo } from '$lib/server/models/BookInfo';
 
 describe('LayerZindex30', () => {
-  it('レンダリング', () => {
-    render(LayerZindex30, {isDisplay: true});
+	it('レンダリング', () => {
+		render(LayerZindex30, { isDisplay: true });
 
-    expect(screen.getByTestId('layerZ30')).toBeInTheDocument();
-  });
+		expect(screen.getByTestId('layerZ30')).toBeInTheDocument();
+	});
 
-  it('クリックで非表示に変更できること', async () => {
-    render(LayerZindex30, {isDisplay: true, isHiddenByOnclick: true});
+	it('クリックで非表示に変更できること', async () => {
+		render(LayerZindex30, { isDisplay: true, isHiddenByOnclick: true });
 
-    const layer = screen.getByTestId('layerZ30');
-    await fireEvent.click(layer);
+		const layer = screen.getByTestId('layerZ30');
+		await fireEvent.click(layer);
 
-    expect(screen.getByTestId('layerZ30')).toHaveClass('hidden');
-  });
+		expect(screen.getByTestId('layerZ30')).toHaveClass('hidden');
+	});
 });
 
 describe('FullCoverLoader', () => {
-  it('レンダリング', () => {
-    render(FullCoverLoader, {isDisplay: true});
+	it('レンダリング', () => {
+		render(FullCoverLoader, { isDisplay: true });
 
-    expect(screen.getByTestId('layerZ30')).toBeInTheDocument();
+		expect(screen.getByTestId('layerZ30')).toBeInTheDocument();
 		expect(screen.getByTestId('loader')).toBeInTheDocument();
-  });
+	});
 
-  it('propsがFaulthyの際に非表示に変更されること', async () => {
-    const { component } = render(FullCoverLoader, {isDisplay: true});
+	it('propsがFaulthyの際に非表示に変更されること', async () => {
+		const { component } = render(FullCoverLoader, { isDisplay: true });
 
-		await component.$set({isDisplay: false});
+		await component.$set({ isDisplay: false });
 
-    expect(screen.getByTestId('layerZ30')).toHaveClass('hidden');
+		expect(screen.getByTestId('layerZ30')).toHaveClass('hidden');
 		expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
-  });
+	});
 });
 
 describe('ToggleSwitch', () => {
@@ -84,7 +84,7 @@ describe('ToggleSwitch', () => {
 			text: toggleFilterItems[0].text,
 			isChecked: toggleFilterItems[0].isChecked,
 			isVisible: toggleFilterItems[0].isVisible
-		})
+		});
 
 		expect(container.querySelector('div.flex')).toBeInTheDocument();
 
@@ -100,18 +100,18 @@ describe('ToggleSwitch', () => {
 	});
 });
 
-describe('PrimaryButton', () =>{
+describe('PrimaryButton', () => {
 	it('レンダリング', () => {
-		const component = render(PrimalyButton, { type:'button', text:'button'});
+		const component = render(PrimalyButton, { type: 'button', text: 'button' });
 		expect(screen.getByText('button')).toBeInTheDocument();
 		component.unmount();
 
-		render(PrimalyButton, {type: 'submit', text: 'submit'});
+		render(PrimalyButton, { type: 'submit', text: 'submit' });
 		expect(screen.getByText('submit')).toBeInTheDocument();
 	});
 
 	it('クリックイベントを検知できること', () => {
-		const { component } = render(PrimalyButton, { type:'button', text:'button'});
+		const { component } = render(PrimalyButton, { type: 'button', text: 'button' });
 		const btn = screen.getByText('button');
 		const mock = vitest.fn();
 
@@ -124,16 +124,16 @@ describe('PrimaryButton', () =>{
 
 describe('SecondaryButton', () => {
 	it('レンダリング', () => {
-		const component = render(SecondaryButton, { type:'button', text:'button'});
+		const component = render(SecondaryButton, { type: 'button', text: 'button' });
 		expect(screen.getByText('button')).toBeInTheDocument();
 		component.unmount();
 
-		render(SecondaryButton, {type: 'submit', text: 'submit'});
+		render(SecondaryButton, { type: 'submit', text: 'submit' });
 		expect(screen.getByText('submit')).toBeInTheDocument();
 	});
 
 	it('クリックイベントを検知できること', () => {
-		const { component } = render(SecondaryButton, { type:'button', text:'button'});
+		const { component } = render(SecondaryButton, { type: 'button', text: 'button' });
 		const btn = screen.getByText('button');
 		const mock = vitest.fn();
 
@@ -147,14 +147,22 @@ describe('SecondaryButton', () => {
 describe('CategoryLabel', () => {
 	it('レンダリング', () => {
 		const labelText = 'データあり';
-		render(CategoryLabel, { categoryText: 'カテゴリー', condition: true, labelFunction: () => labelText });
+		render(CategoryLabel, {
+			categoryText: 'カテゴリー',
+			condition: true,
+			labelFunction: () => labelText
+		});
 
 		expect(screen.getByText(labelText)).toBeInTheDocument();
 	});
 
 	it('conditionがFalthyな場合にテキストの値がデータ無しになること', () => {
 		const labelText = 'データあり';
-		render(CategoryLabel, { categoryText: 'カテゴリー', condition: false, labelFunction: () => labelText });
+		render(CategoryLabel, {
+			categoryText: 'カテゴリー',
+			condition: false,
+			labelFunction: () => labelText
+		});
 
 		expect(screen.getByText('データ無し')).toBeInTheDocument();
 	});
@@ -163,37 +171,56 @@ describe('CategoryLabel', () => {
 });
 
 describe('BottomStatusLabel', () => {
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
+	let testData: BookInfo;
+	beforeEach(() => {
+		testData = getTestData();
+	});
 
 	it('登録日のステータスでレンダリングできること', () => {
-		render(BottomStatusLabel, {typeForLabel: 'createDate', bookInfo: testData, isResponsiveText: false});
+		render(BottomStatusLabel, {
+			typeForLabel: 'createDate',
+			bookInfo: testData,
+			isResponsiveText: false
+		});
 
 		expect(screen.getByText('登録日')).toBeInTheDocument();
-	})
+	});
 
 	it('読んでいるページ数でレンダリングできること', () => {
-		testData.pageHistory?.push({id: crypto.randomUUID(), date: new Date, currentPage: testData.pageCount / 2});
-		render(BottomStatusLabel, {typeForLabel: 'progress', bookInfo: testData, isResponsiveText: false});
+		testData.pageHistory?.push({
+			id: crypto.randomUUID(),
+			date: new Date(),
+			currentPage: testData.pageCount / 2
+		});
+		render(BottomStatusLabel, {
+			typeForLabel: 'progress',
+			bookInfo: testData,
+			isResponsiveText: false
+		});
 
 		expect(screen.getByText('読んだページ数')).toBeInTheDocument();
 		expect(screen.getByTestId('pageProgress').style.width).toEqual('50%');
-	})
+	});
 
 	//そもそも総ページ数が無い本は編集することが無意味だが
 	it('総ページ数の無い書誌データの場合、更新日が表示されること', () => {
 		testData.pageCount = 0;
-		render(BottomStatusLabel, {typeForLabel: 'progress', bookInfo: testData, isResponsiveText: false});
+		render(BottomStatusLabel, {
+			typeForLabel: 'progress',
+			bookInfo: testData,
+			isResponsiveText: false
+		});
 
 		expect(screen.getByText('更新日')).toBeInTheDocument();
-	})
+	});
 
 	it('読み終わった日のステータスでレンダリングできること', () => {
-		render(BottomStatusLabel, {typeForLabel: 'completeDate', bookInfo: testData, isResponsiveText: false});
+		render(BottomStatusLabel, {
+			typeForLabel: 'completeDate',
+			bookInfo: testData,
+			isResponsiveText: false
+		});
 
 		expect(screen.getByText('読み終わった日')).toBeInTheDocument();
-	})
-
-})
+	});
+});

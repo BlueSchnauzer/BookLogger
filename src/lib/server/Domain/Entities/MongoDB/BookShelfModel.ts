@@ -1,3 +1,1 @@
-export default class BookShelfModel {
-  
-}
+export default class BookShelfModel {}

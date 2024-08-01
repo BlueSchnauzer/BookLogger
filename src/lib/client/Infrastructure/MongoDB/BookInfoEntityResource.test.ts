@@ -1,8 +1,6 @@
 import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
 import { getEntityTestData } from '$lib/mock/Data';
 import { BookInfoAPIMock } from '$lib/mock/Fixture/index';
-import BookInfoMongoDBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import { json } from '@sveltejs/kit';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('get', () => {

@@ -19,6 +19,6 @@ export interface IBookInfoModel {
 	completeDate?: Date;
 	pageHistories?: pageHistory[];
 	identifiers?: identifiers;
-	shelfCategories?: ObjectId[]
+	shelfCategories?: ObjectId[];
 	gapiId?: string;
 }

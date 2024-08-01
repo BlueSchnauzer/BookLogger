@@ -1,3 +1,1 @@
-export class BookShelf {
-
-}
+export class BookShelf {}

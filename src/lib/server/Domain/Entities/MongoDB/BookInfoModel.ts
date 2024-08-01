@@ -27,7 +27,7 @@ export default class BookInfoModel implements IBookInfoModel {
 	public completeDate?: Date;
 	public pageHistories?: pageHistory[];
 	public identifiers?: identifiers;
-	public shelfCategories?: ObjectId[]
+	public shelfCategories?: ObjectId[];
 	public gapiId?: string;
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
@@ -50,12 +50,13 @@ export default class BookInfoModel implements IBookInfoModel {
 			this.memorandum = resource.memorandum;
 			this.isVisible = resource.isVisible;
 			this._id = resource.id ? new ObjectId(resource.id?.value) : undefined;
-			this.pageHistories = resource.pageHistories ? resource.pageHistories?.map(item => item.value) : [];
+			this.pageHistories = resource.pageHistories
+				? resource.pageHistories?.map((item) => item.value)
+				: [];
 			this.identifiers = resource.identifiers?.value;
 			this.gapiId = resource.gapiId;
-		}
-		else {
-			const currentDate = new Date;
+		} else {
+			const currentDate = new Date();
 
 			this.userId = userId!;
 			this.title = resource!.volumeInfo?.title ?? '';
