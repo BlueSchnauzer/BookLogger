@@ -17,10 +17,10 @@
 </script>
 
 <svelte:head>
-  <title>{pageName}</title>
+	<title>{pageName}</title>
 </svelte:head>
 
-<BooksMainContent 
+<BooksMainContent
 	headerIcon={BookCase}
 	headerText={pageName}
 	bookInfos={data.bookInfos}
