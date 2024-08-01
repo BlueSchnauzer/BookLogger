@@ -5,7 +5,7 @@ import type {
 } from '$lib/client/Helpers/CustomEvent/Dispatcher';
 import { pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
 
-export const handleUpdateSuccess = (
+export const handleBookInfoViewsUpdate = (
 	bookInfoViews: BookInfoView[],
 	paramter: updateBookInfoParameter,
 	isBooksRoute = false
@@ -33,7 +33,7 @@ export const handleUpdateSuccess = (
 	return appliedViews;
 };
 
-export const handleDeletionSuccess = (
+export const handleBookInfoViewsDeletion = (
 	bookInfoViews: BookInfoView[],
 	parameter: deletionBookInfoParameter
 ) => {
