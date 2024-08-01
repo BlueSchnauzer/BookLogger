@@ -40,7 +40,7 @@ export const handleBookInfoViewsDeletion = (
 	//一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
 	let copiedViews = [...bookInfoViews];
 	let appliedViews: BookInfoView[] = [];
-	appliedViews = copiedViews.filter((item) => item.id?.equals(parameter.deletedId));
+	appliedViews = copiedViews.filter((item) => !item.id?.equals(parameter.deletedId));
 
 	pushSuccessToast(parameter.message);
 
