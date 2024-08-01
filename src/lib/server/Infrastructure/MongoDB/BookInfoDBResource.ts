@@ -75,22 +75,23 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getPageHistory(): Promise<Array<pageHistory[]>> {
-		let histories: Array<{ pageHistories: pageHistory[] }> = [];
+	async getPageHistory(): Promise<pageHistory[]> {
+		let histories: pageHistory[] = [];
 
 		try {
 			//pageHistoriesのみを取得(_idは指定無しでも取れるので、取らないように明示する)
 			const projection = { _id: 0, pageHistories: 1 };
-			histories = (await this._collection
+			const document = await this._collection
 				.find({ userId: this._userId.value })
 				.project(projection)
-				.toArray()) as Array<{ pageHistories: pageHistory[] }>;
+				.toArray();
+			histories = document.flatMap((item) => item.pageHistories);
 		} catch (error) {
 			console.log(error);
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return histories.map((item) => item.pageHistories);
+		return histories;
 	}
 
 	async insert(bookInfo: IBookInfoModel): Promise<Response> {
