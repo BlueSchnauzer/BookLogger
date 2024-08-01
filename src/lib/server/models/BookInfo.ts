@@ -17,21 +17,23 @@ export class BookInfo {
 	public isVisible: boolean;
 	public _id?: ObjectId;
 	public completeDate?: Date;
-	public pageHistory?: {
-		id: string;
-		date: Date;
-		currentPage: number;
-	}[];
+	public pageHistory?: 
+		{
+			id: string;
+			date: Date;
+			currentPage: number;
+		}[]
+	;
 	public identifier?: {
 		isbn_13?: string;
 		isbn_10?: string;
 	};
-	public shelfCategory?: ObjectId[];
+	public shelfCategory?: ObjectId[]
 	public gapiId?: string;
 
 	/**GAPIのvolumeで初期化する */
-	constructor(volume: books_v1.Schema$Volume, userId: string) {
-		const currentDate = new Date();
+	constructor(volume: books_v1.Schema$Volume, userId: string){
+		const currentDate = new Date;
 
 		this.userId = userId;
 		this.title = volume.volumeInfo?.title ?? '';
@@ -49,24 +51,18 @@ export class BookInfo {
 	}
 }
 
-type industryIdentifiers =
-	| {
-			identifier?: string | undefined;
-			type?: string | undefined;
-	  }[]
-	| undefined;
+type industryIdentifiers = {
+	identifier?: string | undefined;
+	type?: string | undefined;
+} [] | undefined
 
 /**ISBNを取得する(存在しない場合はundefined) */
 const getIdentifier = (identifiers: industryIdentifiers) => {
-	const isbn_13 = identifiers?.find((id) => id.type === 'ISBN_13')?.identifier;
-	if (isbn_13) {
-		return { isbn_13 };
-	}
-
-	const isbn_10 = identifiers?.find((id) => id.type === 'ISBN_10')?.identifier;
-	if (isbn_10) {
-		return { isbn_10 };
-	}
+	const isbn_13 = identifiers?.find(id => id.type === 'ISBN_13')?.identifier;
+	if (isbn_13) { return {isbn_13}; }
+	
+	const isbn_10 = identifiers?.find(id => id.type === 'ISBN_10')?.identifier;
+	if (isbn_10) { return {isbn_10}; }
 
 	return undefined;
-};
+}

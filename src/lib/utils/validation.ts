@@ -1,11 +1,9 @@
 /**日付(読んだ記録)チェック */
 export const validateReadingDate = (readingDate: string): boolean => {
-	if (!readingDate) {
-		return false;
-	}
+	if (!readingDate) { return false; }
 
 	return true;
-};
+}
 
 /**ページ数(読んだ記録)チェック */
 export const validateReadingCount = (readingCount: number, pageCount: number): boolean => {
@@ -14,4 +12,4 @@ export const validateReadingCount = (readingCount: number, pageCount: number): b
 	}
 
 	return true;
-};
+}

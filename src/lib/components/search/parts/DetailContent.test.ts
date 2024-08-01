@@ -10,14 +10,11 @@ describe('DetailContent', async () => {
 	const item: books_v1.Schema$Volume = result.items![0];
 
 	it('レンダリング', async () => {
-		render(DetailContent, { item });
+		render(DetailContent, {item});
 
-		await waitFor(
-			() => {
-				expect(screen.getByAltText('書影')).toBeInTheDocument();
-			},
-			{ timeout: 5000 }
-		);
+		await waitFor(() => {
+			expect(screen.getByAltText('書影')).toBeInTheDocument();
+		}, { timeout: 5000});
 		expect(screen.getByText(item.volumeInfo?.title!)).toBeInTheDocument();
 		expect(screen.getByText(item.volumeInfo?.authors?.join(',')!)).toBeInTheDocument();
 		expect(screen.getByText('データ無し')).toBeInTheDocument(); //データが無い場合はテキストを変更する

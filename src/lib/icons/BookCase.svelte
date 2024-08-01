@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let width = 24;
 	export let height = 24;
-	export let color = '#000000';
+	export let color = "#000000";
 </script>
 
 <svg
@@ -10,9 +10,9 @@
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 24 24"
 	stroke-width="1.5"
-	{width}
-	{height}
-	{color}
+	width={width}
+	height={height}
+	color={color}
 	><defs
 		><style>
 			.cls-637b7068f95e86b59c579dff-1 {

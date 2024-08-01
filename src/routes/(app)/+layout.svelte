@@ -4,12 +4,13 @@
 	import BottomMenuItem from '$lib/components/menu/BottomMenu.svelte';
 
 	//export let data: LayoutData;
+ 
 </script>
 
 <div class="flex w-screen h-screen overflow-hidden">
-	<SideMenuItem />
-	<slot />
-	<BottomMenuItem />
+	<SideMenuItem/>
+	<slot/>
+	<BottomMenuItem/>
 </div>
 
 <style lang="postcss">

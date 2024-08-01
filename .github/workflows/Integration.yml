@@ -4,15 +4,15 @@
 name: Integration
 
 on:
-  pull_request:
-    branches:
+  pull_request: 
+    branches: 
       - main
 
-env:
+env: 
   # UIテスト用の変数
   TEST_LOGIN_EMAIL: ${{secrets.TEST_LOGIN_EMAIL}}
   TEST_LOGIN_PASSWORD: ${{secrets.TEST_LOGIN_PASSWORD}}
-
+  
   MONGO_URL: ${{secrets.MONGO_URL}}
   DB_NAME: ${{secrets.TEST_DB_NAME}}
   BOOKINFOS_COLLECTION_NAME: ${{secrets.BOOKINFOS_COLLECTION_NAME}}
@@ -26,11 +26,11 @@ env:
   FIREBASE_ADMIN_PRIVATE_KEY: ${{secrets.FIREBASE_ADMIN_PRIVATE_KEY}}
   FIREBASE_ADMIN_CLIENT_EMAIL: ${{secrets.FIREBASE_ADMIN_CLIENT_EMAIL}}
 
-jobs:
+jobs: 
   test:
     name: Test and build triggered by pull request
     runs-on: ubuntu-latest
-
+  
     steps:
       - uses: actions/checkout@v4
 
@@ -51,6 +51,6 @@ jobs:
 
       - name: Install Playwright
         run: npx playwright install
-
+        
       - name: UITest
         run: npm run test:ui

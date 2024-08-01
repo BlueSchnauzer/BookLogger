@@ -16,9 +16,9 @@ export type toggleFilterItem = {
 	isVisible: boolean;
 };
 
-export type selectFilterItem = {
+export type selectFilterItem = { 
 	id: number;
-	text: string;
+	text: string; 
 };
 
 /**書誌データのステータス */

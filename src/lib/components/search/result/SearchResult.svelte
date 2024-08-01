@@ -9,9 +9,7 @@
 
 	/**著者が複数名いる場合に句点で区切る*/
 	const joinArray = (arry: string[] | undefined): string => {
-		if (!arry) {
-			return '';
-		}
+		if (!arry) { return '';	}
 
 		let result: string;
 		//多すぎる場合は短縮
@@ -38,29 +36,20 @@
 {#if searchType !== 'none'}
 	{#await runPromise()}
 		<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
-			<span
-				class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent"
-			/>
+			<span class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent" />
 		</div>
 	{:then result}
 		{#if result.items}
 			<ul data-testid="resultList">
 				{#each result.items as item (item.id)}
 					<li class="flex">
-						<button
-							class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md"
-							on:click={() => handleClick(item)}
-						>
+						<button	class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md" on:click={() => handleClick(item)}>
 							{#if item.volumeInfo?.imageLinks?.thumbnail}
-								<img
-									class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
-									title={getLabel(item.volumeInfo?.title)}
-									src={item.volumeInfo?.imageLinks?.thumbnail}
-									alt="書影"
+								<img class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
+									title={getLabel(item.volumeInfo?.title)} src={item.volumeInfo?.imageLinks?.thumbnail}	alt="書影"
 								/>
 							{:else}
-								<div
-									class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
+								<div class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
 									title={getLabel(item.volumeInfo?.title)}
 								>
 									<span>No Image</span>

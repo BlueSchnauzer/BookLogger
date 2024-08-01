@@ -4,10 +4,10 @@
 	import 'nprogress/nprogress.css';
 	import { navigating } from '$app/stores';
 
-	NProgress.configure({
-		showSpinner: false
-	});
-
+  NProgress.configure({
+    showSpinner: false
+  });
+ 
 	$: {
 		//ページ移動中にプログレスを表示する
 		if ($navigating) {
@@ -17,6 +17,7 @@
 			NProgress.done();
 		}
 	}
+
 </script>
 
 <slot />
