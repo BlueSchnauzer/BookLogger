@@ -4,7 +4,7 @@ import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as service from '$lib/server/database/bookInfo.service';
 import type { BookInfo } from '$lib/server/models/BookInfo';
-import { getTestData, getTestDatas } from '$lib/vitest-setup';
+import { getTestData, threeBookInfos } from '$lib/vitest-setup';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
 let con: MongoClient;
@@ -150,7 +150,7 @@ describe.skip('getBookInfoWithOnlyHistory', () => {
 });
 
 describe.skip('getBookInfoByStatus', () => {
-	const testDatas = getTestDatas();
+	const testDatas = threeBookInfos;
 	beforeEach(async () => {
 		testDatas[0].status = 'wish';
 		testDatas[1].status = 'reading';
