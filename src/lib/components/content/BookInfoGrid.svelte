@@ -8,22 +8,25 @@
 	export let emptyMessage: string;
 
 	const isExistDisplayableItems = (bookInfos: BookInfo[]): boolean => {
-		if (!bookInfos || bookInfos.length === 0) { return false }
-		
-		const visibleCount = bookInfos.filter(item => item.isVisible).length;
-		if (visibleCount === 0) { return false; }
-		
+		if (!bookInfos || bookInfos.length === 0) {
+			return false;
+		}
+
+		const visibleCount = bookInfos.filter((item) => item.isVisible).length;
+		if (visibleCount === 0) {
+			return false;
+		}
+
 		return true;
-	}
-	
+	};
+
 	const dispatch = createEventDispatcher();
 	const handleClick = (item: BookInfo) => {
 		dispatch('click', item);
 	};
 </script>
 
-
-{#if isExistDisplayableItems(bookInfos) }
+{#if isExistDisplayableItems(bookInfos)}
 	<ul
 		class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
 	>
@@ -34,7 +37,7 @@
 						class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
 						on:click={() => handleClick(bookInfo)}
 					>
-					<GridContent {bookInfo}/>
+						<GridContent {bookInfo} />
 					</button>
 				</li>
 			{/if}

@@ -6,119 +6,131 @@ import type { BookInfo } from '$lib/server/models/BookInfo';
 
 //dialogタグの関数がJSDomだとサポートされていない？ためスキップ
 describe.skip('RegisteredModal', async () => {
-  let testData: BookInfo;
-  beforeEach(() => {
-    testData = getTestData();
-  })
+	let testData: BookInfo;
+	beforeEach(() => {
+		testData = getTestData();
+	});
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
- 
-  it('レンダリング', () => {
-    render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
 
-    expect(screen.getByText(testData.title)).toBeInTheDocument();
+	it('レンダリング', () => {
+		render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+
+		expect(screen.getByText(testData.title)).toBeInTheDocument();
 		expect(screen.getByText('No Image')).toBeInTheDocument();
-    expect(screen.getByText('削除')).toBeInTheDocument();
-    expect(screen.getByText('編集')).toBeInTheDocument();
-    expect(screen.getByText('キャンセル')).toBeInTheDocument();
-  });
+		expect(screen.getByText('削除')).toBeInTheDocument();
+		expect(screen.getByText('編集')).toBeInTheDocument();
+		expect(screen.getByText('キャンセル')).toBeInTheDocument();
+	});
 
-  it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
-    const testId = 'registeredDialog';
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
-    
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
-    
-    await component.$set({ isDisplay: false, bookInfo: testData });
-    expect(screen.getByTestId(testId)).not.toBeVisible();
-  });
-  
-  it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
-    const testId = 'registeredDialog';
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
-    
-    const btnClose = screen.getByTestId('btnClose');
-    const btnCancel = screen.getByText('キャンセル');
-    
-    await fireEvent.click(btnClose);
-    expect(screen.getByTestId(testId)).not.toBeVisible();
- 
-    await component.$set({ isDisplay: true, bookInfo: testData });
-    await fireEvent.click(btnCancel);
-    expect(screen.getByTestId(testId)).not.toBeVisible();
-  });
+	it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
+		const testId = 'registeredDialog';
+		const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 
-  it('削除成功時に、イベントを発信できること', async () => {
-    let mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
+		expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+		await component.$set({ isDisplay: false, bookInfo: testData });
+		expect(screen.getByTestId(testId)).not.toBeVisible();
+	});
+
+	it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
+		const testId = 'registeredDialog';
+		const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+
+		const btnClose = screen.getByTestId('btnClose');
+		const btnCancel = screen.getByText('キャンセル');
+
+		await fireEvent.click(btnClose);
+		expect(screen.getByTestId(testId)).not.toBeVisible();
+
+		await component.$set({ isDisplay: true, bookInfo: testData });
+		await fireEvent.click(btnCancel);
+		expect(screen.getByTestId(testId)).not.toBeVisible();
+	});
+
+	it('削除成功時に、イベントを発信できること', async () => {
+		let mockFetch = vi.spyOn(global, 'fetch');
+		mockFetch.mockImplementation(async () => new Response('成功しました。', { status: 200 }));
+
+		const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
-    const btnDelete = screen.getByText('削除');
-    //確認ダイアログをOKに認識させる
-    const confirmSpy = vi.spyOn(window, 'confirm');
-    confirmSpy.mockImplementation(vi.fn(() => true));
+		const btnDelete = screen.getByText('削除');
+		//確認ダイアログをOKに認識させる
+		const confirmSpy = vi.spyOn(window, 'confirm');
+		confirmSpy.mockImplementation(vi.fn(() => true));
 
-    await fireEvent.click(btnDelete);
-    
-    await waitFor(() => {
-      expect(mockSuccess).toHaveBeenCalled();
-    }, {timeout: 3000});
-  });
+		await fireEvent.click(btnDelete);
 
-  it('削除失敗時に、イベントを発信できること', async () => {
-    let mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
+		await waitFor(
+			() => {
+				expect(mockSuccess).toHaveBeenCalled();
+			},
+			{ timeout: 3000 }
+		);
+	});
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+	it('削除失敗時に、イベントを発信できること', async () => {
+		let mockFetch = vi.spyOn(global, 'fetch');
+		mockFetch.mockImplementation(async () => new Response('失敗しました', { status: 500 }));
+
+		const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
-    const btnDelete = screen.getByText('削除');
-    //確認ダイアログをOKに認識させる
-    const confirmSpy = vi.spyOn(window, 'confirm');
-    confirmSpy.mockImplementation(vi.fn(() => true));
+		const btnDelete = screen.getByText('削除');
+		//確認ダイアログをOKに認識させる
+		const confirmSpy = vi.spyOn(window, 'confirm');
+		confirmSpy.mockImplementation(vi.fn(() => true));
 
-    await fireEvent.click(btnDelete);
-    
-    await waitFor(() => {
-      expect(mockFailure).toHaveBeenCalled();
-    }, {timeout: 3000});
-  });
+		await fireEvent.click(btnDelete);
 
-  it('更新成功時に、イベントを発信できること', async () => {
-    let mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('成功しました。', {status: 200}));
+		await waitFor(
+			() => {
+				expect(mockFailure).toHaveBeenCalled();
+			},
+			{ timeout: 3000 }
+		);
+	});
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+	it('更新成功時に、イベントを発信できること', async () => {
+		let mockFetch = vi.spyOn(global, 'fetch');
+		mockFetch.mockImplementation(async () => new Response('成功しました。', { status: 200 }));
+
+		const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
-    const btnUpdate = screen.getByText('編集');
-    await fireEvent.click(btnUpdate);
-    
-    await waitFor(() => {
-      expect(mockSuccess).toHaveBeenCalled();
-    }, {timeout: 3000});
-  });
+		const btnUpdate = screen.getByText('編集');
+		await fireEvent.click(btnUpdate);
 
-  it('更新失敗時に、イベントを発信できること', async () => {
-    let mockFetch = vi.spyOn(global, 'fetch');
-    mockFetch.mockImplementation(async () => new Response('失敗しました', {status: 500}));
+		await waitFor(
+			() => {
+				expect(mockSuccess).toHaveBeenCalled();
+			},
+			{ timeout: 3000 }
+		);
+	});
 
-    const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
+	it('更新失敗時に、イベントを発信できること', async () => {
+		let mockFetch = vi.spyOn(global, 'fetch');
+		mockFetch.mockImplementation(async () => new Response('失敗しました', { status: 500 }));
+
+		const { component } = render(RegisteredModal, { isDisplay: true, bookInfo: testData });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
-    const btnUpdate = screen.getByText('編集');
-    await fireEvent.click(btnUpdate);
-    
-    await waitFor(() => {
-      expect(mockFailure).toHaveBeenCalled();
-    }, {timeout: 3000});
-  });
+		const btnUpdate = screen.getByText('編集');
+		await fireEvent.click(btnUpdate);
+
+		await waitFor(
+			() => {
+				expect(mockFailure).toHaveBeenCalled();
+			},
+			{ timeout: 3000 }
+		);
+	});
 });

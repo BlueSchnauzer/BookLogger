@@ -12,20 +12,20 @@
 	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
 	const logout = async () => {
 		//画面サイズが小さい時に表示するので誤操作か確認する。
-		if (!confirm('ログアウトしますか？')) { return; }
+		if (!confirm('ログアウトしますか？')) {
+			return;
+		}
 
 		try {
 			await signOut(firebaseAuth);
 			const response = await fetch('/api/auth', {
 				method: 'DELETE'
 			});
-		}
-		catch (error) {
+		} catch (error) {
 			console.log(error);
 		}
-    goto('/login');
-	}
-	
+		goto('/login');
+	};
 </script>
 
 <div class="flex items-center justify-start">
@@ -34,8 +34,12 @@
 			<svelte:component this={headerIcon} width={30} height={30} />
 			<h1 data-testid="headerText" class="text-xl pl-2">{headerText}</h1>
 		</div>
-		<button data-testid="btnLogoutInHeader" class="max-md:flex hidden w-10 h-10 items-center justify-center" on:click={logout}>
+		<button
+			data-testid="btnLogoutInHeader"
+			class="max-md:flex hidden w-10 h-10 items-center justify-center"
+			on:click={logout}
+		>
 			<Icon icon="ph:sign-out" width="36" height="36" color={colorStone700} />
-		</button>	
+		</button>
 	</div>
 </div>

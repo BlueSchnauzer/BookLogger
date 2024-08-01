@@ -2,7 +2,6 @@
 	export let categoryText: string;
 	export let condition: any;
 	export let labelFunction: () => string | undefined;
-
 </script>
 
 <div class="mb-2 flex flex-col justify-start items-stretch">

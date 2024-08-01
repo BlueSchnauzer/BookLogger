@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-    import CompleteBook from '$lib/icons/CompleteBook.svelte';
+	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import BooksMainContent from '../BooksMainContent.svelte';
 
 	export let data: PageData;
@@ -14,11 +14,10 @@
 		{ id: 1, text: '最近追加した順' },
 		{ id: 2, text: '最近読み終わった順' }
 	];
-	
 </script>
 
 <svelte:head>
-  <title>{pageName}</title>
+	<title>{pageName}</title>
 </svelte:head>
 
 <BooksMainContent

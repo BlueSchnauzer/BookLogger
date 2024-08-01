@@ -1,7 +1,5 @@
-import { describe, it } from "vitest";
+import { describe, it } from 'vitest';
 
-describe('test', () => {
-  it('test', () => {
-
-  });
-})
+describe.skip('test', () => {
+	it('test', () => {});
+});

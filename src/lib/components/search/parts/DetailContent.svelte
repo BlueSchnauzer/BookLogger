@@ -12,8 +12,11 @@
 <div class="flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">
 	<div class="flex flex-col flex-shrink-0 p-4 max-sm:p-0 pt-6 max-sm:pt-4 min-w-44">
 		{#if item.volumeInfo?.imageLinks?.thumbnail}
-			<img class="self-center w-[128px] h-[182px] shadow-md"
-				title={getLabel(item.volumeInfo?.title)} src={item.volumeInfo?.imageLinks?.thumbnail} alt="書影"
+			<img
+				class="self-center w-[128px] h-[182px] shadow-md"
+				title={getLabel(item.volumeInfo?.title)}
+				src={item.volumeInfo?.imageLinks?.thumbnail}
+				alt="書影"
 			/>
 			<span class="self-center text-gray-400 text-xs">Image By Google</span>
 		{:else}
@@ -26,23 +29,35 @@
 		{/if}
 	</div>
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
-	<div class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll" >
+	<div
+		class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll"
+	>
 		{#if item.volumeInfo?.title}
-			<span data-testid="searchedItemTitle" class="pt-2 text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
+			<span data-testid="searchedItemTitle" class="pt-2 text-lg font-bold text-lime-700"
+				>{item.volumeInfo?.title}</span
+			>
 		{:else}
 			<span class="pt-2 text-lg font-bold text-gray-400">データ無し</span>
 		{/if}
 		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-			<CategoryLabel categoryText="著者" condition={item.volumeInfo?.authors}
-        labelFunction={() => item.volumeInfo?.authors?.join(', ')}
+			<CategoryLabel
+				categoryText="著者"
+				condition={item.volumeInfo?.authors}
+				labelFunction={() => item.volumeInfo?.authors?.join(', ')}
 			/>
-			<CategoryLabel categoryText="出版社" condition={item.volumeInfo?.publisher}
+			<CategoryLabel
+				categoryText="出版社"
+				condition={item.volumeInfo?.publisher}
 				labelFunction={() => item.volumeInfo?.publisher}
 			/>
-			<CategoryLabel categoryText="発売日" condition={item.volumeInfo?.publishedDate}
+			<CategoryLabel
+				categoryText="発売日"
+				condition={item.volumeInfo?.publishedDate}
 				labelFunction={() => item.volumeInfo?.publishedDate}
 			/>
-			<CategoryLabel categoryText="ページ数" condition={item.volumeInfo?.pageCount}
+			<CategoryLabel
+				categoryText="ページ数"
+				condition={item.volumeInfo?.pageCount}
 				labelFunction={() => `${item.volumeInfo?.pageCount?.toString()}ページ`}
 			/>
 		</div>

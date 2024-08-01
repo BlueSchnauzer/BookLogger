@@ -37,19 +37,21 @@
 		currentBookInfo = bookInfo;
 		isDisplayDetail = true;
 	};
-
 </script>
 
 <svelte:head>
-  <title>{pageName}</title>
+	<title>{pageName}</title>
 </svelte:head>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
 		<ContentHeader headerIcon={MagnifingGlass} headerText={pageName} />
 		<div class="flex justify-between">
-			<PrimalyButton type="button" text="検索条件"
-				isUseMargin={false}	on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
+			<PrimalyButton
+				type="button"
+				text="検索条件"
+				isUseMargin={false}
+				on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
 			<PagingLabel {...data.props} {resultCount} {isLoading} />
 		</div>
@@ -57,7 +59,11 @@
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
-		<SearchResult searchType={data.props.searchType} {runPromise} on:click={(event) => displayDetail(event.detail)} />
+		<SearchResult
+			searchType={data.props.searchType}
+			{runPromise}
+			on:click={(event) => displayDetail(event.detail)}
+		/>
 		<div class="flex justify-center py-2">
 			<PagingLabel {...data.props} {resultCount} {isLoading} isBottom={true} />
 		</div>
@@ -70,7 +76,7 @@
 			/>
 		{/if}
 		<div class="wrap-bottom">
-			<SvelteToast {target}/>
+			<SvelteToast {target} />
 		</div>
 	</div>
 </main>
