@@ -3,21 +3,19 @@
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import type { books_v1 } from 'googleapis';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from "svelte";
 	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import type { ObjectId } from 'mongodb';
 
-	export let isDisplay = false;
+  export let isDisplay = false;
 	export let item: books_v1.Schema$Volume = {};
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
 	const colorStone700 = '#44403C';
 
 	/**モーダル表示を表示する*/
-	$: if (dialog && isDisplay) {
-		dialog.showModal();
-	}
+	$: if (dialog && isDisplay) { dialog.showModal(); }
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
@@ -29,22 +27,17 @@
 	/**Escキーでモーダルを閉じた際に、変数を併せて変更する*/
 	const cancelModal = () => {
 		isDisplay = false;
-	};
+	}
 
 	/**ローディングを表示する*/
 	const displayLoader = () => {
 		isDisplayLoader = true;
-	};
+	}
 
 	const dispatch = createEventDispatcher();
-	const handleRequest = (
-		isSuccess: boolean,
-		message: string,
-		updatedItem?: BookInfo,
-		deletedId?: ObjectId
-	) => {
-		if (isSuccess) {
-			dispatch('success', { message, updatedItem, deletedId });
+	const handleRequest = (isSuccess: boolean, message: string, updatedItem?: BookInfo, deletedId?: ObjectId) => {
+		if (isSuccess){
+			dispatch('success', {message, updatedItem, deletedId});
 		} else {
 			dispatch('failed', message);
 		}
@@ -58,26 +51,23 @@
 		const response = await fetch('/api/bookinfo', {
 			method: 'POST',
 			body: JSON.stringify(item),
-			headers: { 'Content-type': 'application/json' }
+			headers: {'Content-type': 'application/json'}
 		});
 
 		closeModalAndLoader();
 		//ユーザ用のメッセージを設定してイベントを発行
-		const reseponseMessage = response.ok
-			? '登録しました'
-			: response.status === 409
-				? '登録済みの書籍です'
-				: '登録に失敗しました。<br>時間をおいて再度登録してください。';
+		const reseponseMessage = 
+			response.ok ? '登録しました' : 
+			response.status === 409 ? '登録済みの書籍です' : '登録に失敗しました。\<br\>時間をおいて再度登録してください。';
 		handleRequest(response.ok, reseponseMessage);
-	};
+	}
+
 </script>
 
 <dialog bind:this={dialog} on:cancel={cancelModal}>
 	{#if isDisplayLoader}
 		<div class="fixed m-auto inset-0 flex flex-1 justify-center items-center">
-			<span
-				class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"
-			></span>
+			<span class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"></span>
 		</div>
 	{:else}
 		<div
@@ -95,12 +85,12 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<DetailContent {item} />
-			<span class="bg-stone-400 h-[1px]" />
-			<div class="h-14 flex flex-row justify-end items-center">
-				<PrimalyButton type="button" text="登録" on:click={postBookInfo} />
-				<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
-			</div>
-		</div>
+      <DetailContent {item}/>
+      <span class="bg-stone-400 h-[1px]" />
+      <div class="h-14 flex flex-row justify-end items-center">
+        <PrimalyButton type="button" text="登録" on:click={postBookInfo}/>
+        <SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
+      </div>
+    </div>
 	{/if}
 </dialog>

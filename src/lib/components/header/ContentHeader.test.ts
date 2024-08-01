@@ -4,11 +4,11 @@ import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 import BookCase from '$lib/icons/BookCase.svelte';
 
 describe('ContentHeader', () => {
-	//データ作成
-	it('レンダリング', () => {
-		const { container } = render(ContentHeader, { headerIcon: BookCase, headerText: 'テスト' });
+  //データ作成
+  it('レンダリング', () => {
+    const { container } = render(ContentHeader, { headerIcon: BookCase, headerText: 'テスト' });
 
-		expect(container.querySelector('.flex > #Layer_1')).toBeInTheDocument();
-		expect(screen.getByRole('heading')).toBeInTheDocument();
-	});
+    expect(container.querySelector('.flex > #Layer_1')).toBeInTheDocument();
+    expect(screen.getByRole('heading')).toBeInTheDocument();
+  });
 });

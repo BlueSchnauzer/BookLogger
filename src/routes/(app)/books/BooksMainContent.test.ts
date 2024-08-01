@@ -3,7 +3,7 @@ import { describe, expect, it, vitest } from 'vitest';
 import BooksMainContent from './BooksMainContent.svelte';
 
 describe('BooksMainContent', () => {
-	it('レンダリング', () => {
-		//render(BooksMainContent, {});
-	});
+  it('レンダリング', () => {
+    //render(BooksMainContent, {});
+  });
 });

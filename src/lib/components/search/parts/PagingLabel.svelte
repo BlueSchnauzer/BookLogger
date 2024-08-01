@@ -31,38 +31,39 @@
 		}
 		page! += 1;
 	};
+
 </script>
 
-{#if searchType !== 'none' && (!isBottom || !isLoading)}
+{#if searchType !== 'none' && (!isBottom || !isLoading) }
 	<div class="flex max-w-xl">
-		<form action="/books/search" class="flex justify-center" on:submit={(e) => pagingBackward(e)}>
-			<button class="hover:bg-stone-300 rounded" type="submit" title="前へ" disabled={isLoading}>
+		<form action="/books/search" class="flex justify-center" on:submit={e => pagingBackward(e)}>
+			<button	class="hover:bg-stone-300 rounded" type="submit" title="前へ" disabled={isLoading}>
 				<Icon icon="ph:caret-left" width="32" height="32" color={colorLime800} />
-			</button>
+			</button>	
 			{#if searchType === 'fuzzy'}
-				<input type="hidden" value={query} name="query" />
+				<input type="hidden" value={query} name="query">
 			{:else if searchType === 'detail'}
-				<input type="hidden" value={bookTitle} name="booktitle" />
-				<input type="hidden" value={author} name="author" />
-				<input type="hidden" value={isbn} name="isbn" />
+				<input type="hidden" value={bookTitle} name="booktitle">
+				<input type="hidden" value={author} name="author">
+				<input type="hidden" value={isbn} name="isbn">
 			{/if}
-			<input type="hidden" bind:value={page} name="page" />
+			<input type="hidden" bind:value={page} name="page">
 		</form>
 		<span class="m-auto px-2">
-			{`${resultCount ? startIndex + 1 : 0}～${startIndex + 10 >= resultCount ? resultCount : startIndex + 10}/${resultCount}`}件
-		</span>
-		<form action="/books/search" class="flex justify-center" on:submit={(e) => pagingForward(e)}>
-			<button class="hover:bg-stone-300 rounded" type="submit" title="次へ" disabled={isLoading}>
+      {`${resultCount ? startIndex + 1 : 0}～${startIndex + 10 >= resultCount ? resultCount : startIndex + 10}/${resultCount}`}件
+    </span>
+		<form action="/books/search" class="flex justify-center" on:submit={e => pagingForward(e)}>
+			<button	class="hover:bg-stone-300 rounded" type="submit" title="次へ" disabled={isLoading}>
 				<Icon icon="ph:caret-right" width="32" height="32" color={colorLime800} />
 			</button>
 			{#if searchType === 'fuzzy'}
-				<input type="hidden" value={query} name="query" />
+				<input type="hidden" value={query} name="query">
 			{:else if searchType === 'detail'}
-				<input type="hidden" value={bookTitle} name="booktitle" />
-				<input type="hidden" value={author} name="author" />
-				<input type="hidden" value={isbn} name="isbn" />
+				<input type="hidden" value={bookTitle} name="booktitle">
+				<input type="hidden" value={author} name="author">
+				<input type="hidden" value={isbn} name="isbn">
 			{/if}
-			<input type="hidden" bind:value={page} name="page" />
+			<input type="hidden" bind:value={page} name="page">
 		</form>
 	</div>
 {/if}

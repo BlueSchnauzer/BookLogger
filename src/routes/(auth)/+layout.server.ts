@@ -3,11 +3,9 @@ import { verifyAuthorisation } from '$lib/server/verification';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ cookies }) => {
-	//ログイン中の場合はホームに移動する。
-	const idToken = cookies.get('idToken');
-	if (await verifyAuthorisation(idToken!, false)) {
-		throw redirect(302, '/home');
-	}
+  //ログイン中の場合はホームに移動する。
+  const idToken = cookies.get('idToken');
+  if (await verifyAuthorisation(idToken!, false)){ throw redirect(302, '/home'); }
 
-	return {};
+  return {};
 }) satisfies LayoutServerLoad;
