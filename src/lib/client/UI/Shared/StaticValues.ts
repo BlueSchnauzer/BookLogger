@@ -1,4 +1,5 @@
 export const colorStone200 = '#E7E5E4';
+export const colorStone700 = '#44403C';
 
 export const emptyMessages = {
 	default: '本が登録されていません。<br>検索メニューから書籍を登録してください！',

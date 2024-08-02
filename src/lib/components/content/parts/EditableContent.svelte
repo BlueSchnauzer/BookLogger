@@ -7,6 +7,8 @@
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 
 	export let bookInfo: BookInfo;
 
@@ -23,8 +25,6 @@
 		{ status: 'reading', label: '読んでいる本' },
 		{ status: 'complete', label: '読み終わった本' }
 	];
-	const target = 'modalToast';
-	const colorStone700 = '#44403C';
 
 	/**読んだ記録を追加する*/
 	const addHistory = () => {
@@ -62,7 +62,7 @@
 
 		//入力値の自動変更があればトーストで通知。
 		if (toastMessage) {
-			pushToast(toastMessage, target);
+			pushToast(toastMessage, toastTargetName);
 		}
 	};
 
@@ -108,7 +108,7 @@
 		readingCount = bookInfo.pageCount;
 		addHistory();
 
-		pushToast('最後のページまでの読んだ記録を追加しました。', target);
+		pushToast('最後のページまでの読んだ記録を追加しました。', toastTargetName);
 	};
 
 	onMount(() => {
@@ -274,7 +274,7 @@
 	</div>
 </div>
 <div class="wrap-default">
-	<SvelteToast {target} />
+	<SvelteToast target={toastTargetName} />
 </div>
 
 <style>

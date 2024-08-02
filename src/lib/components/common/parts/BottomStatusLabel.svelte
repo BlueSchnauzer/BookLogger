@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import type { typeForBottomLabel } from '$lib/customTypes';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
@@ -12,8 +13,6 @@
 	export let bookInfo: BookInfo;
 	/**画面サイズが小さくなった際にテキストを非表示にするか*/
 	export let isResponsiveText = true;
-
-	const colorStone700 = '#44403C';
 
 	const isDisplayableProgress = () => {
 		return (

@@ -6,12 +6,12 @@
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import type { ObjectId } from 'mongodb';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 
 	export let isDisplay = false;
 	export let bookInfo: BookInfo;
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
-	const colorStone700 = '#44403C';
 	const beforeStatus = bookInfo.status;
 
 	/**モーダル表示を表示する*/

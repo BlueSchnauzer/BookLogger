@@ -4,10 +4,10 @@
 	import { signOut } from 'firebase/auth';
 	import { firebaseAuth } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 
 	export let headerIcon: ComponentType;
 	export let headerText: string;
-	const colorStone700 = '#44403C';
 
 	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
 	const logout = async () => {

@@ -7,12 +7,12 @@
 	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import type { ObjectId } from 'mongodb';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 
 	export let isDisplay = false;
 	export let item: books_v1.Schema$Volume = {};
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
-	const colorStone700 = '#44403C';
 
 	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) {

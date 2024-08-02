@@ -13,6 +13,7 @@
 	//iOS Safariなど用に追加
 	import ResizeObserver from 'resize-observer-polyfill';
 	import { onMount, type ComponentType } from 'svelte';
+	import { toastTargetName } from '$lib/client/Helpers/Toast';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -34,7 +35,6 @@
 	let isDisplayDetail = false;
 	let currentBookInfo: BookInfo;
 	let gridContent: HTMLElement;
-	const target = 'mainToast';
 
 	$: {
 		bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
@@ -71,12 +71,12 @@
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
 			on:success={(event) =>
-				(bookInfos = handleSuccess(bookInfos, event.detail, target, isBooksRoute))}
-			on:failed={(event) => pushErrorToast(event.detail, target)}
+				(bookInfos = handleSuccess(bookInfos, event.detail, toastTargetName, isBooksRoute))}
+			on:failed={(event) => pushErrorToast(event.detail, toastTargetName)}
 		/>
 	{/if}
 	<div class="wrap-bottom">
-		<SvelteToast {target} />
+		<SvelteToast target={toastTargetName} />
 	</div>
 </main>
 

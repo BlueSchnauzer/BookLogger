@@ -1,15 +1,17 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { books_v1 } from 'googleapis';
-	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
+	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
-	import SearchModal from '$lib/components/search/SearchModal.svelte';
-	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
 	import ContentModal from '$lib/components/search/ContentModal.svelte';
+	import SearchModal from '$lib/components/search/SearchModal.svelte';
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
-	import { pushSuccessToast, pushErrorToast } from '$lib/utils/toast';
+	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
+	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
+	import { pushErrorToast, pushSuccessToast } from '$lib/utils/toast';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import type { books_v1 } from 'googleapis';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 	let isDisplaySearchModal = data.props.searchType === 'none';
@@ -18,8 +20,6 @@
 
 	let currentBookInfo: books_v1.Schema$Volume;
 	let isDisplayDetail = false;
-	const pageName = '書籍検索';
-	const target = 'searchToast';
 
 	let runPromise: () => Promise<books_v1.Schema$Volumes>;
 	$: {
@@ -40,12 +40,12 @@
 </script>
 
 <svelte:head>
-	<title>{pageName}</title>
+	<title>{pageTitles.search}</title>
 </svelte:head>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader headerIcon={MagnifingGlass} headerText={pageName} />
+		<ContentHeader headerIcon={MagnifingGlass} headerText={pageTitles.search} />
 		<div class="flex justify-between">
 			<PrimalyButton
 				type="button"
@@ -71,12 +71,12 @@
 			<ContentModal
 				item={currentBookInfo}
 				bind:isDisplay={isDisplayDetail}
-				on:success={(event) => pushSuccessToast(event.detail.message, target)}
-				on:failed={(event) => pushErrorToast(event.detail, target)}
+				on:success={(event) => pushSuccessToast(event.detail.message, toastTargetName)}
+				on:failed={(event) => pushErrorToast(event.detail, toastTargetName)}
 			/>
 		{/if}
 		<div class="wrap-bottom">
-			<SvelteToast {target} />
+			<SvelteToast target={toastTargetName} />
 		</div>
 	</div>
 </main>

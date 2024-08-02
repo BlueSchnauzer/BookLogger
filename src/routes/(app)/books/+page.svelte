@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
+	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
+	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import BookCase from '$lib/icons/BookCase.svelte';
+	import type { PageData } from './$types';
 	import BooksMainContent from './BooksMainContent.svelte';
 
 	export let data: PageData;
 
-	const pageName = 'ライブラリ';
 	const toggleFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }
 	];
@@ -17,12 +17,12 @@
 </script>
 
 <svelte:head>
-	<title>{pageName}</title>
+	<title>{pageTitles.books}</title>
 </svelte:head>
 
 <BooksMainContent
 	headerIcon={BookCase}
-	headerText={pageName}
+	headerText={pageTitles.books}
 	bookInfos={data.bookInfos}
 	isBooksRoute={true}
 	{toggleFilterItems}
