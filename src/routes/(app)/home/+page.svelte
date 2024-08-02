@@ -5,7 +5,7 @@
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import SearchModal from '$lib/components/search/SearchModal.svelte';
-	import Home from '$lib/icons/Home.svelte';
+	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import { handleSuccess } from '$lib/utils/bookInfo';
 	import { pushErrorToast } from '$lib/utils/toast';
