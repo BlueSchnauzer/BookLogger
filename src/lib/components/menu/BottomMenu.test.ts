@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/svelte';
-import { describe, expect, it, vi } from 'vitest';
-import { readable } from 'svelte/store';
+import { mainMenuItems } from '$lib/client/UI/Shared/DisplayData';
 import BottomMenu from '$lib/components/menu/BottomMenu.svelte';
+import { render, screen } from '@testing-library/svelte';
+import { readable } from 'svelte/store';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('BottomMenu', () => {
 	vi.mock('$app/stores', () => {
@@ -13,9 +14,6 @@ describe('BottomMenu', () => {
 	it('レンダリング', () => {
 		render(BottomMenu);
 
-		expect(screen.getByText('ホーム')).toBeInTheDocument();
-		expect(screen.getByText('ライブラリ')).toBeInTheDocument();
-		expect(screen.getByText('書籍検索')).toBeInTheDocument();
-		expect(screen.getByText('本棚')).toBeInTheDocument();
+		mainMenuItems.forEach((item) => expect(screen.getByText(item.name)).toBeInTheDocument());
 	});
 });
