@@ -1,5 +1,5 @@
 /**inputタグの日付をDateに変換*/
-export const convertReadingDateToDate = (readingDate: string) => {
+export const convertInputDateToDate = (readingDate: string) => {
 	const splitDate = readingDate.split('-');
 	//UTCで設定する
 	return new Date(

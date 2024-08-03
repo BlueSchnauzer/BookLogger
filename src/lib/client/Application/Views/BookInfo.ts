@@ -4,7 +4,7 @@ import type { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Ident
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import { convertReadingDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
+import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
 import { pushToast } from '$lib/client/Helpers/Toast';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 import type { ObjectId } from 'mongodb';
@@ -51,6 +51,10 @@ export class BookInfoView {
 
 	get titleLabel() {
 		return !!this.title ? this.title : 'データ無し';
+	}
+
+	get joinedAuthors() {
+		return this.author.join(', ');
 	}
 
 	get pageCountLabel() {
@@ -120,7 +124,7 @@ export class BookInfoView {
 		}
 
 		const item = new PageHistory({
-			date: convertReadingDateToDate(readingDate),
+			date: convertInputDateToDate(readingDate),
 			pageCount: readingCount
 		});
 
@@ -141,7 +145,7 @@ export class BookInfoView {
 		return { isSuccess: true };
 	}
 
-	deletePageHistory(id: string) {
+	deletePageHistory(id?: string) {
 		if (!id || !this.pageHistories?.length) {
 			return;
 		}
