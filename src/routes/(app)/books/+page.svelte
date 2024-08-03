@@ -23,7 +23,7 @@
 <BooksMainContent
 	headerIcon={BookCase}
 	headerText={pageTitles.books}
-	bookInfos={data.bookInfos}
+	views={data.views}
 	isBooksRoute={true}
 	{toggleFilterItems}
 	{selectFilterItems}

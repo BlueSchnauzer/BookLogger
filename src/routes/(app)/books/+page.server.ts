@@ -1,15 +1,12 @@
+import { BookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
+import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
 import type { PageServerLoad } from './$types';
-import type { BookInfo } from '$lib/server/models/BookInfo';
-import { error } from '@sveltejs/kit';
 
 export const load = (async ({ fetch }) => {
-	//条件を絞らず書誌データを取得
-	const response = await fetch('/api/bookinfo');
-	if (!response.ok) {
-		throw error(response.status);
-	}
+	const repos = new BookInfoEntityResource(fetch);
+	const usecase = new BookInfoUseCase(repos);
+	const views = await usecase.get();
+	console.log('bookinfo views', views);
 
-	let bookInfos: BookInfo[] = await response.json();
-
-	return { bookInfos };
+	return { views };
 }) satisfies PageServerLoad;
