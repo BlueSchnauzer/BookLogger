@@ -48,12 +48,12 @@ export const dispatchDeletionBookInfoRequest = (
 	}
 };
 
-export interface bookSearchEvent {
+export interface bookSearchClickEvent {
 	click: BookSearchView<BookSearchResultType<BookSearchResultListType>>;
 }
 
 export const dispatchBookSearchViewClick = (
-	dispatch: EventDispatcher<bookSearchEvent>,
+	dispatch: EventDispatcher<bookSearchClickEvent>,
 	view: BookSearchView<BookSearchResultType<BookSearchResultListType>>
 ) => {
 	dispatch('click', view);

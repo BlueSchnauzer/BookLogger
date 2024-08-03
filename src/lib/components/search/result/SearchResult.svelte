@@ -3,7 +3,7 @@
 	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 	import {
 		dispatchBookSearchViewClick,
-		type bookSearchEvent
+		type bookSearchClickEvent
 	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
 	import type { SearchType } from '$lib/client/Utils/types';
 	import InfoLabel from '$lib/components/common/parts/CategoryLabel.svelte';
@@ -13,7 +13,7 @@
 	export let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
 	export let searchType: SearchType;
 
-	const dispatch = createEventDispatcher<bookSearchEvent>();
+	const dispatch = createEventDispatcher<bookSearchClickEvent>();
 	const handleViewClick = (view: BookSearchView<books_v1.Schema$Volume>) => {
 		dispatchBookSearchViewClick(dispatch, view);
 	};
