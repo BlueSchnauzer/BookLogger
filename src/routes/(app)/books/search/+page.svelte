@@ -21,6 +21,7 @@
 	let isLoading = false;
 
 	let currentBookInfo: books_v1.Schema$Volume;
+	let currentView: BookSearchView<books_v1.Schema$Volume>;
 	let isDisplayDetail = false;
 
 	let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
@@ -41,7 +42,8 @@
 	};
 
 	const handleClick = (event: CustomEvent<BookSearchView<books_v1.Schema$Volume>>) => {
-		console.log(event.detail);
+		currentView = event.detail;
+		isDisplayDetail = true;
 	};
 </script>
 
@@ -76,6 +78,7 @@
 		{#if isDisplayDetail}
 			<ContentModal
 				item={currentBookInfo}
+				view={currentView}
 				bind:isDisplay={isDisplayDetail}
 				on:success={(event) => pushSuccessToast(event.detail.message, toastTargetName)}
 				on:failed={(event) => pushErrorToast(event.detail, toastTargetName)}

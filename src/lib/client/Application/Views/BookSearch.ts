@@ -33,8 +33,8 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 	}
 
 	/**著者が複数名いる場合に句点で区切る*/
-	get joinedAuthorNames() {
-		let authors = this.searchResult.volumeInfo?.authors;
+	get joinUpToFiveAuthorNames() {
+		let authors = this.authors;
 		if (!authors) {
 			return '';
 		}
@@ -48,6 +48,14 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 		}
 
 		return result;
+	}
+
+	get joinAuthorNames() {
+		if (!this.authors) {
+			return '';
+		}
+
+		return this.authors.join(', ');
 	}
 
 	get pageCountLabel() {

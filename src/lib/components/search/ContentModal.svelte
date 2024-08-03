@@ -1,25 +1,25 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
+	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
-	import type { books_v1 } from 'googleapis';
-	import { createEventDispatcher } from 'svelte';
 	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
+	import Icon from '@iconify/svelte';
+	import type { books_v1 } from 'googleapis';
 	import type { ObjectId } from 'mongodb';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
+	import { createEventDispatcher } from 'svelte';
 
 	export let isDisplay = false;
 	export let item: books_v1.Schema$Volume = {};
+	export let view: BookSearchView<books_v1.Schema$Volume>;
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
 
-	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) {
 		dialog.showModal();
 	}
 
-	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
 		isDisplay = false;
 		isDisplayLoader = false;
@@ -31,7 +31,6 @@
 		isDisplay = false;
 	};
 
-	/**ローディングを表示する*/
 	const displayLoader = () => {
 		isDisplayLoader = true;
 	};
@@ -95,7 +94,7 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<DetailContent {item} />
+			<DetailContent {view} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="h-14 flex flex-row justify-end items-center">
 				<PrimalyButton type="button" text="登録" on:click={postBookInfo} />

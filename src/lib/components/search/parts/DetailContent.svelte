@@ -1,28 +1,25 @@
 <script lang="ts">
-	import type { books_v1 } from 'googleapis';
+	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 	import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
+	import type { books_v1 } from 'googleapis';
 
-	export let item: books_v1.Schema$Volume;
-
-	const getLabel = (data?: string | number): string => {
-		return data?.toString() ?? 'データ無し';
-	};
+	export let view: BookSearchView<books_v1.Schema$Volume>;
 </script>
 
 <div class="flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">
 	<div class="flex flex-col flex-shrink-0 p-4 max-sm:p-0 pt-6 max-sm:pt-4 min-w-44">
-		{#if item.volumeInfo?.imageLinks?.thumbnail}
+		{#if view.thumbnail}
 			<img
 				class="self-center w-[128px] h-[182px] shadow-md"
-				title={getLabel(item.volumeInfo?.title)}
-				src={item.volumeInfo?.imageLinks?.thumbnail}
+				title={view.titleLabel}
+				src={view.thumbnail}
 				alt="書影"
 			/>
 			<span class="self-center text-gray-400 text-xs">Image By Google</span>
 		{:else}
 			<div
 				class="flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
-				title={getLabel(item.volumeInfo?.title)}
+				title={view.titleLabel}
 			>
 				<span>No Image</span>
 			</div>
@@ -32,9 +29,9 @@
 	<div
 		class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll"
 	>
-		{#if item.volumeInfo?.title}
+		{#if view.title}
 			<span data-testid="searchedItemTitle" class="pt-2 text-lg font-bold text-lime-700"
-				>{item.volumeInfo?.title}</span
+				>{view.title}</span
 			>
 		{:else}
 			<span class="pt-2 text-lg font-bold text-gray-400">データ無し</span>
@@ -42,29 +39,29 @@
 		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
 			<CategoryLabel
 				categoryText="著者"
-				condition={item.volumeInfo?.authors}
-				labelFunction={() => item.volumeInfo?.authors?.join(', ')}
+				condition={view.authors}
+				labelFunction={() => view.joinAuthorNames}
 			/>
 			<CategoryLabel
 				categoryText="出版社"
-				condition={item.volumeInfo?.publisher}
-				labelFunction={() => item.volumeInfo?.publisher}
+				condition={view.publisher}
+				labelFunction={() => view.publisher}
 			/>
 			<CategoryLabel
 				categoryText="発売日"
-				condition={item.volumeInfo?.publishedDate}
-				labelFunction={() => item.volumeInfo?.publishedDate}
+				condition={view.publishedDate}
+				labelFunction={() => view.publishedDate}
 			/>
 			<CategoryLabel
 				categoryText="ページ数"
-				condition={item.volumeInfo?.pageCount}
-				labelFunction={() => `${item.volumeInfo?.pageCount?.toString()}ページ`}
+				condition={view.pageCount}
+				labelFunction={() => view.pageCountLabel}
 			/>
 		</div>
 		<span class="text-lg font-bold">紹介</span>
 		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-			{#if item.volumeInfo?.description}
-				<p>{item.volumeInfo?.description}</p>
+			{#if view.description}
+				<p>{view.description}</p>
 			{:else}
 				<p class="text-gray-400">データ無し</p>
 			{/if}

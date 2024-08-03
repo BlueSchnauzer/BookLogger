@@ -61,7 +61,7 @@
 									<InfoLabel
 										categoryText="著者"
 										condition={view.authors}
-										labelFunction={() => view.joinedAuthorNames}
+										labelFunction={() => view.joinUpToFiveAuthorNames}
 									/>
 									<InfoLabel
 										categoryText="発売日"
