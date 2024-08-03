@@ -188,3 +188,7 @@ export class BookInfoView {
 		return result;
 	}
 }
+
+export const isBookInfoView = (obj: any): obj is BookInfoView => {
+	return obj instanceof BookInfoView;
+};

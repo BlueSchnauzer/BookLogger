@@ -1,3 +1,4 @@
+import { isBookInfoView, type BookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers, type identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
@@ -92,10 +93,14 @@ export class BookInfo {
 	}
 
 	constructor(volume: books_v1.Schema$Volume, userId: string);
+	constructor(view: BookInfoView);
 	constructor(properties: bookInfoProperties);
 
 	/**BookInfoのEntityを生成(MongoDBのモデルを渡して生成する) */
-	constructor(resource: bookInfoProperties | books_v1.Schema$Volume, userId?: string) {
+	constructor(
+		resource: books_v1.Schema$Volume | bookInfoProperties | BookInfoView,
+		userId?: string
+	) {
 		if (isBookInfoProperties(resource)) {
 			this._id = new Id(resource.id);
 			this._userId = new UserId(resource.userId);
@@ -116,6 +121,22 @@ export class BookInfo {
 			this._identifiers =
 				resource.identifiers != undefined ? new Identifiers(resource.identifiers) : undefined;
 			this._shelfCategories = resource.shelfCategories;
+			this._gapiId = resource.gapiId;
+		} else if (isBookInfoView(resource)) {
+			this._id = resource.id;
+			this._userId = resource.userId;
+			this._title = resource.title;
+			this._author = resource.author;
+			this._thumbnail = resource.thumbnail;
+			this._createDate = resource.createDate;
+			this._updateDate = resource.updateDate;
+			this._pageCount = resource.pageCount;
+			this._isFavorite = resource.isFavorite;
+			this._status = resource.status;
+			this._memorandum = resource.memorandum;
+			this._isVisible = resource.isVisible;
+			this._pageHistories = resource.pageHistories;
+			this._identifiers = resource.identifiers;
 			this._gapiId = resource.gapiId;
 		} else {
 			const currentDate = new Date();

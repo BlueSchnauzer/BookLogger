@@ -4,8 +4,9 @@ import type {
 	BookSearchResultType
 } from '$lib/client/Application/Interface';
 import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
 import type { IBookInfoEntityRepository } from '$lib/client/Domain/Repositories/IBookInfoEntity';
 import type { books_v1 } from 'googleapis';
@@ -63,8 +64,11 @@ export class BookInfoUseCase<ResultType extends BookSearchResultType<BookSearchR
 	}
 
 	/**書誌データを更新する */
-	public async update(bookInfo: BookInfo, isComplete: boolean): Promise<bookInfoChangeResponse> {
-		const { ok: isSuccess } = await this.repos.update(bookInfo, isComplete);
+	public async update(view: BookInfoView, beforeStatus: status): Promise<bookInfoChangeResponse> {
+		const entity = new BookInfo(view);
+		const isComplete = beforeStatus !== 'complete' && entity.status.value === 'complete';
+
+		const { ok: isSuccess } = await this.repos.update(entity, isComplete);
 		const message = isSuccess
 			? '更新しました。'
 			: '更新に失敗しました。<br>時間をおいてから再度お試しください。';
