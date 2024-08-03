@@ -13,6 +13,7 @@ describe('BookInfoView', () => {
 				expect(viewValue).toBe(entityValue);
 			};
 
+			handleExpect(view.id, volume.id);
 			handleExpect(view.title, volume.volumeInfo?.title);
 			handleExpect(view.authors, volume.volumeInfo?.authors);
 			handleExpect(view.publisher, volume.volumeInfo?.publisher);
@@ -36,12 +37,22 @@ describe('BookInfoView', () => {
 		});
 	});
 
-	describe('joinedAuthorNames', () => {
+	describe('joinAuthorNames', () => {
 		it('get names', () => {
 			const view = new BookSearchView(volume);
-			//const manyAuthorsView = new BookSearchView({...volume});
 			const handleExpect = (view: BookSearchView<books_v1.Schema$Volume>, expectValue: string) => {
-				expect(view.joinedAuthorNames).toBe(expectValue);
+				expect(view.joinUpToFiveAuthorNames).toBe(expectValue);
+			};
+
+			handleExpect(view, volume.volumeInfo?.authors![0]!);
+		});
+	});
+
+	describe('joinUpToFiveAuthorNames', () => {
+		it('get names', () => {
+			const view = new BookSearchView(volume);
+			const handleExpect = (view: BookSearchView<books_v1.Schema$Volume>, expectValue: string) => {
+				expect(view.joinUpToFiveAuthorNames).toBe(expectValue);
 			};
 
 			handleExpect(view, volume.volumeInfo?.authors![0]!);
