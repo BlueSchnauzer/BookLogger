@@ -1,4 +1,9 @@
+import type {
+	BookSearchResultListType,
+	BookSearchResultType
+} from '$lib/client/Application/Interface';
 import type { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { createEventDispatcher } from 'svelte';
 
@@ -44,15 +49,12 @@ export const dispatchDeletionBookInfoRequest = (
 };
 
 export interface bookSearchEvent {
-	success: string;
-	failed: string;
+	click: BookSearchView<BookSearchResultType<BookSearchResultListType>>;
 }
 
-export const dispatchBookSearchRequest = (isSuccess: boolean, message: string) => {
+export const dispatchBookSearchClick = (
+	view: BookSearchView<BookSearchResultType<BookSearchResultListType>>
+) => {
 	const dispatch = createEventDispatcher<bookSearchEvent>();
-	if (isSuccess) {
-		dispatch('success', message);
-	} else {
-		dispatch('failed', message);
-	}
+	dispatch('click', view);
 };
