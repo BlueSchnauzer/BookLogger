@@ -1,4 +1,8 @@
-import type { bookInfoChangeResponse } from '$lib/client/Application/Interface';
+import type {
+	bookInfoChangeResponse,
+	BookSearchResultListType,
+	BookSearchResultType
+} from '$lib/client/Application/Interface';
 import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
@@ -7,8 +11,8 @@ import type { IBookInfoEntityRepository } from '$lib/client/Domain/Repositories/
 import type { books_v1 } from 'googleapis';
 
 /**書誌データの操作を管理するUseCase */
-export class BookInfoUseCase {
-	constructor(private readonly repos: IBookInfoEntityRepository) {}
+export class BookInfoUseCase<ResultType extends BookSearchResultType<BookSearchResultListType>> {
+	constructor(private readonly repos: IBookInfoEntityRepository<ResultType>) {}
 
 	/**登録済みの全書誌データ取得する */
 	public async get(): Promise<BookInfoView[]> {
@@ -47,8 +51,8 @@ export class BookInfoUseCase {
 	}
 
 	/**書誌データを保存する */
-	public async create(postData: books_v1.Schema$Volumes): Promise<bookInfoChangeResponse> {
-		const { ok: isSuccess, status } = await this.repos.insert(postData);
+	public async create(postData: books_v1.Schema$Volume): Promise<bookInfoChangeResponse> {
+		const { ok: isSuccess, status } = await this.repos.insert(postData as ResultType);
 		const message = isSuccess
 			? '登録しました'
 			: status === 409
