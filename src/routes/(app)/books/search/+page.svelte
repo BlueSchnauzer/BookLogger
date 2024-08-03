@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { bookSearchUseCaseResult, searchPromise } from '$lib/client/Application/Interface';
 	import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+	import { handleFailure, handleSuccess } from '$lib/client/Helpers/CustomEvent/Handler';
 	import { toastTargetName } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
@@ -10,7 +11,6 @@
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
 	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
 	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
-	import { pushErrorToast, pushSuccessToast } from '$lib/utils/toast';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import type { books_v1 } from 'googleapis';
 	import type { PageData } from './$types';
@@ -20,7 +20,6 @@
 	let resultCount = 0;
 	let isLoading = false;
 
-	let currentBookInfo: books_v1.Schema$Volume;
 	let currentView: BookSearchView<books_v1.Schema$Volume>;
 	let isDisplayDetail = false;
 
@@ -35,11 +34,6 @@
 			return result;
 		};
 	}
-
-	const displayDetail = (bookInfo: books_v1.Schema$Volume) => {
-		currentBookInfo = bookInfo;
-		isDisplayDetail = true;
-	};
 
 	const handleClick = (event: CustomEvent<BookSearchView<books_v1.Schema$Volume>>) => {
 		currentView = event.detail;
@@ -77,11 +71,10 @@
 		</div>
 		{#if isDisplayDetail}
 			<ContentModal
-				item={currentBookInfo}
 				view={currentView}
 				bind:isDisplay={isDisplayDetail}
-				on:success={(event) => pushSuccessToast(event.detail.message, toastTargetName)}
-				on:failed={(event) => pushErrorToast(event.detail, toastTargetName)}
+				on:success={handleSuccess}
+				on:failed={handleFailure}
 			/>
 		{/if}
 		<div class="wrap-bottom">
