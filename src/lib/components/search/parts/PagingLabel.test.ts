@@ -1,16 +1,13 @@
+import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
-import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
 
 describe('PagingLabel', () => {
 	it('レンダリング', () => {
 		render(PagingLabel, {
 			searchType: 'detail',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30
 		});
@@ -23,11 +20,8 @@ describe('PagingLabel', () => {
 	it('isLoadingがTruethyな場合にボタンが操作できないこと', async () => {
 		render(PagingLabel, {
 			searchType: 'detail',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30,
 			isLoading: true
@@ -40,11 +34,8 @@ describe('PagingLabel', () => {
 	it('searchTypeがDetailの場合に、booktitle用inputがレンダリングされ、query用inputがレンダリングされないこと', () => {
 		const { container } = render(PagingLabel, {
 			searchType: 'detail',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30
 		});
@@ -58,11 +49,8 @@ describe('PagingLabel', () => {
 	it('searchTypeがFuzzyの場合に、query用inputがレンダリングされ、booktitle用inputがレンダリングされないこと', () => {
 		const { container } = render(PagingLabel, {
 			searchType: 'fuzzy',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30
 		});
@@ -76,11 +64,8 @@ describe('PagingLabel', () => {
 	it('searchTypeがNoneの場合に、レンダリングされないこと', () => {
 		const { container } = render(PagingLabel, {
 			searchType: 'none',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30
 		});
@@ -89,14 +74,11 @@ describe('PagingLabel', () => {
 		expect(element).toBeNull;
 	});
 
-	it('isBottomとisLoadingがTruethyな場合に、レンダリングされないこと', () => {
+	it('isBottomとisLoadingがTruthyな場合に、レンダリングされないこと', () => {
 		const { container } = render(PagingLabel, {
 			searchType: 'detail',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30,
 			isBottom: true,
@@ -110,11 +92,8 @@ describe('PagingLabel', () => {
 	it('searchTypeがNoneで、isBottomとisLoadingがTruethyな場合に、レンダリングされないこと', () => {
 		const { container } = render(PagingLabel, {
 			searchType: 'none',
-			query: '',
-			bookTitle: '',
-			author: '',
-			isbn: '',
-			page: 0,
+			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			pageCount: 0,
 			startIndex: 0,
 			resultCount: 30,
 			isBottom: true,
