@@ -1,18 +1,30 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
+	import { BookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
+	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+	import {
+		dispatchDeletionBookInfoRequest,
+		dispatchUpdateBookInfoRequest,
+		type bookInfoReactiveEvent,
+		type deletionBookInfoParameter,
+		type updateBookInfoParameter
+	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import type { BookInfo } from '$lib/server/models/BookInfo';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
-	import type { ObjectId } from 'mongodb';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
+	import Icon from '@iconify/svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let isDisplay = false;
-	export let bookInfo: BookInfo;
+	export let view: BookInfoView;
+
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
-	const beforeStatus = bookInfo.status;
+	const beforeStatus = view.status.value;
+
+	const repos = new BookInfoEntityResource(fetch);
+	const usecase = new BookInfoUseCase(repos);
 
 	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) {
@@ -36,65 +48,26 @@
 		isDisplayLoader = true;
 	};
 
-	const dispatch = createEventDispatcher();
-	const handleRequest = (
-		isSuccess: boolean,
-		message: string,
-		updatedItem?: BookInfo,
-		deletedId?: ObjectId
-	) => {
-		if (isSuccess) {
-			dispatch('success', { message, updatedItem, deletedId });
-		} else {
-			dispatch('failed', message);
-		}
-	};
-
-	/**書誌データの更新処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
-	const putBookInfo = async () => {
+	const dispatchUpdate = createEventDispatcher<bookInfoReactiveEvent<updateBookInfoParameter>>();
+	const handleUpdateRequest = async () => {
 		displayLoader();
-
-		//bookinfoと読み終わったか(completeに変更時のみ)をput
-		const isComplete = beforeStatus !== 'complete' && bookInfo.status === 'complete';
-		const response = await fetch('/api/bookinfo', {
-			method: 'PUT',
-			body: JSON.stringify({ bookInfo, isComplete }),
-			headers: { 'Content-type': 'application/json' }
-		});
-
+		const { isSuccess, message } = await usecase.update(view, beforeStatus);
 		closeModalAndLoader();
-		//ユーザ用のメッセージを設定してイベントを発行
-		handleRequest(
-			response.ok,
-			response.ok
-				? '更新しました。'
-				: '更新に失敗しました。<br>時間をおいてから再度お試しください。',
-			bookInfo
-		);
+
+		dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, view);
 	};
 
-	/**書誌データの削除をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
-	const deleteBookInfo = async () => {
+	const dispatchDeletion =
+		createEventDispatcher<bookInfoReactiveEvent<deletionBookInfoParameter>>();
+	const handleDeleteRequest = async () => {
 		if (!confirm('削除します。よろしいですか？')) {
 			return;
 		}
 		displayLoader();
-
-		//削除対象の_idを渡す
-		const response = await fetch('/api/bookinfo', {
-			method: 'DELETE',
-			body: JSON.stringify(bookInfo._id),
-			headers: { 'Content-type': 'application/json' }
-		});
-
+		const { isSuccess, message } = await usecase.delete(view.id!);
 		closeModalAndLoader();
-		//ユーザ用のメッセージを設定してイベントを発行し、一覧画面からも削除するために削除したIdを含める
-		handleRequest(
-			response.ok,
-			response.ok ? '削除しました' : '削除に失敗しました。<br>時間をおいて再度登録してください。',
-			undefined,
-			bookInfo._id
-		);
+
+		dispatchDeletionBookInfoRequest(dispatchDeletion, isSuccess, message, view.id!);
 	};
 </script>
 
@@ -121,12 +94,12 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<RegisteredContent {bookInfo} />
+			<RegisteredContent {view} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="flex justify-between items-center">
-				<SecondaryButton type="button" text="削除" usage="delete" on:click={deleteBookInfo} />
+				<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />
 				<div class="h-14 flex flex-row justify-end items-center">
-					<PrimalyButton type="button" text="編集" on:click={putBookInfo} />
+					<PrimalyButton type="button" text="編集" on:click={handleUpdateRequest} />
 					<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 				</div>
 			</div>
