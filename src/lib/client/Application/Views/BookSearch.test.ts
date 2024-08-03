@@ -13,7 +13,7 @@ describe('BookInfoView', () => {
 				expect(viewValue).toBe(entityValue);
 			};
 
-			handleExpect(view.id, volume.id);
+			handleExpect(view.keyId, volume.id);
 			handleExpect(view.title, volume.volumeInfo?.title);
 			handleExpect(view.authors, volume.volumeInfo?.authors);
 			handleExpect(view.publisher, volume.volumeInfo?.publisher);

@@ -5,7 +5,7 @@ import {
 } from '$lib/client/Application/Interface';
 
 export class BookSearchView<T extends BookSearchResultType<BookSearchResultListType>> {
-	public readonly id?: string;
+	public readonly keyId?: string;
 	public readonly title?: string;
 	public readonly authors?: string[];
 	public readonly publisher?: string;
@@ -16,7 +16,7 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 
 	constructor(public readonly searchResult: T) {
 		if (isGAPIResult(searchResult)) {
-			this.id = searchResult.id!;
+			this.keyId = searchResult.id!;
 			this.title = searchResult.volumeInfo?.title;
 			this.authors = searchResult.volumeInfo?.authors;
 			this.publisher = searchResult.volumeInfo?.publisher;

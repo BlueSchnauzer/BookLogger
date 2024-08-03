@@ -30,7 +30,7 @@
 	{:then result}
 		{#if result.views}
 			<ul data-testid="resultList">
-				{#each result.views as view (view.id)}
+				{#each result.views as view (view.keyId)}
 					<li class="flex">
 						<button
 							class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md"
