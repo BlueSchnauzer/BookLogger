@@ -11,25 +11,6 @@
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
 
-	//これいらない。
-	// const isExistDisplayableItems = (bookInfos: BookInfo[]): boolean => {
-	// 	if (!bookInfos || bookInfos.length === 0) {
-	// 		return false;
-	// 	}
-
-	// 	const visibleCount = bookInfos.filter((item) => item.isVisible).length;
-	// 	if (visibleCount === 0) {
-	// 		return false;
-	// 	}
-
-	// 	return true;
-	// };
-
-	// const dispatch = createEventDispatcher();
-	// const handleClick = (item: BookInfo) => {
-	// 	dispatch('click', item);
-	// };
-
 	const dispatch = createEventDispatcher<bookInfoClickEvent>();
 	const handleClick = (view: BookInfoView) => {
 		dispatchBookInfoViewClick(dispatch, view);

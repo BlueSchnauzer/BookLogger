@@ -4,9 +4,8 @@
 	import {
 		dispatchDeletionBookInfoRequest,
 		dispatchUpdateBookInfoRequest,
-		type bookInfoReactiveEvent,
-		type deletionBookInfoParameter,
-		type updateBookInfoParameter
+		type bookInfoDeleteEvent,
+		type bookInfoUpdateEvent
 	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
 	import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
 	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
@@ -48,7 +47,7 @@
 		isDisplayLoader = true;
 	};
 
-	const dispatchUpdate = createEventDispatcher<bookInfoReactiveEvent<updateBookInfoParameter>>();
+	const dispatchUpdate = createEventDispatcher<bookInfoUpdateEvent>();
 	const handleUpdateRequest = async () => {
 		displayLoader();
 		const { isSuccess, message } = await usecase.update(view, beforeStatus);
@@ -57,8 +56,7 @@
 		dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, view);
 	};
 
-	const dispatchDeletion =
-		createEventDispatcher<bookInfoReactiveEvent<deletionBookInfoParameter>>();
+	const dispatchDeletion = createEventDispatcher<bookInfoDeleteEvent>();
 	const handleDeleteRequest = async () => {
 		if (!confirm('削除します。よろしいですか？')) {
 			return;
