@@ -5,7 +5,7 @@ import type {
 import type { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import { createEventDispatcher } from 'svelte';
+import { createEventDispatcher, type EventDispatcher } from 'svelte';
 
 export interface bookInfoEvent<T> {
 	success: T;
@@ -52,9 +52,9 @@ export interface bookSearchEvent {
 	click: BookSearchView<BookSearchResultType<BookSearchResultListType>>;
 }
 
-export const dispatchBookSearchClick = (
+export const dispatchBookSearchViewClick = (
+	dispatch: EventDispatcher<bookSearchEvent>,
 	view: BookSearchView<BookSearchResultType<BookSearchResultListType>>
 ) => {
-	const dispatch = createEventDispatcher<bookSearchEvent>();
 	dispatch('click', view);
 };

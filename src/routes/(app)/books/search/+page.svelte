@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { bookSearchUseCaseResult, searchPromise } from '$lib/client/Application/Interface';
+	import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 	import { toastTargetName } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
@@ -38,6 +39,10 @@
 		currentBookInfo = bookInfo;
 		isDisplayDetail = true;
 	};
+
+	const handleClick = (event: CustomEvent<BookSearchView<books_v1.Schema$Volume>>) => {
+		console.log(event.detail);
+	};
 </script>
 
 <svelte:head>
@@ -63,7 +68,7 @@
 		<SearchResult
 			searchType={data.searchProps.searchType}
 			{reactiveSearchPromise}
-			on:click={(event) => displayDetail(event.detail)}
+			on:click={handleClick}
 		/>
 		<div class="flex justify-center py-2">
 			<PagingLabel {...data.searchProps} {resultCount} {isLoading} isBottom={true} />

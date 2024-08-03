@@ -1,16 +1,21 @@
 <script lang="ts">
 	import type { searchPromise } from '$lib/client/Application/Interface';
 	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
-	import { dispatchBookSearchClick } from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	import {
+		dispatchBookSearchViewClick,
+		type bookSearchEvent
+	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
 	import type { SearchType } from '$lib/client/Utils/types';
 	import InfoLabel from '$lib/components/common/parts/CategoryLabel.svelte';
 	import type { books_v1 } from 'googleapis';
+	import { createEventDispatcher } from 'svelte';
 
 	export let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
 	export let searchType: SearchType;
 
+	const dispatch = createEventDispatcher<bookSearchEvent>();
 	const handleViewClick = (view: BookSearchView<books_v1.Schema$Volume>) => {
-		dispatchBookSearchClick(view);
+		dispatchBookSearchViewClick(dispatch, view);
 	};
 </script>
 
