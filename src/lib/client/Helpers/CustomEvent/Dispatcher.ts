@@ -5,9 +5,20 @@ import type {
 import type { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import { createEventDispatcher, type EventDispatcher } from 'svelte';
+import type { EventDispatcher } from 'svelte';
 
-export interface bookInfoEvent<T> {
+export interface bookInfoClickEvent {
+	click: BookInfoView;
+}
+
+export const dispatchBookInfoViewClick = (
+	dispatch: EventDispatcher<bookInfoClickEvent>,
+	view: BookInfoView
+) => {
+	dispatch('click', view);
+};
+
+export interface bookInfoReactiveEvent<T> {
 	success: T;
 	failed: string;
 }
@@ -23,11 +34,11 @@ export interface deletionBookInfoParameter {
 }
 
 export const dispatchUpdateBookInfoRequest = (
+	dispatch: EventDispatcher<bookInfoReactiveEvent<updateBookInfoParameter>>,
 	isSuccess: boolean,
 	message: string,
 	updatedItem: BookInfoView
 ) => {
-	const dispatch = createEventDispatcher<bookInfoEvent<updateBookInfoParameter>>();
 	if (isSuccess) {
 		dispatch('success', { message, updatedItem });
 	} else {
@@ -36,11 +47,11 @@ export const dispatchUpdateBookInfoRequest = (
 };
 
 export const dispatchDeletionBookInfoRequest = (
+	dispatch: EventDispatcher<bookInfoReactiveEvent<deletionBookInfoParameter>>,
 	isSuccess: boolean,
 	message: string,
 	deletedId: Id
 ) => {
-	const dispatch = createEventDispatcher<bookInfoEvent<deletionBookInfoParameter>>();
 	if (isSuccess) {
 		dispatch('success', { message, deletedId });
 	} else {
