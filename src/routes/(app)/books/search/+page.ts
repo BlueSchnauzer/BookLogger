@@ -2,7 +2,7 @@ import type { searchPromise } from '$lib/client/Application/Interface';
 import { BookSearchUseCase } from '$lib/client/Application/UseCases/BookSearch';
 import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
 import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
-import type { searchConditions, searchType } from '$lib/client/Utils/types';
+import type { searchConditions, SearchType } from '$lib/client/Utils/types';
 import type { books_v1 } from 'googleapis';
 import type { PageLoad, PageLoadEvent } from './$types';
 
@@ -17,8 +17,6 @@ export const load = (async (params) => {
 		startIndex,
 		searchConditions
 	);
-
-	console.log('props', { searchType, searchConditions, pageCount, startIndex });
 
 	return {
 		searchPromise,
@@ -57,7 +55,7 @@ const getSearchTypeAndPromise = (
 ) => {
 	const { query, bookTitle, author, isbn } = searchConditions;
 
-	let searchType: searchType;
+	let searchType: SearchType;
 
 	const repos: IBookSearchRepository<books_v1.Schema$Volumes> = new BookSearchGoogleBooksAPI();
 	const usecase = new BookSearchUseCase(repos);

@@ -1,4 +1,4 @@
-export type searchType = 'none' | 'fuzzy' | 'detail';
+export type SearchType = 'none' | 'fuzzy' | 'detail';
 
 export interface searchConditions {
 	query: string | null;

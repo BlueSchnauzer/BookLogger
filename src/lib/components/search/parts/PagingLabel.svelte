@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { searchConditions, searchType } from '$lib/client/Utils/types';
+	import type { searchConditions, SearchType } from '$lib/client/Utils/types';
 	import Icon from '@iconify/svelte';
 
 	export let isLoading = false;
-	export let searchType: searchType;
+	export let searchType: SearchType;
 	export let searchConditions: searchConditions;
 	export let pageCount: number;
 	export let startIndex: number;
