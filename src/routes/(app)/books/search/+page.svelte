@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { bookSearchUseCaseResult, searchPromise } from '$lib/client/Application/Interface';
 	import { toastTargetName } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
@@ -14,21 +15,21 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let isDisplaySearchModal = data.props.searchType === 'none';
+	let isDisplaySearchModal = data.searchProps.searchType === 'none';
 	let resultCount = 0;
 	let isLoading = false;
 
 	let currentBookInfo: books_v1.Schema$Volume;
 	let isDisplayDetail = false;
 
-	let runPromise: () => Promise<books_v1.Schema$Volumes>;
+	let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
 	$: {
 		//再検索時に再実行されるようreactive化
-		runPromise = async (): Promise<books_v1.Schema$Volumes> => {
+		reactiveSearchPromise = async (): Promise<bookSearchUseCaseResult<books_v1.Schema$Volume>> => {
 			isLoading = true;
-			const result = await data.requestBookInfo();
+			const result = await data.searchPromise();
 			isLoading = false;
-			resultCount = result.totalItems!;
+			resultCount = result.totalItems;
 			return result;
 		};
 	}
@@ -53,19 +54,19 @@
 				isUseMargin={false}
 				on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel {...data.props} {resultCount} {isLoading} />
+			<PagingLabel {...data.searchProps} {resultCount} {isLoading} />
 		</div>
 		<SearchModal bind:isDisplay={isDisplaySearchModal} action="" />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
 		<SearchResult
-			searchType={data.props.searchType}
-			{runPromise}
+			searchType={data.searchProps.searchType}
+			{reactiveSearchPromise}
 			on:click={(event) => displayDetail(event.detail)}
 		/>
 		<div class="flex justify-center py-2">
-			<PagingLabel {...data.props} {resultCount} {isLoading} isBottom={true} />
+			<PagingLabel {...data.searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>
 		{#if isDisplayDetail}
 			<ContentModal
