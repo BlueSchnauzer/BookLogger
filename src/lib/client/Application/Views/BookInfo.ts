@@ -6,6 +6,7 @@ import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
 import { pushToast } from '$lib/client/Helpers/Toast';
+import type { BottomLabelType } from '$lib/client/Utils/types';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 import type { ObjectId } from 'mongodb';
 
@@ -98,7 +99,7 @@ export class BookInfoView {
 	}
 
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	getTypeForBottomLabel(pathName: string) {
+	getTypeForBottomLabel(pathName: string): BottomLabelType {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
