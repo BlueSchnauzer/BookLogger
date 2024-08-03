@@ -8,7 +8,7 @@ import type { books_v1 } from 'googleapis';
  * 返却する値はEntityもしくはValueObject
  * UseCaseから呼び出され、APIルートからの戻り値をEntityに変換して返す。
  */
-export interface IBookInfoEntityRepository {
+export interface IBookInfoEntityRepository<T> {
 	/**書誌データを取得する */
 	get(): Promise<BookInfo[]>;
 	/**statusが引数と一致した書誌データを取得する */
@@ -18,7 +18,7 @@ export interface IBookInfoEntityRepository {
 	/**書誌データから、pageHistoryのみを取得する */
 	getPageHistory(): Promise<Array<PageHistory[]>>;
 	/**書誌データを保存する */
-	insert(item: books_v1.Schema$Volume): Promise<Response>;
+	insert(item: T): Promise<Response>;
 	/**書誌データを更新する */
 	update(bookInfo: BookInfo, isCompleteReading: boolean): Promise<Response>;
 	/**書誌データを削除する */
