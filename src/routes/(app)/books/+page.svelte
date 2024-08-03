@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import BookCase from '$lib/icons/BookCase.svelte';
+	import BookCase from '$lib/client/UI/Shared/Icons/BookCase.svelte';
 	import type { PageData } from './$types';
 	import BooksMainContent from './BooksMainContent.svelte';
 
