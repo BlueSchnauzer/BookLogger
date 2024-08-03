@@ -18,8 +18,8 @@ export const dispatchBookInfoViewClick = (
 	dispatch('click', view);
 };
 
-export interface bookInfoReactiveEvent<T> {
-	success: T;
+export interface bookInfoUpdateEvent {
+	updateSuccess: updateBookInfoParameter;
 	failed: string;
 }
 
@@ -28,32 +28,37 @@ export interface updateBookInfoParameter {
 	updatedItem: BookInfoView;
 }
 
+export interface bookInfoDeleteEvent {
+	deleteSuccess: deletionBookInfoParameter;
+	failed: string;
+}
+
 export interface deletionBookInfoParameter {
 	message: string;
 	deletedId: Id;
 }
 
 export const dispatchUpdateBookInfoRequest = (
-	dispatch: EventDispatcher<bookInfoReactiveEvent<updateBookInfoParameter>>,
+	dispatch: EventDispatcher<bookInfoUpdateEvent>,
 	isSuccess: boolean,
 	message: string,
 	updatedItem: BookInfoView
 ) => {
 	if (isSuccess) {
-		dispatch('success', { message, updatedItem });
+		dispatch('updateSuccess', { message, updatedItem });
 	} else {
 		dispatch('failed', message);
 	}
 };
 
 export const dispatchDeletionBookInfoRequest = (
-	dispatch: EventDispatcher<bookInfoReactiveEvent<deletionBookInfoParameter>>,
+	dispatch: EventDispatcher<bookInfoDeleteEvent>,
 	isSuccess: boolean,
 	message: string,
 	deletedId: Id
 ) => {
 	if (isSuccess) {
-		dispatch('success', { message, deletedId });
+		dispatch('deleteSuccess', { message, deletedId });
 	} else {
 		dispatch('failed', message);
 	}
