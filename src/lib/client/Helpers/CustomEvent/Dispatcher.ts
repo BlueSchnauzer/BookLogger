@@ -58,3 +58,20 @@ export const dispatchBookSearchViewClick = (
 ) => {
 	dispatch('click', view);
 };
+
+export interface bookSearchSaveEvent {
+	success: string;
+	failed: string;
+}
+
+export const dispatchSaveBookSearchRequest = (
+	dispatch: EventDispatcher<bookSearchSaveEvent>,
+	isSuccess: boolean,
+	message: string
+) => {
+	if (isSuccess) {
+		dispatch('success', message);
+	} else {
+		dispatch('failed', message);
+	}
+};

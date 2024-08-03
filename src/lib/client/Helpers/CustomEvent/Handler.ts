@@ -47,8 +47,12 @@ export const handleBookInfoViewsDeletion = (
 	return appliedViews;
 };
 
-export const handleFailure = (message: string) => {
-	pushErrorToast(message);
+export const handleSuccess = (event: CustomEvent<string>) => {
+	pushSuccessToast(event.detail);
+};
+
+export const handleFailure = (event: CustomEvent<string>) => {
+	pushErrorToast(event.detail);
 };
 
 // const applyChange = (bookInfoViews: BookInfoView[], paramter: updateBookInfoParameter | deletionBookInfoParameter, isBooksRoute: boolean) => {
