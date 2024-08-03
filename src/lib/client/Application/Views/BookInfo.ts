@@ -163,7 +163,7 @@ export class BookInfoView {
 		pushToast('最後のページまでの読んだ記録を追加しました。');
 	}
 
-	private get maxPageCountFromHistory(): number | undefined {
+	get maxPageCountFromHistory(): number | undefined {
 		if (!this.pageHistories?.length) {
 			return undefined;
 		}
