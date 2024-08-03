@@ -1,90 +1,71 @@
 <script lang="ts">
+	import type { searchPromise } from '$lib/client/Application/Interface';
+	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+	import type { searchType } from '$lib/client/Utils/types';
+	import InfoLabel from '$lib/components/common/parts/CategoryLabel.svelte';
 	import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from 'svelte';
-	import InfoLabel from '$lib/components/common/parts/CategoryLabel.svelte';
-	import type { searchType } from '$lib/customTypes';
 
-	export let runPromise: () => Promise<books_v1.Schema$Volumes>;
+	export let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
 	export let searchType: searchType;
 
-	/**著者が複数名いる場合に句点で区切る*/
-	const joinArray = (arry: string[] | undefined): string => {
-		if (!arry) {
-			return '';
-		}
-
-		let result: string;
-		//多すぎる場合は短縮
-		if (arry.length >= 6) {
-			arry = arry.slice(0, 5);
-			result = arry.join(', ') + '...';
-		} else {
-			result = arry.join(', ');
-		}
-		return result;
-	};
-
-	const getLabel = (data?: string | number): string => {
-		return data?.toString() ?? 'データ無し';
-	};
-
 	const dispatch = createEventDispatcher();
-	const handleClick = (item: books_v1.Schema$Volume) => {
+	const handleViewClick = (item: BookSearchView<books_v1.Schema$Volume>) => {
 		dispatch('click', item);
 	};
 </script>
 
 <!-- ネストが深いので分割したい -->
 {#if searchType !== 'none'}
-	{#await runPromise()}
+	{#await reactiveSearchPromise()}
 		<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
 			<span
 				class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent"
 			/>
 		</div>
 	{:then result}
-		{#if result.items}
+		{#if result.views}
 			<ul data-testid="resultList">
-				{#each result.items as item (item.id)}
+				{#each result.views as view (view.id)}
 					<li class="flex">
 						<button
 							class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md"
-							on:click={() => handleClick(item)}
+							on:click={() => handleViewClick(view)}
 						>
-							{#if item.volumeInfo?.imageLinks?.thumbnail}
+							{#if view.thumbnail}
 								<img
 									class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
-									title={getLabel(item.volumeInfo?.title)}
-									src={item.volumeInfo?.imageLinks?.thumbnail}
+									title={view.titleLabel}
+									src={view.thumbnail}
 									alt="書影"
 								/>
 							{:else}
 								<div
 									class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
-									title={getLabel(item.volumeInfo?.title)}
+									title={view.titleLabel}
 								>
 									<span>No Image</span>
 								</div>
 							{/if}
 							<div class="p-2 flex flex-col items-start text-left">
-								{#if item.volumeInfo?.title}
-									<span class="text-lg font-bold text-lime-700">{item.volumeInfo?.title}</span>
+								{#if view.title}
+									<span class="text-lg font-bold text-lime-700">{view.title}</span>
 								{:else}
 									<span class="text-lg font-bold text-gray-400">データ無し</span>
 								{/if}
 								<div class="p-2 flex flex-col items-start">
 									<InfoLabel
 										categoryText="著者"
-										condition={item.volumeInfo?.authors}
-										labelFunction={() => joinArray(item.volumeInfo?.authors)}
+										condition={view.authors}
+										labelFunction={() => view.joinedAuthorNames}
 									/>
 									<InfoLabel
 										categoryText="発売日"
-										condition={item.volumeInfo?.publishedDate}
-										labelFunction={() => item.volumeInfo?.publishedDate}
+										condition={view.publishedDate}
+										labelFunction={() => view.publishedDate}
 									/>
 									<div class="p-2">
-										<p class="collapseDescription">{item.volumeInfo?.description ?? ''}</p>
+										<p class="collapseDescription">{view.description ?? ''}</p>
 									</div>
 								</div>
 							</div>

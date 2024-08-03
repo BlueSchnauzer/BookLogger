@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { searchType } from '$lib/customTypes';
+	import type { searchType } from '$lib/client/Utils/types';
 	import Icon from '@iconify/svelte';
 
 	export let isLoading = false;

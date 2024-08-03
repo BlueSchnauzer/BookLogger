@@ -8,12 +8,13 @@
 	export let isDisplay = false;
 	export let action = '/books/search';
 	let dialog: HTMLDialogElement;
+	let isShowDetailQueries = false;
+	let formError = false;
+
 	let query = '';
 	let bookTitle = '';
 	let author = '';
 	let isbn = '';
-	let isShowDetailQueries = false;
-	let formError = false;
 
 	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) {
