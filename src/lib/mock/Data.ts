@@ -1,7 +1,13 @@
+import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
 import {
 	BookInfo as BookInfoEntity,
 	type bookInfoProperties
 } from '$lib/client/Domain/Entities/BookInfo';
+import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
+import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import type { books_v1 } from 'googleapis';
 
 const firstId_test = '651451ed67241f439ce8a1af';
@@ -149,6 +155,40 @@ export const bookInfoPropertiesMocks: bookInfoProperties[] = [
 		gapiId: 'thirdData'
 	}
 ];
+
+/**フロントでの書誌データinterfaceのプロパティ */
+export const bookInfoInterfaceMock: BookInfo = {
+	id: new Id(firstId_test),
+	userId: new UserId(testUserId1),
+	title: 'わたしを離さないで',
+	author: ['イシグロカズオ'],
+	thumbnail: '',
+	createDate: new Date(),
+	updateDate: new Date(),
+	pageCount: 300,
+	isFavorite: false,
+	status: new Status('wish'),
+	memorandum: 'memo1',
+	isVisible: true,
+	completeDate: undefined,
+	pageHistories: [
+		new PageHistory({
+			id: crypto.randomUUID(),
+			date: new Date(),
+			pageCount: 0
+		}),
+		new PageHistory({
+			id: crypto.randomUUID(),
+			date: new Date(),
+			pageCount: 10
+		})
+	],
+	identifiers: new Identifiers({
+		isbn_13: '978-4-15-120051-9'
+	}),
+	shelfCategories: undefined,
+	gapiId: 'firstData'
+};
 
 /**GAPIのテスト用レスポンスデータ */
 export const gapiTestDatas: books_v1.Schema$Volumes = {
