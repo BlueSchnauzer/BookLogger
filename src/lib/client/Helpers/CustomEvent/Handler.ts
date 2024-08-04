@@ -3,7 +3,7 @@ import type {
 	deletionBookInfoParameter,
 	updateBookInfoParameter
 } from '$lib/client/Helpers/CustomEvent/Dispatcher';
-import { pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
+import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
 
 export const handleBookInfoViewsUpdate = (
 	bookInfoViews: BookInfoView[],
@@ -28,7 +28,7 @@ export const handleBookInfoViewsUpdate = (
 		];
 	}
 
-	pushSuccessToast(paramter.message);
+	pushSuccessToast(paramter.message, mainToastTarget);
 
 	return appliedViews;
 };
@@ -42,15 +42,15 @@ export const handleBookInfoViewsDeletion = (
 	let appliedViews: BookInfoView[] = [];
 	appliedViews = copiedViews.filter((item) => !item.id?.equals(parameter.deletedId));
 
-	pushSuccessToast(parameter.message);
+	pushSuccessToast(parameter.message, mainToastTarget);
 
 	return appliedViews;
 };
 
 export const handleSuccess = (event: CustomEvent<string>) => {
-	pushSuccessToast(event.detail);
+	pushSuccessToast(event.detail, mainToastTarget);
 };
 
 export const handleFailure = (event: CustomEvent<string>) => {
-	pushErrorToast(event.detail);
+	pushErrorToast(event.detail, mainToastTarget);
 };

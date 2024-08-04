@@ -6,7 +6,7 @@ import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistor
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
-import { pushToast } from '$lib/client/Helpers/Toast';
+import { modalToastTarget, pushToast } from '$lib/client/Helpers/Toast';
 import type { BottomLabelType } from '$lib/client/Utils/types';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 import type { ObjectId } from 'mongodb';
@@ -138,10 +138,10 @@ export class BookInfoView {
 
 		if (this.status.value === 'wish' && this.pageHistories.length === 1) {
 			this.status = new Status('reading');
-			pushToast('ステータスを「読んでいる本」に変更しました。');
+			pushToast('ステータスを「読んでいる本」に変更しました。', modalToastTarget);
 		} else if (this.status.value !== 'complete' && readingCount === this.pageCount) {
 			this.status = new Status('complete');
-			pushToast('ステータスを「読み終わった本」に変更しました。');
+			pushToast('ステータスを「読み終わった本」に変更しました。', modalToastTarget);
 		}
 
 		return { isError: false };
@@ -161,7 +161,7 @@ export class BookInfoView {
 		}
 		this.addPageHistory(getCurrentDateString(), this.pageCount);
 
-		pushToast('最後のページまでの読んだ記録を追加しました。');
+		pushToast('最後のページまでの読んだ記録を追加しました。', modalToastTarget);
 	}
 
 	get maxPageCountFromHistory(): number | undefined {
