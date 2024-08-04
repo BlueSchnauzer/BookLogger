@@ -1,4 +1,5 @@
 import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
+import type { BookSearch } from '$lib/client/Application/Interface/BookSearch';
 import {
 	BookInfo as BookInfoEntity,
 	type bookInfoProperties
@@ -335,4 +336,18 @@ export const gapiTestDatas: books_v1.Schema$Volumes = {
 			}
 		}
 	]
+};
+
+/**フロントでのGAPIレスポンスinterfaceのプロパティ */
+export const bookSearchInterfaceMock: BookSearch = {
+	keyId: 'D5gvDQAAQBAJ',
+	title: '短篇五芒星',
+	authors: ['舞城王太郎'],
+	publisher: '講談社',
+	publishedDate: '2016-09-15',
+	pageCount: 110,
+	thumbnail:
+		'http://books.google.com/books/content?id=D5gvDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
+	description:
+		'「許せないんだよ」「りゅ、ふう、……っぐ、りゅう、流産が」。二十七歳の春、突然流産のことが気になりだした僕。理不尽な赤ちゃんの死が高頻度で起きることに怒り、妄執する男を描いた「美しい馬の地」。他「アユの嫁」「四点リレー怪談」「バーベル・ザ・バーバリアン」「あうだうだう」収録の奇跡の短篇集！'
 };
