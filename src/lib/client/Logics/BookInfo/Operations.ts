@@ -5,7 +5,7 @@ import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
 import { modalToastTarget } from '$lib/client/Helpers/Toast';
 import { pushToast } from '$lib/utils/toast';
-import { validateReadingDate, validateReadingCount } from '$lib/utils/validation';
+import { validateReadingCount, validateReadingDate } from '$lib/utils/validation';
 
 export const bookInfoOperations = (bookInfo: BookInfo) => {
 	const addPageHistory = (readingDate: string, readingCount: number): pageHistoryValidation => {

@@ -1,8 +1,8 @@
+import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
+import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { bookInfoOperations } from '$lib/client/Logics/BookInfo/Operations';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
-import { bookInfoOperations } from '$lib/client/Logics/BookInfo/Operations';
-import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 
 describe('', () => {
 	let bookInfo: BookInfo;
