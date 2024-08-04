@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { pageHistoryValidation } from '$lib/client/Application/Interface';
 	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 	import { getCurrentDateString } from '$lib/client/Helpers/Date';
-	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { modalToastTarget } from '$lib/client/Helpers/Toast';
 	import { statusItems } from '$lib/client/UI/Shared/DisplayData';
 	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
@@ -14,8 +15,12 @@
 	let isEditPageCount = false;
 	let readingDate = getCurrentDateString();
 	let readingCount: number;
-	let isValidDate = true;
-	let isValidCount = true;
+	let pageHistoryValidation: pageHistoryValidation = { isError: false, errorMessage: '' };
+
+	const handleAddPageHistory = () => {
+		pageHistoryValidation = view.addPageHistory(readingDate, readingCount);
+		view = view;
+	};
 
 	onMount(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
@@ -82,7 +87,7 @@
 	<span class="py-2 text-lg font-bold">ステータス</span>
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
 		<select
-			bind:value={view.status}
+			bind:value={view.status.value}
 			class="w-full p-2 rounded-lg border-[1px] border-stone-400"
 			on:change={view.addPageHistoryWhenComplete}
 			name="status"
@@ -96,11 +101,9 @@
 	</div>
 	<span class="py-2 text-lg font-bold">読んだ記録</span>
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-		{#if !isValidDate || !isValidCount}
+		{#if pageHistoryValidation.isError}
 			<span class="text-red-500 font-medium">
-				{!isValidDate
-					? '日付が未入力です'
-					: `ページ数は1～${view.pageCount}ページで入力してください`}
+				{pageHistoryValidation.errorMessage}
 			</span>
 		{/if}
 		<div class="mb-2 flex flex-col justify-start items-stretch">
@@ -157,7 +160,7 @@
 		<div class="mb-2 text-right">
 			<button
 				class="h-8 px-2.5 py-1 mx-0.5 text-stone-700 bg-stone-300 border border-stone-700 duration-150 hover:bg-stone-200 rounded-full"
-				on:click={() => view.addPageHistory(readingDate, readingCount)}
+				on:click={handleAddPageHistory}
 				data-testid="btnAdd"
 			>
 				追加
@@ -179,7 +182,7 @@
 	</div>
 </div>
 <div class="wrap-default">
-	<SvelteToast target={toastTargetName} />
+	<SvelteToast target={modalToastTarget} />
 </div>
 
 <style>

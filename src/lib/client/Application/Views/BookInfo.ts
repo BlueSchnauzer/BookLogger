@@ -132,6 +132,7 @@ export class BookInfoView {
 
 		if (this.pageHistories && this.pageHistories.length) {
 			this.pageHistories.push(item);
+			this.pageHistories = this.pageHistories;
 		} else {
 			this.pageHistories = [item];
 		}
