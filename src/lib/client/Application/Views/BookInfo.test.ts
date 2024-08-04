@@ -143,18 +143,18 @@ describe('BookInfoView', () => {
 			const view = new BookInfoView(entity);
 			const result = view.addPageHistory('2023-10-30', 100);
 
-			expect(result.isSuccess).toBeTruthy();
+			expect(result.isError).toBeTruthy();
 			expect(view.pageHistories?.length).toBe(3);
 		});
 
 		it('Falthyな日付文字列とページ数の場合にエラーステータスとメッセージが返ること', () => {
 			const view = new BookInfoView(entity);
 			let result = view.addPageHistory('', 100);
-			expect(result.isSuccess).toBeFalsy();
+			expect(result.isError).toBeFalsy();
 			expect(result.errorMessage).toBe('日付が未入力です');
 
 			result = view.addPageHistory('2023-10-30', 0);
-			expect(result.isSuccess).toBeFalsy();
+			expect(result.isError).toBeFalsy();
 			expect(result.errorMessage).toBe(`ページ数は1～${view.pageCount}ページで入力してください`);
 		});
 
@@ -163,7 +163,7 @@ describe('BookInfoView', () => {
 			const view = new BookInfoView(noPageHistoryEntity);
 			const result = view.addPageHistory('2023-10-30', 100);
 
-			expect(result.isSuccess).toBeTruthy();
+			expect(result.isError).toBeTruthy();
 			expect(view.status.value).toBe<status>('reading');
 		});
 
@@ -171,7 +171,7 @@ describe('BookInfoView', () => {
 			const view = new BookInfoView(entity);
 			const result = view.addPageHistory('2023-10-30', view.pageCount);
 
-			expect(result.isSuccess).toBeTruthy();
+			expect(result.isError).toBeTruthy();
 			expect(view.status.value).toBe<status>('complete');
 		});
 	});

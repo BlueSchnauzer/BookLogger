@@ -1,6 +1,11 @@
 import type { books_v1 } from 'googleapis';
 import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 
+export interface pageHistoryValidation {
+	isError: boolean;
+	errorMessage?: string;
+}
+
 /**書誌検索の検索結果一覧 */
 export type BookSearchResultListType = books_v1.Schema$Volumes;
 /**書誌検索の検索結果 */

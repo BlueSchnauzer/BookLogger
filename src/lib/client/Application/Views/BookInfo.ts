@@ -1,3 +1,4 @@
+import type { pageHistoryValidation } from '$lib/client/Application/Interface';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
@@ -114,14 +115,14 @@ export class BookInfoView {
 		}
 	}
 
-	addPageHistory(readingDate: string, readingCount: number) {
+	addPageHistory(readingDate: string, readingCount: number): pageHistoryValidation {
 		const isValidDate = validateReadingDate(readingDate);
 		const isValidCount = validateReadingCount(readingCount, this.pageCount);
 		if (!isValidDate || !isValidCount) {
 			const errorMessage = !isValidDate
 				? '日付が未入力です'
 				: `ページ数は1～${this.pageCount}ページで入力してください`;
-			return { isSuccess: false, errorMessage };
+			return { isError: true, errorMessage };
 		}
 
 		const item = new PageHistory({
@@ -143,7 +144,7 @@ export class BookInfoView {
 			pushToast('ステータスを「読み終わった本」に変更しました。');
 		}
 
-		return { isSuccess: true };
+		return { isError: false };
 	}
 
 	deletePageHistory(id?: string) {
