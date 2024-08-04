@@ -5,7 +5,7 @@
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
 	import { pushErrorToast, pushSuccessToast } from '$lib/utils/toast';
-	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 
 	let email: string;
 	let password: string;
@@ -20,11 +20,11 @@
 
 		try {
 			await createUserWithEmailAndPassword(firebaseAuth, email, password);
-			pushSuccessToast('登録が完了しました。', toastTargetName);
+			pushSuccessToast('登録が完了しました。', mainToastTarget);
 			goto('/login');
 		} catch (error) {
 			console.log(error);
-			pushErrorToast('登録に失敗しました。', toastTargetName);
+			pushErrorToast('登録に失敗しました。', mainToastTarget);
 			success = false;
 		}
 

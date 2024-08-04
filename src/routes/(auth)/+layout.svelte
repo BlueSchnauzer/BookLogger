@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 </script>
 
@@ -8,7 +8,7 @@
 >
 	<slot />
 	<div class="wrap-bottom">
-		<SvelteToast target={toastTargetName} />
+		<SvelteToast target={mainToastTarget} />
 	</div>
 </div>
 

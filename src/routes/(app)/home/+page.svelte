@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { modalToastTarget } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import GridContent from '$lib/components/content/parts/GridContent.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
@@ -31,7 +31,7 @@
 
 	/**トーストを表示し、再度最新の書誌データを取得する。*/
 	const handleSuccessAndFetchData = async (event: CustomEvent<any>) => {
-		data.recentBook = handleSuccess(data.recentBook, event.detail, toastTargetName);
+		data.recentBook = handleSuccess(data.recentBook, event.detail, modalToastTarget);
 
 		const response = await fetch('/api/bookinfo?recentbook=true', { method: 'GET' });
 		if (response.ok) {
@@ -117,11 +117,11 @@
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
 			on:success={(event) => handleSuccessAndFetchData(event)}
-			on:failed={(event) => pushErrorToast(event.detail, toastTargetName)}
+			on:failed={(event) => pushErrorToast(event.detail, modalToastTarget)}
 		/>
 	{/if}
 	<div class="wrap-bottom">
-		<SvelteToast target={toastTargetName} />
+		<SvelteToast target={modalToastTarget} />
 	</div>
 </main>
 

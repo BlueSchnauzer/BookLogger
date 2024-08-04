@@ -15,7 +15,7 @@
 		handleBookInfoViewsUpdate,
 		handleFailure
 	} from '$lib/client/Helpers/CustomEvent/Handler';
-	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import 'simplebar/dist/simplebar.css';
 	import { onMount, type ComponentType } from 'svelte';
@@ -83,7 +83,7 @@
 		/>
 	{/if}
 	<div class="wrap-bottom">
-		<SvelteToast target={toastTargetName} />
+		<SvelteToast target={mainToastTarget} />
 	</div>
 </main>
 

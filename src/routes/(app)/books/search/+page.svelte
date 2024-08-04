@@ -2,7 +2,7 @@
 	import type { bookSearchUseCaseResult, searchPromise } from '$lib/client/Application/Interface';
 	import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 	import { handleFailure, handleSuccess } from '$lib/client/Helpers/CustomEvent/Handler';
-	import { toastTargetName } from '$lib/client/Helpers/Toast';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
@@ -78,7 +78,7 @@
 			/>
 		{/if}
 		<div class="wrap-bottom">
-			<SvelteToast target={toastTargetName} />
+			<SvelteToast target={mainToastTarget} />
 		</div>
 	</div>
 </main>
