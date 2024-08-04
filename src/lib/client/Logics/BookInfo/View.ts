@@ -26,7 +26,7 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 	};
 
 	/**書誌データの日付を画面表示用の形式に変換する。 */
-	const getDateLabel = (dateType: 'create' | 'update' | 'complete', useYear = true): string => {
+	const dateLabel = (dateType: 'create' | 'update' | 'complete', useYear = true): string => {
 		let target: Date | undefined;
 		switch (dateType) {
 			case 'create':
@@ -51,7 +51,7 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 	};
 
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	const getTypeForBottomLabel = (pathName: string): BottomLabelType => {
+	const typeForBottomLabel = (pathName: string): BottomLabelType => {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
@@ -83,8 +83,8 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 		pageCountLabel,
 		isDisplayableProgress,
 		progressByPercent,
-		getDateLabel,
-		getTypeForBottomLabel,
+		dateLabel,
+		typeForBottomLabel,
 		maxPageCountFromHistory
 	};
 };
