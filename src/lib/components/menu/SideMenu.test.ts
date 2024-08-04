@@ -1,61 +1,19 @@
-import { render, screen, fireEvent } from '@testing-library/svelte';
-import { describe, expect, it, vi } from 'vitest';
-import type { Navigation, Page } from '@sveltejs/kit';
-import { readable } from 'svelte/store';
-import type * as stores from '$app/stores';
+import { mainMenuItems } from '$lib/client/UI/Shared/DisplayData';
 import SideMenu from '$lib/components/menu/SideMenu.svelte';
+import { render, screen } from '@testing-library/svelte';
+import { readable } from 'svelte/store';
+import { describe, expect, it, vi } from 'vitest';
 
-describe.skip('SideMenu', () => {
-	//共通化が必要
-	// vi.mock('$app/stores', (): typeof stores => {
-	// 	const getStores: typeof stores.getStores = () => {
-	// 		const navigating = readable<Navigation | null>(null);
-	// 		const page = readable<Page>({
-	// 			url: new URL('http://localhost'),
-	// 			params: {},
-	// 			route: {
-	// 				id: null
-	// 			},
-	// 			status: 200,
-	// 			error: null,
-	// 			data: {},
-	// 			form: undefined
-	// 		});
-	// 		const updated = { subscribe: readable(false).subscribe, check: async () => false };
-
-	// 		return { navigating, page, updated };
-	// 	};
-	// 	const page: typeof stores.page = {
-	// 		subscribe(fn) {
-	// 			return getStores().page.subscribe(fn);
-	// 		}
-	// 	};
-	// 	const navigating: typeof stores.navigating = {
-	// 		subscribe(fn) {
-	// 			return getStores().navigating.subscribe(fn);
-	// 		}
-	// 	};
-	// 	const updated: typeof stores.updated = {
-	// 		subscribe(fn) {
-	// 			return getStores().updated.subscribe(fn);
-	// 		},
-	// 		check: async () => false
-	// 	};
-
-	// 	return {
-	// 		getStores,
-	// 		navigating,
-	// 		page,
-	// 		updated
-	// 	};
-	// });
+describe('SideMenu', () => {
+	vi.mock('$app/stores', () => {
+		return {
+			page: readable({ url: { pathname: 'test' } })
+		};
+	});
 
 	it('レンダリング', () => {
 		render(SideMenu);
 
-		expect(screen.getByText('ホーム')).toBeInTheDocument();
-		expect(screen.getByText('ライブラリ')).toBeInTheDocument();
-		expect(screen.getByText('書籍検索')).toBeInTheDocument();
-		expect(screen.getByText('本棚')).toBeInTheDocument();
+		mainMenuItems.forEach((item) => expect(screen.getByText(item.name)).toBeInTheDocument());
 	});
 });

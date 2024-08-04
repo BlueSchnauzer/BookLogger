@@ -8,6 +8,7 @@ import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooks
 import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from '$lib/mock/Data';
 import { describe, expect, it } from 'vitest';
 import type { books_v1 } from 'googleapis';
+import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 
 describe('BookInfoEntity', () => {
 	describe('Entity生成', () => {
@@ -16,6 +17,16 @@ describe('BookInfoEntity', () => {
 
 			expect(entity).toBeDefined();
 			expect(entity.id?.value).toEqual(bookInfoPropertiesMock.id);
+		});
+
+		it('BookInfoViewからEntityを生成できること', () => {
+			const view = new BookInfoView(getEntityTestData());
+
+			const entity = new BookInfo(view);
+
+			expect(entity).toBeDefined();
+			expect(entity.id?.value).toEqual(view.id?.value.toString());
+			expect(entity.title).toEqual(view.title);
 		});
 
 		it('gapiオブジェクトからEntityを生成できること', async () => {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
@@ -7,13 +8,13 @@
 	export let isDisplay = false;
 	export let action = '/books/search';
 	let dialog: HTMLDialogElement;
+	let isShowDetailQueries = false;
+	let formError = false;
+
 	let query = '';
 	let bookTitle = '';
 	let author = '';
 	let isbn = '';
-	const colorStone700 = '#44403C';
-	let isShowDetailQueries = false;
-	let formError = false;
 
 	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) {

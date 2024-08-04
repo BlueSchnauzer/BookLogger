@@ -1,51 +1,53 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { books_v1 } from 'googleapis';
-	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
+	import type { bookSearchUseCaseResult, searchPromise } from '$lib/client/Application/Interface';
+	import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+	import { handleFailure, handleSuccess } from '$lib/client/Helpers/CustomEvent/Handler';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
+	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
-	import SearchModal from '$lib/components/search/SearchModal.svelte';
-	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
 	import ContentModal from '$lib/components/search/ContentModal.svelte';
+	import SearchModal from '$lib/components/search/SearchModal.svelte';
 	import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
-	import { pushSuccessToast, pushErrorToast } from '$lib/utils/toast';
+	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
+	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import type { books_v1 } from 'googleapis';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let isDisplaySearchModal = data.props.searchType === 'none';
+	let isDisplaySearchModal = data.searchProps.searchType === 'none';
 	let resultCount = 0;
 	let isLoading = false;
 
-	let currentBookInfo: books_v1.Schema$Volume;
+	let currentView: BookSearchView<books_v1.Schema$Volume>;
 	let isDisplayDetail = false;
-	const pageName = '書籍検索';
-	const target = 'searchToast';
 
-	let runPromise: () => Promise<books_v1.Schema$Volumes>;
+	let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
 	$: {
 		//再検索時に再実行されるようreactive化
-		runPromise = async (): Promise<books_v1.Schema$Volumes> => {
+		reactiveSearchPromise = async (): Promise<bookSearchUseCaseResult<books_v1.Schema$Volume>> => {
 			isLoading = true;
-			const result = await data.requestBookInfo();
+			const result = await data.searchPromise();
 			isLoading = false;
-			resultCount = result.totalItems!;
+			resultCount = result.totalItems;
 			return result;
 		};
 	}
 
-	const displayDetail = (bookInfo: books_v1.Schema$Volume) => {
-		currentBookInfo = bookInfo;
+	const handleClick = (event: CustomEvent<BookSearchView<books_v1.Schema$Volume>>) => {
+		currentView = event.detail;
 		isDisplayDetail = true;
 	};
 </script>
 
 <svelte:head>
-	<title>{pageName}</title>
+	<title>{pageTitles.search}</title>
 </svelte:head>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader headerIcon={MagnifingGlass} headerText={pageName} />
+		<ContentHeader headerIcon={MagnifingGlass} headerText={pageTitles.search} />
 		<div class="flex justify-between">
 			<PrimalyButton
 				type="button"
@@ -53,30 +55,30 @@
 				isUseMargin={false}
 				on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel {...data.props} {resultCount} {isLoading} />
+			<PagingLabel {...data.searchProps} {resultCount} {isLoading} />
 		</div>
 		<SearchModal bind:isDisplay={isDisplaySearchModal} action="" />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
 		<SearchResult
-			searchType={data.props.searchType}
-			{runPromise}
-			on:click={(event) => displayDetail(event.detail)}
+			searchType={data.searchProps.searchType}
+			{reactiveSearchPromise}
+			on:click={handleClick}
 		/>
 		<div class="flex justify-center py-2">
-			<PagingLabel {...data.props} {resultCount} {isLoading} isBottom={true} />
+			<PagingLabel {...data.searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>
 		{#if isDisplayDetail}
 			<ContentModal
-				item={currentBookInfo}
+				view={currentView}
 				bind:isDisplay={isDisplayDetail}
-				on:success={(event) => pushSuccessToast(event.detail.message, target)}
-				on:failed={(event) => pushErrorToast(event.detail, target)}
+				on:success={handleSuccess}
+				on:failed={handleFailure}
 			/>
 		{/if}
 		<div class="wrap-bottom">
-			<SvelteToast {target} />
+			<SvelteToast target={mainToastTarget} />
 		</div>
 	</div>
 </main>

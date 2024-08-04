@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
+	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
+	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import BooksMainContent from '../BooksMainContent.svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
-	const pageName = '読みたい本';
 
 	const toggleFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }
@@ -14,12 +14,12 @@
 </script>
 
 <svelte:head>
-	<title>{pageName}</title>
+	<title>{pageTitles.wish}</title>
 </svelte:head>
 
 <BooksMainContent
 	headerIcon={PileOfBooks}
-	headerText={pageName}
+	headerText={pageTitles.wish}
 	bookInfos={data.bookInfos}
 	{toggleFilterItems}
 	{selectFilterItems}

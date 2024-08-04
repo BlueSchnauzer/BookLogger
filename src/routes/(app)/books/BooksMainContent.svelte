@@ -1,17 +1,23 @@
 <script lang="ts">
-	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import type { toggleFilterItem, selectFilterItem } from '$lib/customTypes';
-	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
-	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
-	import { handleSuccess, toggleFavorite } from '$lib/utils/bookInfo';
-	import { pushErrorToast } from '$lib/utils/toast';
+	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
+	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
+	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
+	import type { BookInfo } from '$lib/server/models/BookInfo';
+	import { toggleFavorite } from '$lib/utils/bookInfo';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import SimpleBar from 'simplebar';
-	import 'simplebar/dist/simplebar.css';
 	//iOS Safariなど用に追加
+	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+	import {
+		handleBookInfoViewsDeletion,
+		handleBookInfoViewsUpdate,
+		handleFailure
+	} from '$lib/client/Helpers/CustomEvent/Handler';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import ResizeObserver from 'resize-observer-polyfill';
+	import 'simplebar/dist/simplebar.css';
 	import { onMount, type ComponentType } from 'svelte';
 
 	/**ヘッダー用アイコン */
@@ -19,7 +25,7 @@
 	/**ヘッダー用テキスト */
 	export let headerText: string;
 	/**書誌データの一覧 */
-	export let bookInfos: BookInfo[];
+	export let views: BookInfoView[];
 	/**ライブラリ画面(/booksルート)用にレンダリングするか */
 	export let isBooksRoute = false;
 	/**絞り込み用のラベルフィルター */
@@ -31,18 +37,19 @@
 
 	let inputValue: string;
 	let selectValue: number;
-	let isDisplayDetail = false;
-	let currentBookInfo: BookInfo;
+	let isDisplayModal = false;
+	let currentView: BookInfoView;
 	let gridContent: HTMLElement;
-	const target = 'mainToast';
 
-	$: {
-		bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
-	}
+	// $: {
+	// 	bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
+	// }
 
-	const displayModal = (item: BookInfo) => {
-		currentBookInfo = structuredClone(item);
-		isDisplayDetail = true;
+	const displayModal = (view: BookInfoView) => {
+		//これだと関数がコピーできない。単に再代入だとやっぱダメだよね？
+		//currentBookInfo = structuredClone(item);
+		currentView = view;
+		isDisplayModal = true;
 	};
 
 	onMount(() => {
@@ -64,19 +71,19 @@
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	<div bind:this={gridContent} class="p-1 contentHeight">
-		<BookInfoGrid {bookInfos} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
+		<BookInfoGrid {views} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
-	{#if isDisplayDetail}
+	{#if isDisplayModal}
 		<RegisteredModal
-			bookInfo={currentBookInfo}
-			bind:isDisplay={isDisplayDetail}
-			on:success={(event) =>
-				(bookInfos = handleSuccess(bookInfos, event.detail, target, isBooksRoute))}
-			on:failed={(event) => pushErrorToast(event.detail, target)}
+			view={currentView}
+			bind:isDisplay={isDisplayModal}
+			on:updateSuccess={(event) => handleBookInfoViewsUpdate(views, event.detail, isBooksRoute)}
+			on:deleteSuccess={(event) => handleBookInfoViewsDeletion(views, event.detail)}
+			on:failed={handleFailure}
 		/>
 	{/if}
 	<div class="wrap-bottom">
-		<SvelteToast {target} />
+		<SvelteToast target={mainToastTarget} />
 	</div>
 </main>
 

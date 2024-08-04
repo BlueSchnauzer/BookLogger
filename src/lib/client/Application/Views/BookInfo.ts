@@ -1,11 +1,13 @@
+import type { pageHistoryValidation } from '$lib/client/Application/Interface';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import { convertReadingDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
-import { pushToast } from '$lib/client/Helpers/Toast';
+import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
+import { modalToastTarget, pushToast } from '$lib/client/Helpers/Toast';
+import type { BottomLabelType } from '$lib/client/Utils/types';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 import type { ObjectId } from 'mongodb';
 
@@ -53,6 +55,10 @@ export class BookInfoView {
 		return !!this.title ? this.title : 'データ無し';
 	}
 
+	get joinedAuthors() {
+		return this.author.join(', ');
+	}
+
 	get pageCountLabel() {
 		return !!this.pageCount ? `${this.pageCount}ページ` : '0ページ';
 	}
@@ -94,7 +100,7 @@ export class BookInfoView {
 	}
 
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	getTypeForBottomLabel(pathName: string) {
+	getTypeForBottomLabel(pathName: string): BottomLabelType {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
@@ -109,39 +115,40 @@ export class BookInfoView {
 		}
 	}
 
-	addPageHistory(readingDate: string, readingCount: number) {
+	addPageHistory(readingDate: string, readingCount: number): pageHistoryValidation {
 		const isValidDate = validateReadingDate(readingDate);
 		const isValidCount = validateReadingCount(readingCount, this.pageCount);
 		if (!isValidDate || !isValidCount) {
 			const errorMessage = !isValidDate
 				? '日付が未入力です'
 				: `ページ数は1～${this.pageCount}ページで入力してください`;
-			return { isSuccess: false, errorMessage };
+			return { isError: true, errorMessage };
 		}
 
 		const item = new PageHistory({
-			date: convertReadingDateToDate(readingDate),
+			date: convertInputDateToDate(readingDate),
 			pageCount: readingCount
 		});
 
 		if (this.pageHistories && this.pageHistories.length) {
 			this.pageHistories.push(item);
+			this.pageHistories = this.pageHistories;
 		} else {
 			this.pageHistories = [item];
 		}
 
 		if (this.status.value === 'wish' && this.pageHistories.length === 1) {
 			this.status = new Status('reading');
-			pushToast('ステータスを「読んでいる本」に変更しました。');
+			pushToast('ステータスを「読んでいる本」に変更しました。', modalToastTarget);
 		} else if (this.status.value !== 'complete' && readingCount === this.pageCount) {
 			this.status = new Status('complete');
-			pushToast('ステータスを「読み終わった本」に変更しました。');
+			pushToast('ステータスを「読み終わった本」に変更しました。', modalToastTarget);
 		}
 
-		return { isSuccess: true };
+		return { isError: false };
 	}
 
-	deletePageHistory(id: string) {
+	deletePageHistory(id?: string) {
 		if (!id || !this.pageHistories?.length) {
 			return;
 		}
@@ -155,10 +162,10 @@ export class BookInfoView {
 		}
 		this.addPageHistory(getCurrentDateString(), this.pageCount);
 
-		pushToast('最後のページまでの読んだ記録を追加しました。');
+		pushToast('最後のページまでの読んだ記録を追加しました。', modalToastTarget);
 	}
 
-	private get maxPageCountFromHistory(): number | undefined {
+	get maxPageCountFromHistory(): number | undefined {
 		if (!this.pageHistories?.length) {
 			return undefined;
 		}
@@ -183,3 +190,7 @@ export class BookInfoView {
 		return result;
 	}
 }
+
+export const isBookInfoView = (obj: any): obj is BookInfoView => {
+	return obj instanceof BookInfoView;
+};

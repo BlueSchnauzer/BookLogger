@@ -1,25 +1,31 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
+	import { BookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
+	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+	import {
+		dispatchSaveBookSearchRequest,
+		type bookSearchSaveEvent
+	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
+	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
+	import Icon from '@iconify/svelte';
 	import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from 'svelte';
-	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
-	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import type { ObjectId } from 'mongodb';
 
 	export let isDisplay = false;
-	export let item: books_v1.Schema$Volume = {};
+	export let view: BookSearchView<books_v1.Schema$Volume>;
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
-	const colorStone700 = '#44403C';
 
-	/**モーダル表示を表示する*/
+	const repos = new BookInfoEntityResource(fetch);
+	const usecase = new BookInfoUseCase(repos);
+
 	$: if (dialog && isDisplay) {
 		dialog.showModal();
 	}
 
-	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
 		isDisplay = false;
 		isDisplayLoader = false;
@@ -31,44 +37,17 @@
 		isDisplay = false;
 	};
 
-	/**ローディングを表示する*/
 	const displayLoader = () => {
 		isDisplayLoader = true;
 	};
 
-	const dispatch = createEventDispatcher();
-	const handleRequest = (
-		isSuccess: boolean,
-		message: string,
-		updatedItem?: BookInfo,
-		deletedId?: ObjectId
-	) => {
-		if (isSuccess) {
-			dispatch('success', { message, updatedItem, deletedId });
-		} else {
-			dispatch('failed', message);
-		}
-	};
-
-	/**書誌データの保存処理をリクエストし、結果に応じたイベントを発行する(呼び出し元でアラート表示などに利用)*/
-	const postBookInfo = async () => {
+	const dispatch = createEventDispatcher<bookSearchSaveEvent>();
+	const handlePostRequest = async () => {
 		displayLoader();
-
-		//books_v1.Schema$Volumeをpost
-		const response = await fetch('/api/bookinfo', {
-			method: 'POST',
-			body: JSON.stringify(item),
-			headers: { 'Content-type': 'application/json' }
-		});
-
+		const { isSuccess, message } = await usecase.create(view.searchResult);
 		closeModalAndLoader();
-		//ユーザ用のメッセージを設定してイベントを発行
-		const reseponseMessage = response.ok
-			? '登録しました'
-			: response.status === 409
-				? '登録済みの書籍です'
-				: '登録に失敗しました。<br>時間をおいて再度登録してください。';
-		handleRequest(response.ok, reseponseMessage);
+
+		dispatchSaveBookSearchRequest(dispatch, isSuccess, message);
 	};
 </script>
 
@@ -95,10 +74,10 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<DetailContent {item} />
+			<DetailContent {view} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="h-14 flex flex-row justify-end items-center">
-				<PrimalyButton type="button" text="登録" on:click={postBookInfo} />
+				<PrimalyButton type="button" text="登録" on:click={handlePostRequest} />
 				<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 			</div>
 		</div>

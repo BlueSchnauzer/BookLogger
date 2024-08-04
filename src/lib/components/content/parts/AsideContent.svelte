@@ -1,27 +1,23 @@
 <script lang="ts">
-	import type { BookInfo } from '$lib/server/models/BookInfo';
+	import type { BookInfoView } from '$lib/client/Application/Views/BookInfo';
 	import Icon from '@iconify/svelte';
 
-	export let bookInfo: BookInfo;
-
-	const getLabel = (data?: string | number): string => {
-		return data?.toString() ?? 'データ無し';
-	};
+	export let view: BookInfoView;
 </script>
 
 <div class="flex flex-col flex-shrink-0 p-4 max-sm:p-0 pt-6 max-sm:pt-4 min-w-44">
-	{#if bookInfo.thumbnail}
+	{#if view.thumbnail}
 		<img
 			class="mb-2 self-center w-[128px] h-[182px] shadow-md"
-			title={getLabel(bookInfo.title)}
-			src={bookInfo.thumbnail}
+			title={view.titleLabel}
+			src={view.thumbnail}
 			alt="書影"
 		/>
 		<span class="self-center text-gray-400 text-xs">Image By Google</span>
 	{:else}
 		<div
 			class="mb-2 flex justify-center items-center self-center w-[128px] h-[182px] shadow-md bg-slate-300"
-			title={getLabel(bookInfo.title)}
+			title={view.titleLabel}
 		>
 			<span>No Image</span>
 		</div>
@@ -30,10 +26,10 @@
 		<button
 			id="btnFavorite"
 			class="flex items-center"
-			on:click={() => (bookInfo.isFavorite = !bookInfo.isFavorite)}
+			on:click={() => (view.isFavorite = !view.isFavorite)}
 			data-testid="btnFavorite"
 		>
-			{#if bookInfo.isFavorite}
+			{#if view.isFavorite}
 				<Icon icon="ph:star-fill" color="#65a30d" width="32" height="32" />
 			{:else}
 				<Icon icon="ph:star-light" color="#65a30d" width="32" height="32" />

@@ -1,7 +1,6 @@
 <script lang="ts">
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-
-	const target = 'mainToast';
 </script>
 
 <div
@@ -9,7 +8,7 @@
 >
 	<slot />
 	<div class="wrap-bottom">
-		<SvelteToast {target} />
+		<SvelteToast target={mainToastTarget} />
 	</div>
 </div>
 

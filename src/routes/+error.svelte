@@ -3,8 +3,7 @@
 	import { firebaseAuth } from '$lib/firebase.client';
 	import { signOut } from 'firebase/auth';
 	import Icon from '@iconify/svelte';
-
-	const colorStone700 = '#44403C';
+	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 
 	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
 	const logout = async () => {

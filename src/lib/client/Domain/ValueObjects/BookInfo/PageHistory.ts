@@ -51,6 +51,13 @@ export class PageHistory extends ValueObjectsBase<pageHistory> {
 
 		return value;
 	}
+
+	convertDateToString() {
+		//DBから取った書誌データは文字列で日付を持ってるため
+		//一旦、Usecaseに入っている処理を持ってきたので共通化してもいい。
+		let date = new Date(this.value.date);
+		return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+	}
 }
 
 export type pageHistory = {

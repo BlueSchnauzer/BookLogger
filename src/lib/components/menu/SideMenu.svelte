@@ -1,23 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Icon from '@iconify/svelte';
-	import type { menuItemData } from '$lib/customTypes';
-	import Home from '$lib/icons/Home.svelte';
-	import BookCase from '$lib/icons/BookCase.svelte';
-	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
-	import BookShelf from '$lib/icons/BookShelf.svelte';
-	import { signOut } from 'firebase/auth';
-	import { firebaseAuth } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
-
-	//PC用メニュー
-	const MenuItemDatas: menuItemData[] = [
-		{ icon: Home, ref: '/home', name: 'ホーム' },
-		{ icon: BookCase, ref: '/books', name: 'ライブラリ' },
-		{ icon: MagnifingGlass, ref: '/books/search', name: '書籍検索' },
-		{ icon: BookShelf, ref: '/shelf', name: '本棚' }
-	];
-	const colorStone200 = '#E7E5E4';
+	import { page } from '$app/stores';
+	import { mainMenuItems } from '$lib/client/UI/Shared/DisplayData';
+	import { colorStone200 } from '$lib/client/UI/Shared/StaticValues';
+	import { firebaseAuth } from '$lib/firebase.client';
+	import Icon from '@iconify/svelte';
+	import { signOut } from 'firebase/auth';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;
@@ -40,7 +28,7 @@
 <nav class="flex flex-col max-md:hidden m-2 w-20 rounded-xl shadow-2xl bg-stone-700">
 	<div class="flex flex-col flex-grow justify-between pb-2">
 		<ul class="flex flex-col flex-1 justify-center items-center">
-			{#each MenuItemDatas as data (data.icon)}
+			{#each mainMenuItems as data (data.icon)}
 				<li class="group flex relative h-14 duration-300 border-transparent">
 					<a
 						href={data.ref}

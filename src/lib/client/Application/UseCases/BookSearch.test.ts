@@ -12,20 +12,22 @@ describe('BookSearchUseCase', () => {
 
 	it('searcyByFuzzyQuery', async () => {
 		const usecase = new BookSearchUseCase(repos);
-		const views = await usecase.searcyByFuzzyQuery('イシグロカズオ');
+		const { totalItems, views } = await usecase.searcyByFuzzyQuery('イシグロカズオ');
 
+		expect(totalItems).toBeGreaterThanOrEqual(0);
 		expect(views).toBeDefined();
 		expect(views?.length).toBeTruthy();
 	});
 
 	it('searchByQueries', async () => {
 		const usecase = new BookSearchUseCase(repos);
-		const views = await usecase.searchByQueries(
+		const { totalItems, views } = await usecase.searchByQueries(
 			testData.title,
 			testData.author[0],
 			testData.identifiers?.value.isbn_13!
 		);
 
+		expect(totalItems).toBeGreaterThanOrEqual(0);
 		expect(views).toBeDefined();
 		expect(views?.length).toBeTruthy();
 	});

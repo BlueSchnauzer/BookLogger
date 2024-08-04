@@ -1,12 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { firebaseAuth } from '$lib/firebase.client';
-	import {
-		GoogleAuthProvider,
-		getRedirectResult,
-		signInWithEmailAndPassword,
-		signInWithRedirect
-	} from 'firebase/auth';
+	import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -31,15 +26,15 @@
 
 		try {
 			if (type === 'google') {
-				await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
-				//後続処理はリダイレクトから戻った後にonMountで行う。
+				const userCredentials = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
+				idToken = await userCredentials.user.getIdToken();
 			} else {
 				const userCredentials = await signInWithEmailAndPassword(firebaseAuth, email, password);
 				idToken = await userCredentials.user.getIdToken();
-
-				await setCookie(idToken);
-				goto('/home');
 			}
+
+			await setCookie(idToken);
+			goto('/home');
 		} catch (error) {
 			console.log(error);
 			success = false;
@@ -57,30 +52,7 @@
 		});
 	};
 
-	/**リダイレクトから戻った際にGoogle認証が成功したかを確認する。*/
-	const handleRedirectResult = async () => {
-		isDisplay = true;
-
-		try {
-			const userCredentials = await getRedirectResult(firebaseAuth);
-			if (userCredentials) {
-				const idToken = await userCredentials!.user.getIdToken();
-				await setCookie(idToken);
-
-				goto('/home');
-			}
-		} catch (error) {
-			console.log(error);
-			success = false;
-		}
-
-		isDisplay = false;
-	};
-
 	onMount(async () => {
-		//リダイレクトの場合、ページが再読み込みされるので
-		//マウント後に認証結果を確認する。
-		await handleRedirectResult();
 		btnGoogleLogin.disabled = false;
 		btnEmailLogin.disabled = false;
 	});

@@ -3,7 +3,7 @@ import {
 	handleBookInfoViewsDeletion,
 	handleBookInfoViewsUpdate
 } from '$lib/client/Helpers/CustomEvent/Handler';
-import { convertReadingDateToDate } from '$lib/client/Helpers/Date';
+import { convertInputDateToDate } from '$lib/client/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
 import { getEntityTestData, getEntityTestDatas } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -147,8 +147,8 @@ describe('Date', () => {
 	const day = 15;
 	const dateString = `${year}-${month}-${day}`;
 
-	it('convertReadingDateToDate', () => {
-		const convertedDate = convertReadingDateToDate(dateString);
+	it('convertInputDateToDate', () => {
+		const convertedDate = convertInputDateToDate(dateString);
 		expect(convertedDate.getFullYear()).toEqual(year);
 		expect(convertedDate.getMonth()).toEqual(month - 1);
 		expect(convertedDate.getDate()).toEqual(day);

@@ -1,16 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
-	import { Chart } from 'chart.js/auto';
-	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
+	import { modalToastTarget } from '$lib/client/Helpers/Toast';
+	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import GridContent from '$lib/components/content/parts/GridContent.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
+	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import SearchModal from '$lib/components/search/SearchModal.svelte';
-	import Home from '$lib/icons/Home.svelte';
+	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { handleSuccess } from '$lib/utils/bookInfo';
 	import { pushErrorToast } from '$lib/utils/toast';
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import { Chart } from 'chart.js/auto';
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 	let countGraph: HTMLCanvasElement;
@@ -21,8 +23,6 @@
 	let isDisplayDetail = false;
 	let isDisplaySearchModal = false;
 	let currentBookInfo: BookInfo;
-	const pageName = 'ホーム';
-	const target = 'mainToast';
 
 	const displayModal = (item: BookInfo) => {
 		currentBookInfo = structuredClone(item);
@@ -31,7 +31,7 @@
 
 	/**トーストを表示し、再度最新の書誌データを取得する。*/
 	const handleSuccessAndFetchData = async (event: CustomEvent<any>) => {
-		data.recentBook = handleSuccess(data.recentBook, event.detail, target);
+		data.recentBook = handleSuccess(data.recentBook, event.detail, modalToastTarget);
 
 		const response = await fetch('/api/bookinfo?recentbook=true', { method: 'GET' });
 		if (response.ok) {
@@ -65,12 +65,12 @@
 </script>
 
 <svelte:head>
-	<title>{pageName}</title>
+	<title>{pageTitles.home}</title>
 </svelte:head>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-14 flex flex-col justify-between">
-		<ContentHeader headerIcon={Home} headerText={pageName} />
+		<ContentHeader headerIcon={Home} headerText={pageTitles.home} />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex max-lg:flex-col p-1 homeContentHeight overflow-y-auto customScroll">
@@ -117,11 +117,11 @@
 			bookInfo={currentBookInfo}
 			bind:isDisplay={isDisplayDetail}
 			on:success={(event) => handleSuccessAndFetchData(event)}
-			on:failed={(event) => pushErrorToast(event.detail, target)}
+			on:failed={(event) => pushErrorToast(event.detail, modalToastTarget)}
 		/>
 	{/if}
 	<div class="wrap-bottom">
-		<SvelteToast {target} />
+		<SvelteToast target={modalToastTarget} />
 	</div>
 </main>
 

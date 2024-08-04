@@ -1,6 +1,7 @@
 import type {
 	BookSearchResultListType,
-	BookSearchResultType
+	BookSearchResultType,
+	bookSearchUseCaseResult
 } from '$lib/client/Application/Interface';
 import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
@@ -17,10 +18,15 @@ export class BookSearchUseCase<
 		query: string,
 		maxResults = 10,
 		startIndex = 0
-	): Promise<BookSearchView<ResultType>[] | undefined> {
+	): Promise<bookSearchUseCaseResult<ResultType>> {
 		const response = await this.repos.searchByFuzzyQuery(query, maxResults, startIndex);
 
-		return response.items?.map((item) => new BookSearchView(item)) as BookSearchView<ResultType>[];
+		const totalItems = response.totalItems ?? 0;
+		const views = response.items?.map(
+			(item) => new BookSearchView(item)
+		) as BookSearchView<ResultType>[];
+
+		return { totalItems, views };
 	}
 
 	/**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する */
@@ -30,7 +36,7 @@ export class BookSearchUseCase<
 		isbn_13: string,
 		maxResults = 10,
 		startIndex = 0
-	): Promise<BookSearchView<ResultType>[] | undefined> {
+	): Promise<bookSearchUseCaseResult<ResultType>> {
 		const response = await this.repos.searchByQueries(
 			booktitle,
 			author,
@@ -39,6 +45,11 @@ export class BookSearchUseCase<
 			startIndex
 		);
 
-		return response.items?.map((item) => new BookSearchView(item)) as BookSearchView<ResultType>[];
+		const totalItems = response.totalItems ?? 0;
+		const views = response.items?.map(
+			(item) => new BookSearchView(item)
+		) as BookSearchView<ResultType>[];
+
+		return { totalItems, views };
 	}
 }

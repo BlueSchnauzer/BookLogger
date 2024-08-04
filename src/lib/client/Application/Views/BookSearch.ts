@@ -5,6 +5,7 @@ import {
 } from '$lib/client/Application/Interface';
 
 export class BookSearchView<T extends BookSearchResultType<BookSearchResultListType>> {
+	public readonly keyId?: string;
 	public readonly title?: string;
 	public readonly authors?: string[];
 	public readonly publisher?: string;
@@ -15,6 +16,7 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 
 	constructor(public readonly searchResult: T) {
 		if (isGAPIResult(searchResult)) {
+			this.keyId = searchResult.id!;
 			this.title = searchResult.volumeInfo?.title;
 			this.authors = searchResult.volumeInfo?.authors;
 			this.publisher = searchResult.volumeInfo?.publisher;
@@ -31,8 +33,8 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 	}
 
 	/**著者が複数名いる場合に句点で区切る*/
-	get joinedAuthorNames() {
-		let authors = this.searchResult.volumeInfo?.authors;
+	get joinUpToFiveAuthorNames() {
+		let authors = this.authors;
 		if (!authors) {
 			return '';
 		}
@@ -46,6 +48,14 @@ export class BookSearchView<T extends BookSearchResultType<BookSearchResultListT
 		}
 
 		return result;
+	}
+
+	get joinAuthorNames() {
+		if (!this.authors) {
+			return '';
+		}
+
+		return this.authors.join(', ');
 	}
 
 	get pageCountLabel() {
