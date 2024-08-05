@@ -2,7 +2,7 @@ import type { id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import type { IBookInfoDBRepositories } from '$lib/server/Domain/Repositories/IBookInfoDB';
 import type { bookInfosCollection } from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';

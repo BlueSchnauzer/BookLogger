@@ -3,8 +3,8 @@ import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import BookInfoModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
+import BookInfoModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModelModel';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import {
 	getEntityTestData,

@@ -1,4 +1,4 @@
-import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
