@@ -1,4 +1,4 @@
-import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { bookInfoOperations } from '$lib/client/Logics/BookInfo/Operations';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';

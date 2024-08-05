@@ -1,4 +1,4 @@
-import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { BottomLabelType } from '$lib/client/Utils/types';
 
 export const bookInfoView = (bookInfo: BookInfo) => {

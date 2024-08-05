@@ -1,5 +1,5 @@
 import type { pageHistoryValidation } from '$lib/client/Application/Interface';
-import type { BookInfo } from '$lib/client/Application/Interface/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
