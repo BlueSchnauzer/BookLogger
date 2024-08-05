@@ -2,7 +2,7 @@ import { BookInfo, type bookInfoProperties } from '$lib/client/Domain/Entities/B
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import BookInfoMongoDBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
 import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
 import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
 import { bookInfoPropertiesMock, getEntityTestData, testUserId1 } from '$lib/mock/Data';
@@ -46,7 +46,7 @@ describe('BookInfoEntity', () => {
 		});
 
 		it('MongoDBModelからEntityを生成できること', () => {
-			const dbModel: IBookInfoModel = new BookInfoMongoDBModel(getEntityTestData());
+			const dbModel: BookInfoDBModel = new BookInfoMongoDBModel(getEntityTestData());
 
 			const entity = BookInfo.fromDBModel(dbModel);
 

@@ -1,4 +1,4 @@
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
@@ -26,7 +26,7 @@ export interface BookInfo {
 	gapiId?: string;
 }
 
-export const convertDBModelToBookInfo = (model: IBookInfoModel): BookInfo => {
+export const convertDBModelToBookInfo = (model: BookInfoDBModel): BookInfo => {
 	const bookInfo: BookInfo = {
 		...model,
 		id: new Id(model._id?.toString()!),

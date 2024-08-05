@@ -1,5 +1,5 @@
 import { isBookInfoView, type BookInfoView } from '$lib/client/Application/Views/BookInfo';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers, type identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import {
@@ -162,7 +162,7 @@ export class BookInfo {
 	}
 
 	/**MongoDBModelからEntityを生成する */
-	public static fromDBModel(mongoDBModel: IBookInfoModel) {
+	public static fromDBModel(mongoDBModel: BookInfoDBModel) {
 		return new BookInfo({
 			id: mongoDBModel._id?.toString()!,
 			userId: mongoDBModel.userId,

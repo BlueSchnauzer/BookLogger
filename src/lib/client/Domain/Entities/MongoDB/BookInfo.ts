@@ -3,7 +3,7 @@ import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageH
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { ObjectId } from 'mongodb';
 
-export interface IBookInfoModel {
+export interface BookInfoDBModel {
 	userId: string;
 	title: string;
 	author: string[];

@@ -4,7 +4,7 @@ import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistor
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import BookInfoModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import {
 	getEntityTestData,
@@ -21,13 +21,13 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 let con: MongoClient;
 let mongoServer: MongoMemoryServer;
 let db: Db;
-let col: Collection<IBookInfoModel>;
+let col: Collection<BookInfoDBModel>;
 
 beforeEach(async () => {
 	mongoServer = await MongoMemoryServer.create();
 	con = await MongoClient.connect(mongoServer.getUri(), {});
 	db = con.db(mongoServer.instanceInfo?.dbName);
-	col = db.collection<IBookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
+	col = db.collection<BookInfoDBModel>(env.BOOKINFOS_COLLECTION_NAME);
 });
 afterEach(async () => {
 	if (con) {

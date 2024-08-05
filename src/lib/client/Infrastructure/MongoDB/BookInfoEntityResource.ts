@@ -1,5 +1,5 @@
 import { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
 import type { IBookInfoEntityRepository } from '$lib/client/Domain/Repositories/IBookInfoEntity';
 import type { id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import {
@@ -21,7 +21,7 @@ export class BookInfoEntityResource implements IBookInfoEntityRepository<books_v
 
 	async get(): Promise<BookInfo[]> {
 		const response = await this.fetch(this.requestUrl);
-		const dbModels = (await response.json()) as IBookInfoModel[];
+		const dbModels = (await response.json()) as BookInfoDBModel[];
 
 		return dbModels.map((item) => BookInfo.fromDBModel(item));
 	}
@@ -29,14 +29,14 @@ export class BookInfoEntityResource implements IBookInfoEntityRepository<books_v
 	async getByStatus(status: status): Promise<BookInfo[]> {
 		//eg. '/api/bookinfo?type=wish'
 		const response = await this.fetch(`${this.requestUrl}?type=${status}`);
-		const dbModels = (await response.json()) as IBookInfoModel[];
+		const dbModels = (await response.json()) as BookInfoDBModel[];
 
 		return dbModels.map((item) => BookInfo.fromDBModel(item));
 	}
 
 	async getRecent(): Promise<BookInfo | undefined> {
 		const response = await this.fetch(`${this.requestUrl}?type=recent`);
-		const dbModel = (await response.json()) as IBookInfoModel;
+		const dbModel = (await response.json()) as BookInfoDBModel;
 
 		return dbModel ? BookInfo.fromDBModel(dbModel) : undefined;
 	}

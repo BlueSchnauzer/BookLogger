@@ -2,7 +2,7 @@ import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { validatePutBookInfo } from '$lib/client/Utils/Validation';
 import collections from '$lib/server/database/collections';
 import DBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/client/Domain/Entities/MongoDB/BookInfo';
 import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
@@ -27,7 +27,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const getType = param.get('type');
 
 	//クエリパラメータに応じてデータを変更
-	let mongoDBModels: IBookInfoModel[] = [];
+	let mongoDBModels: BookInfoDBModel[] = [];
 	switch (getType) {
 		case 'recent':
 			const mongoDBModel = await repos.getRecent();
