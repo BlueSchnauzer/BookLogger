@@ -1,28 +1,28 @@
-import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import {
-	handleBookInfoViewsDeletion,
-	handleBookInfoViewsUpdate
+	handleBookInfosDeletion,
+	handleBookInfosUpdate
 } from '$lib/client/Helpers/CustomEvent/Handler';
 import { convertInputDateToDate } from '$lib/client/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
-import { getEntityTestData, getEntityTestDatas } from '$lib/mock/Data';
+import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { PageHistory } from '../Domain/ValueObjects/BookInfo/PageHistory';
 
 describe('handleBookInfoViewsUpdate', () => {
-	let views: BookInfoView[];
+	let bookInfos: BookInfo[];
 	beforeEach(() => {
-		views = getEntityTestDatas().map((item) => new BookInfoView(item));
+		bookInfos = [...bookInfoInterfaceMocks];
 	});
 
 	it('更新データがある際に、対象の書誌データが更新されること', () => {
-		const copiedView = structuredClone(views[1]);
-		copiedView.isFavorite = true;
-		copiedView.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
+		const copiedData = structuredClone(bookInfos[1]);
+		copiedData.isFavorite = true;
+		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfoViewsUpdate(views, {
+		const result = handleBookInfosUpdate(bookInfos, {
 			message: '更新成功',
-			updatedItem: copiedView
+			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(3);
@@ -37,13 +37,13 @@ describe('handleBookInfoViewsUpdate', () => {
 	});
 
 	it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
-		const copiedView = structuredClone(views[0]);
-		copiedView.isFavorite = true;
-		copiedView.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
+		const copiedData = structuredClone(bookInfos[0]);
+		copiedData.isFavorite = true;
+		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfoViewsUpdate(views, {
+		const result = handleBookInfosUpdate(bookInfos, {
 			message: '更新成功',
-			updatedItem: copiedView
+			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(3);
@@ -58,13 +58,13 @@ describe('handleBookInfoViewsUpdate', () => {
 	});
 
 	it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
-		const copiedView = structuredClone(views[2]);
-		copiedView.isFavorite = true;
-		copiedView.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
+		const copiedData = structuredClone(bookInfos[2]);
+		copiedData.isFavorite = true;
+		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfoViewsUpdate(views, {
+		const result = handleBookInfosUpdate(bookInfos, {
 			message: '更新成功',
-			updatedItem: copiedView
+			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(3);
@@ -79,15 +79,15 @@ describe('handleBookInfoViewsUpdate', () => {
 	});
 
 	it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
-		const view = new BookInfoView(getEntityTestData());
+		const bookInfo = bookInfoInterfaceMock;
 
-		const copiedView = structuredClone(view);
-		copiedView.isFavorite = true;
-		copiedView.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
+		const copiedData = structuredClone(bookInfo);
+		copiedData.isFavorite = true;
+		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfoViewsUpdate([view], {
+		const result = handleBookInfosUpdate([bookInfo], {
 			message: '更新成功',
-			updatedItem: copiedView
+			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(1);
@@ -97,17 +97,20 @@ describe('handleBookInfoViewsUpdate', () => {
 });
 
 describe('handleBookInfoViewsDeletion', () => {
-	let views: BookInfoView[];
+	let bookInfos: BookInfo[];
 	beforeEach(() => {
-		views = getEntityTestDatas().map((item) => new BookInfoView(item));
+		bookInfos = [...bookInfoInterfaceMocks];
 	});
 
 	it('削除データがある際に、書誌データ一覧から削除されること', () => {
-		const result = handleBookInfoViewsDeletion(views, { message: '削除', deletedId: views[0].id! });
+		const result = handleBookInfosDeletion(bookInfos, {
+			message: '削除',
+			deletedId: bookInfos[0].id!
+		});
 
 		expect(result.length).toEqual(2);
-		expect(result[0].id).toBe(views[1].id);
-		expect(result[1].id).toBe(views[2].id);
+		expect(result[0].id).toBe(bookInfos[1].id);
+		expect(result[1].id).toBe(bookInfos[2].id);
 	});
 
 	// it('書誌データのステータスが更新された際に、書誌データ一覧から削除されること', () => {

@@ -64,7 +64,7 @@ export interface bookSearchClickEvent {
 	click: BookSearch;
 }
 
-export const dispatchBookSearchViewClick = (
+export const dispatchBookSearchClick = (
 	dispatch: EventDispatcher<bookSearchClickEvent>,
 	entity: BookSearch
 ) => {
