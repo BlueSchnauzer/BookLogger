@@ -271,6 +271,93 @@ export const bookInfoInterfaceMocks: BookInfo[] = [
 	}
 ];
 
+export const bookInfoInterfaceMocksWithUserIds = (
+	userId1 = testUserId1,
+	userId2 = testUserId1,
+	userId3 = testUserId1
+) => [
+	{
+		id: new Id(firstId_test),
+		userId: new UserId(userId1),
+		title: 'わたしを離さないで',
+		author: ['イシグロカズオ'],
+		thumbnail: '',
+		createDate: new Date(),
+		updateDate: new Date(),
+		pageCount: 300,
+		isFavorite: false,
+		status: new Status('wish'),
+		memorandum: 'memo1',
+		isVisible: true,
+		completeDate: undefined,
+		pageHistories: [
+			new PageHistory({
+				id: crypto.randomUUID(),
+				date: new Date(),
+				pageCount: 0
+			}),
+			new PageHistory({
+				id: crypto.randomUUID(),
+				date: new Date(),
+				pageCount: 10
+			})
+		],
+		identifiers: new Identifiers({
+			isbn_13: '978-4-15-120051-9'
+		}),
+		shelfCategories: undefined,
+		gapiId: 'firstData'
+	},
+	{
+		id: new Id(secondId_test),
+		userId: new UserId(userId2),
+		title: 'エピローグ',
+		author: ['円城塔'],
+		thumbnail: '',
+		createDate: new Date(),
+		updateDate: new Date(),
+		pageCount: -1,
+		isFavorite: false,
+		status: new Status('reading'),
+		memorandum: 'memo2',
+		isVisible: true,
+		completeDate: undefined,
+		pageHistories: [
+			new PageHistory({
+				id: crypto.randomUUID(),
+				date: new Date(),
+				pageCount: 0
+			})
+		],
+		identifiers: new Identifiers({
+			isbn_13: '978-4-15-031316-6'
+		}),
+		shelfCategories: undefined,
+		gapiId: 'secondData'
+	},
+	{
+		id: new Id(thirdId_test),
+		userId: new UserId(userId3),
+		title: 'プロローグ',
+		author: ['円城塔'],
+		thumbnail: '',
+		createDate: new Date(),
+		updateDate: new Date(),
+		pageCount: -1,
+		isFavorite: false,
+		status: new Status('complete'),
+		memorandum: 'memo3',
+		isVisible: true,
+		completeDate: undefined,
+		pageHistories: [],
+		identifiers: new Identifiers({
+			isbn_13: '978-4-16-791019-8'
+		}),
+		shelfCategories: undefined,
+		gapiId: 'thirdData'
+	}
+];
+
 /**GAPIのテスト用レスポンスデータ */
 export const gapiTestDatas: books_v1.Schema$Volumes = {
 	kind: 'books#volumes',
