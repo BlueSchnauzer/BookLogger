@@ -1,4 +1,4 @@
-import type { BookSearch } from '$lib/client/Application/Interface/BookSearch';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 
 export const bookSearchView = (bookSearch: BookSearch) => {
 	/**タイトルを取得する(存在しなければ「データ無し」を返す) */

@@ -1,4 +1,4 @@
-import type { BookSearch } from '$lib/client/Application/Interface/BookSearch';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import { bookSearchView } from '$lib/client/Logics/BookSeach/View';
 import { bookSearchInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
