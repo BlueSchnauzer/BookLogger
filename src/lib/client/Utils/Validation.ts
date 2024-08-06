@@ -14,13 +14,7 @@ export const validateReadingCount = (readingCount: number, pageCount: number): b
 	return true;
 };
 
-export const validatePutBookInfo = ({
-	bookInfo,
-	isCompleteReading
-}: {
-	bookInfo: BookInfo;
-	isCompleteReading: boolean;
-}): boolean => {
+export const validatePutBookInfo = (bookInfo: BookInfo, isCompleteReading: boolean): boolean => {
 	let result = true;
 
 	//作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
