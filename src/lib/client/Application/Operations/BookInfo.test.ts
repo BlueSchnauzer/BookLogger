@@ -1,6 +1,6 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { bookInfoOperations } from '$lib/client/Logics/BookInfo/Operations';
+import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
 

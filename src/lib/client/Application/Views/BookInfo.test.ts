@@ -1,5 +1,5 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import { bookInfoView } from '$lib/client/Logics/BookInfo/View';
+import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
 

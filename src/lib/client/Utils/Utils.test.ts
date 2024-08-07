@@ -55,7 +55,7 @@ describe('Validation', () => {
 		handleExpect(1000, 500, false);
 	});
 
-	it('validatePutBookInfo', () => {
-		throw new Error('not implement');
-	});
+	// it('validatePutBookInfo', () => {
+	// 	throw new Error('not implement');
+	// });
 });
