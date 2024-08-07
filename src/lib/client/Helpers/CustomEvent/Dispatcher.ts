@@ -1,3 +1,4 @@
+import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
@@ -61,14 +62,14 @@ export const dispatchDeletionBookInfoRequest = (
 };
 
 export interface bookSearchClickEvent {
-	click: BookSearch;
+	click: BookSearchResponseItem;
 }
 
 export const dispatchBookSearchClick = (
 	dispatch: EventDispatcher<bookSearchClickEvent>,
-	entity: BookSearch
+	response: BookSearchResponseItem
 ) => {
-	dispatch('click', entity);
+	dispatch('click', response);
 };
 
 export interface bookSearchSaveEvent {
