@@ -1,19 +1,24 @@
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { bookSearchView } from '$lib/client/Application/Views/BookSearch';
+
 export interface pageHistoryValidation {
 	isError: boolean;
 	errorMessage?: string;
 }
 
-// /**書誌検索ユースケースのレスポンス定義 */
-// export interface bookSearchUseCaseResult<
-// 	ResultType extends BookSearchResultType<BookSearchResultListType>
-// > {
-// 	totalItems: number;
-// 	views: BookSearchView<ResultType>[] | undefined;
-// }
+export interface BookSearchResponseItem {
+	entity: BookSearch;
+	view: ReturnType<typeof bookSearchView>;
+}
 
-// /**検索画面での検索用関数の定義 */
-// export type searchPromise<ResultType extends BookSearchResultType<BookSearchResultListType>> =
-// 	() => Promise<bookSearchUseCaseResult<ResultType>>;
+/**書誌検索ユースケースのレスポンス定義 */
+export interface BookSearchUseCaseResult {
+	totalItems: number;
+	result: BookSearchResponseItem[] | undefined;
+}
+
+/**検索画面での検索用関数の定義 */
+export type SearchPromise = () => Promise<BookSearchUseCaseResult>;
 
 export interface bookInfoChangeResponse {
 	isSuccess: boolean;
