@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
-import { getEntityTestData } from '$lib/mock/Data';
+import { bookInfoInterfaceMock } from '$lib/mock/Data';
 
 describe('requestBookInfo', () => {
 	const searchRepo = new BookSearchGoogleBooksAPI();
-	const testData = getEntityTestData();
+	const testData = bookInfoInterfaceMock;
 
 	it('ISBNを条件にして一致した書誌データを取得できるか', async () => {
 		const result = await searchRepo.search([`isbn:${testData.identifiers?.value.isbn_13!}`], 10, 0);
@@ -66,7 +66,7 @@ describe('requestBookInfo', () => {
 
 describe('requestBookInfoWithPartialResource', () => {
 	const searchRepo = new BookSearchGoogleBooksAPI();
-	const testData = getEntityTestData();
+	const testData = bookInfoInterfaceMock;
 
 	it('リソースを指定して取得できるか', async () => {
 		const result = await searchRepo.searchWithPartialResource(
@@ -118,7 +118,7 @@ describe('searchByFuzzyQuery', () => {
 
 describe('searchByQueries', () => {
 	const searchRepo = new BookSearchGoogleBooksAPI();
-	const testData = getEntityTestData();
+	const testData = bookInfoInterfaceMock;
 
 	it('タイトルを条件にして一致した書誌データを取得できるか', async () => {
 		const result = await searchRepo.searchByQueries(testData.title, '', '', 10, 0);

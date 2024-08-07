@@ -2,7 +2,7 @@ import type { id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import type { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import type { IBookInfoDBRepositories } from '$lib/server/Domain/Repositories/IBookInfoDB';
 import type { bookInfosCollection } from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
@@ -19,15 +19,15 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		private readonly _userId: UserId
 	) {}
 
-	async get(): Promise<IBookInfoModel[]> {
+	async get(): Promise<BookInfoDBModel[]> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
-		let mongoDBModel: IBookInfoModel[] = [];
+		let mongoDBModel: BookInfoDBModel[] = [];
 
 		try {
 			mongoDBModel = (await this._collection
 				.find({ userId: this._userId.value })
-				.toArray()) as IBookInfoModel[];
+				.toArray()) as BookInfoDBModel[];
 		} catch (error) {
 			console.log(error);
 			console.log('書誌データの取得に失敗しました。');
@@ -36,14 +36,14 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getByStatus(status: status): Promise<IBookInfoModel[]> {
-		let mongoDBModel: IBookInfoModel[] = [];
+	async getByStatus(status: status): Promise<BookInfoDBModel[]> {
+		let mongoDBModel: BookInfoDBModel[] = [];
 
 		try {
-			const filter: Filter<IBookInfoModel> = {
+			const filter: Filter<BookInfoDBModel> = {
 				$and: [{ userId: this._userId.value }, { status: status }]
 			};
-			mongoDBModel = (await this._collection.find(filter).toArray()) as IBookInfoModel[];
+			mongoDBModel = (await this._collection.find(filter).toArray()) as BookInfoDBModel[];
 		} catch (error) {
 			console.log(error);
 			console.log('書誌データの取得に失敗しました。');
@@ -52,8 +52,8 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getRecent(): Promise<IBookInfoModel | undefined> {
-		let mongoDBModel: IBookInfoModel | undefined;
+	async getRecent(): Promise<BookInfoDBModel | undefined> {
+		let mongoDBModel: BookInfoDBModel | undefined;
 
 		try {
 			//pageHistoryが0より大きいデータを、更新日を降順にしてから、1個だけ取る
@@ -65,7 +65,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 				.sort({ updateDate: -1 })
 				.limit(1);
 			mongoDBModel = (await cursor.hasNext())
-				? ((await cursor.next()) as IBookInfoModel)
+				? ((await cursor.next()) as BookInfoDBModel)
 				: undefined;
 		} catch (error) {
 			console.log(error);
@@ -93,7 +93,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return histories.map((item) => item.pageHistories);
 	}
 
-	async insert(bookInfo: IBookInfoModel): Promise<Response> {
+	async insert(bookInfo: BookInfoDBModel): Promise<Response> {
 		let response = new Response('書誌データの作成に失敗しました。', { status: 400 });
 		if (await this.isDuplicate(bookInfo.gapiId!)) {
 			return new Response('登録済みの書誌データです。', { status: 409 }); //409conflict
@@ -112,7 +112,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return response;
 	}
 
-	async update(bookInfo: IBookInfoModel, isCompleteReading: boolean): Promise<Response> {
+	async update(bookInfo: BookInfoDBModel, isCompleteReading: boolean): Promise<Response> {
 		let response = new Response('書誌データの更新に失敗しました。', { status: 400 });
 
 		try {
@@ -125,13 +125,13 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 						updateDate: true,
 						completeDate: true
 					}
-				} as UpdateFilter<IBookInfoModel>;
+				} as UpdateFilter<BookInfoDBModel>;
 			} else {
 				updateFilter = {
 					$currentDate: {
 						updateDate: true
 					}
-				} as UpdateFilter<IBookInfoModel>;
+				} as UpdateFilter<BookInfoDBModel>;
 			}
 
 			//(日付以外は)以下の項目のみ更新
@@ -185,7 +185,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		try {
 			const mongoDBModel = (await this._collection
 				.find({ userId: this._userId.value, gapiId: keyId })
-				.toArray()) as IBookInfoModel[];
+				.toArray()) as BookInfoDBModel[];
 			isDuplicate = mongoDBModel.length === 0 ? false : true;
 		} catch (error) {
 			console.log(error);

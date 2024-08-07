@@ -1,13 +1,14 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import { BookInfo as Entity } from '$lib/client/Domain/Entities/BookInfo';
 import { validatePutBookInfo } from '$lib/client/Utils/Validation';
 import collections from '$lib/server/database/collections';
-import DBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import DBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModelModel';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
 import type { books_v1 } from 'googleapis';
 import type { RequestHandler } from './$types';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 
 /**書誌データを取得する
  * クエリパラメータに応じて返却するデータを変更する。
@@ -27,7 +28,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const getType = param.get('type');
 
 	//クエリパラメータに応じてデータを変更
-	let mongoDBModels: IBookInfoModel[] = [];
+	let mongoDBModels: BookInfoDBModel[] = [];
 	switch (getType) {
 		case 'recent':
 			const mongoDBModel = await repos.getRecent();
@@ -71,6 +72,7 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 
 	//Postされたデータの型はモデルではなくEntity
 	const item = (await request.json()) as { bookInfo: BookInfo; isCompleteReading: boolean };
+	const entity = new Entity(item.bookInfo);
 	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
 
 	if (!validatePutBookInfo(item)) {

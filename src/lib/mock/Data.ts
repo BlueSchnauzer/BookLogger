@@ -1,7 +1,10 @@
-import {
-	BookInfo as BookInfoEntity,
-	type bookInfoProperties
-} from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
+import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import type { books_v1 } from 'googleapis';
 
 const firstId_test = '651451ed67241f439ce8a1af';
@@ -12,30 +15,148 @@ export const testUserId1 = 'testUserId1';
 export const testUserId2 = 'testUserId2';
 export const testUserId3 = 'testUserId3';
 
-/**テスト用書誌データのEntity(1件) */
-export const getEntityTestData = (userId = testUserId1) => {
-	return new BookInfoEntity({ ...bookInfoPropertiesMock, userId });
-};
+// /**テスト用書誌データのEntity(1件) */
+// export const getEntityTestData = (userId = testUserId1) => {
+// 	return new BookInfoEntity({ ...bookInfoPropertiesMock, userId });
+// };
 
-/**テスト用書誌データのEntity(3件)
- * デフォルトでは全て同じUserIdを持つ
- */
-export const getEntityTestDatas = (
-	userId1 = testUserId1,
-	userId2 = testUserId1,
-	userId3 = testUserId1
-): BookInfoEntity[] => {
-	bookInfoPropertiesMocks[0].userId = userId1;
-	bookInfoPropertiesMocks[1].userId = userId2;
-	bookInfoPropertiesMocks[2].userId = userId3;
+// /**テスト用書誌データのEntity(3件)
+//  * デフォルトでは全て同じUserIdを持つ
+//  */
+// export const getEntityTestDatas = (
+// 	userId1 = testUserId1,
+// 	userId2 = testUserId1,
+// 	userId3 = testUserId1
+// ): BookInfoEntity[] => {
+// 	bookInfoPropertiesMocks[0].userId = userId1;
+// 	bookInfoPropertiesMocks[1].userId = userId2;
+// 	bookInfoPropertiesMocks[2].userId = userId3;
 
-	return bookInfoPropertiesMocks.map((item) => new BookInfoEntity(item));
-};
+// 	return bookInfoPropertiesMocks.map((item) => new BookInfoEntity(item));
+// };
 
-/**書誌データのEntityの作成プロパティ(1件) */
-export const bookInfoPropertiesMock: bookInfoProperties = {
-	id: firstId_test,
-	userId: testUserId1,
+// /**書誌データのEntityの作成プロパティ(1件) */
+// export const bookInfoPropertiesMock: bookInfoProperties = {
+// 	id: firstId_test,
+// 	userId: testUserId1,
+// 	title: 'わたしを離さないで',
+// 	author: ['イシグロカズオ'],
+// 	thumbnail: '',
+// 	createDate: new Date(),
+// 	updateDate: new Date(),
+// 	pageCount: 300,
+// 	isFavorite: false,
+// 	status: 'wish',
+// 	memorandum: 'memo1',
+// 	isVisible: true,
+// 	completeDate: undefined,
+// 	pageHistories: [
+// 		{
+// 			id: crypto.randomUUID(),
+// 			date: new Date(),
+// 			pageCount: 0
+// 		},
+// 		{
+// 			id: crypto.randomUUID(),
+// 			date: new Date(),
+// 			pageCount: 10
+// 		}
+// 	],
+// 	identifiers: {
+// 		isbn_13: '978-4-15-120051-9'
+// 	},
+// 	shelfCategories: undefined,
+// 	gapiId: 'firstData'
+// };
+
+// /**書誌データのEntityの作成プロパティ(3件) */
+// export const bookInfoPropertiesMocks: bookInfoProperties[] = [
+// 	{
+// 		id: firstId_test,
+// 		userId: testUserId1,
+// 		title: 'わたしを離さないで',
+// 		author: ['イシグロカズオ'],
+// 		thumbnail: '',
+// 		createDate: new Date(),
+// 		updateDate: new Date(),
+// 		pageCount: 300,
+// 		isFavorite: false,
+// 		status: 'wish',
+// 		memorandum: 'memo1',
+// 		isVisible: true,
+// 		completeDate: undefined,
+// 		pageHistories: [
+// 			{
+// 				id: crypto.randomUUID(),
+// 				date: new Date(),
+// 				pageCount: 0
+// 			},
+// 			{
+// 				id: crypto.randomUUID(),
+// 				date: new Date(),
+// 				pageCount: 10
+// 			}
+// 		],
+// 		identifiers: {
+// 			isbn_13: '978-4-15-120051-9'
+// 		},
+// 		shelfCategories: undefined,
+// 		gapiId: 'firstData'
+// 	},
+// 	{
+// 		id: secondId_test,
+// 		userId: testUserId2,
+// 		title: 'エピローグ',
+// 		author: ['円城塔'],
+// 		thumbnail: '',
+// 		createDate: new Date(),
+// 		updateDate: new Date(),
+// 		pageCount: -1,
+// 		isFavorite: false,
+// 		status: 'reading',
+// 		memorandum: 'memo2',
+// 		isVisible: true,
+// 		completeDate: undefined,
+// 		pageHistories: [
+// 			{
+// 				id: crypto.randomUUID(),
+// 				date: new Date(),
+// 				pageCount: 0
+// 			}
+// 		],
+// 		identifiers: {
+// 			isbn_13: '978-4-15-031316-6'
+// 		},
+// 		shelfCategories: undefined,
+// 		gapiId: 'secondData'
+// 	},
+// 	{
+// 		id: thirdId_test,
+// 		userId: testUserId3,
+// 		title: 'プロローグ',
+// 		author: ['円城塔'],
+// 		thumbnail: '',
+// 		createDate: new Date(),
+// 		updateDate: new Date(),
+// 		pageCount: -1,
+// 		isFavorite: false,
+// 		status: 'complete',
+// 		memorandum: 'memo3',
+// 		isVisible: true,
+// 		completeDate: undefined,
+// 		pageHistories: [],
+// 		identifiers: {
+// 			isbn_13: '978-4-16-791019-8'
+// 		},
+// 		shelfCategories: undefined,
+// 		gapiId: 'thirdData'
+// 	}
+// ];
+
+/**書誌データEntityのテストデータ(1件) */
+export const bookInfoInterfaceMock: BookInfo = {
+	id: new Id(firstId_test),
+	userId: new UserId(testUserId1),
 	title: 'わたしを離さないで',
 	author: ['イシグロカズオ'],
 	thumbnail: '',
@@ -43,34 +164,34 @@ export const bookInfoPropertiesMock: bookInfoProperties = {
 	updateDate: new Date(),
 	pageCount: 300,
 	isFavorite: false,
-	status: 'wish',
+	status: new Status('wish'),
 	memorandum: 'memo1',
 	isVisible: true,
 	completeDate: undefined,
 	pageHistories: [
-		{
+		new PageHistory({
 			id: crypto.randomUUID(),
 			date: new Date(),
 			pageCount: 0
-		},
-		{
+		}),
+		new PageHistory({
 			id: crypto.randomUUID(),
 			date: new Date(),
 			pageCount: 10
-		}
+		})
 	],
-	identifiers: {
+	identifiers: new Identifiers({
 		isbn_13: '978-4-15-120051-9'
-	},
+	}),
 	shelfCategories: undefined,
 	gapiId: 'firstData'
 };
 
-/**書誌データのEntityの作成プロパティ(3件) */
-export const bookInfoPropertiesMocks: bookInfoProperties[] = [
+/**書誌データEntityのテストデータ(3件) */
+export const bookInfoInterfaceMocks: BookInfo[] = [
 	{
-		id: firstId_test,
-		userId: testUserId1,
+		id: new Id(firstId_test),
+		userId: new UserId(testUserId1),
 		title: 'わたしを離さないで',
 		author: ['イシグロカズオ'],
 		thumbnail: '',
@@ -78,31 +199,31 @@ export const bookInfoPropertiesMocks: bookInfoProperties[] = [
 		updateDate: new Date(),
 		pageCount: 300,
 		isFavorite: false,
-		status: 'wish',
+		status: new Status('wish'),
 		memorandum: 'memo1',
 		isVisible: true,
 		completeDate: undefined,
 		pageHistories: [
-			{
+			new PageHistory({
 				id: crypto.randomUUID(),
 				date: new Date(),
 				pageCount: 0
-			},
-			{
+			}),
+			new PageHistory({
 				id: crypto.randomUUID(),
 				date: new Date(),
 				pageCount: 10
-			}
+			})
 		],
-		identifiers: {
+		identifiers: new Identifiers({
 			isbn_13: '978-4-15-120051-9'
-		},
+		}),
 		shelfCategories: undefined,
 		gapiId: 'firstData'
 	},
 	{
-		id: secondId_test,
-		userId: testUserId2,
+		id: new Id(secondId_test),
+		userId: new UserId(testUserId2),
 		title: 'エピローグ',
 		author: ['円城塔'],
 		thumbnail: '',
@@ -110,26 +231,26 @@ export const bookInfoPropertiesMocks: bookInfoProperties[] = [
 		updateDate: new Date(),
 		pageCount: -1,
 		isFavorite: false,
-		status: 'reading',
+		status: new Status('reading'),
 		memorandum: 'memo2',
 		isVisible: true,
 		completeDate: undefined,
 		pageHistories: [
-			{
+			new PageHistory({
 				id: crypto.randomUUID(),
 				date: new Date(),
 				pageCount: 0
-			}
+			})
 		],
-		identifiers: {
+		identifiers: new Identifiers({
 			isbn_13: '978-4-15-031316-6'
-		},
+		}),
 		shelfCategories: undefined,
 		gapiId: 'secondData'
 	},
 	{
-		id: thirdId_test,
-		userId: testUserId3,
+		id: new Id(thirdId_test),
+		userId: new UserId(testUserId3),
 		title: 'プロローグ',
 		author: ['円城塔'],
 		thumbnail: '',
@@ -137,14 +258,101 @@ export const bookInfoPropertiesMocks: bookInfoProperties[] = [
 		updateDate: new Date(),
 		pageCount: -1,
 		isFavorite: false,
-		status: 'complete',
+		status: new Status('complete'),
 		memorandum: 'memo3',
 		isVisible: true,
 		completeDate: undefined,
 		pageHistories: [],
-		identifiers: {
+		identifiers: new Identifiers({
 			isbn_13: '978-4-16-791019-8'
-		},
+		}),
+		shelfCategories: undefined,
+		gapiId: 'thirdData'
+	}
+];
+
+export const bookInfoInterfaceMocksWithUserIds = (
+	userId1 = testUserId1,
+	userId2 = testUserId1,
+	userId3 = testUserId1
+) => [
+	{
+		id: new Id(firstId_test),
+		userId: new UserId(userId1),
+		title: 'わたしを離さないで',
+		author: ['イシグロカズオ'],
+		thumbnail: '',
+		createDate: new Date(),
+		updateDate: new Date(),
+		pageCount: 300,
+		isFavorite: false,
+		status: new Status('wish'),
+		memorandum: 'memo1',
+		isVisible: true,
+		completeDate: undefined,
+		pageHistories: [
+			new PageHistory({
+				id: crypto.randomUUID(),
+				date: new Date(),
+				pageCount: 0
+			}),
+			new PageHistory({
+				id: crypto.randomUUID(),
+				date: new Date(),
+				pageCount: 10
+			})
+		],
+		identifiers: new Identifiers({
+			isbn_13: '978-4-15-120051-9'
+		}),
+		shelfCategories: undefined,
+		gapiId: 'firstData'
+	},
+	{
+		id: new Id(secondId_test),
+		userId: new UserId(userId2),
+		title: 'エピローグ',
+		author: ['円城塔'],
+		thumbnail: '',
+		createDate: new Date(),
+		updateDate: new Date(),
+		pageCount: -1,
+		isFavorite: false,
+		status: new Status('reading'),
+		memorandum: 'memo2',
+		isVisible: true,
+		completeDate: undefined,
+		pageHistories: [
+			new PageHistory({
+				id: crypto.randomUUID(),
+				date: new Date(),
+				pageCount: 0
+			})
+		],
+		identifiers: new Identifiers({
+			isbn_13: '978-4-15-031316-6'
+		}),
+		shelfCategories: undefined,
+		gapiId: 'secondData'
+	},
+	{
+		id: new Id(thirdId_test),
+		userId: new UserId(userId3),
+		title: 'プロローグ',
+		author: ['円城塔'],
+		thumbnail: '',
+		createDate: new Date(),
+		updateDate: new Date(),
+		pageCount: -1,
+		isFavorite: false,
+		status: new Status('complete'),
+		memorandum: 'memo3',
+		isVisible: true,
+		completeDate: undefined,
+		pageHistories: [],
+		identifiers: new Identifiers({
+			isbn_13: '978-4-16-791019-8'
+		}),
 		shelfCategories: undefined,
 		gapiId: 'thirdData'
 	}
@@ -295,4 +503,18 @@ export const gapiTestDatas: books_v1.Schema$Volumes = {
 			}
 		}
 	]
+};
+
+/**フロントでのGAPIレスポンスinterfaceのプロパティ */
+export const bookSearchInterfaceMock: BookSearch = {
+	keyId: 'D5gvDQAAQBAJ',
+	title: '短篇五芒星',
+	authors: ['舞城王太郎'],
+	publisher: '講談社',
+	publishedDate: '2016-09-15',
+	pageCount: 110,
+	thumbnail:
+		'http://books.google.com/books/content?id=D5gvDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
+	description:
+		'「許せないんだよ」「りゅ、ふう、……っぐ、りゅう、流産が」。二十七歳の春、突然流産のことが気になりだした僕。理不尽な赤ちゃんの死が高頻度で起きることに怒り、妄執する男を描いた「美しい馬の地」。他「アユの嫁」「四点リレー怪談」「バーベル・ザ・バーバリアン」「あうだうだう」収録の奇跡の短篇集！'
 };

@@ -1,21 +1,17 @@
-import type {
-	BookSearchResultListType,
-	BookSearchResultType
-} from '$lib/client/Application/Interface';
-import type { BookInfoView } from '$lib/client/Application/Views/BookInfo';
-import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { EventDispatcher } from 'svelte';
 
 export interface bookInfoClickEvent {
-	click: BookInfoView;
+	click: BookInfo;
 }
 
-export const dispatchBookInfoViewClick = (
+export const dispatchBookInfoClick = (
 	dispatch: EventDispatcher<bookInfoClickEvent>,
-	view: BookInfoView
+	entity: BookInfo
 ) => {
-	dispatch('click', view);
+	dispatch('click', entity);
 };
 
 export interface bookInfoUpdateEvent {
@@ -25,7 +21,7 @@ export interface bookInfoUpdateEvent {
 
 export interface updateBookInfoParameter {
 	message: string;
-	updatedItem: BookInfoView;
+	updatedItem: BookInfo;
 }
 
 export interface bookInfoDeleteEvent {
@@ -42,7 +38,7 @@ export const dispatchUpdateBookInfoRequest = (
 	dispatch: EventDispatcher<bookInfoUpdateEvent>,
 	isSuccess: boolean,
 	message: string,
-	updatedItem: BookInfoView
+	updatedItem: BookInfo
 ) => {
 	if (isSuccess) {
 		dispatch('updateSuccess', { message, updatedItem });
@@ -65,14 +61,14 @@ export const dispatchDeletionBookInfoRequest = (
 };
 
 export interface bookSearchClickEvent {
-	click: BookSearchView<BookSearchResultType<BookSearchResultListType>>;
+	click: BookSearch;
 }
 
-export const dispatchBookSearchViewClick = (
+export const dispatchBookSearchClick = (
 	dispatch: EventDispatcher<bookSearchClickEvent>,
-	view: BookSearchView<BookSearchResultType<BookSearchResultListType>>
+	entity: BookSearch
 ) => {
-	dispatch('click', view);
+	dispatch('click', entity);
 };
 
 export interface bookSearchSaveEvent {

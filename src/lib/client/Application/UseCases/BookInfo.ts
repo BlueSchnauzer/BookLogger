@@ -1,88 +1,131 @@
-import type {
-	bookInfoChangeResponse,
-	BookSearchResultListType,
-	BookSearchResultType
-} from '$lib/client/Application/Interface';
-import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
-import { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { bookInfoChangeResponse } from '$lib/client/Application/Interface';
+import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import {
+	PageHistory,
+	type pageHistory
+} from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
-import type { IBookInfoEntityRepository } from '$lib/client/Domain/Repositories/IBookInfoEntity';
-import type { books_v1 } from 'googleapis';
+import type {
+	BookSearchResultListType,
+	BookSearchResultType
+} from '$lib/client/Domain/Entities/BookSearch';
 
-/**書誌データの操作を管理するUseCase */
-export class BookInfoUseCase<ResultType extends BookSearchResultType<BookSearchResultListType>> {
-	constructor(private readonly repos: IBookInfoEntityRepository<ResultType>) {}
+const requestUrl = '/api/bookinfo';
 
-	/**登録済みの全書誌データ取得する */
-	public async get(): Promise<BookInfoView[]> {
-		const bookInfos = await this.repos.get();
-		return bookInfos.map((item) => new BookInfoView(item));
-	}
+export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSearchResultListType>>(
+	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>
+) => {
+	const get = async (): Promise<BookInfo[]> => {
+		const response = await fetch(requestUrl);
+		const models = (await response.json()) as BookInfoDBModel[];
 
-	/**読みたい本ステータスの書誌データを取得する */
-	public async getWish(): Promise<BookInfoView[]> {
-		const bookInfos = await this.repos.getByStatus('wish');
-		return bookInfos.map((item) => new BookInfoView(item));
-	}
+		return models.map((item) => convertDBModelToBookInfo(item));
+	};
 
-	/**読んでいる本ステータスの書誌データを取得する */
-	public async getReading(): Promise<BookInfoView[]> {
-		const bookInfos = await this.repos.getByStatus('reading');
-		return bookInfos.map((item) => new BookInfoView(item));
-	}
+	const getWish = async (): Promise<BookInfo[]> => {
+		const response = await fetchByStatus(fetch, 'wish');
+		const models = (await response.json()) as BookInfoDBModel[];
 
-	/**読み終わった本ステータスの書誌データを取得する */
-	public async getComplete(): Promise<BookInfoView[]> {
-		const bookInfos = await this.repos.getByStatus('complete');
-		return bookInfos.map((item) => new BookInfoView(item));
-	}
+		return models.map((item) => convertDBModelToBookInfo(item));
+	};
 
-	/**直近で読んだ書誌データを取得する */
-	public async getRecent(): Promise<BookInfoView | undefined> {
-		const bookInfo = await this.repos.getRecent();
-		return bookInfo ? new BookInfoView(bookInfo) : undefined;
-	}
+	const getReading = async (): Promise<BookInfo[]> => {
+		const response = await fetchByStatus(fetch, 'reading');
+		const models = (await response.json()) as BookInfoDBModel[];
 
-	/**1週間に読んだページ数を取得する */
-	public async getHistory(): Promise<Map<string, number> | undefined> {
-		const pageHistory = await this.repos.getPageHistory();
-		return getPageHistoryMapInCurrentWeek(pageHistory);
-	}
+		return models.map((item) => convertDBModelToBookInfo(item));
+	};
 
-	/**書誌データを保存する */
-	public async create(postData: books_v1.Schema$Volume): Promise<bookInfoChangeResponse> {
-		const { ok: isSuccess, status } = await this.repos.insert(postData as ResultType);
+	const getComplete = async (): Promise<BookInfo[]> => {
+		const response = await fetchByStatus(fetch, 'complete');
+		const models = (await response.json()) as BookInfoDBModel[];
+
+		return models.map((item) => convertDBModelToBookInfo(item));
+	};
+
+	const getRecent = async (): Promise<BookInfo | undefined> => {
+		const response = await fetch(`${requestUrl}?type=recent`);
+		const model = (await response.json()) as BookInfoDBModel;
+
+		return convertDBModelToBookInfo(model);
+	};
+
+	const getHistory = async (): Promise<Map<string, number> | undefined> => {
+		const response = await fetch(`${requestUrl}/history`);
+		const pageHistory = (await response.json()) as Array<pageHistory[]>;
+		const ValueObjects = pageHistory.map((item) =>
+			item.map((pageHistory) => new PageHistory(pageHistory))
+		);
+
+		return getPageHistoryMapInCurrentWeek(ValueObjects);
+	};
+
+	const create = async (postData: ResultType): Promise<bookInfoChangeResponse> => {
+		const { ok: isSuccess, status } = await fetch(requestUrl, {
+			method: 'POST',
+			body: JSON.stringify(postData),
+			headers: { 'Content-type': 'application/json' }
+		});
+
 		const message = isSuccess
 			? '登録しました'
 			: status === 409
 				? '登録済みの書籍です'
 				: '登録に失敗しました。<br>時間をおいて再度登録してください。';
-
 		return { isSuccess, message };
-	}
+	};
 
-	/**書誌データを更新する */
-	public async update(view: BookInfoView, beforeStatus: status): Promise<bookInfoChangeResponse> {
-		const entity = new BookInfo(view);
-		const isComplete = beforeStatus !== 'complete' && entity.status.value === 'complete';
+	const update = async (
+		bookInfo: BookInfo,
+		beforeStatus: status
+	): Promise<bookInfoChangeResponse> => {
+		const isCompleteReading = beforeStatus !== 'complete' && bookInfo.status.value === 'complete';
 
-		const { ok: isSuccess } = await this.repos.update(entity, isComplete);
+		const { ok: isSuccess } = await fetch(requestUrl, {
+			method: 'PUT',
+			body: JSON.stringify({ bookInfo, isCompleteReading }),
+			headers: { 'Content-type': 'application/json' }
+		});
+
 		const message = isSuccess
 			? '更新しました。'
 			: '更新に失敗しました。<br>時間をおいてから再度お試しください。';
-
 		return { isSuccess, message };
-	}
+	};
 
-	/**書誌データを削除する */
-	public async delete(id: Id): Promise<bookInfoChangeResponse> {
-		const { ok: isSuccess } = await this.repos.delete(id.value);
+	const remove = async (id: Id): Promise<bookInfoChangeResponse> => {
+		const { ok: isSuccess } = await fetch(requestUrl, {
+			method: 'DELETE',
+			body: JSON.stringify(id),
+			headers: { 'Content-type': 'application/json' }
+		});
+
 		const message = isSuccess
 			? '削除しました'
 			: '削除に失敗しました。<br>時間をおいて再度登録してください。';
-
 		return { isSuccess, message };
-	}
-}
+	};
+
+	return {
+		get,
+		getWish,
+		getReading,
+		getComplete,
+		getRecent,
+		getHistory,
+		create,
+		update,
+		remove
+	};
+};
+
+const fetchByStatus = async (
+	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>,
+	status: status
+): Promise<Response> => {
+	//eg. '/api/bookinfo?type=wish'
+	return await fetch(`${requestUrl}?type=${status}`);
+};

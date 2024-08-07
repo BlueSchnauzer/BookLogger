@@ -1,9 +1,9 @@
 import * as env from '$env/static/private';
 import * as mongoDB from 'mongodb';
-import type { IBookInfoModel } from '$lib/client/Domain/Entities/MongoDB/IBookInfoModel';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import type BookShelf from '$lib/server/Domain/Entities/MongoDB/BookShelfModel';
 
-export type bookInfosCollection = mongoDB.Collection<IBookInfoModel>;
+export type bookInfosCollection = mongoDB.Collection<BookInfoDBModel>;
 export type bookShelvesCollection = mongoDB.Collection<BookShelf>;
 
 export type collections = {
@@ -30,7 +30,7 @@ async function connectToDatabase(): Promise<collections | undefined> {
 		const db: mongoDB.Db = client.db(env.DB_NAME);
 
 		//コレクションの参照を取得
-		const bookInfosCollection = db.collection<IBookInfoModel>(env.BOOKINFOS_COLLECTION_NAME);
+		const bookInfosCollection = db.collection<BookInfoDBModel>(env.BOOKINFOS_COLLECTION_NAME);
 		collections.bookInfos = bookInfosCollection;
 
 		const bookShelvesCollection = db.collection<BookShelf>(env.BOOKSHELVES_COLLECTION_NAME);

@@ -1,18 +1,18 @@
-import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type {
 	deletionBookInfoParameter,
 	updateBookInfoParameter
 } from '$lib/client/Helpers/CustomEvent/Dispatcher';
 import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
 
-export const handleBookInfoViewsUpdate = (
-	bookInfoViews: BookInfoView[],
+export const handleBookInfosUpdate = (
+	bookInfos: BookInfo[],
 	paramter: updateBookInfoParameter,
 	isBooksRoute = false
 ) => {
 	//一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
-	let copiedViews = [...bookInfoViews];
-	let appliedViews: BookInfoView[] = [];
+	let copiedViews = [...bookInfos];
+	let appliedViews: BookInfo[] = [];
 	const oldItem = copiedViews.find((item) => item.id?.equals(paramter.updatedItem.id!));
 
 	if (!isBooksRoute && !oldItem?.status.equals(paramter.updatedItem.status)) {
@@ -33,13 +33,13 @@ export const handleBookInfoViewsUpdate = (
 	return appliedViews;
 };
 
-export const handleBookInfoViewsDeletion = (
-	bookInfoViews: BookInfoView[],
+export const handleBookInfosDeletion = (
+	bookInfos: BookInfo[],
 	parameter: deletionBookInfoParameter
 ) => {
 	//一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
-	let copiedViews = [...bookInfoViews];
-	let appliedViews: BookInfoView[] = [];
+	let copiedViews = [...bookInfos];
+	let appliedViews: BookInfo[] = [];
 	appliedViews = copiedViews.filter((item) => !item.id?.equals(parameter.deletedId));
 
 	pushSuccessToast(parameter.message, mainToastTarget);
