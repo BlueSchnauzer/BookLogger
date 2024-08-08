@@ -8,15 +8,11 @@ import {
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
-import type {
-	BookSearch,
-	BookSearchResultListType,
-	BookSearchResultType
-} from '$lib/client/Domain/Entities/BookSearch';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 
 const requestUrl = '/api/bookinfoDDD';
 
-export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSearchResultListType>>(
+export const bookInfoUseCase = (
 	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>
 ) => {
 	const get = async (): Promise<BookInfo[]> => {
