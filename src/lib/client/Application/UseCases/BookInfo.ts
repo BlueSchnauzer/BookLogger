@@ -9,11 +9,12 @@ import {
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
 import type {
+	BookSearch,
 	BookSearchResultListType,
 	BookSearchResultType
 } from '$lib/client/Domain/Entities/BookSearch';
 
-const requestUrl = '/api/bookinfo';
+const requestUrl = '/api/bookinfoDDD';
 
 export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSearchResultListType>>(
 	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>
@@ -63,10 +64,11 @@ export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSear
 		return getPageHistoryMapInCurrentWeek(ValueObjects);
 	};
 
-	const create = async (postData: ResultType): Promise<bookInfoChangeResponse> => {
+	const create = async (bookSearch: BookSearch): Promise<bookInfoChangeResponse> => {
+		console.log('create book search', bookSearch);
 		const { ok: isSuccess, status } = await fetch(requestUrl, {
 			method: 'POST',
-			body: JSON.stringify(postData),
+			body: JSON.stringify(bookSearch),
 			headers: { 'Content-type': 'application/json' }
 		});
 

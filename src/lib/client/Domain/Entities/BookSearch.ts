@@ -9,6 +9,12 @@ export interface BookSearch {
 	readonly pageCount?: number;
 	readonly thumbnail?: string;
 	readonly description?: string;
+	readonly industryIdentifiers?:
+		| {
+				identifier?: string | undefined;
+				type?: string | undefined;
+		  }[]
+		| undefined;
 }
 
 /**書誌検索の検索結果一覧 */
@@ -39,7 +45,8 @@ export const convertResponseToBookSearch = <
 		publishedDate: response.volumeInfo?.publishedDate,
 		pageCount: response.volumeInfo?.pageCount,
 		thumbnail: response.volumeInfo?.imageLinks?.thumbnail,
-		description: response.volumeInfo?.description
+		description: response.volumeInfo?.description,
+		industryIdentifiers: response.volumeInfo?.industryIdentifiers
 	};
 
 	return bookSearch;
