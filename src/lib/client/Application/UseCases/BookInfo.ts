@@ -1,6 +1,6 @@
 import type { bookInfoChangeResponse } from '$lib/client/Application/Interface';
 import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import {
 	PageHistory,
@@ -8,41 +8,55 @@ import {
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 
 const requestUrl = '/api/bookinfoDDD';
+interface fetchInterface {
+	(input: string | URL | globalThis.Request, init?: RequestInit): Promise<Response>;
+}
 
-export const bookInfoUseCase = (
-	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>
-) => {
+export const getBookInfoUseCase = (fetch: fetchInterface) => {
 	const get = async (): Promise<BookInfo[]> => {
 		const response = await fetch(requestUrl);
 		const models = (await response.json()) as BookInfoDBModel[];
 
 		return models.map((item) => convertDBModelToBookInfo(item));
 	};
+	return { get };
+};
 
-	const getWish = async (): Promise<BookInfo[]> => {
+export const getWishBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfo[]> => {
 		const response = await fetchByStatus(fetch, 'wish');
 		const models = (await response.json()) as BookInfoDBModel[];
 
 		return models.map((item) => convertDBModelToBookInfo(item));
 	};
+	return { get };
+};
 
-	const getReading = async (): Promise<BookInfo[]> => {
+export const getReadingBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfo[]> => {
 		const response = await fetchByStatus(fetch, 'reading');
 		const models = (await response.json()) as BookInfoDBModel[];
 
 		return models.map((item) => convertDBModelToBookInfo(item));
 	};
+	return { get };
+};
 
-	const getComplete = async (): Promise<BookInfo[]> => {
+export const getCompleteBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfo[]> => {
 		const response = await fetchByStatus(fetch, 'complete');
 		const models = (await response.json()) as BookInfoDBModel[];
 
 		return models.map((item) => convertDBModelToBookInfo(item));
 	};
 
+	return { get };
+};
+
+export const getHomeBookInfoUseCases = (fetch: fetchInterface) => {
 	const getRecent = async (): Promise<BookInfo | undefined> => {
 		const response = await fetch(`${requestUrl}?type=recent`);
 		const model = (await response.json()) as BookInfoDBModel;
@@ -60,6 +74,10 @@ export const bookInfoUseCase = (
 		return getPageHistoryMapInCurrentWeek(ValueObjects);
 	};
 
+	return { getRecent, getHistory };
+};
+
+export const createBookInfoUseCase = (fetch: fetchInterface) => {
 	const create = async (bookSearch: BookSearch): Promise<bookInfoChangeResponse> => {
 		console.log('create book search', bookSearch);
 		const { ok: isSuccess, status } = await fetch(requestUrl, {
@@ -76,6 +94,10 @@ export const bookInfoUseCase = (
 		return { isSuccess, message };
 	};
 
+	return { create };
+};
+
+export const registeredBookInfoUseCases = (fetch: fetchInterface) => {
 	const update = async (
 		bookInfo: BookInfo,
 		beforeStatus: status
@@ -107,23 +129,10 @@ export const bookInfoUseCase = (
 		return { isSuccess, message };
 	};
 
-	return {
-		get,
-		getWish,
-		getReading,
-		getComplete,
-		getRecent,
-		getHistory,
-		create,
-		update,
-		remove
-	};
+	return { update, remove };
 };
 
-const fetchByStatus = async (
-	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>,
-	status: status
-): Promise<Response> => {
+const fetchByStatus = async (fetch: fetchInterface, status: status): Promise<Response> => {
 	//eg. '/api/bookinfo?type=wish'
 	return await fetch(`${requestUrl}?type=${status}`);
 };

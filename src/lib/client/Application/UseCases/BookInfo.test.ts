@@ -1,16 +1,23 @@
-import { describe, expect, it } from 'vitest';
-import { bookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
-import { BookInfoAPIMock } from '$lib/mock/Fixture/index';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import {
+	createBookInfoUseCase,
+	getBookInfoUseCase,
+	getCompleteBookInfoUseCase,
+	getHomeBookInfoUseCases,
+	getReadingBookInfoUseCase,
+	getWishBookInfoUseCase,
+	registeredBookInfoUseCases
+} from '$lib/client/Application/UseCases/BookInfo';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
+import { BookInfoAPIMock } from '$lib/mock/Fixture/index';
+import { describe, expect, it } from 'vitest';
 
 describe('getAllBooks', () => {
 	BookInfoAPIMock.setGetRouteFetch('get');
 
 	it('get', async () => {
-		const usecase = bookInfoUseCase(fetch);
+		const usecase = getBookInfoUseCase(fetch);
 		const bookInfos = await usecase.get();
 
 		expect(bookInfos).toBeDefined();
@@ -18,12 +25,12 @@ describe('getAllBooks', () => {
 	});
 });
 
-describe('getByStatusOrRecent', () => {
+describe('getByStatus', () => {
 	BookInfoAPIMock.setGetRouteFetch('getByStatusOrRecent');
 
 	it('getWish', async () => {
-		const usecase = bookInfoUseCase(fetch);
-		const bookInfos = await usecase.getWish();
+		const usecase = getWishBookInfoUseCase(fetch);
+		const bookInfos = await usecase.get();
 
 		expect(bookInfos).toBeDefined();
 		expect(bookInfos.length).toBe(1);
@@ -31,8 +38,8 @@ describe('getByStatusOrRecent', () => {
 	});
 
 	it('getReading', async () => {
-		const usecase = bookInfoUseCase(fetch);
-		const bookInfos = await usecase.getReading();
+		const usecase = getReadingBookInfoUseCase(fetch);
+		const bookInfos = await usecase.get();
 
 		expect(bookInfos).toBeDefined();
 		expect(bookInfos.length).toBe(1);
@@ -40,66 +47,76 @@ describe('getByStatusOrRecent', () => {
 	});
 
 	it('getComplete', async () => {
-		const usecase = bookInfoUseCase(fetch);
-		const bookInfos = await usecase.getComplete();
+		const usecase = getCompleteBookInfoUseCase(fetch);
+		const bookInfos = await usecase.get();
 
 		expect(bookInfos).toBeDefined();
 		expect(bookInfos.length).toBe(1);
 		expect(bookInfos[0].status.value).toBe<status>('complete');
 	});
+});
 
-	it('getRecent', async () => {
-		const usecase = bookInfoUseCase(fetch);
-		const bookInfo = await usecase.getRecent();
+describe('getHomeData', () => {
+	describe('getRecent', () => {
+		BookInfoAPIMock.setGetRouteFetch('getByStatusOrRecent');
 
-		expect(bookInfo).toBeDefined();
-		expect(bookInfo!.pageHistories?.length).toEqual(2);
+		it('get', async () => {
+			const usecase = getHomeBookInfoUseCases(fetch);
+			const bookInfo = await usecase.getRecent();
+
+			expect(bookInfo).toBeDefined();
+			expect(bookInfo!.pageHistories?.length).toEqual(2);
+		});
+	});
+
+	describe('get', () => {
+		BookInfoAPIMock.setGetRouteFetch('getPageHistory');
+
+		it('getHistory', async () => {
+			const usecase = getHomeBookInfoUseCases(fetch);
+			const pageHistoryMap = await usecase.getHistory();
+
+			expect(pageHistoryMap).toBeDefined();
+		});
 	});
 });
 
-describe('getHistory', () => {
-	BookInfoAPIMock.setGetRouteFetch('getPageHistory');
+describe('create bookinfo', () => {
+	it('success', async () => {
+		BookInfoAPIMock.setPostRouteFetch('success');
 
-	it('get', async () => {
-		const usecase = bookInfoUseCase(fetch);
-		const pageHistoryMap = await usecase.getHistory();
+		const usecase = createBookInfoUseCase(fetch);
+		const response = await usecase.create({});
 
-		expect(pageHistoryMap).toBeDefined();
+		expect(response.isSuccess).toBeTruthy();
+		expect(response.message).toBe('登録しました');
+	});
+	it('failed', async () => {
+		BookInfoAPIMock.setPostRouteFetch('failed');
+
+		const usecase = createBookInfoUseCase(fetch);
+		const response = await usecase.create({});
+
+		expect(response.isSuccess).toBeFalsy();
+		expect(response.message).toBe('登録に失敗しました。<br>時間をおいて再度登録してください。');
+	});
+	it('duplicated', async () => {
+		BookInfoAPIMock.setPostRouteFetch('duplicted');
+
+		const usecase = createBookInfoUseCase(fetch);
+		const response = await usecase.create({});
+
+		expect(response.isSuccess).toBeFalsy();
+		expect(response.message).toBe('登録済みの書籍です');
 	});
 });
 
-describe('ChangeBookInfo', () => {
-	describe('create', () => {
-		it('success', async () => {
-			BookInfoAPIMock.setPostRouteFetch('success');
-			const usecase = bookInfoUseCase(fetch);
-			const response = await usecase.create({});
-
-			expect(response.isSuccess).toBeTruthy();
-			expect(response.message).toBe('登録しました');
-		});
-		it('failed', async () => {
-			BookInfoAPIMock.setPostRouteFetch('failed');
-			const usecase = bookInfoUseCase(fetch);
-			const response = await usecase.create({});
-
-			expect(response.isSuccess).toBeFalsy();
-			expect(response.message).toBe('登録に失敗しました。<br>時間をおいて再度登録してください。');
-		});
-		it('duplicated', async () => {
-			BookInfoAPIMock.setPostRouteFetch('duplicted');
-			const usecase = bookInfoUseCase(fetch);
-			const response = await usecase.create({});
-
-			expect(response.isSuccess).toBeFalsy();
-			expect(response.message).toBe('登録済みの書籍です');
-		});
-	});
-
+describe('registered bookinfo', () => {
 	describe('update', () => {
 		it('success', async () => {
 			BookInfoAPIMock.setPutRouteFetch('success');
-			const usecase = bookInfoUseCase(fetch);
+
+			const usecase = registeredBookInfoUseCases(fetch);
 			const response = await usecase.update(bookInfoInterfaceMock, 'wish');
 
 			expect(response.isSuccess).toBeTruthy();
@@ -107,7 +124,8 @@ describe('ChangeBookInfo', () => {
 		});
 		it('failed', async () => {
 			BookInfoAPIMock.setPutRouteFetch('failed');
-			const usecase = bookInfoUseCase(fetch);
+
+			const usecase = registeredBookInfoUseCases(fetch);
 			const response = await usecase.update(bookInfoInterfaceMock, 'wish');
 
 			expect(response.isSuccess).toBeFalsy();
@@ -118,7 +136,8 @@ describe('ChangeBookInfo', () => {
 	describe('remove', () => {
 		it('success', async () => {
 			BookInfoAPIMock.setDeleteRouteFetch('success');
-			const usecase = bookInfoUseCase(fetch);
+
+			const usecase = registeredBookInfoUseCases(fetch);
 			const response = await usecase.remove(new Id('test'));
 
 			expect(response.isSuccess).toBeTruthy();
@@ -126,7 +145,8 @@ describe('ChangeBookInfo', () => {
 		});
 		it('failed', async () => {
 			BookInfoAPIMock.setDeleteRouteFetch('failed');
-			const usecase = bookInfoUseCase(fetch);
+
+			const usecase = registeredBookInfoUseCases(fetch);
 			const response = await usecase.remove(new Id('test'));
 
 			expect(response.isSuccess).toBeFalsy();
