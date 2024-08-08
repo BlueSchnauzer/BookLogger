@@ -1,7 +1,7 @@
 import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import {
 	type BookInfoDBModel,
-	convertEntityToDBModel
+	convertBookInfoToDBModel
 } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import { json } from '@sveltejs/kit';
 import { beforeAll, vi } from 'vitest';
@@ -14,14 +14,16 @@ export const setGetRouteFetch = (getType: getType) => {
 
 	switch (getType) {
 		case 'get':
-			const getData = [convertEntityToDBModel(bookInfoInterfaceMock)];
+			const getData = [convertBookInfoToDBModel(bookInfoInterfaceMock)];
 			beforeAll(() => {
 				mockFetch.mockImplementation(async () => json(getData, { status: 200 }));
 			});
 			return getData;
 		case 'getByStatusOrRecent':
 			const requestUrl = '/api/bookinfo';
-			const statusOrRecentData = bookInfoInterfaceMocks.map((item) => convertEntityToDBModel(item));
+			const statusOrRecentData = bookInfoInterfaceMocks.map((item) =>
+				convertBookInfoToDBModel(item)
+			);
 			beforeAll(() => {
 				mockFetch.mockImplementation(async (input) => {
 					const dataMap: { [key: string]: BookInfoDBModel | BookInfoDBModel[] } = {
@@ -37,7 +39,7 @@ export const setGetRouteFetch = (getType: getType) => {
 			});
 			return statusOrRecentData;
 		case 'getPageHistory':
-			const pageHistoryData = convertEntityToDBModel(bookInfoInterfaceMock);
+			const pageHistoryData = convertBookInfoToDBModel(bookInfoInterfaceMock);
 			beforeAll(() => {
 				mockFetch.mockImplementation(async () =>
 					json([pageHistoryData.pageHistories], { status: 200 })

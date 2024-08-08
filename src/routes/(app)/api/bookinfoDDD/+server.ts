@@ -1,14 +1,16 @@
-import { BookInfo as Entity } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import { validatePutBookInfo } from '$lib/client/Utils/Validation';
 import collections from '$lib/server/database/collections';
-import DBModel from '$lib/server/Domain/Entities/MongoDB/BookInfoModelModel';
-import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import {
+	convertBookInfoToDBModel,
+	convertBookSearchToDBModel,
+	type BookInfoDBModel
+} from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
-import type { books_v1 } from 'googleapis';
 import type { RequestHandler } from './$types';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 
 /**書誌データを取得する
  * クエリパラメータに応じて返却するデータを変更する。
@@ -56,8 +58,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId!);
 
-	const item = (await request.json()) as books_v1.Schema$Volume;
-	return await repos.insert(new DBModel(item, userId.value));
+	const bookSearch = (await request.json()) as BookSearch;
+	return await repos.insert(convertBookSearchToDBModel(userId.value, bookSearch));
 };
 
 /**DBの書誌データを更新する */
@@ -72,13 +74,12 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 
 	//Postされたデータの型はモデルではなくEntity
 	const item = (await request.json()) as { bookInfo: BookInfo; isCompleteReading: boolean };
-	const entity = new Entity(item.bookInfo);
 	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
 
-	if (!validatePutBookInfo(item)) {
+	if (!validatePutBookInfo(item.bookInfo, item.isCompleteReading)) {
 		return new Response('データが不正です', { status: 400 });
 	}
-	return await repos.update(new DBModel(item.bookInfo), item.isCompleteReading);
+	return await repos.update(convertBookInfoToDBModel(item.bookInfo), item.isCompleteReading);
 };
 
 /**DBの書誌データを削除する */
