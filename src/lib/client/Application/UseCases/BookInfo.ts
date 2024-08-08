@@ -79,7 +79,6 @@ export const getHomeBookInfoUseCases = (fetch: fetchInterface) => {
 
 export const createBookInfoUseCase = (fetch: fetchInterface) => {
 	const create = async (bookSearch: BookSearch): Promise<bookInfoChangeResponse> => {
-		console.log('create book search', bookSearch);
 		const { ok: isSuccess, status } = await fetch(requestUrl, {
 			method: 'POST',
 			body: JSON.stringify(bookSearch),
