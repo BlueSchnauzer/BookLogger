@@ -4,8 +4,8 @@ import {
 	type BookSearchResultType
 } from '$lib/client/Domain/Entities/BookSearch';
 import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
-import type { BookSearchUseCaseResult } from '../Interface';
-import { bookSearchView } from '../Views/BookSearch';
+import type { BookSearchUseCaseResult } from '$lib/client/Application/Interface';
+import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
 
 export const BookSearchUseCase = <
 	ResultListType extends BookSearchResultListType,
@@ -21,14 +21,14 @@ export const BookSearchUseCase = <
 	): Promise<BookSearchUseCaseResult> => {
 		const response = await repos.searchByFuzzyQuery(query, maxResults, startIndex);
 
-		const totalItems = response.totalItems ?? 0;
-		const result = response.items?.map((item) => {
+		const totalCount = response.totalItems ?? 0;
+		const data = response.items?.map((item) => {
 			const entity = convertResponseToBookSearch<ResultType>(item as ResultType);
 			const view = bookSearchView(entity);
 			return { entity, view };
 		});
 
-		return { totalItems, result };
+		return { totalCount, items: data };
 	};
 
 	/**書名、著者名とISBNのいずれか、または全てを指定して書誌データを取得する */
@@ -47,14 +47,14 @@ export const BookSearchUseCase = <
 			startIndex
 		);
 
-		const totalItems = response.totalItems ?? 0;
-		const result = response.items?.map((item) => {
+		const totalCount = response.totalItems ?? 0;
+		const data = response.items?.map((item) => {
 			const entity = convertResponseToBookSearch<ResultType>(item as ResultType);
 			const view = bookSearchView(entity);
 			return { entity, view };
 		});
 
-		return { totalItems, result };
+		return { totalCount, items: data };
 	};
 
 	return { searcyByFuzzyQuery, searchByQueries };

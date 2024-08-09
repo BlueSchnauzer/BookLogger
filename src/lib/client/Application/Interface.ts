@@ -13,8 +13,8 @@ export interface BookSearchResponseItem {
 
 /**書誌検索ユースケースのレスポンス定義 */
 export interface BookSearchUseCaseResult {
-	totalItems: number;
-	result: BookSearchResponseItem[] | undefined;
+	totalCount: number;
+	items: BookSearchResponseItem[] | undefined;
 }
 
 /**検索画面での検索用関数の定義 */
