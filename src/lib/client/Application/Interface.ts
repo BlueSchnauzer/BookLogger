@@ -1,9 +1,20 @@
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { bookSearchView } from '$lib/client/Application/Views/BookSearch';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 
 export interface pageHistoryValidation {
 	isError: boolean;
 	errorMessage?: string;
+}
+
+export interface BookInfoResponseItem {
+	entity: BookInfo;
+	view: ReturnType<typeof bookInfoView>;
+}
+
+export interface BookInfoUseCaseResult {
+	items: BookInfoResponseItem[] | undefined;
 }
 
 export interface BookSearchResponseItem {

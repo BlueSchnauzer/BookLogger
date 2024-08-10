@@ -1,4 +1,7 @@
-import type { bookInfoChangeResponse } from '$lib/client/Application/Interface';
+import type {
+	bookInfoChangeResponse,
+	BookInfoUseCaseResult
+} from '$lib/client/Application/Interface';
 import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
@@ -9,6 +12,7 @@ import {
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
 import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 
 const requestUrl = '/api/bookinfoDDD';
 interface fetchInterface {
@@ -16,12 +20,18 @@ interface fetchInterface {
 }
 
 export const getBookInfoUseCase = (fetch: fetchInterface) => {
-	const get = async (): Promise<BookInfo[]> => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetch(requestUrl);
 		const models = (await response.json()) as BookInfoDBModel[];
+		const result = models.map((item) => {
+			const entity = convertDBModelToBookInfo(item);
+			const view = bookInfoView(entity);
+			return { entity, view };
+		});
 
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return { items: result };
 	};
+
 	return { get };
 };
 

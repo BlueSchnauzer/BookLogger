@@ -18,10 +18,12 @@ describe('getAllBooks', () => {
 
 	it('get', async () => {
 		const usecase = getBookInfoUseCase(fetch);
-		const bookInfos = await usecase.get();
+		const result = await usecase.get();
 
-		expect(bookInfos).toBeDefined();
-		expect(bookInfos.length).toBe(1);
+		expect(result.bookInfos).toBeDefined();
+		expect(result.bookInfos.length).toBe(1);
+		expect(result.views).toBeDefined();
+		expect(result.views.length).toBe(1);
 	});
 });
 
