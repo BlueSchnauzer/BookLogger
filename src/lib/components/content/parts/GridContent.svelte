@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import BottomStatusLabel from '$lib/components/common/parts/BottomStatusLabel.svelte';
 
-	export let view: BookInfoView;
+	export let data: BookInfoResponseItem;
 	/**画面サイズが小さくなった際にテキストを非表示にするか*/
 	export let isResponsiveText = true;
-	const pathName = $page.url.pathname;
 </script>
 
-{#if view.thumbnail}
+{#if data.entity.thumbnail}
 	<img
 		class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300"
-		src={view.thumbnail}
+		src={data.entity.thumbnail}
 		alt="test"
 	/>
 {:else}
@@ -28,13 +26,13 @@
 			? 'max-sm:flex'
 			: ''} justify-self-center self-center flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300"
 	>
-		<span class="p-1 break-all collapseTitle">{view.title}</span>
+		<span class="p-1 break-all collapseTitle">{data.entity.title}</span>
 	</div>
 {/if}
 <div class={isResponsiveText ? 'max-sm:hidden' : ''}>
-	<span class="text-left px-2 text-lime-700 break-all collapseTitle">{view.title}</span>
+	<span class="text-left px-2 text-lime-700 break-all collapseTitle">{data.entity.title}</span>
 </div>
-<BottomStatusLabel {pathName} {view} {isResponsiveText} />
+<BottomStatusLabel {data} {isResponsiveText} />
 
 <style>
 	.collapseTitle {
