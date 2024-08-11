@@ -23,21 +23,21 @@ describe('bookinfo view', () => {
 
 	describe('titleLabel', () => {
 		it('get label', () => {
-			handleExpectString(view.titleLabel(), bookInfo.title);
+			handleExpectString(view.getTitleLabel(), bookInfo.title);
 			bookInfo.title = '';
-			handleExpectString(view.titleLabel(), 'データ無し');
+			handleExpectString(view.getTitleLabel(), 'データ無し');
 			bookInfo.title = undefined as unknown as string;
-			handleExpectString(view.titleLabel(), 'データ無し');
+			handleExpectString(view.getTitleLabel(), 'データ無し');
 		});
 	});
 
 	describe('pageCountLabel', () => {
 		it('get label', () => {
-			handleExpectString(view.pageCountLabel(), '300ページ');
+			handleExpectString(view.getPageCountLabel(), '300ページ');
 			bookInfo.pageCount = 0;
-			handleExpectString(view.pageCountLabel(), '0ページ');
+			handleExpectString(view.getPageCountLabel(), '0ページ');
 			bookInfo.pageCount = undefined as unknown as number;
-			handleExpectString(view.pageCountLabel(), '0ページ');
+			handleExpectString(view.getPageCountLabel(), '0ページ');
 		});
 	});
 
@@ -61,32 +61,32 @@ describe('bookinfo view', () => {
 
 	describe('progressByPercent', () => {
 		it('get percent', () => {
-			expect(view.progressByPercent()).toBe('3%');
+			expect(view.getProgressByPercent()).toBe('3%');
 		});
 	});
 
 	describe('getDateLabel', () => {
 		it('get label by type', () => {
-			handleExpectRegExp(view.dateLabel('create', true), /^\d{4}\/\d{1,2}\/\d{1,2}$/);
-			handleExpectRegExp(view.dateLabel('update', true), /^\d{4}\/\d{1,2}\/\d{1,2}$/);
-			handleExpectRegExp(view.dateLabel('complete', true), /データ無し/);
-			handleExpectRegExp(view.dateLabel('create', false), /^\d{1,2}\/\d{1,2}$/);
+			handleExpectRegExp(view.getDateLabel('create', true), /^\d{4}\/\d{1,2}\/\d{1,2}$/);
+			handleExpectRegExp(view.getDateLabel('update', true), /^\d{4}\/\d{1,2}\/\d{1,2}$/);
+			handleExpectRegExp(view.getDateLabel('complete', true), /データ無し/);
+			handleExpectRegExp(view.getDateLabel('create', false), /^\d{1,2}\/\d{1,2}$/);
 		});
 	});
 
 	describe('getTypeForBottomLabel', () => {
 		it('get label by type', () => {
-			handleExpectString(view.typeForBottomLabel('/home'), 'progress');
-			handleExpectString(view.typeForBottomLabel('/books'), 'createDate');
-			handleExpectString(view.typeForBottomLabel('/books/wish'), 'createDate');
-			handleExpectString(view.typeForBottomLabel('/books/reading'), 'progress');
-			handleExpectString(view.typeForBottomLabel(''), 'completeDate');
+			handleExpectString(view.getTypeForBottomLabel('/home'), 'progress');
+			handleExpectString(view.getTypeForBottomLabel('/books'), 'createDate');
+			handleExpectString(view.getTypeForBottomLabel('/books/wish'), 'createDate');
+			handleExpectString(view.getTypeForBottomLabel('/books/reading'), 'progress');
+			handleExpectString(view.getTypeForBottomLabel(''), 'completeDate');
 		});
 	});
 
 	describe('maxPageCountFromHistory', () => {
 		it('get', () => {
-			expect(view.maxPageCountFromHistory()).toBe(10);
+			expect(view.getMaxPageCountFromHistory()).toBe(10);
 		});
 	});
 });

@@ -15,8 +15,8 @@ describe('bookinfo view', () => {
 		it('get label', () => {
 			const noPropsView = bookSearchView({});
 
-			expect(view.titleLabel()).toBe(bookSearch.title);
-			expect(noPropsView.titleLabel()).toBe('データ無し');
+			expect(view.getTitleLabel()).toBe(bookSearch.title);
+			expect(noPropsView.getTitleLabel()).toBe('データ無し');
 		});
 	});
 
@@ -36,8 +36,8 @@ describe('bookinfo view', () => {
 		it('get label', () => {
 			const noPropsView = bookSearchView({});
 
-			expect(view.pageCountLabel()).toBe(`${bookSearch.pageCount}ページ`);
-			expect(noPropsView.pageCountLabel()).toBe('0ページ');
+			expect(view.getPageCountLabel()).toBe(`${bookSearch.pageCount}ページ`);
+			expect(noPropsView.getPageCountLabel()).toBe('0ページ');
 		});
 	});
 });

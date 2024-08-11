@@ -2,7 +2,7 @@ import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { BottomLabelType } from '$lib/client/Utils/types';
 
 export const bookInfoView = (bookInfo: BookInfo) => {
-	const titleLabel = () => {
+	const getTitleLabel = () => {
 		return !!bookInfo.title ? bookInfo.title : 'データ無し';
 	};
 
@@ -10,7 +10,7 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 		return bookInfo.author.join(', ');
 	};
 
-	const pageCountLabel = () => {
+	const getPageCountLabel = () => {
 		return !!bookInfo.pageCount ? `${bookInfo.pageCount}ページ` : '0ページ';
 	};
 
@@ -19,14 +19,14 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 	};
 
 	/**ページ数に対して何ページ読んだかのパーセントを文字列で取得する。*/
-	const progressByPercent = () => {
+	const getProgressByPercent = () => {
 		//小数点を抜いて、パーセントに変換する。
-		const ratio = Math.trunc((maxPageCountFromHistory()! / bookInfo.pageCount) * 100);
+		const ratio = Math.trunc((getMaxPageCountFromHistory()! / bookInfo.pageCount) * 100);
 		return `${ratio.toString()}%`;
 	};
 
 	/**書誌データの日付を画面表示用の形式に変換する。 */
-	const dateLabel = (dateType: 'create' | 'update' | 'complete', useYear = true): string => {
+	const getDateLabel = (dateType: 'create' | 'update' | 'complete', useYear = true): string => {
 		let target: Date | undefined;
 		switch (dateType) {
 			case 'create':
@@ -51,7 +51,7 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 	};
 
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	const typeForBottomLabel = (pathName: string): BottomLabelType => {
+	const getTypeForBottomLabel = (pathName: string): BottomLabelType => {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
@@ -66,7 +66,7 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 		}
 	};
 
-	const maxPageCountFromHistory = (): number | undefined => {
+	const getMaxPageCountFromHistory = (): number | undefined => {
 		if (!bookInfo.pageHistories?.length) {
 			return undefined;
 		}
@@ -78,13 +78,13 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 	};
 
 	return {
-		titleLabel,
+		getTitleLabel,
 		joinedAuthors,
-		pageCountLabel,
+		getPageCountLabel,
 		isDisplayableProgress,
-		progressByPercent,
-		dateLabel,
-		typeForBottomLabel,
-		maxPageCountFromHistory
+		getProgressByPercent,
+		getDateLabel,
+		getTypeForBottomLabel,
+		getMaxPageCountFromHistory
 	};
 };
