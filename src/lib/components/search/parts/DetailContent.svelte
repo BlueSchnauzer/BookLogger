@@ -10,7 +10,7 @@
 		{#if bookSearch.entity.thumbnail}
 			<img
 				class="self-center w-[128px] h-[182px] shadow-md"
-				title={bookSearch.view.titleLabel()}
+				title={bookSearch.view.getTitleLabel()}
 				src={bookSearch.entity.thumbnail}
 				alt="書影"
 			/>
@@ -18,7 +18,7 @@
 		{:else}
 			<div
 				class="flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
-				title={bookSearch.view.titleLabel()}
+				title={bookSearch.view.getTitleLabel()}
 			>
 				<span>No Image</span>
 			</div>
@@ -54,7 +54,7 @@
 			<CategoryLabel
 				categoryText="ページ数"
 				condition={bookSearch.entity.pageCount}
-				labelFunction={() => bookSearch.view.pageCountLabel()}
+				labelFunction={() => bookSearch.view.getPageCountLabel()}
 			/>
 		</div>
 		<span class="text-lg font-bold">紹介</span>

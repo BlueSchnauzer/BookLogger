@@ -28,7 +28,7 @@
 			isLoading = true;
 			const result = await data.searchPromise();
 			isLoading = false;
-			resultCount = result.totalItems;
+			resultCount = result.totalCount;
 			return result;
 		};
 	}

@@ -71,7 +71,7 @@ const getSearchTypeAndPromise = (
 		//初回表示時
 		searchType = 'none';
 		searchPromise = async () =>
-			new Promise((resolve) => resolve({ totalItems: 0, result: undefined }));
+			new Promise((resolve) => resolve({ totalCount: 0, items: undefined }));
 	}
 
 	return { searchType, searchPromise };

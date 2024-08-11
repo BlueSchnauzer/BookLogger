@@ -26,9 +26,9 @@
 			/>
 		</div>
 	{:then response}
-		{#if response.result}
+		{#if response.items}
 			<ul data-testid="resultList">
-				{#each response.result as result (result.entity.keyId)}
+				{#each response.items as result (result.entity.keyId)}
 					<li class="flex">
 						<button
 							class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md"
@@ -37,14 +37,14 @@
 							{#if result.entity.thumbnail}
 								<img
 									class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
-									title={result.view.titleLabel()}
+									title={result.view.getTitleLabel()}
 									src={result.entity.thumbnail}
 									alt="書影"
 								/>
 							{:else}
 								<div
 									class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
-									title={result.view.titleLabel()}
+									title={result.view.getTitleLabel()}
 								>
 									<span>No Image</span>
 								</div>
