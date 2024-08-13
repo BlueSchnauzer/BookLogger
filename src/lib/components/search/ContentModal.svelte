@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
-	import { bookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
+	import { createBookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
 	import {
 		dispatchSaveBookSearchRequest,
 		type bookSearchSaveEvent
@@ -17,7 +17,7 @@
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
 
-	const usecase = bookInfoUseCase(fetch);
+	const usecase = createBookInfoUseCase(fetch);
 
 	$: if (dialog && isDisplay) {
 		dialog.showModal();
