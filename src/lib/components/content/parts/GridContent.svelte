@@ -2,15 +2,15 @@
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import BottomStatusLabel from '$lib/components/common/parts/BottomStatusLabel.svelte';
 
-	export let data: BookInfoResponseItem;
+	export let item: BookInfoResponseItem;
 	/**画面サイズが小さくなった際にテキストを非表示にするか*/
 	export let isResponsiveText = true;
 </script>
 
-{#if data.entity.thumbnail}
+{#if item.entity.thumbnail}
 	<img
 		class="justify-self-center self-center w-[128px] h-[182px] bg-slate-300"
-		src={data.entity.thumbnail}
+		src={item.entity.thumbnail}
 		alt="test"
 	/>
 {:else}
@@ -26,13 +26,13 @@
 			? 'max-sm:flex'
 			: ''} justify-self-center self-center flex-col items-center justify-center w-[128px] h-[182px] bg-slate-300"
 	>
-		<span class="p-1 break-all collapseTitle">{data.entity.title}</span>
+		<span class="p-1 break-all collapseTitle">{item.entity.title}</span>
 	</div>
 {/if}
 <div class={isResponsiveText ? 'max-sm:hidden' : ''}>
-	<span class="text-left px-2 text-lime-700 break-all collapseTitle">{data.entity.title}</span>
+	<span class="text-left px-2 text-lime-700 break-all collapseTitle">{item.entity.title}</span>
 </div>
-<BottomStatusLabel {data} {isResponsiveText} />
+<BottomStatusLabel {item} {isResponsiveText} />
 
 <style>
 	.collapseTitle {
