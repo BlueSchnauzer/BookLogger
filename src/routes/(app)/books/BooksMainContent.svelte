@@ -23,6 +23,7 @@
 		updateBookInfoParameter
 	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
 	import _ from 'lodash';
+	import { emptyMessages } from '$lib/client/UI/Shared/StaticValues';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -37,7 +38,7 @@
 	/**絞り込み用のドロップダウンフィルター */
 	export let selectFilterItems: selectFilterItem[];
 	/**データ0件の時に表示するメッセージ */
-	export let emptyMessage = '本が登録されていません。<br>検索メニューから書籍を登録してください！';
+	export let emptyMessage = emptyMessages.default;
 
 	let inputValue: string;
 	let selectValue: number;
