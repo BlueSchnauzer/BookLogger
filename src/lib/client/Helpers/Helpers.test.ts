@@ -32,18 +32,18 @@ describe('handleBookInfoViewsUpdate', () => {
 			updatedItem: copiedData
 		});
 
-		expect(result.length).toEqual(3);
-		expect(result[1].entity.isFavorite).toBeTruthy();
-		expect(result[1].entity.pageHistories?.length).toEqual(2);
-		expect(result[1].view.getTitleLabel()).toBeDefined();
+		expect(result!.length).toEqual(3);
+		expect(result![1].entity.isFavorite).toBeTruthy();
+		expect(result![1].entity.pageHistories?.length).toEqual(2);
+		expect(result![1].view.getTitleLabel()).toBeDefined();
 
 		//対象以外が変更されていないか
-		expect(result[0].entity.isFavorite).toBeFalsy();
-		expect(result[0].entity.pageHistories?.length).toEqual(2);
-		expect(result[0].view.getTitleLabel()).toBeDefined();
-		expect(result[2].entity.isFavorite).toBeFalsy();
-		expect(result[2].entity.pageHistories?.length).toEqual(0);
-		expect(result[2].view.getTitleLabel()).toBeDefined();
+		expect(result![0].entity.isFavorite).toBeFalsy();
+		expect(result![0].entity.pageHistories?.length).toEqual(2);
+		expect(result![0].view.getTitleLabel()).toBeDefined();
+		expect(result![2].entity.isFavorite).toBeFalsy();
+		expect(result![2].entity.pageHistories?.length).toEqual(0);
+		expect(result![2].view.getTitleLabel()).toBeDefined();
 	});
 
 	it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
@@ -56,18 +56,18 @@ describe('handleBookInfoViewsUpdate', () => {
 			updatedItem: copiedData
 		});
 
-		expect(result.length).toEqual(3);
-		expect(result[0].entity.isFavorite).toBeTruthy();
-		expect(result[0].entity.pageHistories?.length).toEqual(3);
-		expect(result[0].view.getTitleLabel()).toBeDefined();
+		expect(result!.length).toEqual(3);
+		expect(result![0].entity.isFavorite).toBeTruthy();
+		expect(result![0].entity.pageHistories?.length).toEqual(3);
+		expect(result![0].view.getTitleLabel()).toBeDefined();
 
 		//対象以外が変更されていないか
-		expect(result[1].entity.isFavorite).toBeFalsy();
-		expect(result[1].entity.pageHistories?.length).toEqual(1);
-		expect(result[1].view.getTitleLabel()).toBeDefined();
-		expect(result[2].entity.isFavorite).toBeFalsy();
-		expect(result[2].entity.pageHistories?.length).toEqual(0);
-		expect(result[2].view.getTitleLabel()).toBeDefined();
+		expect(result![1].entity.isFavorite).toBeFalsy();
+		expect(result![1].entity.pageHistories?.length).toEqual(1);
+		expect(result![1].view.getTitleLabel()).toBeDefined();
+		expect(result![2].entity.isFavorite).toBeFalsy();
+		expect(result![2].entity.pageHistories?.length).toEqual(0);
+		expect(result![2].view.getTitleLabel()).toBeDefined();
 	});
 
 	it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
@@ -80,18 +80,18 @@ describe('handleBookInfoViewsUpdate', () => {
 			updatedItem: copiedData
 		});
 
-		expect(result.length).toEqual(3);
-		expect(result[2].entity.isFavorite).toBeTruthy();
-		expect(result[2].entity.pageHistories?.length).toEqual(1);
-		expect(result[2].view.getTitleLabel()).toBeDefined();
+		expect(result!.length).toEqual(3);
+		expect(result![2].entity.isFavorite).toBeTruthy();
+		expect(result![2].entity.pageHistories?.length).toEqual(1);
+		expect(result![2].view.getTitleLabel()).toBeDefined();
 
 		//対象以外が変更されていないか
-		expect(result[0].entity.isFavorite).toBeFalsy();
-		expect(result[0].entity.pageHistories?.length).toEqual(2);
-		expect(result[0].view.getTitleLabel()).toBeDefined();
-		expect(result[1].entity.isFavorite).toBeFalsy();
-		expect(result[1].entity.pageHistories?.length).toEqual(1);
-		expect(result[1].view.getTitleLabel()).toBeDefined();
+		expect(result![0].entity.isFavorite).toBeFalsy();
+		expect(result![0].entity.pageHistories?.length).toEqual(2);
+		expect(result![0].view.getTitleLabel()).toBeDefined();
+		expect(result![1].entity.isFavorite).toBeFalsy();
+		expect(result![1].entity.pageHistories?.length).toEqual(1);
+		expect(result![1].view.getTitleLabel()).toBeDefined();
 	});
 
 	it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
@@ -107,10 +107,10 @@ describe('handleBookInfoViewsUpdate', () => {
 			updatedItem: copiedData
 		});
 
-		expect(result.length).toEqual(1);
-		expect(result[0].entity.isFavorite).toBeTruthy();
-		expect(result[0].entity.pageHistories?.length).toEqual(3);
-		expect(result[0].view.getTitleLabel()).toBeDefined();
+		expect(result!.length).toEqual(1);
+		expect(result![0].entity.isFavorite).toBeTruthy();
+		expect(result![0].entity.pageHistories?.length).toEqual(3);
+		expect(result![0].view.getTitleLabel()).toBeDefined();
 	});
 });
 
@@ -130,11 +130,11 @@ describe('handleBookInfoViewsDeletion', () => {
 			deletedId: responseItems[0].entity.id!
 		});
 
-		expect(result.length).toEqual(2);
-		expect(result[0].entity.id?.equals(responseItems[1].entity.id!)).toBeTruthy();
-		expect(result[0].view.getTitleLabel()).toBeDefined();
-		expect(result[1].entity.id?.equals(responseItems[2].entity.id!)).toBeTruthy();
-		expect(result[1].view.getTitleLabel()).toBeDefined();
+		expect(result!.length).toEqual(2);
+		expect(result![0].entity.id?.equals(responseItems[1].entity.id!)).toBeTruthy();
+		expect(result![0].view.getTitleLabel()).toBeDefined();
+		expect(result![1].entity.id?.equals(responseItems[2].entity.id!)).toBeTruthy();
+		expect(result![1].view.getTitleLabel()).toBeDefined();
 	});
 
 	// it('書誌データのステータスが更新された際に、書誌データ一覧から削除されること', () => {

@@ -9,10 +9,14 @@ import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/H
 import _ from 'lodash';
 
 export const handleBookInfosUpdate = (
-	items: BookInfoResponseItem[],
+	items: BookInfoResponseItem[] | undefined,
 	parameter: updateBookInfoParameter,
 	isBooksRoute = false
 ) => {
+	if (!items) {
+		return;
+	}
+
 	//純粋にしたいのでコピーするが、コスト高い？
 	let copiedItems = _.cloneDeep(items);
 	const targetIndex = copiedItems.findIndex((item) =>
@@ -37,9 +41,13 @@ export const handleBookInfosUpdate = (
 };
 
 export const handleBookInfosDeletion = (
-	items: BookInfoResponseItem[],
+	items: BookInfoResponseItem[] | undefined,
 	parameter: deletionBookInfoParameter
 ) => {
+	if (!items) {
+		return;
+	}
+
 	//一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
 	let copiedItems = _.cloneDeep(items);
 	const targetIndex = copiedItems.findIndex((item) => item.entity.id?.equals(parameter.deletedId!));
