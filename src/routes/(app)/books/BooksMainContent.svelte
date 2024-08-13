@@ -22,6 +22,7 @@
 		deletionBookInfoParameter,
 		updateBookInfoParameter
 	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	import _ from 'lodash';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -49,9 +50,7 @@
 	// }
 
 	const displayModal = (item: BookInfoResponseItem) => {
-		//これだと関数がコピーできない。単に再代入だとやっぱダメだよね？
-		//currentBookInfo = structuredClone(item);
-		currentItem = item;
+		currentItem = _.cloneDeep(item);
 		isDisplayModal = true;
 	};
 
