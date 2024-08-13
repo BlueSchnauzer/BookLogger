@@ -8,74 +8,90 @@ import { convertInputDateToDate } from '$lib/client/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
 import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
+import type { BookInfoResponseItem } from '../Application/Interface';
+import { bookInfoView } from '../Application/Views/BookInfo';
 
 describe('handleBookInfoViewsUpdate', () => {
-	let bookInfos: BookInfo[];
+	let responseItems: BookInfoResponseItem[];
 	beforeEach(() => {
-		bookInfos = [...bookInfoInterfaceMocks];
+		const bookInfos = [...bookInfoInterfaceMocks];
+		responseItems = bookInfos.map((entity) => {
+			const view = bookInfoView(entity);
+			return { entity, view };
+		});
 	});
 
 	it('更新データがある際に、対象の書誌データが更新されること', () => {
-		const copiedData = structuredClone(bookInfos[1]);
+		//これでコピーできてる？
+		const copiedData = structuredClone(responseItems[1].entity);
 		copiedData.isFavorite = true;
 		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfosUpdate(bookInfos, {
+		const result = handleBookInfosUpdate(responseItems, {
 			message: '更新成功',
 			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(3);
-		expect(result[1].isFavorite).toBeTruthy();
-		expect(result[1].pageHistories?.length).toEqual(2);
+		expect(result[1].entity.isFavorite).toBeTruthy();
+		expect(result[1].entity.pageHistories?.length).toEqual(2);
+		expect(result[1].view.getTitleLabel()).toBeDefined();
 
 		//対象以外が変更されていないか
-		expect(result[0].isFavorite).toBeFalsy();
-		expect(result[0].pageHistories?.length).toEqual(2);
-		expect(result[2].isFavorite).toBeFalsy();
-		expect(result[2].pageHistories?.length).toEqual(0);
+		expect(result[0].entity.isFavorite).toBeFalsy();
+		expect(result[0].entity.pageHistories?.length).toEqual(2);
+		expect(result[0].view.getTitleLabel()).toBeDefined();
+		expect(result[2].entity.isFavorite).toBeFalsy();
+		expect(result[2].entity.pageHistories?.length).toEqual(0);
+		expect(result[2].view.getTitleLabel()).toBeDefined();
 	});
 
 	it('更新対象が先頭の際に、対象の書誌データが更新されること', () => {
-		const copiedData = structuredClone(bookInfos[0]);
+		const copiedData = structuredClone(responseItems[0].entity);
 		copiedData.isFavorite = true;
 		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfosUpdate(bookInfos, {
+		const result = handleBookInfosUpdate(responseItems, {
 			message: '更新成功',
 			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(3);
-		expect(result[0].isFavorite).toBeTruthy();
-		expect(result[0].pageHistories!.length).toEqual(3);
+		expect(result[0].entity.isFavorite).toBeTruthy();
+		expect(result[0].entity.pageHistories?.length).toEqual(3);
+		expect(result[0].view.getTitleLabel()).toBeDefined();
 
 		//対象以外が変更されていないか
-		expect(result[1].isFavorite).toBeFalsy();
-		expect(result[1].pageHistories!.length).toEqual(1);
-		expect(result[2].isFavorite).toBeFalsy();
-		expect(result[2].pageHistories!.length).toEqual(0);
+		expect(result[1].entity.isFavorite).toBeFalsy();
+		expect(result[1].entity.pageHistories?.length).toEqual(1);
+		expect(result[1].view.getTitleLabel()).toBeDefined();
+		expect(result[2].entity.isFavorite).toBeFalsy();
+		expect(result[2].entity.pageHistories?.length).toEqual(0);
+		expect(result[2].view.getTitleLabel()).toBeDefined();
 	});
 
 	it('更新対象が末尾の際に、対象の書誌データが更新されること', () => {
-		const copiedData = structuredClone(bookInfos[2]);
+		const copiedData = structuredClone(responseItems[2].entity);
 		copiedData.isFavorite = true;
 		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfosUpdate(bookInfos, {
+		const result = handleBookInfosUpdate(responseItems, {
 			message: '更新成功',
 			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(3);
-		expect(result[2].isFavorite).toBeTruthy();
-		expect(result[2].pageHistories!.length).toEqual(1);
+		expect(result[2].entity.isFavorite).toBeTruthy();
+		expect(result[2].entity.pageHistories?.length).toEqual(1);
+		expect(result[2].view.getTitleLabel()).toBeDefined();
 
 		//対象以外が変更されていないか
-		expect(result[0].isFavorite).toBeFalsy();
-		expect(result[0].pageHistories!.length).toEqual(2);
-		expect(result[1].isFavorite).toBeFalsy();
-		expect(result[1].pageHistories!.length).toEqual(1);
+		expect(result[0].entity.isFavorite).toBeFalsy();
+		expect(result[0].entity.pageHistories?.length).toEqual(2);
+		expect(result[0].view.getTitleLabel()).toBeDefined();
+		expect(result[1].entity.isFavorite).toBeFalsy();
+		expect(result[1].entity.pageHistories?.length).toEqual(1);
+		expect(result[1].view.getTitleLabel()).toBeDefined();
 	});
 
 	it('書誌データ1つの場合に、データが増加せずに更新されること', () => {
@@ -85,14 +101,16 @@ describe('handleBookInfoViewsUpdate', () => {
 		copiedData.isFavorite = true;
 		copiedData.pageHistories?.push(new PageHistory({ date: new Date(), pageCount: 100 }));
 
-		const result = handleBookInfosUpdate([bookInfo], {
+		const responseItem = { entity: bookInfo, view: bookInfoView(bookInfo) };
+		const result = handleBookInfosUpdate([responseItem], {
 			message: '更新成功',
 			updatedItem: copiedData
 		});
 
 		expect(result.length).toEqual(1);
-		expect(result[0].isFavorite).toBeTruthy();
-		expect(result[0].pageHistories?.length).toEqual(3);
+		expect(result[0].entity.isFavorite).toBeTruthy();
+		expect(result[0].entity.pageHistories?.length).toEqual(3);
+		expect(result[0].view.getTitleLabel()).toBeDefined();
 	});
 });
 
