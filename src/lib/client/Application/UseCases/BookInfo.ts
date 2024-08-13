@@ -22,45 +22,32 @@ interface fetchInterface {
 export const getBookInfoUseCase = (fetch: fetchInterface) => {
 	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetch(requestUrl);
-		const models = (await response.json()) as BookInfoDBModel[];
-		const result = models.map((item) => {
-			const entity = convertDBModelToBookInfo(item);
-			const view = bookInfoView(entity);
-			return { entity, view };
-		});
-
-		return { items: result };
+		return convertResponseToUseCaseResult(response);
 	};
 
 	return { get };
 };
 
 export const getWishBookInfoUseCase = (fetch: fetchInterface) => {
-	const get = async (): Promise<BookInfo[]> => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetchByStatus(fetch, 'wish');
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
 	return { get };
 };
 
 export const getReadingBookInfoUseCase = (fetch: fetchInterface) => {
-	const get = async (): Promise<BookInfo[]> => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetchByStatus(fetch, 'reading');
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
 	return { get };
 };
 
 export const getCompleteBookInfoUseCase = (fetch: fetchInterface) => {
-	const get = async (): Promise<BookInfo[]> => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetchByStatus(fetch, 'complete');
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
 
 	return { get };
@@ -144,4 +131,15 @@ export const registeredBookInfoUseCases = (fetch: fetchInterface) => {
 const fetchByStatus = async (fetch: fetchInterface, status: status): Promise<Response> => {
 	//eg. '/api/bookinfo?type=wish'
 	return await fetch(`${requestUrl}?type=${status}`);
+};
+
+const convertResponseToUseCaseResult = async (response: Response) => {
+	const models = (await response.json()) as BookInfoDBModel[];
+	const result = models.map((item) => {
+		const entity = convertDBModelToBookInfo(item);
+		const view = bookInfoView(entity);
+		return { entity, view };
+	});
+
+	return { items: result };
 };
