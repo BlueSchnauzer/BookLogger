@@ -16,14 +16,27 @@
 	export let item: BookInfoResponseItem;
 
 	const operations = bookInfoOperations(item.entity);
+
 	let isEditPageCount = false;
 	let readingDate = getCurrentDateString();
 	let readingCount: number;
 	let pageHistoryValidation: pageHistoryValidation = { isError: false, errorMessage: '' };
 
-	const handleAddPageHistory = () => {
-		pageHistoryValidation = operations.addPageHistory(readingDate, readingCount);
+	const handleReactivation = (callback: () => void) => {
+		callback();
 		item = item;
+	};
+
+	const handleAddPageHistory = () => {
+		handleReactivation(
+			() => (pageHistoryValidation = operations.addPageHistory(readingDate, readingCount))
+		);
+	};
+	const handleDeletePageHistory = (id?: string) => {
+		handleReactivation(() => operations.deletePageHistory(id));
+	};
+	const handleAddPageHistoryWhenComplete = () => {
+		handleReactivation(operations.addPageHistoryWhenComplete);
 	};
 
 	onMount(() => {
@@ -94,7 +107,7 @@
 		<select
 			bind:value={item.entity.status.value}
 			class="w-full p-2 rounded-lg border-[1px] border-stone-400"
-			on:change={operations.addPageHistoryWhenComplete}
+			on:change={handleAddPageHistoryWhenComplete}
 			name="status"
 			id="statusSelect"
 			data-testid="statusSelect"
@@ -120,7 +133,7 @@
 								type="button"
 								aria-label="btnDeletePageHistory"
 								class="p-1 mr-1 rounded-full hover:bg-stone-300"
-								on:click={() => operations.deletePageHistory(pageHistory.value.id)}
+								on:click={() => handleDeletePageHistory(pageHistory.value.id)}
 							>
 								<Icon icon="ph:x" width="24" height="24" color={colorStone700} />
 							</button>
