@@ -128,7 +128,7 @@ export const registeredBookInfoUseCases = (fetch: fetchInterface) => {
 	const remove = async (id: Id): Promise<bookInfoChangeResponse> => {
 		const { ok: isSuccess } = await fetch(requestUrl, {
 			method: 'DELETE',
-			body: JSON.stringify(id),
+			body: JSON.stringify(id.value),
 			headers: { 'Content-type': 'application/json' }
 		});
 
