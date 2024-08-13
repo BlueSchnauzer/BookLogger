@@ -12,14 +12,16 @@
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import Icon from '@iconify/svelte';
+	import _ from 'lodash';
 	import { createEventDispatcher } from 'svelte';
 
 	export let isDisplay = false;
 	export let item: BookInfoResponseItem;
 
+	const copiedItem = _.cloneDeep(item);
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
-	const beforeStatus = item.entity.status.value;
+	const beforeStatus = copiedItem.entity.status.value;
 	const usecases = registeredBookInfoUseCases(fetch);
 
 	/**モーダル表示を表示する*/
@@ -89,7 +91,7 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<RegisteredContent {item} />
+			<RegisteredContent item={copiedItem} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="flex justify-between items-center">
 				<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />
