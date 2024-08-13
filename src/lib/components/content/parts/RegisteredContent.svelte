@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import AsideContent from './AsideContent.svelte';
 	import EditableContent from './EditableContent.svelte';
 
-	export let view: BookInfoView;
+	export let item: BookInfoResponseItem;
 </script>
 
 <div class="relative flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">
-	<AsideContent {view} />
+	<AsideContent {item} />
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
-	<EditableContent {view} />
+	<EditableContent {item} />
 </div>
 
 <style>

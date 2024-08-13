@@ -1,11 +1,15 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { setPathNameContext } from '$lib/client/Helpers/Context';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
-	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import BookCase from '$lib/client/UI/Shared/Icons/BookCase.svelte';
+	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import type { PageData } from './$types';
 	import BooksMainContent from './BooksMainContent.svelte';
 
 	export let data: PageData;
+
+	setPathNameContext($page.url.pathname);
 
 	const toggleFilterItems: toggleFilterItem[] = [
 		{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }
@@ -23,7 +27,7 @@
 <BooksMainContent
 	headerIcon={BookCase}
 	headerText={pageTitles.books}
-	views={data.views}
+	items={data.items}
 	isBooksRoute={true}
 	{toggleFilterItems}
 	{selectFilterItems}
