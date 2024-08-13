@@ -115,20 +115,26 @@ describe('handleBookInfoViewsUpdate', () => {
 });
 
 describe('handleBookInfoViewsDeletion', () => {
-	let bookInfos: BookInfo[];
+	let responseItems: BookInfoResponseItem[];
 	beforeEach(() => {
-		bookInfos = [...bookInfoInterfaceMocks];
+		const bookInfos = [...bookInfoInterfaceMocks];
+		responseItems = bookInfos.map((entity) => {
+			const view = bookInfoView(entity);
+			return { entity, view };
+		});
 	});
 
 	it('削除データがある際に、書誌データ一覧から削除されること', () => {
-		const result = handleBookInfosDeletion(bookInfos, {
+		const result = handleBookInfosDeletion(responseItems, {
 			message: '削除',
-			deletedId: bookInfos[0].id!
+			deletedId: responseItems[0].entity.id!
 		});
 
 		expect(result.length).toEqual(2);
-		expect(result[0].id).toBe(bookInfos[1].id);
-		expect(result[1].id).toBe(bookInfos[2].id);
+		expect(result[0].entity.id?.equals(responseItems[1].entity.id!)).toBeTruthy();
+		expect(result[0].view.getTitleLabel()).toBeDefined();
+		expect(result[1].entity.id?.equals(responseItems[2].entity.id!)).toBeTruthy();
+		expect(result[1].view.getTitleLabel()).toBeDefined();
 	});
 
 	// it('書誌データのステータスが更新された際に、書誌データ一覧から削除されること', () => {

@@ -10,44 +10,45 @@ import _ from 'lodash';
 
 export const handleBookInfosUpdate = (
 	items: BookInfoResponseItem[],
-	paramter: updateBookInfoParameter,
+	parameter: updateBookInfoParameter,
 	isBooksRoute = false
 ) => {
 	//純粋にしたいのでコピーするが、コスト高い？
 	let copiedItems = _.cloneDeep(items);
 	const targetIndex = copiedItems.findIndex((item) =>
-		item.entity.id?.equals(paramter.updatedItem.id!)
+		item.entity.id?.equals(parameter.updatedItem.id!)
 	);
 
 	if (
 		!isBooksRoute &&
-		!copiedItems[targetIndex].entity.status.equals(paramter.updatedItem.status)
+		!copiedItems[targetIndex].entity.status.equals(parameter.updatedItem.status)
 	) {
 		//全データ表示時以外で、ステータスが変わった場合は一覧から削除して、現在の表示から削除する
 		copiedItems.splice(targetIndex, 1);
 	} else {
 		//編集したアイテムを一覧に反映する
-		copiedItems[targetIndex].entity = paramter.updatedItem;
-		copiedItems[targetIndex].view = bookInfoView(paramter.updatedItem);
+		copiedItems[targetIndex].entity = parameter.updatedItem;
+		copiedItems[targetIndex].view = bookInfoView(parameter.updatedItem);
 	}
 
-	pushSuccessToast(paramter.message, mainToastTarget);
+	pushSuccessToast(parameter.message, mainToastTarget);
 
 	return copiedItems;
 };
 
 export const handleBookInfosDeletion = (
-	bookInfos: BookInfo[],
+	items: BookInfoResponseItem[],
 	parameter: deletionBookInfoParameter
 ) => {
 	//一旦、viewの中身を取り出して新しく操作する、上手くいくか確認
-	let copiedViews = [...bookInfos];
-	let appliedViews: BookInfo[] = [];
-	appliedViews = copiedViews.filter((item) => !item.id?.equals(parameter.deletedId));
+	let copiedItems = _.cloneDeep(items);
+	const targetIndex = copiedItems.findIndex((item) => item.entity.id?.equals(parameter.deletedId!));
+
+	copiedItems.splice(targetIndex, 1);
 
 	pushSuccessToast(parameter.message, mainToastTarget);
 
-	return appliedViews;
+	return copiedItems;
 };
 
 export const handleSuccess = (event: CustomEvent<string>) => {
