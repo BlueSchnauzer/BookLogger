@@ -8,8 +8,8 @@ import { convertInputDateToDate } from '$lib/client/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
 import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { BookInfoResponseItem } from '../Application/Interface';
-import { bookInfoView } from '../Application/Views/BookInfo';
+import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 
 describe('handleBookInfoViewsUpdate', () => {
 	let responseItems: BookInfoResponseItem[];
