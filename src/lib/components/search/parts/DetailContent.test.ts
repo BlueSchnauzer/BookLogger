@@ -1,4 +1,6 @@
-import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
+import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
+import { convertResponseToBookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 import { gapiTestDatas } from '$lib/mock/Data';
 import { render, screen, waitFor } from '@testing-library/svelte';
@@ -6,10 +8,13 @@ import { describe, expect, it } from 'vitest';
 
 describe('DetailContent', async () => {
 	const item = gapiTestDatas.items![0];
-	const view = new BookSearchView(item);
+	const entity = convertResponseToBookSearch(gapiTestDatas.items![0]);
+	const view = bookSearchView(entity);
+
+	const bookSearch: BookSearchResponseItem = { entity, view };
 
 	it('レンダリング', async () => {
-		render(DetailContent, { view });
+		render(DetailContent, { bookSearch: bookSearch });
 
 		await waitFor(
 			() => {
