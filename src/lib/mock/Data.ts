@@ -1,5 +1,10 @@
+import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
+import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import {
+	convertResponseToBookSearch,
+	type BookSearch
+} from '$lib/client/Domain/Entities/BookSearch';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
@@ -517,4 +522,12 @@ export const bookSearchInterfaceMock: BookSearch = {
 		'http://books.google.com/books/content?id=D5gvDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
 	description:
 		'「許せないんだよ」「りゅ、ふう、……っぐ、りゅう、流産が」。二十七歳の春、突然流産のことが気になりだした僕。理不尽な赤ちゃんの死が高頻度で起きることに怒り、妄執する男を描いた「美しい馬の地」。他「アユの嫁」「四点リレー怪談」「バーベル・ザ・バーバリアン」「あうだうだう」収録の奇跡の短篇集！'
+};
+
+export const gapiItemAndBookSearchResponseItemMock = () => {
+	const item = gapiTestDatas.items![0];
+	const entity = convertResponseToBookSearch(item);
+	const view = bookSearchView(entity);
+
+	return { item, bookSearchResponseItem: { entity, view } as BookSearchResponseItem };
 };
