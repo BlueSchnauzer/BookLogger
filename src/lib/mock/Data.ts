@@ -1,4 +1,8 @@
-import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
+import type {
+	BookInfoResponseItem,
+	BookSearchResponseItem
+} from '$lib/client/Application/Interface';
+import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import {
@@ -362,6 +366,15 @@ export const bookInfoInterfaceMocksWithUserIds = (
 		gapiId: 'thirdData'
 	}
 ];
+
+export const bookInfoResponseItemsMock = (): BookInfoResponseItem[] => {
+	const bookInfoResponseItems = bookInfoInterfaceMocks.map((entity) => {
+		const view = bookInfoView(entity);
+		return { entity, view };
+	});
+
+	return bookInfoResponseItems;
+};
 
 /**GAPIのテスト用レスポンスデータ */
 export const gapiTestDatas: books_v1.Schema$Volumes = {
