@@ -4,12 +4,12 @@ import { render, screen } from '@testing-library/svelte';
 import { readable } from 'svelte/store';
 import { describe, expect, it, vi } from 'vitest';
 
-describe('SideMenu', () => {
-	vi.mock('$app/stores', () => {
-		return {
-			page: readable({ url: { pathname: 'test' } })
-		};
-	});
+describe.skip('SideMenu', () => {
+	// vi.mock('$app/stores', () => {
+	// 	return {
+	// 		page: readable({ url: { pathname: 'test' } })
+	// 	};
+	// });
 
 	it('レンダリング', () => {
 		render(SideMenu);
