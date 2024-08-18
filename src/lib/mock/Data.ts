@@ -367,6 +367,13 @@ export const bookInfoInterfaceMocksWithUserIds = (
 	}
 ];
 
+export const bookInfoResponseItemMock = (): BookInfoResponseItem => {
+	const entity = bookInfoInterfaceMock;
+	const view = bookInfoView(entity);
+
+	return { entity, view };
+};
+
 export const bookInfoResponseItemsMock = (): BookInfoResponseItem[] => {
 	const bookInfoResponseItems = bookInfoInterfaceMocks.map((entity) => {
 		const view = bookInfoView(entity);
