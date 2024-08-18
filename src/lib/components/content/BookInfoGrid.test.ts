@@ -2,10 +2,13 @@ import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
 import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
 import { threeBookInfos } from '$lib/vitest-setup';
+import { bookInfoResponseItemsMock } from '$lib/mock/Data';
 
-describe.skip('BookInfoGrid', () => {
+describe('BookInfoGrid', () => {
+	const bookInfoResponseItems = bookInfoResponseItemsMock();
+
 	it('レンダリング', () => {
-		render(BookInfoGrid, { bookInfos: threeBookInfos, emptyMessage: '' });
+		render(BookInfoGrid, { items: bookInfoResponseItems, emptyMessage: '' });
 
 		expect(screen.getByTitle(threeBookInfos[0].title)).toBeInTheDocument();
 		expect(screen.getByTitle(threeBookInfos[1].title)).toBeInTheDocument();
@@ -17,7 +20,7 @@ describe.skip('BookInfoGrid', () => {
 	//メッセージが変更できるか
 
 	it('クリックイベントを検知できること', async () => {
-		const { component } = render(BookInfoGrid, { bookInfos: threeBookInfos, emptyMessage: '' });
+		const { component } = render(BookInfoGrid, { items: bookInfoResponseItems, emptyMessage: '' });
 
 		const btns = screen.getAllByRole('button');
 		const mock = vitest.fn();
