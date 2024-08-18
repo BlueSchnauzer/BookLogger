@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { setPathNameContext } from '$lib/client/Helpers/Context';
+	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import { emptyMessages } from '$lib/client/UI/Shared/StaticValues';
 	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
