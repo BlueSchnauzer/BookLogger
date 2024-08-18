@@ -4,7 +4,7 @@ import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo'
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-describe('', () => {
+describe('BookInfo Operations', () => {
 	let bookInfo: BookInfo;
 	let operations: ReturnType<typeof bookInfoOperations>;
 	beforeEach(() => {

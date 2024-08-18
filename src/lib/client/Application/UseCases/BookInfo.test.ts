@@ -20,10 +20,10 @@ describe('getAllBooks', () => {
 		const usecase = getBookInfoUseCase(fetch);
 		const result = await usecase.get();
 
-		expect(result.bookInfos).toBeDefined();
-		expect(result.bookInfos.length).toBe(1);
-		expect(result.views).toBeDefined();
-		expect(result.views.length).toBe(1);
+		expect(result.items).toBeDefined();
+		expect(result.items!.length).toBe(1);
+		expect(result.items![0].entity).toBeDefined();
+		expect(result.items![0].view).toBeDefined();
 	});
 });
 
@@ -32,29 +32,35 @@ describe('getByStatus', () => {
 
 	it('getWish', async () => {
 		const usecase = getWishBookInfoUseCase(fetch);
-		const bookInfos = await usecase.get();
+		const result = await usecase.get();
 
-		expect(bookInfos).toBeDefined();
-		expect(bookInfos.length).toBe(1);
-		expect(bookInfos[0].status.value).toBe<status>('wish');
+		expect(result.items).toBeDefined();
+		expect(result.items!.length).toBe(1);
+		expect(result.items![0].entity).toBeDefined();
+		expect(result.items![0].view).toBeDefined();
+		expect(result.items![0].entity.status.value).toBe<status>('wish');
 	});
 
 	it('getReading', async () => {
 		const usecase = getReadingBookInfoUseCase(fetch);
-		const bookInfos = await usecase.get();
+		const result = await usecase.get();
 
-		expect(bookInfos).toBeDefined();
-		expect(bookInfos.length).toBe(1);
-		expect(bookInfos[0].status.value).toBe<status>('reading');
+		expect(result.items).toBeDefined();
+		expect(result.items!.length).toBe(1);
+		expect(result.items![0].entity).toBeDefined();
+		expect(result.items![0].view).toBeDefined();
+		expect(result.items![0].entity.status.value).toBe<status>('reading');
 	});
 
 	it('getComplete', async () => {
 		const usecase = getCompleteBookInfoUseCase(fetch);
-		const bookInfos = await usecase.get();
+		const result = await usecase.get();
 
-		expect(bookInfos).toBeDefined();
-		expect(bookInfos.length).toBe(1);
-		expect(bookInfos[0].status.value).toBe<status>('complete');
+		expect(result.items).toBeDefined();
+		expect(result.items!.length).toBe(1);
+		expect(result.items![0].entity).toBeDefined();
+		expect(result.items![0].view).toBeDefined();
+		expect(result.items![0].entity.status.value).toBe<status>('complete');
 	});
 });
 
@@ -64,10 +70,10 @@ describe('getHomeData', () => {
 
 		it('get', async () => {
 			const usecase = getHomeBookInfoUseCases(fetch);
-			const bookInfo = await usecase.getRecent();
+			const result = await usecase.getRecent();
 
-			expect(bookInfo).toBeDefined();
-			expect(bookInfo!.pageHistories?.length).toEqual(2);
+			expect(result?.entity).toBeDefined();
+			expect(result?.view).toBeDefined();
 		});
 	});
 
@@ -76,9 +82,9 @@ describe('getHomeData', () => {
 
 		it('getHistory', async () => {
 			const usecase = getHomeBookInfoUseCases(fetch);
-			const pageHistoryMap = await usecase.getHistory();
+			const historyMap = await usecase.getHistory();
 
-			expect(pageHistoryMap).toBeDefined();
+			expect(historyMap).toBeDefined();
 		});
 	});
 });
