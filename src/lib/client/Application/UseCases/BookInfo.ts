@@ -14,7 +14,7 @@ import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
 import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
 import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 
-const requestUrl = '/api/bookinfoDDD';
+const requestUrl = '/api/bookinfo';
 interface fetchInterface {
 	(input: string | URL | globalThis.Request, init?: RequestInit): Promise<Response>;
 }
