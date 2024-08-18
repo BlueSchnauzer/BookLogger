@@ -1,12 +1,8 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
-import { convertDate } from '$lib/utils/bookInfo';
 import userEvent from '@testing-library/user-event';
-import { getTestData } from '$lib/vitest-setup';
-import type { BookInfo } from '$lib/server/models/BookInfo';
 import { bookInfoResponseItemMock } from '$lib/mock/Data';
-import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
 import _ from 'lodash';
 
 describe('RegisteredContent', async () => {

@@ -1,7 +1,7 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import { validatePutBookInfo } from '$lib/client/Utils/Validation';
-import collections from '$lib/server/database/collections';
+import collections from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
 import {
 	convertBookInfoToDBModel,
 	convertBookSearchToDBModel,

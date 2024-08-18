@@ -4,7 +4,6 @@
 	import ContentFilters from '$lib/components/header/ContentFilters.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import { toggleFavorite } from '$lib/utils/bookInfo';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import SimpleBar from 'simplebar';
 	//iOS Safariなど用に追加
