@@ -3,7 +3,7 @@
 	import {
 		dispatchBookInfoClick,
 		type bookInfoClickEvent
-	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import GridContent from '$lib/components/content/parts/GridContent.svelte';
 	import { createEventDispatcher } from 'svelte';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
-	import { handleFailure, handleSuccess } from '$lib/client/Helpers/CustomEvent/Handler';
+	import { handleFailure, handleSuccess } from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';

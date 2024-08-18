@@ -6,7 +6,7 @@
 		dispatchUpdateBookInfoRequest,
 		type bookInfoDeleteEvent,
 		type bookInfoUpdateEvent
-	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';

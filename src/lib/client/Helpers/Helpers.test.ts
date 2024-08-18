@@ -1,9 +1,8 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import {
 	handleBookInfosDeletion,
 	handleBookInfosUpdate
-} from '$lib/client/Helpers/CustomEvent/Handler';
+} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 import { convertInputDateToDate } from '$lib/client/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
 import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';

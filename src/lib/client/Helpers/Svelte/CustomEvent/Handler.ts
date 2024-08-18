@@ -1,10 +1,9 @@
 import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type {
 	deletionBookInfoParameter,
 	updateBookInfoParameter
-} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
 import _ from 'lodash';
 

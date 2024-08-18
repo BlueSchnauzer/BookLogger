@@ -12,7 +12,7 @@
 		handleBookInfosDeletion,
 		handleBookInfosUpdate,
 		handleFailure
-	} from '$lib/client/Helpers/CustomEvent/Handler';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import 'simplebar/dist/simplebar.css';
@@ -21,7 +21,7 @@
 	import type {
 		deletionBookInfoParameter,
 		updateBookInfoParameter
-	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import _ from 'lodash';
 	import { emptyMessages } from '$lib/client/UI/Shared/StaticValues';
 
