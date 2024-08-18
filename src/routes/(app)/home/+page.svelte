@@ -1,42 +1,55 @@
 <script lang="ts">
-	import { modalToastTarget } from '$lib/client/Helpers/Toast';
+	import { page } from '$app/stores';
+	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
+	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
+	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 	import GridContent from '$lib/components/content/parts/GridContent.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import SearchModal from '$lib/components/search/SearchModal.svelte';
-	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
-	import type { BookInfo } from '$lib/server/models/BookInfo';
-	import { handleSuccess } from '$lib/utils/bookInfo';
-	import { pushErrorToast } from '$lib/utils/toast';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+	import type {
+		deletionBookInfoParameter,
+		updateBookInfoParameter
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	import {
+		handleFailure,
+		handleRecentBookInfoDeletion,
+		handleRecentBookInfoUpdate
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
+	import _ from 'lodash';
 
 	export let data: PageData;
-	let countGraph: HTMLCanvasElement;
 
-	const labels = Array.from(data.pagesWithDate.keys());
-	const graphData = Array.from(data.pagesWithDate.values());
+	setPathNameContext($page.url.pathname);
+
+	let countGraph: HTMLCanvasElement;
+	const labels = Array.from(data.historyMap!.keys());
+	const graphData = Array.from(data.historyMap!.values());
 
 	let isDisplayDetail = false;
 	let isDisplaySearchModal = false;
-	let currentBookInfo: BookInfo;
+	let currentItem: BookInfoResponseItem;
 
-	const displayModal = (item: BookInfo) => {
-		currentBookInfo = structuredClone(item);
+	const displayModal = (item?: BookInfoResponseItem) => {
+		if (!item) {
+			return;
+		}
+
+		currentItem = _.cloneDeep(item);
 		isDisplayDetail = true;
 	};
 
-	/**トーストを表示し、再度最新の書誌データを取得する。*/
-	const handleSuccessAndFetchData = async (event: CustomEvent<any>) => {
-		data.recentBook = handleSuccess(data.recentBook, event.detail, modalToastTarget);
-
-		const response = await fetch('/api/bookinfo?recentbook=true', { method: 'GET' });
-		if (response.ok) {
-			data.recentBook = (await response.json()) as BookInfo[];
-		}
+	const handleUpdateSuccess = (event: CustomEvent<updateBookInfoParameter>) => {
+		data.recentItem = handleRecentBookInfoUpdate(currentItem, event.detail);
+	};
+	const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
+		data.recentItem = handleRecentBookInfoDeletion(currentItem, event.detail);
 	};
 
 	onMount(() => {
@@ -78,14 +91,14 @@
 			data-testid="recentbook"
 			class="flex flex-col items-center h-fit p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100"
 		>
-			{#if data.recentBook && data.recentBook.length !== 0}
+			{#if data.recentItem}
 				<p class="text-xl m-2 text-lime-700 font-medium self-start">最近読んだ本</p>
 				<button
 					data-testid="btnRecentbook"
 					class="grid item h-96 w-72 bg-slate-50 rounded shadow-md"
-					on:click={() => displayModal(data.recentBook[0])}
+					on:click={() => displayModal(data.recentItem)}
 				>
-					<GridContent bookInfo={data.recentBook[0]} isResponsiveText={false} />
+					<GridContent item={data.recentItem} isResponsiveText={false} />
 				</button>
 			{:else}
 				<div class="text-xl m-2 text-lime-700 font-medium">
@@ -114,14 +127,15 @@
 	</div>
 	{#if isDisplayDetail}
 		<RegisteredModal
-			bookInfo={currentBookInfo}
+			item={currentItem}
 			bind:isDisplay={isDisplayDetail}
-			on:success={(event) => handleSuccessAndFetchData(event)}
-			on:failed={(event) => pushErrorToast(event.detail, modalToastTarget)}
+			on:updateSuccess={handleUpdateSuccess}
+			on:deleteSuccess={handleDeletionSuccess}
+			on:failed={handleFailure}
 		/>
 	{/if}
 	<div class="wrap-bottom">
-		<SvelteToast target={modalToastTarget} />
+		<SvelteToast target={mainToastTarget} />
 	</div>
 </main>
 

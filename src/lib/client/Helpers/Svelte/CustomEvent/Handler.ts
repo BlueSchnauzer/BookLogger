@@ -39,6 +39,14 @@ export const handleBookInfosUpdate = (
 	return copiedItems;
 };
 
+export const handleRecentBookInfoUpdate = (
+	item: BookInfoResponseItem | undefined,
+	parameter: updateBookInfoParameter
+) => {
+	const result = handleBookInfosUpdate([item!], parameter);
+	return result?.[0];
+};
+
 export const handleBookInfosDeletion = (
 	items: BookInfoResponseItem[] | undefined,
 	parameter: deletionBookInfoParameter
@@ -56,6 +64,14 @@ export const handleBookInfosDeletion = (
 	pushSuccessToast(parameter.message, mainToastTarget);
 
 	return copiedItems;
+};
+
+export const handleRecentBookInfoDeletion = (
+	item: BookInfoResponseItem | undefined,
+	parameter: deletionBookInfoParameter
+) => {
+	const result = handleBookInfosDeletion([item!], parameter);
+	return result?.[0];
 };
 
 export const handleSuccess = (event: CustomEvent<string>) => {

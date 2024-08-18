@@ -1,5 +1,6 @@
 import type {
 	bookInfoChangeResponse,
+	BookInfoResponseItem,
 	BookInfoUseCaseResult
 } from '$lib/client/Application/Interface';
 import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
@@ -54,11 +55,14 @@ export const getCompleteBookInfoUseCase = (fetch: fetchInterface) => {
 };
 
 export const getHomeBookInfoUseCases = (fetch: fetchInterface) => {
-	const getRecent = async (): Promise<BookInfo | undefined> => {
+	const getRecent = async (): Promise<BookInfoResponseItem | undefined> => {
 		const response = await fetch(`${requestUrl}?type=recent`);
 		const model = (await response.json()) as BookInfoDBModel;
 
-		return convertDBModelToBookInfo(model);
+		const entity = convertDBModelToBookInfo(model);
+		const view = bookInfoView(entity);
+
+		return { entity, view };
 	};
 
 	const getHistory = async (): Promise<Map<string, number> | undefined> => {
