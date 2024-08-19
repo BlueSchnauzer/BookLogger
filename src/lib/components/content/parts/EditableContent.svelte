@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type {
-		BookInfoResponseItem,
-		pageHistoryValidation
-	} from '$lib/client/Application/Interface';
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
 	import { getCurrentDateString } from '$lib/client/Helpers/Date';
 	import { modalToastTarget } from '$lib/client/Helpers/Toast';
@@ -20,7 +17,10 @@
 	let isEditPageCount = false;
 	let readingDate = getCurrentDateString();
 	let readingCount: number;
-	let pageHistoryValidation: pageHistoryValidation = { isError: false, errorMessage: '' };
+	let pageHistoryValidation: ReturnType<typeof operations.addPageHistory> = {
+		isError: false,
+		errorMessage: ''
+	};
 
 	const handleReactivation = (callback: () => void) => {
 		callback();
