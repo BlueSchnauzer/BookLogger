@@ -1,8 +1,7 @@
-import type { searchPromise } from '$lib/client/Application/Interface';
+import type { SearchPromise } from '$lib/client/Application/Interface';
 import { BookSearchUseCase } from '$lib/client/Application/UseCases/BookSearch';
 import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
 import type { searchConditions, SearchType } from '$lib/client/Utils/types';
-import type { books_v1 } from 'googleapis';
 import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load = (async (params) => {
@@ -57,9 +56,9 @@ const getSearchTypeAndPromise = (
 	let searchType: SearchType;
 
 	const repos = new BookSearchGoogleBooksAPI();
-	const usecase = new BookSearchUseCase(repos);
+	const usecase = BookSearchUseCase(repos);
 	//usecaseの検索処理を実行し結果を返す非同期関数。実行自体は+page.svelteで行う。
-	let searchPromise: searchPromise<books_v1.Schema$Volume>;
+	let searchPromise: SearchPromise;
 
 	if (query) {
 		searchType = 'fuzzy';
@@ -72,7 +71,7 @@ const getSearchTypeAndPromise = (
 		//初回表示時
 		searchType = 'none';
 		searchPromise = async () =>
-			new Promise((resolve) => resolve({ totalItems: 0, views: undefined }));
+			new Promise((resolve) => resolve({ totalCount: 0, items: undefined }));
 	}
 
 	return { searchType, searchPromise };

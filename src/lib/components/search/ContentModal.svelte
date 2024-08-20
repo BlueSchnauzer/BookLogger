@@ -1,26 +1,23 @@
 <script lang="ts">
-	import { BookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
-	import type { BookSearchView } from '$lib/client/Application/Views/BookSearch';
+	import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
+	import { createBookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
 	import {
 		dispatchSaveBookSearchRequest,
 		type bookSearchSaveEvent
-	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
-	import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
 	import Icon from '@iconify/svelte';
-	import type { books_v1 } from 'googleapis';
 	import { createEventDispatcher } from 'svelte';
 
 	export let isDisplay = false;
-	export let view: BookSearchView<books_v1.Schema$Volume>;
+	export let bookSearch: BookSearchResponseItem;
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
 
-	const repos = new BookInfoEntityResource(fetch);
-	const usecase = new BookInfoUseCase(repos);
+	const usecase = createBookInfoUseCase(fetch);
 
 	$: if (dialog && isDisplay) {
 		dialog.showModal();
@@ -44,7 +41,7 @@
 	const dispatch = createEventDispatcher<bookSearchSaveEvent>();
 	const handlePostRequest = async () => {
 		displayLoader();
-		const { isSuccess, message } = await usecase.create(view.searchResult);
+		const { isSuccess, message } = await usecase.create(bookSearch.entity);
 		closeModalAndLoader();
 
 		dispatchSaveBookSearchRequest(dispatch, isSuccess, message);
@@ -74,7 +71,7 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<DetailContent {view} />
+			<DetailContent {bookSearch} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="h-14 flex flex-row justify-end items-center">
 				<PrimalyButton type="button" text="登録" on:click={handlePostRequest} />

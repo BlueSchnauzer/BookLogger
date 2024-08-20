@@ -4,7 +4,7 @@
 	import { firebaseAuth } from '$lib/firebase.client';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
-	import { pushErrorToast, pushSuccessToast } from '$lib/utils/toast';
+	import { pushSuccessToast, pushErrorToast } from '$lib/client/Helpers/Toast';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 
 	let email: string;

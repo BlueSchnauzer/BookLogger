@@ -1,15 +1,13 @@
-import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
 import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
-import { gapiTestDatas } from '$lib/mock/Data';
+import { gapiItemAndBookSearchResponseItemMock, gapiTestDatas } from '$lib/mock/Data';
 import { render, screen, waitFor } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 
 describe('DetailContent', async () => {
-	const item = gapiTestDatas.items![0];
-	const view = new BookSearchView(item);
+	const { item, bookSearchResponseItem } = gapiItemAndBookSearchResponseItemMock();
 
 	it('レンダリング', async () => {
-		render(DetailContent, { view });
+		render(DetailContent, { bookSearch: bookSearchResponseItem });
 
 		await waitFor(
 			() => {

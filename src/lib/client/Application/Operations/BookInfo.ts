@@ -1,14 +1,12 @@
-import type { pageHistoryValidation } from '$lib/client/Application/Interface';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
-import { modalToastTarget } from '$lib/client/Helpers/Toast';
-import { pushToast } from '$lib/utils/toast';
-import { validateReadingCount, validateReadingDate } from '$lib/utils/validation';
+import { modalToastTarget, pushToast } from '$lib/client/Helpers/Toast';
+import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
 
 export const bookInfoOperations = (bookInfo: BookInfo) => {
-	const addPageHistory = (readingDate: string, readingCount: number): pageHistoryValidation => {
+	const addPageHistory = (readingDate: string, readingCount: number) => {
 		const isValidDate = validateReadingDate(readingDate);
 		const isValidCount = validateReadingCount(readingCount, bookInfo.pageCount);
 		if (!isValidDate || !isValidCount) {

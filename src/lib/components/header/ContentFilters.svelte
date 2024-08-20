@@ -1,13 +1,6 @@
 <script lang="ts">
-	import type { menuItemData } from '$lib/customTypes';
 	import { page } from '$app/stores';
-
-	const MenuItemDatas: menuItemData[] = [
-		{ ref: '/books', name: '全ての本' },
-		{ ref: '/books/wish', name: '読みたい' },
-		{ ref: '/books/reading', name: '読んでいる' },
-		{ ref: '/books/complete', name: '読み終わった' }
-	];
+	import { booksMenuItems } from '$lib/client/UI/Shared/DisplayData';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;
@@ -16,7 +9,7 @@
 
 <div class="flex justify-between items-center">
 	<ul class="flex items-start -mb-[1px]">
-		{#each MenuItemDatas as item}
+		{#each booksMenuItems as item}
 			<li
 				class="h-11 px-2 whitespace-nowrap
 				{item.ref === '/books' ? 'border-x' : 'border-r'} 

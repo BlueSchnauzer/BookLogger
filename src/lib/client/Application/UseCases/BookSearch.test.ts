@@ -12,23 +12,23 @@ describe('BookSearchUseCase', () => {
 
 	it('searcyByFuzzyQuery', async () => {
 		const usecase = BookSearchUseCase(repos);
-		const { totalItems, bookSearches } = await usecase.searcyByFuzzyQuery('イシグロカズオ');
+		const { totalCount, items: data } = await usecase.searcyByFuzzyQuery('イシグロカズオ');
 
-		expect(totalItems).toBeGreaterThanOrEqual(0);
-		expect(bookSearches).toBeDefined();
-		expect(bookSearches?.length).toBeTruthy();
+		expect(totalCount).toBeGreaterThanOrEqual(0);
+		expect(data).toBeDefined();
+		expect(data?.length).toBeTruthy();
 	});
 
 	it('searchByQueries', async () => {
 		const usecase = BookSearchUseCase(repos);
-		const { totalItems, bookSearches } = await usecase.searchByQueries(
+		const { totalCount, items: data } = await usecase.searchByQueries(
 			testData.title,
 			testData.author[0],
 			testData.identifiers?.value.isbn_13!
 		);
 
-		expect(totalItems).toBeGreaterThanOrEqual(0);
-		expect(bookSearches).toBeDefined();
-		expect(bookSearches?.length).toBeTruthy();
+		expect(totalCount).toBeGreaterThanOrEqual(0);
+		expect(data).toBeDefined();
+		expect(data?.length).toBeTruthy();
 	});
 });

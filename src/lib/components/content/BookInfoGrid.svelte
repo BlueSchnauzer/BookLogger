@@ -1,33 +1,33 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import GridContent from '$lib/components/content/parts/GridContent.svelte';
-	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import {
-		dispatchBookInfoViewClick,
+		dispatchBookInfoClick,
 		type bookInfoClickEvent
-	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	import GridContent from '$lib/components/content/parts/GridContent.svelte';
+	import { createEventDispatcher } from 'svelte';
 
-	export let views: BookInfoView[];
+	export let items: BookInfoResponseItem[] | undefined;
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
 
 	const dispatch = createEventDispatcher<bookInfoClickEvent>();
-	const handleClick = (view: BookInfoView) => {
-		dispatchBookInfoViewClick(dispatch, view);
+	const handleClick = (item: BookInfoResponseItem) => {
+		dispatchBookInfoClick(dispatch, item);
 	};
 </script>
 
-{#if views && views.length}
+{#if items && items.length}
 	<ul
 		class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
 	>
-		{#each views as view (view.id)}
-			<li style="display: inherit;" title={view.title}>
+		{#each items as data (data.entity.id)}
+			<li style="display: inherit;" title={data.entity.title}>
 				<button
 					class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
-					on:click={() => handleClick(view)}
+					on:click={() => handleClick(data)}
 				>
-					<GridContent {view} />
+					<GridContent item={data} />
 				</button>
 			</li>
 		{/each}

@@ -1,6 +1,10 @@
-import type { bookInfoChangeResponse } from '$lib/client/Application/Interface';
+import type {
+	bookInfoChangeResponse,
+	BookInfoResponseItem,
+	BookInfoUseCaseResult
+} from '$lib/client/Application/Interface';
 import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import {
 	PageHistory,
@@ -8,49 +12,57 @@ import {
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
-import type {
-	BookSearchResultListType,
-	BookSearchResultType
-} from '$lib/client/Domain/Entities/BookSearch';
+import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 
 const requestUrl = '/api/bookinfo';
+interface fetchInterface {
+	(input: string | URL | globalThis.Request, init?: RequestInit): Promise<Response>;
+}
 
-export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSearchResultListType>>(
-	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>
-) => {
-	const get = async (): Promise<BookInfo[]> => {
+export const getBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetch(requestUrl);
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
 
-	const getWish = async (): Promise<BookInfo[]> => {
+	return { get };
+};
+
+export const getWishBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetchByStatus(fetch, 'wish');
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
+	return { get };
+};
 
-	const getReading = async (): Promise<BookInfo[]> => {
+export const getReadingBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetchByStatus(fetch, 'reading');
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
+	return { get };
+};
 
-	const getComplete = async (): Promise<BookInfo[]> => {
+export const getCompleteBookInfoUseCase = (fetch: fetchInterface) => {
+	const get = async (): Promise<BookInfoUseCaseResult> => {
 		const response = await fetchByStatus(fetch, 'complete');
-		const models = (await response.json()) as BookInfoDBModel[];
-
-		return models.map((item) => convertDBModelToBookInfo(item));
+		return convertResponseToUseCaseResult(response);
 	};
 
-	const getRecent = async (): Promise<BookInfo | undefined> => {
+	return { get };
+};
+
+export const getHomeBookInfoUseCases = (fetch: fetchInterface) => {
+	const getRecent = async (): Promise<BookInfoResponseItem | undefined> => {
 		const response = await fetch(`${requestUrl}?type=recent`);
 		const model = (await response.json()) as BookInfoDBModel;
 
-		return convertDBModelToBookInfo(model);
+		const entity = convertDBModelToBookInfo(model);
+		const view = bookInfoView(entity);
+
+		return { entity, view };
 	};
 
 	const getHistory = async (): Promise<Map<string, number> | undefined> => {
@@ -63,10 +75,14 @@ export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSear
 		return getPageHistoryMapInCurrentWeek(ValueObjects);
 	};
 
-	const create = async (postData: ResultType): Promise<bookInfoChangeResponse> => {
+	return { getRecent, getHistory };
+};
+
+export const createBookInfoUseCase = (fetch: fetchInterface) => {
+	const create = async (bookSearch: BookSearch): Promise<bookInfoChangeResponse> => {
 		const { ok: isSuccess, status } = await fetch(requestUrl, {
 			method: 'POST',
-			body: JSON.stringify(postData),
+			body: JSON.stringify(bookSearch),
 			headers: { 'Content-type': 'application/json' }
 		});
 
@@ -78,6 +94,10 @@ export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSear
 		return { isSuccess, message };
 	};
 
+	return { create };
+};
+
+export const registeredBookInfoUseCases = (fetch: fetchInterface) => {
 	const update = async (
 		bookInfo: BookInfo,
 		beforeStatus: status
@@ -99,7 +119,7 @@ export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSear
 	const remove = async (id: Id): Promise<bookInfoChangeResponse> => {
 		const { ok: isSuccess } = await fetch(requestUrl, {
 			method: 'DELETE',
-			body: JSON.stringify(id),
+			body: JSON.stringify(id.value),
 			headers: { 'Content-type': 'application/json' }
 		});
 
@@ -109,23 +129,21 @@ export const bookInfoUseCase = <ResultType extends BookSearchResultType<BookSear
 		return { isSuccess, message };
 	};
 
-	return {
-		get,
-		getWish,
-		getReading,
-		getComplete,
-		getRecent,
-		getHistory,
-		create,
-		update,
-		remove
-	};
+	return { update, remove };
 };
 
-const fetchByStatus = async (
-	fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => Promise<Response>,
-	status: status
-): Promise<Response> => {
+const fetchByStatus = async (fetch: fetchInterface, status: status): Promise<Response> => {
 	//eg. '/api/bookinfo?type=wish'
 	return await fetch(`${requestUrl}?type=${status}`);
+};
+
+const convertResponseToUseCaseResult = async (response: Response) => {
+	const models = (await response.json()) as BookInfoDBModel[];
+	const result = models.map((item) => {
+		const entity = convertDBModelToBookInfo(item);
+		const view = bookInfoView(entity);
+		return { entity, view };
+	});
+
+	return { items: result };
 };

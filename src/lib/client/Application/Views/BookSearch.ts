@@ -2,7 +2,7 @@ import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 
 export const bookSearchView = (bookSearch: BookSearch) => {
 	/**タイトルを取得する(存在しなければ「データ無し」を返す) */
-	const titleLabel = () => {
+	const getTitleLabel = () => {
 		return !!bookSearch.title ? bookSearch.title : 'データ無し';
 	};
 
@@ -32,9 +32,14 @@ export const bookSearchView = (bookSearch: BookSearch) => {
 		return bookSearch.authors.join(', ');
 	};
 
-	const pageCountLabel = () => {
+	const getPageCountLabel = () => {
 		return !!bookSearch.pageCount ? `${bookSearch.pageCount}ページ` : '0ページ';
 	};
 
-	return { titleLabel, joinUpToFiveAuthorNames, joinAuthorNames, pageCountLabel };
+	return {
+		getTitleLabel,
+		joinUpToFiveAuthorNames,
+		joinAuthorNames,
+		getPageCountLabel
+	};
 };

@@ -1,132 +1,103 @@
-import type { RequestHandler } from './$types';
-import collections from '$lib/server/database/collections';
-import * as service from '$lib/server/database/bookInfo.service';
+import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import { validatePutBookInfo } from '$lib/client/Utils/Validation';
+import collections from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
+import {
+	convertBookInfoToDBModel,
+	convertBookSearchToDBModel,
+	type BookInfoDBModel
+} from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
+import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
-import type { books_v1 } from 'googleapis';
-import { BookInfo } from '$lib/server/models/BookInfo';
-import { validateReadingCount } from '$lib/utils/validation';
-import { verifyAndGetUid } from '$lib/server/verification';
+import type { RequestHandler } from './$types';
 
-/**DBからユーザIDに一致するデータを取得する */
+/**書誌データを取得する
+ * クエリパラメータに応じて返却するデータを変更する。
+ */
 export const GET: RequestHandler = async ({ url, cookies }) => {
-	const userId = await verifyAndGetUid(cookies.get('idToken'));
-
+	const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
 	if (!userId) {
-		return json('ログイン情報が不正です', { status: 400 });
+		return new Response('ログイン情報が不正です', { status: 400 });
 	}
 	if (!collections) {
 		return new Response('サーバーエラー', { status: 500 });
 	}
 
-	let bookInfos: BookInfo[];
-	if (url.searchParams.get('recentbook') === 'true') {
-		//直近で読んだ書誌データを取得
-		bookInfos = await service.getRecentBookInfo(collections, userId);
-	} else if (url.searchParams.get('history') === 'true') {
-		//書誌データのhistoryのみを取得
-		bookInfos = await service.getBookInfoWithOnlyPageHistory(collections, userId);
-	} else {
-		//全書誌データを取得
-		bookInfos = await service.getBookInfo(collections, userId);
+	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId!);
+
+	const param = url.searchParams;
+	const getType = param.get('type');
+
+	//クエリパラメータに応じてデータを変更
+	let mongoDBModels: BookInfoDBModel[] = [];
+	switch (getType) {
+		case 'recent':
+			const mongoDBModel = await repos.getRecent();
+			return json(mongoDBModel, { status: 200 });
+		case 'wish':
+		case 'reading':
+		case 'complete':
+			mongoDBModels = await repos.getByStatus(getType);
+			return json(mongoDBModels, { status: 200 });
+		default:
+			mongoDBModels = await repos.get();
+			return json(mongoDBModels, { status: 200 });
 	}
-	return json(bookInfos, { status: 200 });
 };
 
 /**DBに書誌データを保存する */
 export const POST: RequestHandler = async ({ request, cookies }) => {
-	const userId = await verifyAndGetUid(cookies.get('idToken'));
-
+	const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
 	if (!userId) {
-		return json('ログイン情報が不正です', { status: 400 });
+		return new Response('ログイン情報が不正です', { status: 400 });
 	}
 	if (!collections) {
 		return new Response('サーバーエラー', { status: 500 });
 	}
 
-	const item = (await request.json()) as books_v1.Schema$Volume;
-	const bookInfoToInsert = new BookInfo(item, userId); //ユーザIDを取る
+	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId!);
 
-	return await service.insertBookInfo(collections, bookInfoToInsert);
+	const bookSearch = (await request.json()) as BookSearch;
+	return await repos.insert(convertBookSearchToDBModel(userId.value, bookSearch));
 };
 
 /**DBの書誌データを更新する */
 export const PUT: RequestHandler = async ({ request, cookies }) => {
-	const userId = await verifyAndGetUid(cookies.get('idToken'));
-
+	const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
 	if (!userId) {
-		return json('ログイン情報が不正です', { status: 400 });
+		return new Response('ログイン情報が不正です', { status: 400 });
 	}
 	if (!collections) {
 		return new Response('サーバーエラー', { status: 500 });
 	}
 
-	const item = (await request.json()) as { bookInfo: BookInfo; isComplete: boolean };
-	if (!validatePutItem(item)) {
+	//Postされたデータの型はモデルではなくEntity
+	const item = (await request.json()) as { bookInfo: BookInfo; isCompleteReading: boolean };
+	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
+
+	if (!validatePutBookInfo(item.bookInfo, item.isCompleteReading)) {
 		return new Response('データが不正です', { status: 400 });
 	}
-
-	return await service.updateBookInfo(collections, item.bookInfo, item.isComplete);
+	return await repos.update(convertBookInfoToDBModel(item.bookInfo), item.isCompleteReading);
 };
 
 /**DBの書誌データを削除する */
 export const DELETE: RequestHandler = async ({ request, cookies }) => {
-	const userId = await verifyAndGetUid(cookies.get('idToken'));
-
+	const userId = await verifyAndCreateUserId(cookies.get('idToken')!);
 	if (!userId) {
-		return json('ログイン情報が不正です', { status: 400 });
+		return new Response('ログイン情報が不正です', { status: 400 });
 	}
 	if (!collections) {
 		return new Response('サーバーエラー', { status: 500 });
 	}
 
-	const _id = await request.json();
-	if (!_id) {
+	const id: string = await request.json();
+	if (!id) {
 		return new Response('データが不正です', { status: 400 });
 	}
 
-	return await service.deleteBookInfo(collections, _id);
-};
+	const repos = new BookInfoMongoDBResource(collections.bookInfos!, userId);
 
-/**更新用データが不正でないか確認する */
-const validatePutItem = ({
-	bookInfo,
-	isComplete
-}: {
-	bookInfo: BookInfo;
-	isComplete: boolean;
-}): boolean => {
-	if (!bookInfo._id) {
-		return false;
-	}
-
-	let result = true;
-
-	//作成直後はhistoryが空なのでそのままtrue、編集してある場合は中身が不正でないか調べる。
-	if (!bookInfo.pageHistory) {
-		return result;
-	}
-	bookInfo.pageHistory.forEach((item) => {
-		if (!result) {
-			return;
-		}
-
-		if (!item.date) {
-			result = false;
-			return;
-		}
-		if (!validateReadingCount(item.currentPage, bookInfo.pageCount)) {
-			result = false;
-			return;
-		}
-	});
-
-	//読み終わっている場合、最終ページの記録があるか確認
-	if (isComplete && result) {
-		const isExist = bookInfo.pageHistory.findIndex(
-			(item) => item.currentPage === bookInfo.pageCount
-		);
-		result = isExist !== -1 ? true : false;
-	}
-
-	return result;
+	return await repos.delete(id);
 };

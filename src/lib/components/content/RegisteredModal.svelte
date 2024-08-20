@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { BookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
-	import { BookInfoView } from '$lib/client/Application/Views/BookInfo';
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+	import { registeredBookInfoUseCases } from '$lib/client/Application/UseCases/BookInfo';
 	import {
 		dispatchDeletionBookInfoRequest,
 		dispatchUpdateBookInfoRequest,
 		type bookInfoDeleteEvent,
 		type bookInfoUpdateEvent
-	} from '$lib/client/Helpers/CustomEvent/Dispatcher';
-	import { BookInfoEntityResource } from '$lib/client/Infrastructure/MongoDB/BookInfoEntityResource';
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
@@ -16,14 +15,12 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let isDisplay = false;
-	export let view: BookInfoView;
+	export let item: BookInfoResponseItem;
 
 	let dialog: HTMLDialogElement;
 	let isDisplayLoader = false;
-	const beforeStatus = view.status.value;
-
-	const repos = new BookInfoEntityResource(fetch);
-	const usecase = new BookInfoUseCase(repos);
+	const beforeStatus = item.entity.status.value;
+	const usecases = registeredBookInfoUseCases(fetch);
 
 	/**モーダル表示を表示する*/
 	$: if (dialog && isDisplay) {
@@ -50,10 +47,10 @@
 	const dispatchUpdate = createEventDispatcher<bookInfoUpdateEvent>();
 	const handleUpdateRequest = async () => {
 		displayLoader();
-		const { isSuccess, message } = await usecase.update(view, beforeStatus);
+		const { isSuccess, message } = await usecases.update(item.entity, beforeStatus);
 		closeModalAndLoader();
 
-		dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, view);
+		dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, item.entity);
 	};
 
 	const dispatchDeletion = createEventDispatcher<bookInfoDeleteEvent>();
@@ -62,10 +59,10 @@
 			return;
 		}
 		displayLoader();
-		const { isSuccess, message } = await usecase.delete(view.id!);
+		const { isSuccess, message } = await usecases.remove(item.entity.id!);
 		closeModalAndLoader();
 
-		dispatchDeletionBookInfoRequest(dispatchDeletion, isSuccess, message, view.id!);
+		dispatchDeletionBookInfoRequest(dispatchDeletion, isSuccess, message, item.entity.id!);
 	};
 </script>
 
@@ -92,7 +89,7 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<RegisteredContent {view} />
+			<RegisteredContent {item} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="flex justify-between items-center">
 				<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />

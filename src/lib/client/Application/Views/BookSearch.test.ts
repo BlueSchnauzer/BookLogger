@@ -1,5 +1,5 @@
 import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
-import { bookSearchView } from '$lib/client/Logics/BookSeach/View';
+import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
 import { bookSearchInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -15,8 +15,8 @@ describe('bookinfo view', () => {
 		it('get label', () => {
 			const noPropsView = bookSearchView({});
 
-			expect(view.titleLabel()).toBe(bookSearch.title);
-			expect(noPropsView.titleLabel()).toBe('データ無し');
+			expect(view.getTitleLabel()).toBe(bookSearch.title);
+			expect(noPropsView.getTitleLabel()).toBe('データ無し');
 		});
 	});
 
@@ -36,8 +36,8 @@ describe('bookinfo view', () => {
 		it('get label', () => {
 			const noPropsView = bookSearchView({});
 
-			expect(view.pageCountLabel()).toBe(`${bookSearch.pageCount}ページ`);
-			expect(noPropsView.pageCountLabel()).toBe('0ページ');
+			expect(view.getPageCountLabel()).toBe(`${bookSearch.pageCount}ページ`);
+			expect(noPropsView.getPageCountLabel()).toBe('0ページ');
 		});
 	});
 });

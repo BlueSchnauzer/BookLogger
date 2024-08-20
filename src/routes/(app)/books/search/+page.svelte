@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { bookSearchUseCaseResult, searchPromise } from '$lib/client/Application/Interface';
-	import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
-	import { handleFailure, handleSuccess } from '$lib/client/Helpers/CustomEvent/Handler';
+	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
+	import { handleFailure, handleSuccess } from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
@@ -12,7 +11,6 @@
 	import SearchResult from '$lib/components/search/result/SearchResult.svelte';
 	import MagnifingGlass from '$lib/icons/MagnifingGlass.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import type { books_v1 } from 'googleapis';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -20,23 +18,23 @@
 	let resultCount = 0;
 	let isLoading = false;
 
-	let currentView: BookSearchView<books_v1.Schema$Volume>;
+	let currentItem: BookSearchResponseItem;
 	let isDisplayDetail = false;
 
-	let reactiveSearchPromise: searchPromise<books_v1.Schema$Volume>;
+	let reactiveSearchPromise: SearchPromise;
 	$: {
 		//再検索時に再実行されるようreactive化
-		reactiveSearchPromise = async (): Promise<bookSearchUseCaseResult<books_v1.Schema$Volume>> => {
+		reactiveSearchPromise = async () => {
 			isLoading = true;
 			const result = await data.searchPromise();
 			isLoading = false;
-			resultCount = result.totalItems;
+			resultCount = result.totalCount;
 			return result;
 		};
 	}
 
-	const handleClick = (event: CustomEvent<BookSearchView<books_v1.Schema$Volume>>) => {
-		currentView = event.detail;
+	const handleClick = (event: CustomEvent<BookSearchResponseItem>) => {
+		currentItem = event.detail;
 		isDisplayDetail = true;
 	};
 </script>
@@ -71,7 +69,7 @@
 		</div>
 		{#if isDisplayDetail}
 			<ContentModal
-				view={currentView}
+				bookSearch={currentItem}
 				bind:isDisplay={isDisplayDetail}
 				on:success={handleSuccess}
 				on:failed={handleFailure}

@@ -51,18 +51,10 @@ describe.skip('ContentFilters', () => {
 	// 	};
 	// });
 
-	//データ作成
-	const MenuItemDatas: customTypes.menuItemData[] = [
-		{ ref: '/books', name: '全ての本' },
-		{ ref: '/books/wish', name: '読みたい' },
-		{ ref: '/books/reading', name: '読んでいる' },
-		{ ref: '/books/complete', name: '読み終わった' }
-	];
-
 	it('レンダリング', () => {
 		render(ContentFilters);
 
-		MenuItemDatas.forEach((item) => expect(screen.getByText(item.name)).toBeInTheDocument());
+		//MenuItemDatas.forEach((item) => expect(screen.getByText(item.name)).toBeInTheDocument());
 	});
 
 	//バインドはテストできない
