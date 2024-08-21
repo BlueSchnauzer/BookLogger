@@ -4,7 +4,7 @@
 	import { signOut } from 'firebase/auth';
 	import { firebaseAuth } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 
 	export let headerIcon: ComponentType;
 	export let headerText: string;
