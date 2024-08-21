@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
-	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
+	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 	import GridContent from '$lib/components/content/parts/GridContent.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';

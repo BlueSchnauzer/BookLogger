@@ -3,8 +3,8 @@
 	import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
 	import { getCurrentDateString } from '$lib/client/Helpers/Date';
 	import { modalToastTarget } from '$lib/client/Helpers/Toast';
-	import { statusItems } from '$lib/client/UI/Shared/DisplayData';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
+	import { statusItems } from '$lib/client/Static/MenuItems';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 	import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
 	import Icon from '@iconify/svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';

@@ -2,7 +2,7 @@
 	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
 	import { handleFailure, handleSuccess } from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
-	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
+	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
 	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
 	import ContentModal from '$lib/components/search/ContentModal.svelte';

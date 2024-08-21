@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
-	import { pageTitles } from '$lib/client/UI/Shared/DisplayData';
+	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import BookCase from '$lib/client/UI/Shared/Icons/BookCase.svelte';
 	import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import type { PageData } from './$types';

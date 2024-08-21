@@ -5,16 +5,6 @@ import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 import MagnifingGlass from '$lib/client/UI/Shared/Icons/MagnifingGlass.svelte';
 import type { ComponentType } from 'svelte';
 
-export const pageTitles = {
-	home: 'ホーム',
-	books: 'ライブラリ',
-	wish: '読みたい本',
-	reading: '読んでいる本',
-	complete: '読み終わった本',
-	search: '書籍検索',
-	shelf: '本棚'
-};
-
 interface menuItem {
 	ref: string;
 	name: string;

@@ -7,22 +7,22 @@
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import SimpleBar from 'simplebar';
 	//iOS Safariなど用に追加
+	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+	import type {
+		deletionBookInfoParameter,
+		updateBookInfoParameter
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import {
 		handleBookInfosDeletion,
 		handleBookInfosUpdate,
 		handleFailure
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
+	import { emptyMessages } from '$lib/client/Static/DisplayValues';
+	import _ from 'lodash';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import 'simplebar/dist/simplebar.css';
 	import { onMount, type ComponentType } from 'svelte';
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import type {
-		deletionBookInfoParameter,
-		updateBookInfoParameter
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-	import _ from 'lodash';
-	import { emptyMessages } from '$lib/client/UI/Shared/StaticValues';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;

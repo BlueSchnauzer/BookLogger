@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { mainMenuItems } from '$lib/client/UI/Shared/DisplayData';
-	import { colorStone200 } from '$lib/client/UI/Shared/StaticValues';
+	import { mainMenuItems } from '$lib/client/Static/MenuItems';
+	import { colorStone200 } from '$lib/client/Static/DisplayValues';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;
