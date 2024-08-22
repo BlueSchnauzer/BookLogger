@@ -1,5 +1,5 @@
 import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
-import ContentModal from '$lib/components/search/ContentModal.svelte';
+import ResultModal from '$lib/client/UI/Search/ResultModal/ResultModal.svelte';
 import { gapiTestDatas } from '$lib/mock/Data';
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, describe, expect, it, vi, vitest } from 'vitest';
@@ -14,7 +14,7 @@ describe.skip('ContentModal', async () => {
 	});
 
 	it('レンダリング', () => {
-		render(ContentModal, { isDisplay: true, view });
+		render(ResultModal, { isDisplay: true, view });
 
 		expect(screen.getByText('書籍登録')).toBeInTheDocument();
 		expect(screen.getByAltText('書影')).toBeInTheDocument();
@@ -25,7 +25,7 @@ describe.skip('ContentModal', async () => {
 
 	it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
 		const testId = 'layerZ30';
-		const { component } = render(ContentModal, { isDisplay: true, view });
+		const { component } = render(ResultModal, { isDisplay: true, view });
 
 		expect(screen.getByTestId(testId)).toBeInTheDocument();
 
@@ -35,7 +35,7 @@ describe.skip('ContentModal', async () => {
 
 	it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
 		const testId = 'layerZ30';
-		const { component } = render(ContentModal, { isDisplay: true, view });
+		const { component } = render(ResultModal, { isDisplay: true, view });
 
 		const btnClose = screen.getByTestId('btnClose');
 		const btnCancel = screen.getByText('キャンセル');
@@ -53,7 +53,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('成功しました。', { status: 201 }));
 
-		const { component } = render(ContentModal, { isDisplay: true, view });
+		const { component } = render(ResultModal, { isDisplay: true, view });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -72,7 +72,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('失敗しました', { status: 500 }));
 
-		const { component } = render(ContentModal, { isDisplay: true, view });
+		const { component } = render(ResultModal, { isDisplay: true, view });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 

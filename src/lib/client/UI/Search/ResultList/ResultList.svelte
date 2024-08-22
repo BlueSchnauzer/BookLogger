@@ -5,7 +5,7 @@
 		type bookSearchClickEvent
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import type { SearchType } from '$lib/client/Utils/types';
-	import InfoLabel from '$lib/components/common/parts/CategoryLabel.svelte';
+	import InfoLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let reactiveSearchPromise: SearchPromise;

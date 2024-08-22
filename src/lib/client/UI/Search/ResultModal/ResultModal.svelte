@@ -5,10 +5,10 @@
 		dispatchSaveBookSearchRequest,
 		type bookSearchSaveEvent
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
-	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
-	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
-	import DetailContent from '$lib/components/search/parts/DetailContent.svelte';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
+	import ResultDetail from '$lib/client/UI/Search/ResultModal/ResultDetail.svelte';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher } from 'svelte';
 
@@ -71,7 +71,7 @@
 				</button>
 			</div>
 			<span class="bg-stone-400 h-[1px]" />
-			<DetailContent {bookSearch} />
+			<ResultDetail {bookSearch} />
 			<span class="bg-stone-400 h-[1px]" />
 			<div class="h-14 flex flex-row justify-end items-center">
 				<PrimalyButton type="button" text="登録" on:click={handlePostRequest} />

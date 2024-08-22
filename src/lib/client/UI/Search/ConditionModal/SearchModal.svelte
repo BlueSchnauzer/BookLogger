@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
-	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
-	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 

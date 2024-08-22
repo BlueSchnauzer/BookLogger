@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
-	import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
+	import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
 
 	export let bookSearch: BookSearchResponseItem;
 </script>
