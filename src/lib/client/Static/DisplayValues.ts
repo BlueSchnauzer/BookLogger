@@ -1,5 +1,6 @@
 export const colorStone200 = '#E7E5E4';
 export const colorStone700 = '#44403C';
+export const colorLime800 = '#3F6212';
 
 export const pageTitles = {
 	home: 'ホーム',
