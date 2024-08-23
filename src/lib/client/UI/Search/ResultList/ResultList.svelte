@@ -4,7 +4,7 @@
 		dispatchBookSearchClick,
 		type bookSearchClickEvent
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-	import type { SearchType } from '$lib/client/Utils/types';
+	import type { SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import InfoLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
 	import { createEventDispatcher } from 'svelte';
 

@@ -1,7 +1,7 @@
 import type { SearchPromise } from '$lib/client/Application/Interface';
 import { BookSearchUseCase } from '$lib/client/Application/UseCases/BookSearch';
 import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
-import type { searchConditions, SearchType } from '$lib/client/Utils/types';
+import type { SearchConditions, SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
 import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load = (async (params) => {
@@ -35,7 +35,7 @@ const getStartIndex = (maxResults: number, pageCount: number) => {
 	return pageCount > 0 ? pageCount * maxResults : 0;
 };
 
-const getSearchConditions = (params: PageLoadEvent): searchConditions => {
+const getSearchConditions = (params: PageLoadEvent): SearchConditions => {
 	//あいまい検索時のみ取得(form送信時にタグがdisabledに設定)
 	const query = getParamValue(params, 'query');
 	//詳細検索時のみ取得
@@ -49,7 +49,7 @@ const getSearchConditions = (params: PageLoadEvent): searchConditions => {
 const getSearchTypeAndPromise = (
 	maxResults: number,
 	startIndex: number,
-	searchConditions: searchConditions
+	searchConditions: SearchConditions
 ) => {
 	const { query, bookTitle, author, isbn } = searchConditions;
 
