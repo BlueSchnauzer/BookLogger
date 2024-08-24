@@ -3,7 +3,7 @@
 	import { firebaseAuth } from '$lib/firebase.client';
 	import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 	import AuthMenu from '../AuthMenu.svelte';
-	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
+	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 
