@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import ConditionInput from '$lib/client/UI/Search/ConditionModal/ConditionInput.svelte';
+	import ModalBase from '$lib/client/UI/Shared/Components/ModalBase.svelte';
 	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
 	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
-	import { onMount } from 'svelte';
 
 	export let isDisplay = false;
 	export let action = '/books/search';
-	let dialog: HTMLDialogElement;
 	let isShowDetailQueries = false;
 	let formError = false;
 
@@ -16,64 +16,28 @@
 	let author = '';
 	let isbn = '';
 
-	/**モーダル表示を表示する*/
-	$: if (dialog && isDisplay) {
-		dialog.showModal();
-	}
-
-	/**モーダルを閉じて初期化*/
-	const closeModal = () => {
+	const closeModal = () => (isDisplay = false);
+	$: if (!isDisplay) {
 		formError = false;
 		query = '';
 		bookTitle = '';
 		author = '';
 		isbn = '';
-		isDisplay = false;
-		dialog.close();
-	};
-
-	/**Escキーでモーダルを閉じた際に、変数を併せて変更する*/
-	const cancelModal = () => {
-		isDisplay = false;
-	};
-
-	/**インプットタグでのEnterを無効化*/
-	const preventSubmit = (e: KeyboardEvent) => {
-		formError = false;
-		if (e.key === 'Enter') {
-			e.preventDefault();
-		}
-	};
+	}
 
 	/**バリデーションとsubmit処理*/
-	const validateSubmit = (e: SubmitEvent) => {
+	const handleSubmit = (e: SubmitEvent) => {
 		if (!(query || bookTitle || author || isbn)) {
 			e.preventDefault();
 			formError = true;
 			return;
 		}
 		isDisplay = false;
-		dialog.close();
 	};
-
-	/**モーダルの範囲外をクリックした際に、モーダルを閉じる*/
-	const closeModalFromContainer = (e: MouseEvent) => {
-		const target = e.target! as HTMLElement; //closestを使うために型指定
-		if (!target.closest('#searchForm')) {
-			closeModal();
-		}
-	};
-
-	onMount(() => {
-		dialog.addEventListener('click', (e) => closeModalFromContainer(e));
-
-		//アンマウント時にリスナーを削除
-		return dialog.removeEventListener('click', (e) => closeModalFromContainer(e));
-	});
 </script>
 
-<dialog bind:this={dialog} on:cancel={cancelModal}>
-	<form {action} on:submit={(e) => validateSubmit(e)} id="searchForm">
+<ModalBase bind:isDisplay isCloseByOutsideClick={true}>
+	<form {action} on:submit={(e) => handleSubmit(e)}>
 		<div
 			class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg"
 		>
@@ -99,15 +63,11 @@
 						class="my-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch"
 					>
 						<span class="max-sm:mb-2">検索条件</span>
-						<input
-							class="px-2 py-1 rounded-lg border border-stone-300"
+						<ConditionInput
 							bind:value={query}
-							name="query"
-							aria-label="query"
-							type="text"
-							size="30"
-							on:keypress={(e) => preventSubmit(e)}
-							disabled={isShowDetailQueries ? true : false}
+							name={'query'}
+							disabled={isShowDetailQueries}
+							bind:formError
 						/>
 					</div>
 					<button
@@ -134,45 +94,33 @@
 						class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch"
 					>
 						<span class="max-sm:mb-2">タイトル</span>
-						<input
-							class="px-2 py-1 rounded-lg border border-stone-300"
+						<ConditionInput
 							bind:value={bookTitle}
 							name="booktitle"
-							aria-label="booktitle"
-							type="text"
-							size="30"
-							on:keypress={(e) => preventSubmit(e)}
-							disabled={isShowDetailQueries ? false : true}
+							disabled={!isShowDetailQueries}
+							bind:formError
 						/>
 					</li>
 					<li
 						class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch"
 					>
 						<span class="max-sm:mb-2">著者名</span>
-						<input
-							class="px-2 py-1 rounded-lg border border-stone-300"
+						<ConditionInput
 							bind:value={author}
 							name="author"
-							aria-label="author"
-							type="text"
-							size="30"
-							on:keypress={(e) => preventSubmit(e)}
-							disabled={isShowDetailQueries ? false : true}
+							disabled={!isShowDetailQueries}
+							bind:formError
 						/>
 					</li>
 					<li
 						class="mx-2 mb-2 flex justify-between items-center max-sm:flex-col max-sm:justify-start max-sm:items-stretch"
 					>
-						<span class="max-sm:mb-2">ISBN(ハイフン無し13桁)</span>
-						<input
-							class="px-2 py-1 rounded-lg border border-stone-300"
+						<span class="max-sm:mb-2">ISBN</span>
+						<ConditionInput
 							bind:value={isbn}
 							name="isbn"
-							aria-label="isbn"
-							type="text"
-							size="30"
-							on:keypress={(e) => preventSubmit(e)}
-							disabled={isShowDetailQueries ? false : true}
+							disabled={!isShowDetailQueries}
+							bind:formError
 						/>
 					</li>
 				</ul>
@@ -185,4 +133,4 @@
 			</div>
 		</div>
 	</form>
-</dialog>
+</ModalBase>
