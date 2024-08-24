@@ -10,6 +10,8 @@
 	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';
 	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
+	import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
+	import { handleFailure, handleSuccess } from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;
@@ -19,7 +21,7 @@
 	let isLoading = false;
 
 	let currentItem: BookSearchResponseItem;
-	let isDisplayDetail = false;
+	let isDisplayItem = false;
 
 	let reactiveSearchPromise: SearchPromise;
 	$: {
@@ -35,7 +37,7 @@
 
 	const handleClick = (event: CustomEvent<BookSearchResponseItem>) => {
 		currentItem = event.detail;
-		isDisplayDetail = true;
+		isDisplayItem = true;
 	};
 </script>
 
@@ -63,14 +65,14 @@
 		<div class="flex justify-center py-2">
 			<PagingLabel {searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>
-		<!-- {#if isDisplayDetail}
-			<ContentModal
+		{#if isDisplayItem}
+			<ItemModal
 				bookSearch={currentItem}
-				bind:isDisplay={isDisplayDetail}
+				bind:isDisplay={isDisplayItem}
 				on:success={handleSuccess}
 				on:failed={handleFailure}
 			/>
-		{/if} -->
+		{/if}
 		<div class="wrap-bottom">
 			<SvelteToast target={mainToastTarget} />
 		</div>
