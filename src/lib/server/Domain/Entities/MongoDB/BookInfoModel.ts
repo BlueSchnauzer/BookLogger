@@ -45,6 +45,7 @@ export const convertBookSearchToDBModel = (userId: string, bookSearch: BookSearc
 		isFavorite: false,
 		memorandum: '',
 		isVisible: true,
+		pageHistories: [],
 		identifiers: getIdentifier(bookSearch.industryIdentifiers),
 		gapiId: bookSearch.keyId ?? ''
 	};
