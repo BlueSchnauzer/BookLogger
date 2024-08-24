@@ -1,4 +1,4 @@
-import { PUBLIC_BOOKSAPI_LIST } from '$env/static/public';
+import { PUBLIC_BOOKSAPI_LIST, PUBLIC_BOOKSAPI_KEY } from '$env/static/public';
 import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
 import type { books_v1 } from 'googleapis';
 
@@ -9,7 +9,11 @@ export class BookSearchGoogleBooksAPI implements IBookSearchRepository<books_v1.
 		startIndex: number
 	): Promise<books_v1.Schema$Volumes> {
 		const response = await fetch(
-			`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}&maxResults=${maxResults}&startIndex=${startIndex}`
+			createUrl({
+				q: queries.join('+'),
+				maxResults: maxResults.toString(),
+				startIndex: startIndex.toString()
+			})
 		);
 		const result: books_v1.Schema$Volumes = await response.json();
 
@@ -20,10 +24,11 @@ export class BookSearchGoogleBooksAPI implements IBookSearchRepository<books_v1.
 		queries: string[],
 		resource?: string | undefined
 	): Promise<books_v1.Schema$Volumes> {
-		const fields = resource ? `&fields=${resource}` : '';
-
 		const response = await fetch(
-			`${PUBLIC_BOOKSAPI_LIST}?q=${encodeURI(queries.join('+'))}${fields}`
+			createUrl({
+				q: queries.join('+'),
+				fields: resource ?? ''
+			})
 		);
 		const result: books_v1.Schema$Volumes = await response.json();
 
@@ -95,3 +100,12 @@ export class BookSearchGoogleBooksAPI implements IBookSearchRepository<books_v1.
 		return result.items[0].volumeInfo?.imageLinks?.thumbnail!;
 	}
 }
+
+const createUrl = (params: Record<string, string>) => {
+	const searchParams = new URLSearchParams(params);
+	searchParams.append('key', PUBLIC_BOOKSAPI_KEY);
+
+	return `${PUBLIC_BOOKSAPI_LIST}?${searchParams.toString()}`;
+};
+
+// `${PUBLIC_BOOKSAPI_LIST}?q=${encodeURIComponent(queries.join('+'))}&maxResults=${maxResults}&startIndex=${startIndex}&key=${PUBLIC_BOOKSAPI_KEY}`

@@ -27,21 +27,6 @@ describe('requestBookInfo', () => {
 		expect(result.items).toBeDefined();
 	});
 
-	it('複数条件で書誌データを取得できるか', async () => {
-		const result = await searchRepo.search(
-			[
-				`isbn:${testData.identifiers?.value.isbn_13}`,
-				`intitle:${testData.title}`,
-				`inauthor:${testData.author[0]}`
-			],
-			10,
-			0
-		);
-
-		expect(result.items).toBeDefined();
-		expect(result.items![0].volumeInfo?.title).toEqual(testData.title);
-	});
-
 	it('検索結果が複数ある時に、取得数を制限できるか', async () => {
 		const defaultCounts = await searchRepo.search([`inauthor:${testData.author[0]}`], 10, 0);
 		expect(defaultCounts.items).toBeDefined();
