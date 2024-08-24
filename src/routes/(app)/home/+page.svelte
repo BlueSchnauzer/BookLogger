@@ -6,8 +6,8 @@
 	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 	import GridContent from '$lib/components/content/parts/GridContent.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
-	import ContentHeader from '$lib/components/header/ContentHeader.svelte';
-	import SearchModal from '$lib/components/search/SearchModal.svelte';
+	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
+	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';
 	import { onMount } from 'svelte';
@@ -23,6 +23,7 @@
 		handleRecentBookInfoUpdate
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import _ from 'lodash';
+	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
 
 	export let data: PageData;
 
@@ -33,7 +34,7 @@
 	const graphData = Array.from(data.historyMap!.values());
 
 	let isDisplayDetail = false;
-	let isDisplaySearchModal = false;
+	let isDisplayConditionModal = false;
 	let currentItem: BookInfoResponseItem;
 
 	const displayModal = (item?: BookInfoResponseItem) => {
@@ -107,11 +108,11 @@
 				</div>
 				<button
 					class="px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700"
-					on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
+					on:click={() => (isDisplayConditionModal = !isDisplayConditionModal)}
 				>
 					検索する
 				</button>
-				<SearchModal bind:isDisplay={isDisplaySearchModal} />
+				<ConditionModal bind:isDisplay={isDisplayConditionModal} />
 			{/if}
 		</div>
 		<div
@@ -126,13 +127,14 @@
 		</div>
 	</div>
 	{#if isDisplayDetail}
-		<RegisteredModal
+		<!-- <RegisteredModal
 			item={currentItem}
 			bind:isDisplay={isDisplayDetail}
 			on:updateSuccess={handleUpdateSuccess}
 			on:deleteSuccess={handleDeletionSuccess}
 			on:failed={handleFailure}
-		/>
+		/> -->
+		<ContentModal bind:isDisplay={isDisplayDetail} item={currentItem} />
 	{/if}
 	<div class="wrap-bottom">
 		<SvelteToast target={mainToastTarget} />

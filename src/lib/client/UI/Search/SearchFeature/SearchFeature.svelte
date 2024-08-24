@@ -9,12 +9,12 @@
 	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
 	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';
 	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
-	import SearchModal from '$lib/client/UI/Search/ConditionModal/SearchModal.svelte';
+	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;
 
-	let isDisplaySearchModal = searchProps.searchType === 'none';
+	let isDisplayConditionModal = searchProps.searchType === 'none';
 	let resultCount = 0;
 	let isLoading = false;
 
@@ -47,11 +47,11 @@
 				type="button"
 				text="検索条件"
 				isUseMargin={false}
-				on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
+				on:click={() => (isDisplayConditionModal = !isDisplayConditionModal)}
 			/>
 			<PagingLabel {searchProps} {resultCount} {isLoading} />
 		</div>
-		<SearchModal bind:isDisplay={isDisplaySearchModal} />
+		<ConditionModal bind:isDisplay={isDisplayConditionModal} />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
