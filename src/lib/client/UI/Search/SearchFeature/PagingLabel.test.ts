@@ -1,16 +1,18 @@
-import PagingLabel from '$lib/components/search/parts/PagingLabel.svelte';
+import PagingLabel from '$lib/client/UI/Search/SearchFeature/PagingLabel.svelte';
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
+import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
 
 describe('PagingLabel', () => {
 	it('レンダリング', () => {
-		render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'detail',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
-			resultCount: 30
-		});
+			startIndex: 0
+		};
+
+		render(PagingLabel, { searchProps: searchProps, isLoading: false, resultCount: 30 });
 
 		expect(screen.getByTitle('前へ')).toBeInTheDocument();
 		expect(screen.getByTitle('次へ')).toBeInTheDocument();
@@ -18,55 +20,70 @@ describe('PagingLabel', () => {
 	});
 
 	it('isLoadingがTruethyな場合にボタンが操作できないこと', async () => {
-		render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'detail',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
-			resultCount: 30,
-			isLoading: true
-		});
+			startIndex: 0
+		};
+
+		render(PagingLabel, { searchProps: searchProps, isLoading: true, resultCount: 30 });
 
 		expect(screen.getByTitle('前へ')).toHaveAttribute('disabled');
 		expect(screen.getByTitle('次へ')).toHaveAttribute('disabled');
 	});
 
 	it('searchTypeがDetailの場合に、booktitle用inputがレンダリングされ、query用inputがレンダリングされないこと', () => {
-		const { container } = render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'detail',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
+			startIndex: 0
+		};
+
+		const { container } = render(PagingLabel, {
+			searchProps: searchProps,
+			isLoading: false,
 			resultCount: 30
 		});
 
-		var booktitle = container.querySelector('input[name*=booktitle]');
-		var query = container.querySelector('input[name*=query]');
+		const booktitle = container.querySelector('input[name*=booktitle]');
+		const query = container.querySelector('input[name*=query]');
 		expect(booktitle).toBeInTheDocument();
 		expect(query).not.toBeInTheDocument();
 	});
 
 	it('searchTypeがFuzzyの場合に、query用inputがレンダリングされ、booktitle用inputがレンダリングされないこと', () => {
-		const { container } = render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'fuzzy',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
+			startIndex: 0
+		};
+
+		const { container } = render(PagingLabel, {
+			searchProps: searchProps,
+			isLoading: false,
 			resultCount: 30
 		});
 
-		var query = container.querySelector('input[name*=query]');
-		var booktitle = container.querySelector('input[name*=booktitle]');
+		const query = container.querySelector('input[name*=query]');
+		const booktitle = container.querySelector('input[name*=booktitle]');
 		expect(query).toBeInTheDocument();
 		expect(booktitle).not.toBeInTheDocument();
 	});
 
 	it('searchTypeがNoneの場合に、レンダリングされないこと', () => {
-		const { container } = render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'none',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
+			startIndex: 0
+		};
+
+		const { container } = render(PagingLabel, {
+			searchProps: searchProps,
+			isLoading: false,
 			resultCount: 30
 		});
 
@@ -75,14 +92,18 @@ describe('PagingLabel', () => {
 	});
 
 	it('isBottomとisLoadingがTruthyな場合に、レンダリングされないこと', () => {
-		const { container } = render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'detail',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
+			startIndex: 0
+		};
+
+		const { container } = render(PagingLabel, {
+			searchProps: searchProps,
+			isLoading: true,
 			resultCount: 30,
-			isBottom: true,
-			isLoading: true
+			isBottom: true
 		});
 
 		const element = container.querySelector('div.flex');
@@ -90,14 +111,18 @@ describe('PagingLabel', () => {
 	});
 
 	it('searchTypeがNoneで、isBottomとisLoadingがTruethyな場合に、レンダリングされないこと', () => {
-		const { container } = render(PagingLabel, {
+		const searchProps: SearchProps = {
 			searchType: 'none',
-			searchConditions: { query: '', bookTitle: '', author: '', isbn: '' },
+			searchConditions: { author: '', bookTitle: '', isbn: '', query: '' },
 			pageCount: 0,
-			startIndex: 0,
+			startIndex: 0
+		};
+
+		const { container } = render(PagingLabel, {
+			searchProps: searchProps,
+			isLoading: true,
 			resultCount: 30,
-			isBottom: true,
-			isLoading: true
+			isBottom: true
 		});
 
 		const element = container.querySelector('div.flex');
