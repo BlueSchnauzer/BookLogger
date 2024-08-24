@@ -16,14 +16,15 @@
 	let author = '';
 	let isbn = '';
 
-	const closeModal = () => (isDisplay = false);
-	$: if (!isDisplay) {
+	const closeModal = () => {
 		formError = false;
 		query = '';
 		bookTitle = '';
 		author = '';
 		isbn = '';
-	}
+
+		isDisplay = false;
+	};
 
 	/**バリデーションとsubmit処理*/
 	const handleSubmit = (e: SubmitEvent) => {
@@ -65,7 +66,7 @@
 						<span class="max-sm:mb-2">検索条件</span>
 						<ConditionInput
 							bind:value={query}
-							name={'query'}
+							name="query"
 							disabled={isShowDetailQueries}
 							bind:formError
 						/>
