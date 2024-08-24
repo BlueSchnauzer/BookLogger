@@ -1,6 +1,10 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	export let isDisplay = false;
 	export let isDisplayLoader = false;
+	/**モダール外をクリックした際にモーダルを閉じる場合に使用*/
+	export let isCloseByOutsideClick = false;
 
 	let dialog: HTMLDialogElement;
 
@@ -14,6 +18,23 @@
 	const cancelModal = () => {
 		isDisplay = false;
 	};
+
+	onMount(() => {
+		if (!isCloseByOutsideClick) {
+			return;
+		}
+
+		const closeModalFromContainer = (e: MouseEvent) => {
+			const target = e.target! as HTMLElement; //closestを使うために型指定
+			if (target === dialog) {
+				isDisplay = false;
+				isDisplayLoader = false;
+			}
+		};
+
+		dialog.addEventListener('click', (e) => closeModalFromContainer(e));
+		return dialog.removeEventListener('click', (e) => closeModalFromContainer(e));
+	});
 </script>
 
 <dialog bind:this={dialog} on:cancel={cancelModal}>
