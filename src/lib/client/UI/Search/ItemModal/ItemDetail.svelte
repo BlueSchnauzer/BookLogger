@@ -36,26 +36,10 @@
 			<span class="pt-2 text-lg font-bold text-gray-400">データ無し</span>
 		{/if}
 		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-			<CategoryLabel
-				categoryText="著者"
-				condition={bookSearch.entity.authors}
-				labelFunction={() => bookSearch.view.joinAuthorNames()}
-			/>
-			<CategoryLabel
-				categoryText="出版社"
-				condition={bookSearch.entity.publisher}
-				labelFunction={() => bookSearch.entity.publisher}
-			/>
-			<CategoryLabel
-				categoryText="発売日"
-				condition={bookSearch.entity.publishedDate}
-				labelFunction={() => bookSearch.entity.publishedDate}
-			/>
-			<CategoryLabel
-				categoryText="ページ数"
-				condition={bookSearch.entity.pageCount}
-				labelFunction={() => bookSearch.view.getPageCountLabel()}
-			/>
+			<CategoryLabel categoryText="著者" displayText={bookSearch.view.joinAuthorNames()} />
+			<CategoryLabel categoryText="出版社" displayText={bookSearch.entity.publisher} />
+			<CategoryLabel categoryText="発売日" displayText={bookSearch.entity.publishedDate} />
+			<CategoryLabel categoryText="ページ数" displayText={bookSearch.view.getPageCountLabel()} />
 		</div>
 		<span class="text-lg font-bold">紹介</span>
 		<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
