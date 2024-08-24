@@ -5,7 +5,7 @@
 	import { modalToastTarget } from '$lib/client/Helpers/Toast';
 	import { statusItems } from '$lib/client/Static/MenuItems';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
-	import CategoryLabel from '$lib/components/common/parts/CategoryLabel.svelte';
+	import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
 	import Icon from '@iconify/svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
@@ -54,21 +54,9 @@
 		<span class="py-2 text-lg font-bold text-gray-400">データ無し</span>
 	{/if}
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-		<CategoryLabel
-			categoryText="著者"
-			condition={item.entity.author}
-			labelFunction={() => item.view.joinedAuthors()}
-		/>
-		<CategoryLabel
-			categoryText="登録日"
-			condition={item.entity.createDate}
-			labelFunction={() => item.view.getDateLabel('create')}
-		/>
-		<CategoryLabel
-			categoryText="最終更新日"
-			condition={item.entity.updateDate}
-			labelFunction={() => item.view.getDateLabel('update')}
-		/>
+		<CategoryLabel categoryText="著者" displayText={item.view.joinedAuthors()} />
+		<CategoryLabel categoryText="登録日" displayText={item.view.getDateLabel('create')} />
+		<CategoryLabel categoryText="最終更新日" displayText={item.view.getDateLabel('update')} />
 		<div class="mb-2 flex flex-col justify-start items-stretch">
 			<span class="mb-1 text-lime-800">ページ数</span>
 			<div class="flex items-center">

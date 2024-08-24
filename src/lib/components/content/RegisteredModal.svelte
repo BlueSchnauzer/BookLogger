@@ -7,9 +7,9 @@
 		type bookInfoDeleteEvent,
 		type bookInfoUpdateEvent
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
-	import PrimalyButton from '$lib/components/common/parts/PrimalyButton.svelte';
-	import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher } from 'svelte';

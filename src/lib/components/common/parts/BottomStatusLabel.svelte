@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import { getPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
-	import { colorStone700 } from '$lib/client/UI/Shared/StaticValues';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 	import CompleteBook from '$lib/icons/CompleteBook.svelte';
 	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
 	import Icon from '@iconify/svelte';
