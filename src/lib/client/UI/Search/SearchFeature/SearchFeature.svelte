@@ -5,6 +5,11 @@
 	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
 	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Static/DisplayValues';
+	import PagingLabel from '$lib/client/UI/Search/SearchFeature//PagingLabel.svelte';
+	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';
+	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
+	import SearchModal from '$lib/client/UI/Search/ConditionModal/SearchModal.svelte';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;
@@ -44,28 +49,28 @@
 				isUseMargin={false}
 				on:click={() => (isDisplaySearchModal = !isDisplaySearchModal)}
 			/>
-			<PagingLabel {...data.searchProps} {resultCount} {isLoading} />
+			<PagingLabel {searchProps} {resultCount} {isLoading} />
 		</div>
-		<SearchModal bind:isDisplay={isDisplaySearchModal} action="" />
+		<SearchModal bind:isDisplay={isDisplaySearchModal} />
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
-		<SearchResult
-			searchType={data.searchProps.searchType}
+		<ResultList
+			searchType={searchProps.searchType}
 			{reactiveSearchPromise}
 			on:click={handleClick}
 		/>
 		<div class="flex justify-center py-2">
-			<PagingLabel {...data.searchProps} {resultCount} {isLoading} isBottom={true} />
+			<PagingLabel {searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>
-		{#if isDisplayDetail}
+		<!-- {#if isDisplayDetail}
 			<ContentModal
 				bookSearch={currentItem}
 				bind:isDisplay={isDisplayDetail}
 				on:success={handleSuccess}
 				on:failed={handleFailure}
 			/>
-		{/if}
+		{/if} -->
 		<div class="wrap-bottom">
 			<SvelteToast target={mainToastTarget} />
 		</div>
