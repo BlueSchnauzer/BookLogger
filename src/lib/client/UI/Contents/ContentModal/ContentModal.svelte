@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { colorStone700 } from '$lib/client/Static/DisplayValues';
-	import Icon from '@iconify/svelte';
-	import ModalBase from '$lib/client/UI/Shared/Components/ModalBase.svelte';
-	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
-	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
-	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import { createEventDispatcher } from 'svelte';
+	import { registeredBookInfoUseCases } from '$lib/client/Application/UseCases/BookInfo';
 	import {
 		dispatchDeletionBookInfoRequest,
 		dispatchUpdateBookInfoRequest,
 		type bookInfoDeleteEvent,
 		type bookInfoUpdateEvent
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-	import { registeredBookInfoUseCases } from '$lib/client/Application/UseCases/BookInfo';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import ModalDetail from '$lib/client/UI/Contents/ContentModal/ModalDetail.svelte';
+	import ModalBase from '$lib/client/UI/Shared/Components/ModalBase.svelte';
+	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
+	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
+	import Icon from '@iconify/svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let isDisplay = false;
 	export let item: BookInfoResponseItem;
@@ -67,7 +67,7 @@
 			</button>
 		</div>
 		<span class="bg-stone-400 h-[1px]" />
-		<RegisteredContent {item} />
+		<ModalDetail {item} />
 		<span class="bg-stone-400 h-[1px]" />
 		<div class="flex justify-between items-center">
 			<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />
