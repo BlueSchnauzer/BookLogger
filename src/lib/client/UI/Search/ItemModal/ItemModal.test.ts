@@ -1,20 +1,23 @@
-import { BookSearchView } from '$lib/client/Application/Views/BookSearch';
-import ResultModal from '$lib/client/UI/Search/ResultModal/ResultModal.svelte';
+import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
+import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
+import { convertResponseToBookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
 import { gapiTestDatas } from '$lib/mock/Data';
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, describe, expect, it, vi, vitest } from 'vitest';
 
 //dialogタグの関数がJSDomだとサポートされていない？ためスキップ
 describe.skip('ContentModal', async () => {
-	const item = gapiTestDatas.items![0];
-	const view = new BookSearchView(item);
+	const entity = convertResponseToBookSearch(gapiTestDatas.items![0]);
+	const view = bookSearchView(entity);
+	const bookSearch: BookSearchResponseItem = { entity, view };
 
 	afterEach(() => {
 		vi.restoreAllMocks();
 	});
 
 	it('レンダリング', () => {
-		render(ResultModal, { isDisplay: true, view });
+		render(ItemModal, { isDisplay: true, bookSearch });
 
 		expect(screen.getByText('書籍登録')).toBeInTheDocument();
 		expect(screen.getByAltText('書影')).toBeInTheDocument();
@@ -25,17 +28,17 @@ describe.skip('ContentModal', async () => {
 
 	it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
 		const testId = 'layerZ30';
-		const { component } = render(ResultModal, { isDisplay: true, view });
+		const { component } = render(ItemModal, { isDisplay: true, bookSearch });
 
 		expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-		await component.$set({ isDisplay: false, view });
+		await component.$set({ isDisplay: false, bookSearch });
 		expect(screen.getByTestId(testId)).toHaveClass('hidden');
 	});
 
 	it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
 		const testId = 'layerZ30';
-		const { component } = render(ResultModal, { isDisplay: true, view });
+		const { component } = render(ItemModal, { isDisplay: true, bookSearch });
 
 		const btnClose = screen.getByTestId('btnClose');
 		const btnCancel = screen.getByText('キャンセル');
@@ -43,7 +46,7 @@ describe.skip('ContentModal', async () => {
 		await fireEvent.click(btnClose);
 		expect(screen.getByTestId(testId)).toHaveClass('hidden');
 
-		await component.$set({ isDisplay: true, view });
+		await component.$set({ isDisplay: true, bookSearch });
 		await fireEvent.click(btnCancel);
 		expect(screen.getByTestId(testId)).toHaveClass('hidden');
 	});
@@ -53,7 +56,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('成功しました。', { status: 201 }));
 
-		const { component } = render(ResultModal, { isDisplay: true, view });
+		const { component } = render(ItemModal, { isDisplay: true, bookSearch });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -72,7 +75,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('失敗しました', { status: 500 }));
 
-		const { component } = render(ResultModal, { isDisplay: true, view });
+		const { component } = render(ItemModal, { isDisplay: true, bookSearch });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 

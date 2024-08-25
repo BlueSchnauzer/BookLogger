@@ -1,4 +1,4 @@
-import ResultDetail from '$lib/client/UI/Search/ResultModal/ResultDetail.svelte';
+import ItemDetail from '$lib/client/UI/Search/ItemModal/ItemDetail.svelte';
 import { gapiItemAndBookSearchResponseItemMock, gapiTestDatas } from '$lib/mock/Data';
 import { render, screen, waitFor } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
@@ -7,7 +7,7 @@ describe('ResultDetail', async () => {
 	const { item, bookSearchResponseItem } = gapiItemAndBookSearchResponseItemMock();
 
 	it('レンダリング', async () => {
-		render(ResultDetail, { bookSearch: bookSearchResponseItem });
+		render(ItemDetail, { bookSearch: bookSearchResponseItem });
 
 		await waitFor(
 			() => {
