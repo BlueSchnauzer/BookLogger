@@ -22,6 +22,7 @@
 	import ResizeObserver from 'resize-observer-polyfill';
 	import 'simplebar/dist/simplebar.css';
 	import { onMount, type ComponentType } from 'svelte';
+	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -82,7 +83,7 @@
 		<ContentsGrid {items} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
 	{#if isDisplayModal}
-		<RegisteredModal
+		<ContentModal
 			item={currentItem}
 			bind:isDisplay={isDisplayModal}
 			on:updateSuccess={handleUpdateSuccess}
