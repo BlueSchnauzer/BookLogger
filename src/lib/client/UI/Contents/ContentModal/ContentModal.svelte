@@ -6,16 +6,47 @@
 	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+	import { createEventDispatcher } from 'svelte';
+	import {
+		dispatchDeletionBookInfoRequest,
+		dispatchUpdateBookInfoRequest,
+		type bookInfoDeleteEvent,
+		type bookInfoUpdateEvent
+	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	import { registeredBookInfoUseCases } from '$lib/client/Application/UseCases/BookInfo';
 
 	export let isDisplay = false;
 	export let item: BookInfoResponseItem;
 
 	let isDisplayLoader = false;
+	const beforeStatus = item.entity.status.value;
+	const usecases = registeredBookInfoUseCases(fetch);
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
 		isDisplay = false;
 		isDisplayLoader = false;
+	};
+
+	const dispatchUpdate = createEventDispatcher<bookInfoUpdateEvent>();
+	const handleUpdateRequest = async () => {
+		isDisplayLoader = true;
+		const { isSuccess, message } = await usecases.update(item.entity, beforeStatus);
+		closeModalAndLoader();
+
+		dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, item.entity);
+	};
+
+	const dispatchDeletion = createEventDispatcher<bookInfoDeleteEvent>();
+	const handleDeleteRequest = async () => {
+		if (!confirm('削除します。よろしいですか？')) {
+			return;
+		}
+		isDisplayLoader = true;
+		const { isSuccess, message } = await usecases.remove(item.entity.id!);
+		closeModalAndLoader();
+
+		dispatchDeletionBookInfoRequest(dispatchDeletion, isSuccess, message, item.entity.id!);
 	};
 </script>
 
@@ -39,13 +70,9 @@
 		<RegisteredContent {item} />
 		<span class="bg-stone-400 h-[1px]" />
 		<div class="flex justify-between items-center">
-			<SecondaryButton type="button" text="削除" usage="delete" />
+			<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />
 			<div class="h-14 flex flex-row justify-end items-center">
-				<PrimaryButton
-					type="button"
-					text="編集"
-					on:click={() => (isDisplayLoader = !isDisplayLoader)}
-				/>
+				<PrimaryButton type="button" text="編集" on:click={handleUpdateRequest} />
 				<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 			</div>
 		</div>
