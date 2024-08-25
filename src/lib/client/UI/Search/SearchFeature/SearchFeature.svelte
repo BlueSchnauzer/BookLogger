@@ -6,7 +6,7 @@
 	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import PagingLabel from '$lib/client/UI/Search/SearchFeature//PagingLabel.svelte';
-	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
 	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';
 	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
@@ -45,7 +45,7 @@
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
 		<ContentHeader headerIcon={MagnifingGlass} headerText={pageTitles.search} />
 		<div class="flex justify-between">
-			<PrimalyButton
+			<PrimaryButton
 				type="button"
 				text="検索条件"
 				isUseMargin={false}

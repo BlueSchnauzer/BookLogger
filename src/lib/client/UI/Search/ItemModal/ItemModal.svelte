@@ -8,7 +8,7 @@
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 	import ItemDetail from '$lib/client/UI/Search/ItemModal/ItemDetail.svelte';
 	import ModalBase from '$lib/client/UI/Shared/Components/ModalBase.svelte';
-	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -53,7 +53,7 @@
 		<ItemDetail {bookSearch} />
 		<span class="bg-stone-400 h-[1px]" />
 		<div class="h-14 flex flex-row justify-end items-center">
-			<PrimalyButton type="button" text="登録" on:click={handlePostRequest} />
+			<PrimaryButton type="button" text="登録" on:click={handlePostRequest} />
 			<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 		</div>
 	</div>

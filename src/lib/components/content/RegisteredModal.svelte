@@ -8,7 +8,7 @@
 		type bookInfoUpdateEvent
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
-	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import Icon from '@iconify/svelte';
@@ -94,7 +94,7 @@
 			<div class="flex justify-between items-center">
 				<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />
 				<div class="h-14 flex flex-row justify-end items-center">
-					<PrimalyButton type="button" text="編集" on:click={handleUpdateRequest} />
+					<PrimaryButton type="button" text="編集" on:click={handleUpdateRequest} />
 					<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 				</div>
 			</div>

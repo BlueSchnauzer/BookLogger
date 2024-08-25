@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vitest } from 'vitest';
 // import type * as customTypes from '$lib/customTypes';
 // import LayerZindex30 from '$lib/components/common/parts/LayerZindex30.svelte';
 // import ToggleSwitch from '$lib/components/common/parts/ToggleSwitch.svelte';
-// import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+// import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
 // import SecondaryButton from '$lib/components/common/parts/SecondaryButton.svelte';
 import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
 // import FullCoverLoader from '../../../client/UI/Shared/Components/FullCoverLoader.svelte';
@@ -102,16 +102,16 @@ import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte
 
 // describe('PrimaryButton', () => {
 // 	it('レンダリング', () => {
-// 		const component = render(PrimalyButton, { type: 'button', text: 'button' });
+// 		const component = render(PrimaryButton, { type: 'button', text: 'button' });
 // 		expect(screen.getByText('button')).toBeInTheDocument();
 // 		component.unmount();
 
-// 		render(PrimalyButton, { type: 'submit', text: 'submit' });
+// 		render(PrimaryButton, { type: 'submit', text: 'submit' });
 // 		expect(screen.getByText('submit')).toBeInTheDocument();
 // 	});
 
 // 	it('クリックイベントを検知できること', () => {
-// 		const { component } = render(PrimalyButton, { type: 'button', text: 'button' });
+// 		const { component } = render(PrimaryButton, { type: 'button', text: 'button' });
 // 		const btn = screen.getByText('button');
 // 		const mock = vitest.fn();
 

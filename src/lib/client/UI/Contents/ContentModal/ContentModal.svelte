@@ -2,7 +2,7 @@
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 	import Icon from '@iconify/svelte';
 	import ModalBase from '$lib/client/UI/Shared/Components/ModalBase.svelte';
-	import PrimalyButton from '$lib/client/UI/Shared/Components/PrimalyButton.svelte';
+	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
 	import RegisteredContent from '$lib/components/content/parts/RegisteredContent.svelte';
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
@@ -41,7 +41,7 @@
 		<div class="flex justify-between items-center">
 			<SecondaryButton type="button" text="削除" usage="delete" />
 			<div class="h-14 flex flex-row justify-end items-center">
-				<PrimalyButton
+				<PrimaryButton
 					type="button"
 					text="編集"
 					on:click={() => (isDisplayLoader = !isDisplayLoader)}
