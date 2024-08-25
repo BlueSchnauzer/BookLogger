@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BookInfoGrid from '$lib/components/content/BookInfoGrid.svelte';
+	import ContentsGrid from '$lib/client/UI/Contents/ContentsGrid/ContentsGrid.svelte';
 	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
 	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
 	import ContentFilters from '$lib/client/UI/Shared/Components/Headers/ContentFilters.svelte';
@@ -79,7 +79,7 @@
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	<div bind:this={gridContent} class="p-1 contentHeight">
-		<BookInfoGrid {items} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
+		<ContentsGrid {items} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	</div>
 	{#if isDisplayModal}
 		<RegisteredModal
