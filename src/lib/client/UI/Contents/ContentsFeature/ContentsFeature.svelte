@@ -1,11 +1,8 @@
 <script lang="ts">
 	import ContentsGrid from '$lib/client/UI/Contents/ContentsGrid/ContentsGrid.svelte';
-	import RegisteredModal from '$lib/components/content/RegisteredModal.svelte';
-	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
 	import ContentFilters from '$lib/client/UI/Shared/Components/Headers/ContentFilters.svelte';
+	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
-	import SimpleBar from 'simplebar';
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import type {
 		deletionBookInfoParameter,
@@ -18,11 +15,10 @@
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import { emptyMessages } from '$lib/client/Static/DisplayValues';
-	import _ from 'lodash';
-	import ResizeObserver from 'resize-observer-polyfill';
-	import 'simplebar/dist/simplebar.css';
-	import { onMount, type ComponentType } from 'svelte';
 	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import _ from 'lodash';
+	import { onMount, type ComponentType } from 'svelte';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -62,12 +58,6 @@
 	};
 
 	onMount(() => {
-		//SSR時のエラー回避のためDOM生成後に実行
-		window.ResizeObserver = ResizeObserver;
-		if (gridContent) {
-			new SimpleBar(gridContent, { autoHide: false });
-		}
-
 		//アンマウント時にトーストが表示されていれば削除する。
 		return () => toast.pop(0);
 	});
@@ -79,9 +69,7 @@
 		<ContentFilters />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
-	<div bind:this={gridContent} class="p-1 contentHeight">
-		<ContentsGrid {items} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
-	</div>
+	<ContentsGrid {items} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
 	{#if isDisplayModal}
 		<ContentModal
 			item={currentItem}
@@ -99,9 +87,6 @@
 <style>
 	.flexWidth {
 		width: calc(100% - (80px));
-	}
-	.contentHeight {
-		height: calc(100% - 96px);
 	}
 	.wrap-bottom {
 		--toastContainerTop: auto;
