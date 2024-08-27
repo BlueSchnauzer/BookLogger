@@ -70,9 +70,9 @@
 						data-testid="editPageCount"
 					/>
 				{:else if item.entity.pageCount}
-					<span class="flex-grow mb-2 border-b-stone-400 border-b-[1px]"
-						>{item.view.getPageCountLabel()}</span
-					>
+					<span class="flex-grow mb-2 border-b-stone-400 border-b-[1px]">
+						{`${item.entity.pageCount}ページ`}
+					</span>
 				{:else}
 					<span class="flex-grow mb-2 text-gray-500 border-b-stone-400 border-b-[1px]"
 						>データ無し</span
