@@ -7,7 +7,11 @@
 </script>
 
 <div class="relative flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">
-	<DetailInfo {item} />
+	<DetailInfo
+		thumbnail={item.entity.thumbnail}
+		titleLabel={item.view.getTitleLabel()}
+		bind:isFavorite={item.entity.isFavorite}
+	/>
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
 	<DetailEdit {item} />
 </div>
