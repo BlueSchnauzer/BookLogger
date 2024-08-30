@@ -34,7 +34,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	switch (getType) {
 		case 'recent':
 			const mongoDBModel = await repos.getRecent();
-			return json(mongoDBModel, { status: 200 });
+			return json(mongoDBModel ? mongoDBModel : null, { status: 200 });
 		case 'wish':
 		case 'reading':
 		case 'complete':
