@@ -10,7 +10,7 @@ describe.skip('StatusLabel', () => {
 	it('登録日のステータスでレンダリングできること', () => {
 		const item = bookInfoResponseItemMock();
 
-		const screen = render(StatusLabel, { item });
+		const screen = render(StatusLabel, { view: item.view });
 
 		expect(screen.getByText('登録日')).toBeInTheDocument();
 	});
@@ -22,7 +22,7 @@ describe.skip('StatusLabel', () => {
 			date: new Date(),
 			currentPage: item.entity.pageCount / 2
 		});
-		const screen = render(StatusLabel, { item });
+		const screen = render(StatusLabel, { view: item.view });
 
 		expect(screen.getByText('読んだページ数')).toBeInTheDocument();
 		expect(screen.getByTestId('pageProgress').style.width).toEqual('50%');
@@ -33,7 +33,7 @@ describe.skip('StatusLabel', () => {
 		const item = bookInfoResponseItemMock();
 		item.entity.pageCount = 0;
 
-		const screen = render(StatusLabel, { item });
+		const screen = render(StatusLabel, { view: item.view });
 
 		expect(screen.getByText('更新日')).toBeInTheDocument();
 	});
@@ -45,7 +45,7 @@ describe.skip('StatusLabel', () => {
 			new PageHistory({ date: new Date(), pageCount: item.entity.pageCount })
 		);
 
-		const screen = render(StatusLabel, { item });
+		const screen = render(StatusLabel, { view: item.view });
 
 		expect(screen.getByText('読み終わった日')).toBeInTheDocument();
 	});

@@ -32,7 +32,7 @@
 <div class={isResponsiveText ? 'max-sm:hidden' : ''}>
 	<span class="text-left px-2 text-lime-700 break-all collapseTitle">{item.entity.title}</span>
 </div>
-<StatusLabel {item} {isResponsiveText} />
+<StatusLabel view={item.view} {isResponsiveText} />
 
 <style>
 	.collapseTitle {
