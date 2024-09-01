@@ -29,8 +29,8 @@
 	});
 </script>
 
-<div bind:this={contentGrid} class="p-1 contentHeight">
-	{#if items && items.length}
+{#if items && items.length}
+	<div bind:this={contentGrid} class="p-1 contentHeight">
 		<ul
 			class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
 		>
@@ -45,10 +45,12 @@
 				</li>
 			{/each}
 		</ul>
-	{:else}
+	</div>
+{:else}
+	<div class="p-1 contentHeight">
 		<p class="px-1 font-medium text-lime-700">{@html emptyMessage}</p>
-	{/if}
-</div>
+	</div>
+{/if}
 
 <style>
 	.contentHeight {
