@@ -39,7 +39,6 @@
 	let selectValue: number;
 	let isDisplayModal = false;
 	let currentItem: BookInfoResponseItem;
-	let gridContent: HTMLElement;
 
 	// $: {
 	// 	bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
