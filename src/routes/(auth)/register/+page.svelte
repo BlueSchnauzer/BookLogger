@@ -3,7 +3,7 @@
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
 	import { firebaseAuth } from '$lib/firebase.client';
 	import AuthMenu from '../AuthMenu.svelte';
-	import FullCoverLoader from '$lib/components/common/parts/FullCoverLoader.svelte';
+	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
 	import { pushSuccessToast, pushErrorToast } from '$lib/client/Helpers/Toast';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 

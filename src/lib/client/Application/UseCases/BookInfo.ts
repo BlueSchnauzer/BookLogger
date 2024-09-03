@@ -58,6 +58,9 @@ export const getHomeBookInfoUseCases = (fetch: fetchInterface) => {
 	const getRecent = async (): Promise<BookInfoResponseItem | undefined> => {
 		const response = await fetch(`${requestUrl}?type=recent`);
 		const model = (await response.json()) as BookInfoDBModel;
+		if (!model) {
+			return undefined;
+		}
 
 		const entity = convertDBModelToBookInfo(model);
 		const view = bookInfoView(entity);

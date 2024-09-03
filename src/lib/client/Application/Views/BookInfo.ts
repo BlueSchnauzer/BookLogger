@@ -1,5 +1,4 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BottomLabelType } from '$lib/client/Utils/types';
 
 export const bookInfoView = (bookInfo: BookInfo) => {
 	const getTitleLabel = () => {
@@ -51,7 +50,7 @@ export const bookInfoView = (bookInfo: BookInfo) => {
 	};
 
 	/**グリッドアイテムのラベル表示用のタイプを判定して返す。 */
-	const getTypeForBottomLabel = (pathName: string): BottomLabelType => {
+	const getTypeForBottomLabel = (pathName: string) => {
 		switch (pathName) {
 			case '/home':
 				return 'progress';
