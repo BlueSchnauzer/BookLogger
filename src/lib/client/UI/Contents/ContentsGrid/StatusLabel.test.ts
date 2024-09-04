@@ -18,10 +18,12 @@ describe.skip('StatusLabel', () => {
 	it('読んでいるページ数でレンダリングできること', () => {
 		const item = bookInfoResponseItemMock();
 
-		item.entity.pageHistories.push({
-			date: new Date(),
-			currentPage: item.entity.pageCount / 2
-		});
+		item.entity.pageHistories?.push(
+			new PageHistory({
+				date: new Date(),
+				pageCount: item.entity.pageCount / 2
+			})
+		);
 		const screen = render(StatusLabel, { view: item.view });
 
 		expect(screen.getByText('読んだページ数')).toBeInTheDocument();
