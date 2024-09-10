@@ -1,7 +1,7 @@
 import { PUBLIC_BOOKSAPI_KEY, PUBLIC_BOOKSAPI_LIST } from '$env/static/public';
 import type { books_v1 } from 'googleapis';
 
-const search = async (queries: string[], maxResults: number, startIndex: number) => {
+const requestSearch = async (queries: string[], maxResults: number, startIndex: number) => {
 	const response = await fetch(
 		createUrl({
 			q: queries.join('+'),
@@ -13,7 +13,11 @@ const search = async (queries: string[], maxResults: number, startIndex: number)
 	return (await response.json()) as books_v1.Schema$Volumes;
 };
 
-const searchByFuzzyQuery = async (query: string, maxResults: number, startIndex: number) => {
+export const requestByFuzzyQuery = async (
+	query: string,
+	maxResults: number,
+	startIndex: number
+) => {
 	if (!query) {
 		throw new Error('検索条件が入力されていません。');
 	}
@@ -21,7 +25,7 @@ const searchByFuzzyQuery = async (query: string, maxResults: number, startIndex:
 	const fuzzyQuery: string[] = [];
 	fuzzyQuery.push(query);
 
-	const result = await search(fuzzyQuery, maxResults, startIndex);
+	const result = await requestSearch(fuzzyQuery, maxResults, startIndex);
 	if (result.totalItems === 0 || !result.items) {
 		throw new Error('検索条件に合う書誌情報が見つかりませんでした。');
 	}
@@ -29,7 +33,7 @@ const searchByFuzzyQuery = async (query: string, maxResults: number, startIndex:
 	return result;
 };
 
-const searchByQueries = async (
+export const requestByQueries = async (
 	booktitle: string,
 	author: string,
 	isbn_13: string,
@@ -51,7 +55,7 @@ const searchByQueries = async (
 		throw new Error('検索条件が入力されていません。');
 	}
 
-	const result = await search(queries, maxResults, startIndex);
+	const result = await requestSearch(queries, maxResults, startIndex);
 	if (result.totalItems === 0 || !result.items) {
 		throw new Error('検索条件に合う書誌情報が見つかりませんでした。');
 	}
