@@ -1,6 +1,6 @@
 import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
-import type { FetchInterface } from '$lib/client/Application/UseCases/DataManage/interface';
+import type { FetchInterface } from '$lib/client/Feature/Contents/DataManage/interface';
 
 export const createBookInfo = async (fetch: FetchInterface, bookSearch: BookSearch) => {
 	const { ok: isSuccess, status } = await fetch(bookInfoAPIRoute, {

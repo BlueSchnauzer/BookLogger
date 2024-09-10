@@ -7,7 +7,7 @@ import {
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
 import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
-import type { FetchInterface } from '$lib/client/Application/UseCases/DataManage/interface';
+import type { FetchInterface } from '$lib/client/Feature/Contents/DataManage/interface';
 
 export const getBookInfos = async (fetch: FetchInterface): Promise<BookInfo[]> => {
 	const response = await fetch(bookInfoAPIRoute);

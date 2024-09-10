@@ -5,10 +5,10 @@ import {
 	getBookInfosByStatus,
 	getHistory,
 	getRecentBookInfo
-} from '$lib/client/Application/UseCases/DataManage/fetcher';
-import { updateBookInfo } from './updater';
+} from '$lib/client/Feature/Contents/DataManage/fetcher';
+import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
-import { deleteBookInfo } from './deleter';
+import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 
 describe('fetcher', () => {

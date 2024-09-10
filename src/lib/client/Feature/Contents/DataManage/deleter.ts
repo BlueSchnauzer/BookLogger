@@ -1,6 +1,6 @@
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
-import type { FetchInterface } from '$lib/client/Application/UseCases/DataManage/interface';
+import type { FetchInterface } from '$lib/client/Feature/Contents/DataManage/interface';
 
 export const deleteBookInfo = async (fetch: FetchInterface, id: Id) => {
 	const { ok: isSuccess } = await fetch(bookInfoAPIRoute, {
