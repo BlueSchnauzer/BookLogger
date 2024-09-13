@@ -1,8 +1,32 @@
 import { BookInfoAPIMock } from '$lib/mock/Fixture';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { createBookInfo } from '$lib/client/Feature/Search/DataManage/creater';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { searchByFuzzyQuery, searchByQueries } from './fetcher';
+
+describe('fetcher', () => {
+	it('searcyByFuzzyQuery', async () => {
+		const { totalCount, items } = await searchByFuzzyQuery('イシグロカズオ');
+
+		expect(totalCount).toBeGreaterThanOrEqual(0);
+		expect(items).toBeDefined();
+		expect(items?.length).toBeTruthy();
+	});
+
+	it('searchByQueries', async () => {
+		const testData = bookInfoInterfaceMock;
+
+		const { totalCount, items } = await searchByQueries(
+			testData.title,
+			testData.author[0],
+			testData.identifiers?.value.isbn_13!
+		);
+
+		expect(totalCount).toBeGreaterThanOrEqual(0);
+		expect(items).toBeDefined();
+		expect(items?.length).toBeTruthy();
+	});
+});
 
 describe('creater', () => {
 	it('success', async () => {
@@ -28,29 +52,5 @@ describe('creater', () => {
 
 		expect(response.isSuccess).toBeFalsy();
 		expect(response.message).toBe('登録済みの書籍です');
-	});
-});
-
-describe('fetcher', () => {
-	it('searcyByFuzzyQuery', async () => {
-		const { totalCount, items } = await searchByFuzzyQuery('イシグロカズオ');
-
-		expect(totalCount).toBeGreaterThanOrEqual(0);
-		expect(items).toBeDefined();
-		expect(items?.length).toBeTruthy();
-	});
-
-	it('searchByQueries', async () => {
-		const testData = bookInfoInterfaceMock;
-
-		const { totalCount, items } = await searchByQueries(
-			testData.title,
-			testData.author[0],
-			testData.identifiers?.value.isbn_13!
-		);
-
-		expect(totalCount).toBeGreaterThanOrEqual(0);
-		expect(items).toBeDefined();
-		expect(items?.length).toBeTruthy();
 	});
 });
