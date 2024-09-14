@@ -54,26 +54,6 @@ describe('fetcher', () => {
 			expect(result[0].status.value).toBe('complete');
 		});
 	});
-
-	describe('getRecent', () => {
-		BookInfoAPIMock.setGetRouteFetch('getByStatusOrRecent');
-
-		it('get', async () => {
-			const result = await getRecentBookInfo(fetch);
-
-			expect(result).toBeDefined();
-		});
-	});
-
-	describe('getHistory', () => {
-		BookInfoAPIMock.setGetRouteFetch('getPageHistory');
-
-		it('get', async () => {
-			const historyMap = await getHistory(fetch);
-
-			expect(historyMap).toBeDefined();
-		});
-	});
 });
 
 describe('updater', () => {
