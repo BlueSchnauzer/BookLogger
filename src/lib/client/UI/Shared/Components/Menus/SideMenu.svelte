@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import { mainMenuItems } from '$lib/client/Static/MenuItems';
 	import { colorStone200 } from '$lib/client/Static/DisplayValues';
-	import { firebaseAuth } from '$lib/firebase.client';
+	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase.client';
 	import Icon from '@iconify/svelte';
 	import { signOut } from 'firebase/auth';
 

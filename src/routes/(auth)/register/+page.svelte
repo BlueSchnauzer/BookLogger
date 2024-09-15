@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
-	import { firebaseAuth } from '$lib/firebase.client';
+	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase.client';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
 	import { pushSuccessToast, pushErrorToast } from '$lib/client/Helpers/Toast';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { firebaseAuth } from '$lib/firebase.client';
+	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase.client';
 	import { signOut } from 'firebase/auth';
 	import Icon from '@iconify/svelte';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
