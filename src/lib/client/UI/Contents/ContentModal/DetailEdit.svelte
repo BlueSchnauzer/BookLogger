@@ -5,7 +5,7 @@
 	import { statusItems } from '$lib/client/Static/MenuItems';
 	import PageCountEdit from '$lib/client/UI/Contents/ContentModal/PageCountEdit.svelte';
 	import PageHistoryEdit from '$lib/client/UI/Contents/ContentModal/PageHistoryEdit.svelte';
-	import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
+	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 

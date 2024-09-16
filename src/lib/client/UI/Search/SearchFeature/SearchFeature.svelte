@@ -6,9 +6,9 @@
 	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import PagingLabel from '$lib/client/UI/Search/SearchFeature//PagingLabel.svelte';
-	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
+	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';
-	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
+	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
 	import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
 	import { handleFailure, handleSuccess } from '$lib/client/Helpers/Svelte/CustomEvent/Handler';

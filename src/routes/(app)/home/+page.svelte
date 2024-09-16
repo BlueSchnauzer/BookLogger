@@ -5,7 +5,7 @@
 	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
 	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
-	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
+	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';

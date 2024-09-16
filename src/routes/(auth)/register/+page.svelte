@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { registerWithEmailAndPassword } from '$lib/client/Feature/Auth/userManager';
-	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
+	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
 	import AuthMenu from '../AuthMenu.svelte';
 
 	let email: string;

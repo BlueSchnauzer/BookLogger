@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
+	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 	import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
 
 	export let response: BookSearchResponseItem;

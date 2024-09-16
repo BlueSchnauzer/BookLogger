@@ -1,8 +1,8 @@
-import CategoryLabel from '$lib/client/UI/Shared/Components/CategoryLabel.svelte';
-import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
-import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
-import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
-import ToggleSwitch from '$lib/client/UI/Shared/Components/ToggleSwitch.svelte';
+import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
+import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
+import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
+import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
+import ToggleSwitch from '$lib/client/Shared/Components/ToggleSwitch.svelte';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ContentsGrid from '$lib/client/UI/Contents/ContentsGrid/ContentsGrid.svelte';
-	import ContentFilters from '$lib/client/UI/Shared/Components/Headers/ContentFilters.svelte';
-	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
+	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
+	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import type {

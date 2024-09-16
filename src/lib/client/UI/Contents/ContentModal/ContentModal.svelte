@@ -9,9 +9,9 @@
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 	import ModalDetail from '$lib/client/UI/Contents/ContentModal/ModalDetail.svelte';
-	import ModalBase from '$lib/client/UI/Shared/Components/ModalBase.svelte';
-	import PrimaryButton from '$lib/client/UI/Shared/Components/PrimaryButton.svelte';
-	import SecondaryButton from '$lib/client/UI/Shared/Components/SecondaryButton.svelte';
+	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';
+	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
+	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
 	import { createEventDispatcher } from 'svelte';
 

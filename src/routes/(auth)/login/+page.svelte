@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { login } from '$lib/client/Feature/Auth/userManager';
-	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
+	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onDestroy, onMount } from 'svelte';
 	import AuthMenu from '../AuthMenu.svelte';
