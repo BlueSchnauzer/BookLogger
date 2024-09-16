@@ -1,6 +1,6 @@
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
-import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
+import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
+import { validateReadingCount, validateReadingDate } from '$lib/client/Shared/Utils/Validation';
 import { describe, expect, it } from 'vitest';
 
 describe('PageHistory', () => {

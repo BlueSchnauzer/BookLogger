@@ -3,7 +3,7 @@ import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistor
 import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
 import { modalToastTarget, pushToast } from '$lib/client/Helpers/Toast';
-import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
+import { validateReadingCount, validateReadingDate } from '$lib/client/Shared/Utils/Validation';
 
 export const bookInfoOperations = (bookInfo: BookInfo) => {
 	const addPageHistory = (readingDate: string, readingCount: number) => {

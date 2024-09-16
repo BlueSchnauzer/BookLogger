@@ -5,7 +5,7 @@ import {
 	PageHistory,
 	type pageHistory
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
+import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
 import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
