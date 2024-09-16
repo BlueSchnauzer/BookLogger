@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import type { ComponentType } from 'svelte';
 	import { signOut } from 'firebase/auth';
-	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase.client';
+	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
 	import { goto } from '$app/navigation';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 

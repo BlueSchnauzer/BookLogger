@@ -1,7 +1,7 @@
 import { goto } from '$app/navigation';
 import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
 import { authAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
-import { firebaseAuth } from '$lib/client/Feature/Auth/firebase.client';
+import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
 import {
 	createUserWithEmailAndPassword,
 	GoogleAuthProvider,

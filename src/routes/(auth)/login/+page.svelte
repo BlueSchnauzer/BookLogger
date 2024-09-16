@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase.client';
+	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
 	import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 	import AuthMenu from '../AuthMenu.svelte';
 	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
