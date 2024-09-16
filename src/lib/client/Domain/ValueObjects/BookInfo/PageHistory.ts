@@ -1,5 +1,5 @@
 import { ValueObjectsBase } from '$lib/client/Domain/ValueObjects/ValueObjectBase';
-import { ValidationError } from '$lib/client/Domain/Exceptions/ValidationError';
+import { ValidationError } from '$lib/client/Shared/Exceptions/ValidationError';
 
 /**読んだ記録を保持する */
 export class PageHistory extends ValueObjectsBase<pageHistory> {

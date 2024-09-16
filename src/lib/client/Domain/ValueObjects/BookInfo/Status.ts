@@ -1,5 +1,5 @@
 import { ValueObjectsBase } from '$lib/client/Domain/ValueObjects/ValueObjectBase';
-import { ValidationError } from '$lib/client/Domain/Exceptions/ValidationError';
+import { ValidationError } from '$lib/client/Shared/Exceptions/ValidationError';
 
 export class Status extends ValueObjectsBase<status> {
 	constructor(public value: status) {

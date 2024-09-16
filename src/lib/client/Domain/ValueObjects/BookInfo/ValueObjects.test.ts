@@ -1,4 +1,4 @@
-import { ValidationError } from '$lib/client/Domain/Exceptions/ValidationError';
+import { ValidationError } from '$lib/client/Shared/Exceptions/ValidationError';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import {
