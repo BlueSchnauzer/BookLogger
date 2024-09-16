@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { firebaseAdminAuth } from '$lib/server/firebase.server';
+import { firebaseAdminAuth } from '$lib/server/Feature/Auth/firebase.server';
 
 const cookieName = 'idToken';
 
