@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import { logout } from '$lib/client/Feature/Auth/userManager';
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pageTitles } from '$lib/client/Static/DisplayValues';
+	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import type { PageData } from './$types';
 	import SearchFeature from '$lib/client/UI/Search/SearchFeature/SearchFeature.svelte';
 

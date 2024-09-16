@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { booksMenuItems } from '$lib/client/Static/MenuItems';
+	import { booksMenuItems } from '$lib/client/Shared/Constants/MenuItems';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;

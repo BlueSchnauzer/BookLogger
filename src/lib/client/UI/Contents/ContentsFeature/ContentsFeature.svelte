@@ -14,7 +14,7 @@
 		handleFailure
 	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
-	import { emptyMessages } from '$lib/client/Static/DisplayValues';
+	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import _ from 'lodash';

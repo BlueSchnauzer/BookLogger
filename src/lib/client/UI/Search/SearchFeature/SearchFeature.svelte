@@ -4,7 +4,7 @@
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
 	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
-	import { pageTitles } from '$lib/client/Static/DisplayValues';
+	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import PagingLabel from '$lib/client/UI/Search/SearchFeature//PagingLabel.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';

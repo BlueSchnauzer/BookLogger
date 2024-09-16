@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { logout } from '$lib/client/Feature/Auth/userManager';
-	import { colorStone200 } from '$lib/client/Static/DisplayValues';
-	import { mainMenuItems } from '$lib/client/Static/MenuItems';
+	import { colorStone200 } from '$lib/client/Shared/Constants/DisplayValues';
+	import { mainMenuItems } from '$lib/client/Shared/Constants/MenuItems';
 	import Icon from '@iconify/svelte';
 
 	//ページ移動の度に対応したページにスタイルを当てる

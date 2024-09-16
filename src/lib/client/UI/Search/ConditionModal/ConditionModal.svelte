@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import ConditionInput from '$lib/client/UI/Search/ConditionModal/ConditionInput.svelte';
 	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';

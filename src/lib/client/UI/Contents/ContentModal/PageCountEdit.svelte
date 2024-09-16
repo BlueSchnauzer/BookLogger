@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import { colorStone700 } from '$lib/client/Static/DisplayValues';
+	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
 
 	export let item: BookInfoResponseItem;
