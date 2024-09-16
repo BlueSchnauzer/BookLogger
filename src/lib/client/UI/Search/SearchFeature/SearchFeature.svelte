@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import { mainToastTarget } from '$lib/client/Helpers/Toast';
+	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
 	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
@@ -11,7 +11,10 @@
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
 	import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
-	import { handleFailure, handleSuccess } from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
+	import {
+		handleFailure,
+		handleSuccess
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Handler';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;

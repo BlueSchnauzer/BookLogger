@@ -3,7 +3,7 @@ import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import type { identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
+import { getIdentifier } from '$lib/client/Shared/Helpers/GoogleBooksAPI';
 import { ObjectId } from 'mongodb';
 
 /**MongoDB内での書誌情報

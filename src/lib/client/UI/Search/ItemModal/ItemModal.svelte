@@ -4,7 +4,7 @@
 	import {
 		dispatchSaveBookSearchRequest,
 		type bookSearchSaveEvent
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import ItemDetail from '$lib/client/UI/Search/ItemModal/ItemDetail.svelte';
 	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';

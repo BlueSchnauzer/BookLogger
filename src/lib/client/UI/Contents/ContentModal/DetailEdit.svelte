@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
-	import { modalToastTarget } from '$lib/client/Helpers/Toast';
+	import { modalToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { statusItems } from '$lib/client/Shared/Constants/MenuItems';
 	import PageCountEdit from '$lib/client/UI/Contents/ContentModal/PageCountEdit.svelte';
 	import PageHistoryEdit from '$lib/client/UI/Contents/ContentModal/PageHistoryEdit.svelte';

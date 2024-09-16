@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
-	import { mainToastTarget } from '$lib/client/Helpers/Toast';
+	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
+	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import Home from '$lib/client/Shared/Icons/Home.svelte';
 	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
@@ -15,12 +15,12 @@
 	import type {
 		deletionBookInfoParameter,
 		updateBookInfoParameter
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import {
 		handleFailure,
 		handleRecentBookInfoDeletion,
 		handleRecentBookInfoUpdate
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Handler';
 	import _ from 'lodash';
 	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
 

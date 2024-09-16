@@ -3,7 +3,7 @@
 	import {
 		dispatchBookInfoClick,
 		type bookInfoClickEvent
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import SimpleBar from 'simplebar';

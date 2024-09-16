@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 	import type { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
-	import { getCurrentDateString } from '$lib/client/Helpers/Date';
+	import { getCurrentDateString } from '$lib/client/Shared/Helpers/Date';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
 

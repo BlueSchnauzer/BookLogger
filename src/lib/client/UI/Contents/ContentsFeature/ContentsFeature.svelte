@@ -7,13 +7,13 @@
 	import type {
 		deletionBookInfoParameter,
 		updateBookInfoParameter
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import {
 		handleBookInfosDeletion,
 		handleBookInfosUpdate,
 		handleFailure
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
-	import { mainToastTarget } from '$lib/client/Helpers/Toast';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Handler';
+	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';

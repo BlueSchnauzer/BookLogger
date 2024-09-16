@@ -3,7 +3,7 @@
 	import {
 		dispatchBookSearchClick,
 		type bookSearchClickEvent
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import ListItem from '$lib/client/UI/Search/ResultList/ListItem.svelte';
 	import type { SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import { createEventDispatcher } from 'svelte';

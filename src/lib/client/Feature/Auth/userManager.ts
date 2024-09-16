@@ -1,5 +1,9 @@
 import { goto } from '$app/navigation';
-import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
+import {
+	mainToastTarget,
+	pushErrorToast,
+	pushSuccessToast
+} from '$lib/client/Shared/Helpers/Toast';
 import { authAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
 import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
 import {

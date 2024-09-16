@@ -3,8 +3,12 @@ import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type {
 	deletionBookInfoParameter,
 	updateBookInfoParameter
-} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-import { mainToastTarget, pushErrorToast, pushSuccessToast } from '$lib/client/Helpers/Toast';
+} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
+import {
+	mainToastTarget,
+	pushErrorToast,
+	pushSuccessToast
+} from '$lib/client/Shared/Helpers/Toast';
 import _ from 'lodash';
 
 export const handleBookInfosUpdate = (

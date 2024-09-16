@@ -6,7 +6,7 @@
 		dispatchUpdateBookInfoRequest,
 		type bookInfoDeleteEvent,
 		type bookInfoUpdateEvent
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
+	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import ModalDetail from '$lib/client/UI/Contents/ContentModal/ModalDetail.svelte';
 	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';

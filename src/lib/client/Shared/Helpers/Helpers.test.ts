@@ -2,9 +2,9 @@ import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistor
 import {
 	handleBookInfosDeletion,
 	handleBookInfosUpdate
-} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
-import { convertInputDateToDate } from '$lib/client/Helpers/Date';
-import { type industryIdentifiers, getIdentifier } from '$lib/client/Helpers/GoogleBooksAPI';
+} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Handler';
+import { convertInputDateToDate } from '$lib/client/Shared/Helpers/Date';
+import { type industryIdentifiers, getIdentifier } from '$lib/client/Shared/Helpers/GoogleBooksAPI';
 import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
