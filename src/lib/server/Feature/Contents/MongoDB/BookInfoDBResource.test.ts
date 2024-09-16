@@ -6,8 +6,8 @@ import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
 import {
 	convertBookInfoToDBModel,
 	type BookInfoDBModel
-} from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
+} from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
+import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
 import {
 	bookInfoInterfaceMock,
 	bookInfoInterfaceMocks,

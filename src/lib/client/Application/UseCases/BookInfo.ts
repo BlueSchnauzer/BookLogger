@@ -12,7 +12,7 @@ import {
 } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Utils/PageHistory';
-import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 
 const requestUrl = '/api/bookinfo';

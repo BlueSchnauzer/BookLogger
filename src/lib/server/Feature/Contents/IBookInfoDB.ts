@@ -1,7 +1,7 @@
 import type { id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 
 /**DBとの書誌データの取得・保存を扱うリポジトリ
  * 返却する値はDBモデルかプリミティブ型(のみを含んだ型)

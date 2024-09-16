@@ -1,8 +1,8 @@
 import type { RequestHandler } from '../../bookinfo/$types';
 import { verifyAndCreateUserId } from '$lib/server/Feature/Auth/idManager';
-import collections from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
+import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
 import { json } from '@sveltejs/kit';
-import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
+import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
 
 export const GET: RequestHandler = async ({ cookies }) => {
 	const userId = await verifyAndCreateUserId(cookies.get('idToken')!);

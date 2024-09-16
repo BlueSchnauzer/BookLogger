@@ -1,14 +1,14 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
 import { validatePutBookInfo } from '$lib/client/Utils/Validation';
-import collections from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
+import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
 import {
 	convertBookInfoToDBModel,
 	convertBookSearchToDBModel,
 	type BookInfoDBModel
-} from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+} from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import { verifyAndCreateUserId } from '$lib/server/Feature/Auth/idManager';
-import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
+import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

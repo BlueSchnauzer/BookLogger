@@ -1,6 +1,6 @@
 import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import type { BookInfoDBModel } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import {
 	PageHistory,
 	type pageHistory
