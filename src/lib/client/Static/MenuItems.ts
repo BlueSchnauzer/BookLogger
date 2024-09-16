@@ -1,8 +1,8 @@
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import BookCase from '$lib/client/UI/Shared/Icons/BookCase.svelte';
-import BookShelf from '$lib/client/UI/Shared/Icons/BookShelf.svelte';
-import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
-import MagnifingGlass from '$lib/client/UI/Shared/Icons/MagnifingGlass.svelte';
+import BookCase from '$lib/client/Shared/Icons/BookCase.svelte';
+import BookShelf from '$lib/client/Shared/Icons/BookShelf.svelte';
+import Home from '$lib/client/Shared/Icons/Home.svelte';
+import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 import type { ComponentType } from 'svelte';
 
 interface menuItem {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MagnifingGlass from '$lib/client/UI/Shared/Icons/MagnifingGlass.svelte';
+	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
