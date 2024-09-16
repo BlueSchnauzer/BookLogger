@@ -7,7 +7,7 @@ import {
 	convertBookSearchToDBModel,
 	type BookInfoDBModel
 } from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
-import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
+import { verifyAndCreateUserId } from '$lib/server/Feature/Auth/idManager';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';

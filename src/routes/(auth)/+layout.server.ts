@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { verifyAuthorisation } from '$lib/server/verification';
+import { verifyAuthorisation } from '$lib/server/Feature/Auth/idManager';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ cookies }) => {

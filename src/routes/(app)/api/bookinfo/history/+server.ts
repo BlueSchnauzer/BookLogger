@@ -1,5 +1,5 @@
 import type { RequestHandler } from '../../bookinfo/$types';
-import { verifyAndCreateUserId } from '$lib/server/Helpers/SvelteAPI';
+import { verifyAndCreateUserId } from '$lib/server/Feature/Auth/idManager';
 import collections from '$lib/server/Infrastructure/MongoDB/MongoDBHelper';
 import { json } from '@sveltejs/kit';
 import { BookInfoMongoDBResource } from '$lib/server/Infrastructure/MongoDB/BookInfoDBResource';
