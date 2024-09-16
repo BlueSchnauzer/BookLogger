@@ -1,28 +1,13 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { mainMenuItems } from '$lib/client/Static/MenuItems';
+	import { logout } from '$lib/client/Feature/Auth/userManager';
 	import { colorStone200 } from '$lib/client/Static/DisplayValues';
-	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
+	import { mainMenuItems } from '$lib/client/Static/MenuItems';
 	import Icon from '@iconify/svelte';
-	import { signOut } from 'firebase/auth';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	let pathName: string;
 	$: pathName = $page.url.pathname;
-
-	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
-	const logout = async () => {
-		try {
-			await signOut(firebaseAuth);
-			const response = await fetch('/api/auth', {
-				method: 'DELETE'
-			});
-		} catch (error) {
-			console.log(error);
-		}
-		goto('/login');
-	};
 </script>
 
 <nav class="flex flex-col max-md:hidden m-2 w-20 rounded-xl shadow-2xl bg-stone-700">

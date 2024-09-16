@@ -1,22 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
-	import { signOut } from 'firebase/auth';
 	import Icon from '@iconify/svelte';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
-
-	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
-	const logout = async () => {
-		try {
-			await signOut(firebaseAuth);
-			const response = await fetch('/api/auth', {
-				method: 'DELETE'
-			});
-		} catch (error) {
-			console.log(error);
-		}
-		goto('/login');
-	};
+	import { logout } from '$lib/client/Feature/Auth/userManager';
 </script>
 
 <section class="w-screen h-screen flex flex-col flex-grow items-center justify-center">

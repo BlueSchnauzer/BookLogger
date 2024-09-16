@@ -1,55 +1,22 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
-	import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-	import AuthMenu from '../AuthMenu.svelte';
+	import { login } from '$lib/client/Feature/Auth/userManager';
 	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
-	import { onDestroy, onMount } from 'svelte';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { onDestroy, onMount } from 'svelte';
+	import AuthMenu from '../AuthMenu.svelte';
 
 	let email: string;
 	let password: string;
 
-	//ローダー表示
-	let isDisplay = false;
+	let isDisplayLoader = false;
 	let success: boolean | undefined = undefined;
 	let btnGoogleLogin: HTMLButtonElement;
 	let btnEmailLogin: HTMLButtonElement;
 
-	/**
-	 * 認証を行い、firebaseから受け取ったuidをクッキーに保存する
-	 * @param type 使用する認証タイプ
-	 */
-	const login = async (type: 'google' | 'email') => {
-		isDisplay = true;
-		let idToken: string;
-
-		try {
-			if (type === 'google') {
-				const userCredentials = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
-				idToken = await userCredentials.user.getIdToken();
-			} else {
-				const userCredentials = await signInWithEmailAndPassword(firebaseAuth, email, password);
-				idToken = await userCredentials.user.getIdToken();
-			}
-
-			await setCookie(idToken);
-			goto('/home');
-		} catch (error) {
-			console.log(error);
-			success = false;
-		}
-
-		isDisplay = false;
-	};
-
-	/**認証したユーザの認証情報をクッキーに保存する。*/
-	const setCookie = async (idToken: string) => {
-		const response = await fetch('/api/auth', {
-			method: 'POST',
-			body: JSON.stringify(idToken),
-			headers: { 'Content-type': 'application/json' }
-		});
+	const handleLogin = async (type: 'google' | 'email', email = '', password = '') => {
+		isDisplayLoader = true;
+		success = await login('/home', type, email, password);
+		isDisplayLoader = false;
 	};
 
 	onMount(async () => {
@@ -80,7 +47,7 @@
 		aria-label="btnGoogleLogin"
 		type="submit"
 		class="w-60 self-center px-8 py-2 rounded duration-100 text-white bg-sky-600 hover:bg-sky-700"
-		on:click={() => login('google')}
+		on:click={() => handleLogin('google')}
 	>
 		Googleアカウントでログイン
 	</button>
@@ -89,7 +56,10 @@
 		<span class="px-2">OR</span>
 		<div class="w-7 bg-stone-400 min-h-[1px]" />
 	</div>
-	<form class="flex flex-col gap-4" on:submit|preventDefault={() => login('email')}>
+	<form
+		class="flex flex-col gap-4"
+		on:submit|preventDefault={() => handleLogin('email', email, password)}
+	>
 		<span class="text-sm">メールアドレス</span>
 		<input
 			type="email"
@@ -121,4 +91,4 @@
 		>
 	</form>
 </div>
-<FullCoverLoader {isDisplay} />
+<FullCoverLoader isDisplay={isDisplayLoader} />

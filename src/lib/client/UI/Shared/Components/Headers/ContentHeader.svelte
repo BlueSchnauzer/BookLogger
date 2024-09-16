@@ -1,30 +1,18 @@
 <script lang="ts">
+	import { logout } from '$lib/client/Feature/Auth/userManager';
+	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 	import Icon from '@iconify/svelte';
 	import type { ComponentType } from 'svelte';
-	import { signOut } from 'firebase/auth';
-	import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
-	import { goto } from '$app/navigation';
-	import { colorStone700 } from '$lib/client/Static/DisplayValues';
 
 	export let headerIcon: ComponentType;
 	export let headerText: string;
 
-	/**ログアウトしてクッキーを削除する(モバイルメニュー時はヘッダーからログアウト)。 */
-	const logout = async () => {
+	const handleLogout = async () => {
 		//画面サイズが小さい時に表示するので誤操作か確認する。
 		if (!confirm('ログアウトしますか？')) {
 			return;
 		}
-
-		try {
-			await signOut(firebaseAuth);
-			const response = await fetch('/api/auth', {
-				method: 'DELETE'
-			});
-		} catch (error) {
-			console.log(error);
-		}
-		goto('/login');
+		await logout();
 	};
 </script>
 
@@ -37,7 +25,7 @@
 		<button
 			data-testid="btnLogoutInHeader"
 			class="max-md:flex hidden w-10 h-10 items-center justify-center"
-			on:click={logout}
+			on:click={handleLogout}
 		>
 			<Icon icon="ph:sign-out" width="36" height="36" color={colorStone700} />
 		</button>
