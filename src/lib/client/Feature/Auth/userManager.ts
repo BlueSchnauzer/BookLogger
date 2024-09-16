@@ -52,6 +52,8 @@ export const logout = async () => {
 	} catch (error) {
 		console.log(error);
 	}
+
+	goto('/login');
 };
 
 export const registerWithEmailAndPassword = async (
