@@ -4,7 +4,7 @@
 	import { pageTitles } from '$lib/client/Static/DisplayValues';
 	import { emptyMessages } from '$lib/client/Static/DisplayValues';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
+	import PileOfBooks from '$lib/client/Shared/Icons/PileOfBooks.svelte';
 	import type { PageData } from './$types';
 	import ContentsFeature from '$lib/client/UI/Contents/ContentsFeature/ContentsFeature.svelte';
 

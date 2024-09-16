@@ -2,8 +2,8 @@
 	import type { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 	import { getPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
 	import { colorStone700 } from '$lib/client/Static/DisplayValues';
-	import CompleteBook from '$lib/icons/CompleteBook.svelte';
-	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
+	import CompleteBook from '$lib/client/Shared/Icons/CompleteBook.svelte';
+	import PileOfBooks from '$lib/client/Shared/Icons/PileOfBooks.svelte';
 	import Icon from '@iconify/svelte';
 
 	export let view: ReturnType<typeof bookInfoView>;

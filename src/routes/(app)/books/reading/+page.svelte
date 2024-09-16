@@ -3,7 +3,7 @@
 	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
 	import { emptyMessages, pageTitles } from '$lib/client/Static/DisplayValues';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import OpeningBook from '$lib/icons/OpeningBook.svelte';
+	import OpeningBook from '$lib/client/Shared/Icons/OpeningBook.svelte';
 	import type { PageData } from './$types';
 	import ContentsFeature from '$lib/client/UI/Contents/ContentsFeature/ContentsFeature.svelte';
 
