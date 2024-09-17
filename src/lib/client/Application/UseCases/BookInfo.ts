@@ -4,7 +4,7 @@ import type {
 	BookInfoUseCaseResult
 } from '$lib/client/Application/Interface';
 import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import {
 	PageHistory,

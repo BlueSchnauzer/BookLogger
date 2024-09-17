@@ -1,4 +1,4 @@
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 

@@ -1,4 +1,4 @@
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 
 export const getTitleLabel = (title?: string) => (!!title ? title : 'データ無し');
 

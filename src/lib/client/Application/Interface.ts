@@ -1,7 +1,7 @@
 import type { bookInfoView } from '$lib/client/Application/Views/BookInfo';
 import type { bookSearchView } from '$lib/client/Application/Views/BookSearch';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 
 export interface BookInfoResponseItem {
 	entity: BookInfo;

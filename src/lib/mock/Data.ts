@@ -8,7 +8,7 @@ import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import {
 	convertResponseToBookSearch,
 	type BookSearch
-} from '$lib/client/Domain/Entities/BookSearch';
+} from '$lib/client/Feature/Search/BookSearch';
 import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
 import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';

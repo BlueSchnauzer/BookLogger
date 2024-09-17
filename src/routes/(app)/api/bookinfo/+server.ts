@@ -1,5 +1,5 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { BookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 import { validatePutBookInfo } from '$lib/client/Shared/Utils/Validation';
 import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
 import {

@@ -2,7 +2,7 @@ import {
 	convertResponseToBookSearch,
 	type BookSearchResultListType,
 	type BookSearchResultType
-} from '$lib/client/Domain/Entities/BookSearch';
+} from '$lib/client/Feature/Search/BookSearch';
 import type { IBookSearchRepository } from '$lib/client/Domain/Repositories/IBookSearch';
 import type { BookSearchUseCaseResult } from '$lib/client/Application/Interface';
 import { bookSearchView } from '$lib/client/Application/Views/BookSearch';

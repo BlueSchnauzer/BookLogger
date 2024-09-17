@@ -1,6 +1,6 @@
 import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
 import { bookSearchView } from '$lib/client/Application/Views/BookSearch';
-import { convertResponseToBookSearch } from '$lib/client/Domain/Entities/BookSearch';
+import { convertResponseToBookSearch } from '$lib/client/Feature/Search/BookSearch';
 import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
 import { gapiTestDatas } from '$lib/mock/Data';
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
