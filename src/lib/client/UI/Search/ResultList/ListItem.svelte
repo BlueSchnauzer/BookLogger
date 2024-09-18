@@ -1,42 +1,49 @@
 <script lang="ts">
+	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
+	import {
+		getTitleLabel,
+		joinUpToFiveAuthorNames
+	} from '$lib/client/Feature/Search/DataView/dataView';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
-	import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
 
-	export let response: BookSearchResponseItem;
-	export let handleClick: (response: BookSearchResponseItem) => void;
+	export let bookSearch: BookSearch;
+	export let handleClick: (bookSearch: BookSearch) => void;
 </script>
 
 <li class="flex">
 	<button
 		class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md"
-		on:click={() => handleClick(response)}
+		on:click={() => handleClick(bookSearch)}
 	>
-		{#if response.entity.thumbnail}
+		{#if bookSearch.thumbnail}
 			<img
 				class="flex-shrink-0 self-center w-[128px] h-[182px] shadow-md"
-				title={response.view.getTitleLabel()}
-				src={response.entity.thumbnail}
+				title={getTitleLabel(bookSearch.title)}
+				src={bookSearch.thumbnail}
 				alt="書影"
 			/>
 		{:else}
 			<div
 				class="flex-shrink-0 self-center flex justify-center items-center w-[128px] h-[182px] shadow-md bg-slate-300"
-				title={response.view.getTitleLabel()}
+				title={getTitleLabel(bookSearch.title)}
 			>
 				<span>No Image</span>
 			</div>
 		{/if}
 		<div class="p-2 flex flex-col items-start text-left">
-			{#if response.entity.title}
-				<span class="text-lg font-bold text-lime-700">{response.entity.title}</span>
+			{#if bookSearch.title}
+				<span class="text-lg font-bold text-lime-700">{bookSearch.title}</span>
 			{:else}
 				<span class="text-lg font-bold text-gray-400">データ無し</span>
 			{/if}
 			<div class="p-2 flex flex-col items-start">
-				<CategoryLabel categoryText="著者" displayText={response.view.joinUpToFiveAuthorNames()} />
-				<CategoryLabel categoryText="発売日" displayText={response.entity.publishedDate} />
+				<CategoryLabel
+					categoryText="著者"
+					displayText={joinUpToFiveAuthorNames(bookSearch.authors)}
+				/>
+				<CategoryLabel categoryText="発売日" displayText={bookSearch.publishedDate} />
 				<div class="p-2">
-					<p class="collapseDescription">{response.entity.description ?? ''}</p>
+					<p class="collapseDescription">{bookSearch.description ?? ''}</p>
 				</div>
 			</div>
 		</div>
