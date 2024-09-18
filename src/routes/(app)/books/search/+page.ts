@@ -1,7 +1,9 @@
-import type { SearchPromise } from '$lib/client/Application/Interface';
-import { BookSearchUseCase } from '$lib/client/Application/UseCases/BookSearch';
-import { BookSearchGoogleBooksAPI } from '$lib/client/Infrastructure/GoogleBooksAPI/BookSearch';
-import type { SearchConditions, SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
+import { searchByFuzzyQuery, searchByQueries } from '$lib/client/Feature/Search/DataManage/fetcher';
+import type {
+	SearchConditions,
+	SearchPromise,
+	SearchType
+} from '$lib/client/Feature/Search/interface';
 import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load = (async (params) => {
@@ -54,19 +56,15 @@ const getSearchTypeAndPromise = (
 	const { query, bookTitle, author, isbn } = searchConditions;
 
 	let searchType: SearchType;
-
-	const repos = new BookSearchGoogleBooksAPI();
-	const usecase = BookSearchUseCase(repos);
 	//usecaseの検索処理を実行し結果を返す非同期関数。実行自体は+page.svelteで行う。
 	let searchPromise: SearchPromise;
 
 	if (query) {
 		searchType = 'fuzzy';
-		searchPromise = async () => usecase.searcyByFuzzyQuery(query!, maxResults, startIndex);
+		searchPromise = async () => searchByFuzzyQuery(query!, maxResults, startIndex);
 	} else if (bookTitle || author || isbn) {
 		searchType = 'detail';
-		searchPromise = async () =>
-			usecase.searchByQueries(bookTitle!, author!, isbn!, maxResults, startIndex);
+		searchPromise = async () => searchByQueries(bookTitle!, author!, isbn!, maxResults, startIndex);
 	} else {
 		//初回表示時
 		searchType = 'none';
