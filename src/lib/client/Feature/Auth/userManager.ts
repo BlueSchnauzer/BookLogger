@@ -4,7 +4,7 @@ import {
 	pushErrorToast,
 	pushSuccessToast
 } from '$lib/client/Shared/Helpers/Toast';
-import { authAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
+import { authAPIRoute } from '$lib/client/Shared/Constants/urls';
 import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
 import {
 	createUserWithEmailAndPassword,

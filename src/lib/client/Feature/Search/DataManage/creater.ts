@@ -1,5 +1,5 @@
 import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
-import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
+import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
 export const createBookInfo = async (fetch: FetchInterface, bookSearch: BookSearch) => {

@@ -1,6 +1,6 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
+import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
 export const updateBookInfo = async (

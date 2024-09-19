@@ -1,5 +1,5 @@
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/requestUrls';
+import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
 export const deleteBookInfo = async (fetch: FetchInterface, id: Id) => {
