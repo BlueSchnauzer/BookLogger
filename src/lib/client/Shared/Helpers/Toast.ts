@@ -29,10 +29,14 @@ export const pushErrorToast = (message: string, target: string): void => {
 	});
 };
 
-export const onSuccessToast = (message: string) => {
+export const pushToastOnModal = (message: string) => {
+	pushToast(message, modalToastTarget);
+};
+
+export const pushToastOnSuccess = (message: string) => {
 	pushSuccessToast(message, mainToastTarget);
 };
 
-export const onFailedToast = (message: string) => {
+export const pushToastOnFailed = (message: string) => {
 	pushErrorToast(message, mainToastTarget);
 };
