@@ -5,9 +5,10 @@
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
+	import { SearchURLs } from '$lib/client/Shared/Constants/urls';
 
 	export let isDisplay = false;
-	export let action = '/books/search';
+	export let action = SearchURLs.search;
 	let isShowDetailQueries = false;
 	let formError = false;
 

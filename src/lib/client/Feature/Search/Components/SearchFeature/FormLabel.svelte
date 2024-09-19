@@ -5,6 +5,7 @@
 		SearchType
 	} from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import Icon from '@iconify/svelte';
+	import { SearchURLs } from '$lib/client/Shared/Constants/urls';
 
 	export let isLoading = false;
 	export let searchType: SearchType;
@@ -14,7 +15,7 @@
 	export let onSubmit: (event: SubmitEvent) => void;
 </script>
 
-<form action="/books/search" class="flex justify-center" on:submit={onSubmit}>
+<form action={SearchURLs.search} class="flex justify-center" on:submit={onSubmit}>
 	<button
 		class="hover:bg-stone-300 rounded"
 		type="submit"
