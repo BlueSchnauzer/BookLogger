@@ -1,4 +1,4 @@
-import ItemDetail from '$lib/client/UI/Search/ItemModal/ItemDetail.svelte';
+import ItemDetail from '$lib/client/Feature/Search/Components/ItemModal/ItemDetail.svelte';
 import { bookSearchInterfaceMock } from '$lib/mock/Data';
 import { render, screen, waitFor } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';

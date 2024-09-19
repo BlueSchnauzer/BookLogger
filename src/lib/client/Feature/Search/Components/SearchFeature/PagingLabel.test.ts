@@ -1,7 +1,7 @@
-import PagingLabel from '$lib/client/UI/Search/SearchFeature/PagingLabel.svelte';
+import PagingLabel from '$lib/client/Feature/Search/Components/SearchFeature/PagingLabel.svelte';
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
-import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
+import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 
 describe('PagingLabel', () => {
 	it('レンダリング', () => {

@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { colorLime800 } from '$lib/client/Shared/Constants/DisplayValues';
-	import type { SearchConditions, SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
+	import type {
+		SearchConditions,
+		SearchType
+	} from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import Icon from '@iconify/svelte';
 
 	export let isLoading = false;

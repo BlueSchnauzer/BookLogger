@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
-	import ItemDetail from '$lib/client/UI/Search/ItemModal/ItemDetail.svelte';
+	import ItemDetail from '$lib/client/Feature/Search/Components/ItemModal/ItemDetail.svelte';
 	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';

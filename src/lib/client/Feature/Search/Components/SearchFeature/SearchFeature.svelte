@@ -7,14 +7,14 @@
 		pushToastOnSuccess
 	} from '$lib/client/Shared/Helpers/Toast';
 	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
-	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
+	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
-	import PagingLabel from '$lib/client/UI/Search/SearchFeature//PagingLabel.svelte';
+	import PagingLabel from '$lib/client/Feature/Search/Components/SearchFeature//PagingLabel.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
-	import ResultList from '$lib/client/UI/Search/ResultList/ResultList.svelte';
+	import ResultList from '$lib/client/Feature/Search/Components/ResultList/ResultList.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
-	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
-	import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
+	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
+	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 
 	export let searchPromise: SearchPromise;

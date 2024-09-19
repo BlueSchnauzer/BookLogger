@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
-	import ListItem from '$lib/client/UI/Search/ResultList/ListItem.svelte';
-	import type { SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
+	import ListItem from '$lib/client/Feature/Search/Components/ResultList/ListItem.svelte';
+	import type { SearchType } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 
 	export let reactiveSearchPromise: SearchPromise;
 	export let searchType: SearchType;

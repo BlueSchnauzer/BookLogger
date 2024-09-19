@@ -6,7 +6,7 @@
 	import Home from '$lib/client/Shared/Icons/Home.svelte';
 	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
-	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
+	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';
 	import { onMount } from 'svelte';

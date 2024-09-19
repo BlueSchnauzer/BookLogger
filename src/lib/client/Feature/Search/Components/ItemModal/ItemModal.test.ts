@@ -1,13 +1,10 @@
-import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
+import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 import { bookSearchInterfaceMock } from '$lib/mock/Data';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 //dialogタグの関数がJSDomだとサポートされていない？ためスキップ
 describe.skip('ContentModal', async () => {
-	// const entity = convertResponseToBookSearch(gapiTestDatas.items![0]);
-	// const view = bookSearchView(entity);
-	// const bookSearch: BookSearchResponseItem = { entity, view };
 	const bookSearch = bookSearchInterfaceMock;
 	const onSuccess = (message: string) => void 0;
 	const onFailed = (message: string) => void 0;

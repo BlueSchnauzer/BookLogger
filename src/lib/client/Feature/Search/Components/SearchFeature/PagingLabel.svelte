@@ -1,6 +1,6 @@
 <script lang="ts">
-	import FormLabel from '$lib/client/UI/Search/SearchFeature/FormLabel.svelte';
-	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
+	import FormLabel from '$lib/client/Feature/Search/Components/SearchFeature/FormLabel.svelte';
+	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { onMount } from 'svelte';
 
 	export let searchProps: SearchProps;
