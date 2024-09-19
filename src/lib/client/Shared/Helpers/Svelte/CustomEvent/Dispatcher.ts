@@ -1,7 +1,4 @@
-import type {
-	BookInfoResponseItem,
-	BookSearchResponseItem
-} from '$lib/client/Application/Interface';
+import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
 import type { EventDispatcher } from 'svelte';
@@ -58,34 +55,6 @@ export const dispatchDeletionBookInfoRequest = (
 ) => {
 	if (isSuccess) {
 		dispatch('deleteSuccess', { message, deletedId });
-	} else {
-		dispatch('failed', message);
-	}
-};
-
-export interface bookSearchClickEvent {
-	click: BookSearchResponseItem;
-}
-
-export const dispatchBookSearchClick = (
-	dispatch: EventDispatcher<bookSearchClickEvent>,
-	response: BookSearchResponseItem
-) => {
-	dispatch('click', response);
-};
-
-export interface bookSearchSaveEvent {
-	success: string;
-	failed: string;
-}
-
-export const dispatchSaveBookSearchRequest = (
-	dispatch: EventDispatcher<bookSearchSaveEvent>,
-	isSuccess: boolean,
-	message: string
-) => {
-	if (isSuccess) {
-		dispatch('success', message);
 	} else {
 		dispatch('failed', message);
 	}
