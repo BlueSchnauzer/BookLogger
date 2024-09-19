@@ -1,20 +1,12 @@
 <script lang="ts">
-	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
-	import {
-		dispatchBookSearchClick,
-		type bookSearchClickEvent
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
+	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
+	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import ListItem from '$lib/client/UI/Search/ResultList/ListItem.svelte';
 	import type { SearchType } from '$lib/client/UI/Search/SearchFeature/Interface';
-	import { createEventDispatcher } from 'svelte';
 
 	export let reactiveSearchPromise: SearchPromise;
 	export let searchType: SearchType;
-
-	const dispatch = createEventDispatcher<bookSearchClickEvent>();
-	const handleClick = (response: BookSearchResponseItem) => {
-		dispatchBookSearchClick(dispatch, response);
-	};
+	export let handleClick: (bookSearch: BookSearch) => void;
 </script>
 
 {#if searchType !== 'none'}
@@ -27,8 +19,8 @@
 	{:then response}
 		{#if response.items}
 			<ul data-testid="resultList">
-				{#each response.items as result (result.entity.keyId)}
-					<ListItem response={result} {handleClick} />
+				{#each response.items as result (result.keyId)}
+					<ListItem bookSearch={result} {handleClick} />
 				{/each}
 			</ul>
 		{/if}

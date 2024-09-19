@@ -1,36 +1,30 @@
 <script lang="ts">
-	import type { BookSearchResponseItem } from '$lib/client/Application/Interface';
-	import { createBookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
-	import {
-		dispatchSaveBookSearchRequest,
-		type bookSearchSaveEvent
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import ItemDetail from '$lib/client/UI/Search/ItemModal/ItemDetail.svelte';
 	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
-	import { createEventDispatcher } from 'svelte';
+	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
+	import { createBookInfo } from '$lib/client/Feature/Search/DataManage/creater';
 
 	export let isDisplay = false;
-	export let bookSearch: BookSearchResponseItem;
+	export let bookSearch: BookSearch;
+	export let onSuccess: (message: string) => void;
+	export let onFailed: (message: string) => void;
 	let isDisplayLoader = false;
-
-	const usecase = createBookInfoUseCase(fetch);
 
 	const closeModalAndLoader = () => {
 		isDisplay = false;
 		isDisplayLoader = false;
 	};
 
-	const dispatch = createEventDispatcher<bookSearchSaveEvent>();
 	const handlePostRequest = async () => {
 		isDisplayLoader = true;
-		const { isSuccess, message } = await usecase.create(bookSearch.entity);
+		const { isSuccess, message } = await createBookInfo(fetch, bookSearch);
 		closeModalAndLoader();
 
-		dispatchSaveBookSearchRequest(dispatch, isSuccess, message);
+		isSuccess ? onSuccess(message) : onFailed(message);
 	};
 </script>
 

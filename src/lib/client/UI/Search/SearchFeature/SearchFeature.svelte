@@ -1,8 +1,12 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
-	import type { BookSearchResponseItem, SearchPromise } from '$lib/client/Application/Interface';
+	import {
+		mainToastTarget,
+		pushToastOnFailed,
+		pushToastOnSuccess
+	} from '$lib/client/Shared/Helpers/Toast';
+	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import type { SearchProps } from '$lib/client/UI/Search/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import PagingLabel from '$lib/client/UI/Search/SearchFeature//PagingLabel.svelte';
@@ -11,10 +15,7 @@
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
 	import ItemModal from '$lib/client/UI/Search/ItemModal/ItemModal.svelte';
-	import {
-		handleFailure,
-		handleSuccess
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Handler';
+	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;
@@ -23,7 +24,7 @@
 	let resultCount = 0;
 	let isLoading = false;
 
-	let currentItem: BookSearchResponseItem;
+	let currentItem: BookSearch;
 	let isDisplayItem = false;
 
 	let reactiveSearchPromise: SearchPromise;
@@ -38,8 +39,8 @@
 		};
 	}
 
-	const handleClick = (event: CustomEvent<BookSearchResponseItem>) => {
-		currentItem = event.detail;
+	const handleClick = (bookSearch: BookSearch) => {
+		currentItem = bookSearch;
 		isDisplayItem = true;
 	};
 </script>
@@ -60,11 +61,7 @@
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
-		<ResultList
-			searchType={searchProps.searchType}
-			{reactiveSearchPromise}
-			on:click={handleClick}
-		/>
+		<ResultList searchType={searchProps.searchType} {reactiveSearchPromise} {handleClick} />
 		<div class="flex justify-center py-2">
 			<PagingLabel {searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>
@@ -72,8 +69,8 @@
 			<ItemModal
 				bookSearch={currentItem}
 				bind:isDisplay={isDisplayItem}
-				on:success={handleSuccess}
-				on:failed={handleFailure}
+				onSuccess={pushToastOnSuccess}
+				onFailed={pushToastOnFailed}
 			/>
 		{/if}
 		<div class="wrap-bottom">
