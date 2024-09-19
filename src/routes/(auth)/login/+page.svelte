@@ -4,6 +4,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onDestroy, onMount } from 'svelte';
 	import AuthMenu from '../AuthMenu.svelte';
+	import { HomeURLs } from '$lib/client/Shared/Constants/urls';
 
 	let email: string;
 	let password: string;
@@ -15,7 +16,7 @@
 
 	const handleLogin = async (type: 'google' | 'email', email = '', password = '') => {
 		isDisplayLoader = true;
-		success = await login('/home', type, email, password);
+		success = await login(HomeURLs.home, type, email, password);
 		isDisplayLoader = false;
 	};
 

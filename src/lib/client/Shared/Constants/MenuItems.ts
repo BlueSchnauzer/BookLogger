@@ -4,7 +4,7 @@ import BookShelf from '$lib/client/Shared/Icons/BookShelf.svelte';
 import Home from '$lib/client/Shared/Icons/Home.svelte';
 import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 import type { ComponentType } from 'svelte';
-import { SearchURLs } from './urls';
+import { BooksURLs, HomeURLs, SearchURLs } from './urls';
 
 interface menuItem {
 	ref: string;
@@ -16,17 +16,17 @@ interface mainMenuItem extends menuItem {
 }
 
 export const mainMenuItems: mainMenuItem[] = [
-	{ icon: Home, ref: '/home', name: 'ホーム' },
-	{ icon: BookCase, ref: '/books', name: 'ライブラリ' },
+	{ icon: Home, ref: HomeURLs.home, name: 'ホーム' },
+	{ icon: BookCase, ref: BooksURLs.books, name: 'ライブラリ' },
 	{ icon: MagnifingGlass, ref: SearchURLs.search, name: '書籍検索' },
 	{ icon: BookShelf, ref: '/shelf', name: '本棚' }
 ];
 
 export const booksMenuItems: menuItem[] = [
-	{ ref: '/books', name: '全ての本' },
-	{ ref: '/books/wish', name: '読みたい' },
-	{ ref: '/books/reading', name: '読んでいる' },
-	{ ref: '/books/complete', name: '読み終わった' }
+	{ ref: BooksURLs.books, name: '全ての本' },
+	{ ref: BooksURLs.wish, name: '読みたい' },
+	{ ref: BooksURLs.reading, name: '読んでいる' },
+	{ ref: BooksURLs.complete, name: '読み終わった' }
 ];
 
 interface statusItem {

@@ -1,4 +1,5 @@
 import type { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { BooksURLs, HomeURLs } from '$lib/client/Shared/Constants/urls';
 
 export const getTitleLabel = (title?: string) => (!!title ? title : 'データ無し');
 
@@ -28,13 +29,13 @@ export const getDateLabel = (date: Date, useYear = true): string => {
 
 export const getTypeForBottomLabel = (pathName: string) => {
 	switch (pathName) {
-		case '/home':
+		case HomeURLs.home:
 			return 'progress';
-		case '/books':
+		case BooksURLs.books:
 			return 'createDate';
-		case '/books/wish':
+		case BooksURLs.wish:
 			return 'createDate';
-		case '/books/reading':
+		case BooksURLs.reading:
 			return 'progress';
 		default:
 			return 'completeDate';
