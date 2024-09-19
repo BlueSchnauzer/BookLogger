@@ -4,7 +4,7 @@ import {
 	pushErrorToast,
 	pushSuccessToast
 } from '$lib/client/Shared/Helpers/Toast';
-import { authAPIRoute } from '$lib/client/Shared/Constants/urls';
+import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import { firebaseAuth } from '$lib/client/Feature/Auth/firebase';
 import {
 	createUserWithEmailAndPassword,
@@ -32,7 +32,7 @@ export const login = async (
 			idToken = await userCredentials.user.getIdToken();
 		}
 
-		const response = await fetch(authAPIRoute, {
+		const response = await fetch(APIRouteURLs.auth, {
 			method: 'POST',
 			body: JSON.stringify(idToken),
 			headers: { 'Content-type': 'application/json' }
@@ -50,7 +50,7 @@ export const login = async (
 export const logout = async () => {
 	try {
 		await signOut(firebaseAuth);
-		const response = await fetch(authAPIRoute, {
+		const response = await fetch(APIRouteURLs.auth, {
 			method: 'DELETE'
 		});
 	} catch (error) {

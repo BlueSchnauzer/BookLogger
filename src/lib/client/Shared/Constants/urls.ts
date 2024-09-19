@@ -1,2 +1,4 @@
-export const authAPIRoute = '/api/auth';
-export const bookInfoAPIRoute = '/api/bookinfo';
+export const APIRouteURLs = {
+	auth: '/api/auth',
+	bookInfo: '/api/bookinfo'
+} as const;

@@ -1,6 +1,6 @@
 import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { bookInfoAPIRoute } from '$lib/client/Shared/Constants/urls';
+import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
 export const updateBookInfo = async (
@@ -10,7 +10,7 @@ export const updateBookInfo = async (
 ) => {
 	const isCompleteReading = beforeStatus !== 'complete' && bookInfo.status.value === 'complete';
 
-	const { ok: isSuccess } = await fetch(bookInfoAPIRoute, {
+	const { ok: isSuccess } = await fetch(APIRouteURLs.bookInfo, {
 		method: 'PUT',
 		body: JSON.stringify({ bookInfo, isCompleteReading }),
 		headers: { 'Content-type': 'application/json' }
