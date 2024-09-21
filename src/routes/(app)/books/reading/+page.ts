@@ -1,9 +1,8 @@
-import { getReadingBookInfoUseCase } from '$lib/client/Application/UseCases/BookInfo';
+import { getBookInfosByStatus } from '$lib/client/Feature/Contents/DataManage/fetcher';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch }) => {
-	const usecase = getReadingBookInfoUseCase(fetch);
-	const result = await usecase.get();
+	const bookInfos = await getBookInfosByStatus(fetch, 'reading');
 
-	return { items: result.items };
+	return { bookInfos };
 }) satisfies PageLoad;
