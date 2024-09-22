@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
 
-	export let item: BookInfoResponseItem;
+	export let bookInfo: BookInfo;
 
 	let isEditPageCount = false;
 </script>
@@ -16,13 +16,13 @@
 				class="flex-grow p-1 mr-1 rounded-lg border-[1px] border-stone-400"
 				type="number"
 				id="editPageCount"
-				bind:value={item.entity.pageCount}
+				bind:value={bookInfo.pageCount}
 				min="0"
 				data-testid="editPageCount"
 			/>
-		{:else if item.entity.pageCount}
+		{:else if bookInfo.pageCount}
 			<span class="flex-grow mb-2 border-b-stone-400 border-b-[1px]">
-				{`${item.entity.pageCount}ページ`}
+				{`${bookInfo.pageCount}ページ`}
 			</span>
 		{:else}
 			<span class="flex-grow mb-2 text-gray-500 border-b-stone-400 border-b-[1px]">データ無し</span>
