@@ -8,16 +8,16 @@ export const joinAuthorNames = (author: string[]) => author.join(', ');
 export const getPageCountLabel = (pageCount: number) =>
 	pageCount ? `${pageCount}ページ` : '0ページ';
 
-export const isDisplayableProgress = (pageCount: number, pageHistories: PageHistory[]) =>
+export const isDisplayableProgress = (pageCount: number, pageHistories?: PageHistory[]) =>
 	pageCount > 0 && !!pageHistories && pageHistories?.length > 0;
 
-export const getProgressByPercent = (pageCount: number, pageHistories: PageHistory[]) => {
+export const getProgressByPercent = (pageCount: number, pageHistories?: PageHistory[]) => {
 	const ratio = Math.trunc((getMaxPageCountFromHistory(pageHistories)! / pageCount) * 100);
 	return `${ratio.toString()}%`;
 };
 
 /**書誌データの日付を画面表示用の形式に変換する。 */
-export const getDateLabel = (date: Date, useYear = true): string => {
+export const getDateLabel = (date?: Date, useYear = true): string => {
 	if (!date) {
 		return 'データ無し';
 	}
@@ -42,7 +42,7 @@ export const getTypeForBottomLabel = (pathName: string) => {
 	}
 };
 
-const getMaxPageCountFromHistory = (pageHistories: PageHistory[]): number | undefined => {
+export const getMaxPageCountFromHistory = (pageHistories?: PageHistory[]): number | undefined => {
 	if (!pageHistories?.length) {
 		return undefined;
 	}
