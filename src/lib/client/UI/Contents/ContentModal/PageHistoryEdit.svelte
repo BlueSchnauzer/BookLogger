@@ -1,32 +1,25 @@
 <script lang="ts">
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import type { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
 	import { getCurrentDateString } from '$lib/client/Shared/Helpers/Date';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
+	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
-	export let item: BookInfoResponseItem;
-	export let operations: ReturnType<typeof bookInfoOperations>;
+	export let bookInfo: BookInfo;
+
+	const store = bookInfoStore(bookInfo);
+	const storedValue = $store;
 
 	let readingDate = getCurrentDateString();
 	let readingCount: number;
-	let pageHistoryValidation: ReturnType<typeof operations.addPageHistory> = {
+
+	let pageHistoryValidation: { isError: boolean; errorMessage?: string } = {
 		isError: false,
 		errorMessage: ''
 	};
 
-	const handleReactivation = (callback: () => void) => {
-		callback();
-		item = item;
-	};
-
 	const handleAddPageHistory = () => {
-		handleReactivation(
-			() => (pageHistoryValidation = operations.addPageHistory(readingDate, readingCount))
-		);
-	};
-	const handleDeletePageHistory = (id?: string) => {
-		handleReactivation(() => operations.deletePageHistory(id));
+		pageHistoryValidation = store.addPageHistory(readingDate, readingCount);
 	};
 </script>
 
@@ -39,14 +32,14 @@
 	{/if}
 	<div class="mb-2 flex flex-col justify-start items-stretch">
 		<ul class="flex flex-col rounded">
-			{#if item.entity.pageHistories && item.entity.pageHistories.length > 0}
-				{#each item.entity.pageHistories as pageHistory (pageHistory.value.id)}
+			{#if storedValue.pageHistories && storedValue.pageHistories.length > 0}
+				{#each storedValue.pageHistories as pageHistory (pageHistory.value.id)}
 					<li class="my-1 flex">
 						<button
 							type="button"
 							aria-label="btnDeletePageHistory"
 							class="p-1 mr-1 rounded-full hover:bg-stone-300"
-							on:click={() => handleDeletePageHistory(pageHistory.value.id)}
+							on:click={() => store.deletePageHistory(pageHistory.value.id)}
 						>
 							<Icon icon="ph:x" width="24" height="24" color={colorStone700} />
 						</button>
@@ -81,7 +74,7 @@
 				name="readingCount"
 				id="readingCount"
 				min="1"
-				max={item.entity.pageCount}
+				max={storedValue.pageCount}
 				bind:value={readingCount}
 				data-testid="countInput"
 			/>
