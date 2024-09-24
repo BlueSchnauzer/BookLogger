@@ -1,25 +1,17 @@
 <script lang="ts">
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import {
-		dispatchBookInfoClick,
-		type bookInfoClickEvent
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
+	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
-	export let items: BookInfoResponseItem[] | undefined;
+	export let bookInfos: BookInfo[] | undefined;
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
+	export let handleClick: (bookInfo: BookInfo) => void;
 
 	let contentGrid: HTMLElement;
-
-	const dispatch = createEventDispatcher<bookInfoClickEvent>();
-	const handleClick = (item: BookInfoResponseItem) => {
-		dispatchBookInfoClick(dispatch, item);
-	};
 
 	onMount(() => {
 		window.ResizeObserver = ResizeObserver;
@@ -29,18 +21,18 @@
 	});
 </script>
 
-{#if items && items.length}
+{#if bookInfos && bookInfos.length}
 	<div bind:this={contentGrid} class="p-1 contentHeight">
 		<ul
 			class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
 		>
-			{#each items as data (data.entity.id)}
-				<li style="display: inherit;" title={data.entity.title}>
+			{#each bookInfos as bookInfo (bookInfo.id)}
+				<li style="display: inherit;" title={bookInfo.title}>
 					<button
 						class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
-						on:click={() => handleClick(data)}
+						on:click={() => handleClick(bookInfo)}
 					>
-						<GridItem item={data} />
+						<GridItem {bookInfo} />
 					</button>
 				</li>
 			{/each}
