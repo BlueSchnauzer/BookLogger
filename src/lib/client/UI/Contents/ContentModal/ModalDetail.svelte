@@ -1,19 +1,20 @@
 <script lang="ts">
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
+	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import { getTitleLabel } from '$lib/client/Feature/Contents/DataView/dataView';
 	import DetailEdit from '$lib/client/UI/Contents/ContentModal/DetailEdit.svelte';
 	import DetailInfo from '$lib/client/UI/Contents/ContentModal/DetailInfo.svelte';
 
-	export let item: BookInfoResponseItem;
+	export let bookInfo: BookInfo;
 </script>
 
 <div class="relative flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">
 	<DetailInfo
-		thumbnail={item.entity.thumbnail}
-		titleLabel={item.view.getTitleLabel()}
-		bind:isFavorite={item.entity.isFavorite}
+		thumbnail={bookInfo.thumbnail}
+		titleLabel={getTitleLabel(bookInfo.title)}
+		bind:isFavorite={bookInfo.isFavorite}
 	/>
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
-	<DetailEdit {item} />
+	<DetailEdit {bookInfo} />
 </div>
 
 <style>
