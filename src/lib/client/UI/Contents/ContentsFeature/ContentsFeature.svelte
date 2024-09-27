@@ -3,29 +3,20 @@
 	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import type {
-		deletionBookInfoParameter,
-		updateBookInfoParameter
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
-	import {
-		handleBookInfosDeletion,
-		handleBookInfosUpdate,
-		handleFailure
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Handler';
 	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import _ from 'lodash';
 	import { onMount, type ComponentType } from 'svelte';
+	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
 	/**ヘッダー用テキスト */
 	export let headerText: string;
 	/**書誌データの一覧 */
-	export let items: BookInfoResponseItem[] | undefined;
+	export let bookInfos: BookInfo[] | undefined;
 	/**ライブラリ画面(/booksルート)用にレンダリングするか */
 	export let isBooksRoute = false;
 	/**絞り込み用のラベルフィルター */
@@ -38,23 +29,27 @@
 	let inputValue: string;
 	let selectValue: number;
 	let isDisplayModal = false;
-	let currentItem: BookInfoResponseItem;
+	let currentItem: BookInfo;
 
 	// $: {
 	// 	bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
 	// }
 
-	const displayModal = (item: BookInfoResponseItem) => {
-		currentItem = _.cloneDeep(item);
+	const handleClick = (bookInfo: BookInfo) => {
+		currentItem = bookInfo;
 		isDisplayModal = true;
 	};
+	// const displayModal = (item: BookInfoResponseItem) => {
+	// 	currentItem = _.cloneDeep(item);
+	// 	isDisplayModal = true;
+	// };
 
-	const handleUpdateSuccess = (event: CustomEvent<updateBookInfoParameter>) => {
-		items = handleBookInfosUpdate(items, event.detail, isBooksRoute);
-	};
-	const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
-		items = handleBookInfosDeletion(items, event.detail);
-	};
+	// const handleUpdateSuccess = (bookInfo: BookInfo) => {
+	// 	bookInfos = handleBookInfosUpdate(items, event.detail, isBooksRoute);
+	// };
+	// const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
+	// 	items = handleBookInfosDeletion(items, event.detail);
+	// // };
 
 	onMount(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
@@ -68,15 +63,9 @@
 		<ContentFilters />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
-	<ContentsGrid {items} {emptyMessage} on:click={(event) => displayModal(event.detail)} />
+	<ContentsGrid {bookInfos} {emptyMessage} {handleClick} />
 	{#if isDisplayModal}
-		<ContentModal
-			item={currentItem}
-			bind:isDisplay={isDisplayModal}
-			on:updateSuccess={handleUpdateSuccess}
-			on:deleteSuccess={handleDeletionSuccess}
-			on:failed={handleFailure}
-		/>
+		<ContentModal bookInfo={currentItem} bind:isDisplay={isDisplayModal} />
 	{/if}
 	<div class="wrap-bottom">
 		<SvelteToast target={mainToastTarget} />

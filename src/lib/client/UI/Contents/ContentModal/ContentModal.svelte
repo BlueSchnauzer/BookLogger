@@ -1,26 +1,20 @@
 <script lang="ts">
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import { registeredBookInfoUseCases } from '$lib/client/Application/UseCases/BookInfo';
-	import {
-		dispatchDeletionBookInfoRequest,
-		dispatchUpdateBookInfoRequest,
-		type bookInfoDeleteEvent,
-		type bookInfoUpdateEvent
-	} from '$lib/client/Shared/Helpers/Svelte/CustomEvent/Dispatcher';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import ModalDetail from '$lib/client/UI/Contents/ContentModal/ModalDetail.svelte';
 	import ModalBase from '$lib/client/Shared/Components/ModalBase.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
-	import { createEventDispatcher } from 'svelte';
+	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
+	import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
+	import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
 
 	export let isDisplay = false;
-	export let item: BookInfoResponseItem;
+	export let bookInfo: BookInfo;
 
 	let isDisplayLoader = false;
-	const beforeStatus = item.entity.status.value;
-	const usecases = registeredBookInfoUseCases(fetch);
+	const beforeStatus = bookInfo.status.value;
 
 	/**モーダルとローダーを閉じる*/
 	const closeModalAndLoader = () => {
@@ -28,26 +22,40 @@
 		isDisplayLoader = false;
 	};
 
-	const dispatchUpdate = createEventDispatcher<bookInfoUpdateEvent>();
-	const handleUpdateRequest = async () => {
+	const handleUpdate = async () => {
 		isDisplayLoader = true;
-		const { isSuccess, message } = await usecases.update(item.entity, beforeStatus);
-		closeModalAndLoader();
 
-		dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, item.entity);
+		closeModalAndLoader();
 	};
 
-	const dispatchDeletion = createEventDispatcher<bookInfoDeleteEvent>();
-	const handleDeleteRequest = async () => {
+	const handleDelete = async () => {
 		if (!confirm('削除します。よろしいですか？')) {
 			return;
 		}
 		isDisplayLoader = true;
-		const { isSuccess, message } = await usecases.remove(item.entity.id!);
-		closeModalAndLoader();
 
-		dispatchDeletionBookInfoRequest(dispatchDeletion, isSuccess, message, item.entity.id!);
+		closeModalAndLoader();
 	};
+	// const dispatchUpdate = createEventDispatcher<bookInfoUpdateEvent>();
+	// const handleUpdateRequest = async () => {
+	// 	isDisplayLoader = true;
+	// 	const { isSuccess, message } = await usecases.update(item.entity, beforeStatus);
+	// 	closeModalAndLoader();
+
+	// 	dispatchUpdateBookInfoRequest(dispatchUpdate, isSuccess, message, item.entity);
+	// };
+
+	// const dispatchDeletion = createEventDispatcher<bookInfoDeleteEvent>();
+	// const handleDeleteRequest = async () => {
+	// 	if (!confirm('削除します。よろしいですか？')) {
+	// 		return;
+	// 	}
+	// 	isDisplayLoader = true;
+	// 	const { isSuccess, message } = await usecases.remove(item.entity.id!);
+	// 	closeModalAndLoader();
+
+	// 	dispatchDeletionBookInfoRequest(dispatchDeletion, isSuccess, message, item.entity.id!);
+	// };
 </script>
 
 <ModalBase bind:isDisplay bind:isDisplayLoader>
@@ -67,12 +75,12 @@
 			</button>
 		</div>
 		<span class="bg-stone-400 h-[1px]" />
-		<ModalDetail {item} />
+		<ModalDetail {bookInfo} />
 		<span class="bg-stone-400 h-[1px]" />
 		<div class="flex justify-between items-center">
-			<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDeleteRequest} />
+			<SecondaryButton type="button" text="削除" usage="delete" on:click={handleDelete} />
 			<div class="h-14 flex flex-row justify-end items-center">
-				<PrimaryButton type="button" text="編集" on:click={handleUpdateRequest} />
+				<PrimaryButton type="button" text="編集" on:click={handleUpdate} />
 				<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
 			</div>
 		</div>
