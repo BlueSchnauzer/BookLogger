@@ -9,20 +9,13 @@ import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookI
  * クラス形式のEntityではなく、プレーンオブジェクトのみを返す。
  */
 export interface IBookInfoDBRepositories {
-	/**書誌データを取得する */
-	get(): Promise<BookInfoDBModel[]>;
-	/**statusが引数と一致した書誌データを取得する */
-	getByStatus(status: status): Promise<BookInfoDBModel[]>;
-	/**直近で読んだ、書誌データを1件取得する */
-	getRecent(): Promise<BookInfoDBModel | undefined>;
-	/**書誌データから、pageHistoryのみを取得する */
+	getBookInfo(id: id): Promise<BookInfoDBModel | undefined>;
+	getBookInfos(): Promise<BookInfoDBModel[]>;
+	getBookInfosByStatus(status: status): Promise<BookInfoDBModel[]>;
+	getRecentBookInfo(): Promise<BookInfoDBModel | undefined>;
 	getPageHistory(): Promise<Array<pageHistory[]>>;
-	/**書誌データを保存する */
 	insert(bookInfo: BookInfoDBModel): Promise<Response>;
-	/**書誌データを更新する */
 	update(bookInfo: BookInfoDBModel, isCompleteReading: boolean): Promise<Response>;
-	/**書誌データを削除する */
 	delete(id: id): Promise<Response>;
-	/**同様の書誌データが既に保存されているか */
 	isDuplicate(keyId: string): Promise<boolean>;
 }

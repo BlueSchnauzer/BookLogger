@@ -19,7 +19,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		private readonly _userId: UserId
 	) {}
 
-	async get(): Promise<BookInfoDBModel[]> {
+	async getBookInfos(): Promise<BookInfoDBModel[]> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
 		let mongoDBModel: BookInfoDBModel[] = [];
@@ -36,7 +36,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getByStatus(status: status): Promise<BookInfoDBModel[]> {
+	async getBookInfosByStatus(status: status): Promise<BookInfoDBModel[]> {
 		let mongoDBModel: BookInfoDBModel[] = [];
 
 		try {
@@ -52,7 +52,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getRecent(): Promise<BookInfoDBModel | undefined> {
+	async getRecentBookInfo(): Promise<BookInfoDBModel | undefined> {
 		let mongoDBModel: BookInfoDBModel | undefined;
 
 		try {

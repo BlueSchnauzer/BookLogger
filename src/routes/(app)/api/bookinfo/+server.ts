@@ -33,15 +33,15 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	let mongoDBModels: BookInfoDBModel[] = [];
 	switch (getType) {
 		case 'recent':
-			const mongoDBModel = await repos.getRecent();
+			const mongoDBModel = await repos.getRecentBookInfo();
 			return json(mongoDBModel ? mongoDBModel : null, { status: 200 });
 		case 'wish':
 		case 'reading':
 		case 'complete':
-			mongoDBModels = await repos.getByStatus(getType);
+			mongoDBModels = await repos.getBookInfosByStatus(getType);
 			return json(mongoDBModels, { status: 200 });
 		default:
-			mongoDBModels = await repos.get();
+			mongoDBModels = await repos.getBookInfos();
 			return json(mongoDBModels, { status: 200 });
 	}
 };
