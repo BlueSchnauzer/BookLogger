@@ -26,6 +26,6 @@
 <ContentsFeature
 	headerIcon={CompleteBook}
 	headerText={pageTitles.complete}
-	items={data.items}
+	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.complete}
 />

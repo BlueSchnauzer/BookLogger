@@ -26,6 +26,6 @@
 <ContentsFeature
 	headerIcon={BookCase}
 	headerText={pageTitles.books}
-	items={data.items}
+	bookInfos={data.bookInfos}
 	isBooksRoute={true}
 />

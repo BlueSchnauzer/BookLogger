@@ -1,11 +1,9 @@
-import { getHomeBookInfoUseCases } from '$lib/client/Application/UseCases/BookInfo';
+import { getHistory, getRecentBookInfo } from '$lib/client/Feature/Contents/DataManage/fetcher';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch }) => {
-	//直近で読んだ書誌データを取得
-	const homeInfoUseCase = getHomeBookInfoUseCases(fetch);
-	const recentItem = await homeInfoUseCase.getRecent();
-	const historyMap = await homeInfoUseCase.getHistory();
+	const recentBookInfo = await getRecentBookInfo(fetch);
+	const historyMap = await getHistory(fetch);
 
-	return { recentItem, historyMap };
+	return { recentBookInfo, historyMap };
 }) satisfies PageLoad;

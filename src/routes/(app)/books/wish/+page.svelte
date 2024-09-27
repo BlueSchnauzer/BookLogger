@@ -24,6 +24,6 @@
 <ContentsFeature
 	headerIcon={PileOfBooks}
 	headerText={pageTitles.wish}
-	items={data.items}
+	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.wish}
 />

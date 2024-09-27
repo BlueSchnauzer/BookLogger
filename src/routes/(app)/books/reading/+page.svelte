@@ -23,6 +23,6 @@
 <ContentsFeature
 	headerIcon={OpeningBook}
 	headerText={pageTitles.reading}
-	items={data.items}
+	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.reading}
 />
