@@ -41,9 +41,42 @@ afterEach(async () => {
 	}
 });
 
-const userId = 'firstData';
+describe('getBookInfo', () => {
+	let datas: BookInfo[];
+	beforeEach(() => {
+		datas = bookInfoInterfaceMocks;
+	});
 
-describe('get', () => {
+	it('ユーザIDとIDに一致するデータを取得できること', async () => {
+		const preData = await col.insertMany([
+			convertBookInfoToDBModel(datas[0]),
+			convertBookInfoToDBModel(datas[1])
+		]);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, datas[0].userId);
+		const response = await repos.getBookInfo(datas[0].id?.value!);
+
+		expect(response).toBeDefined();
+		expect(response?.userId).toEqual(datas[0].userId.value);
+		expect(response?.title).toEqual(datas[0].title);
+	});
+
+	it('一致するデータが無い時にUndefinedが返ること', async () => {
+		const preData = await col.insertMany([
+			convertBookInfoToDBModel(datas[0]),
+			convertBookInfoToDBModel(datas[1])
+		]);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, datas[0].userId);
+		const response = await repos.getBookInfo(datas[2].id?.value!);
+
+		expect(response).toBeUndefined();
+	});
+});
+
+describe('getBookInfos', () => {
 	let datas: BookInfo[];
 	beforeEach(() => {
 		datas = bookInfoInterfaceMocksWithUserIds(testUserId1, testUserId2, testUserId3);
@@ -57,7 +90,7 @@ describe('get', () => {
 		expect(await preData.acknowledged).toBeTruthy();
 
 		const repos = new BookInfoMongoDBResource(col, datas[0].userId);
-		const response = await repos.get();
+		const response = await repos.getBookInfos();
 
 		expect(response.length).toEqual(1);
 		expect(response[0].userId).toEqual(datas[0].userId.value);
@@ -68,13 +101,13 @@ describe('get', () => {
 		expect(await preData.acknowledged).toBeTruthy();
 
 		const repos = new BookInfoMongoDBResource(col, new UserId(testUserId2));
-		const response = await repos.get();
+		const response = await repos.getBookInfos();
 
 		expect(response.length).toEqual(0);
 	});
 });
 
-describe('getRecent', () => {
+describe('getRecentBookInfo', () => {
 	let testDatas: BookInfo[];
 	beforeEach(() => {
 		testDatas = bookInfoInterfaceMocks;
@@ -88,7 +121,7 @@ describe('getRecent', () => {
 		expect(await preData.acknowledged).toBeTruthy();
 
 		const repos = new BookInfoMongoDBResource(col, testDatas[0].userId);
-		const response = await repos.getRecent();
+		const response = await repos.getRecentBookInfo();
 
 		expect(response).not.toBeUndefined();
 		expect(response!.userId).toEqual(testDatas[0].userId.value);
@@ -101,7 +134,7 @@ describe('getRecent', () => {
 		expect(await preData.acknowledged).toBeTruthy();
 
 		const repos = new BookInfoMongoDBResource(col, new UserId(testUserId2));
-		const response = await repos.getRecent();
+		const response = await repos.getRecentBookInfo();
 
 		expect(response).toBeUndefined();
 	});
@@ -146,7 +179,7 @@ describe('getPageHistory', () => {
 	});
 });
 
-describe('getByStatus', () => {
+describe('getBookInfosByStatus', () => {
 	const testDatas = bookInfoInterfaceMocks;
 	beforeEach(async () => {
 		await col.insertMany([
@@ -158,7 +191,7 @@ describe('getByStatus', () => {
 
 	it('statusがwishで、ユーザIDに一致するデータを取得できること', async () => {
 		const repos = new BookInfoMongoDBResource(col, testDatas[0].userId);
-		const response = await repos.getByStatus('wish');
+		const response = await repos.getBookInfosByStatus('wish');
 
 		expect(response.length).toEqual(1);
 		expect(response[0].userId).toEqual(testDatas[0].userId.value);
@@ -166,7 +199,7 @@ describe('getByStatus', () => {
 
 	it('statusがreadingで、ユーザIDに一致するデータを取得できること', async () => {
 		const repos = new BookInfoMongoDBResource(col, testDatas[1].userId);
-		const response = await repos.getByStatus('reading');
+		const response = await repos.getBookInfosByStatus('reading');
 
 		expect(response.length).toEqual(1);
 		expect(response[0].userId).toEqual(testDatas[1].userId.value);
@@ -174,7 +207,7 @@ describe('getByStatus', () => {
 
 	it('statusがcompleteで、ユーザIDに一致するデータを取得できること', async () => {
 		const repos = new BookInfoMongoDBResource(col, testDatas[2].userId);
-		const response = await repos.getByStatus('complete');
+		const response = await repos.getBookInfosByStatus('complete');
 
 		expect(response.length).toEqual(1);
 		expect(response[0].userId).toEqual(testDatas[2].userId.value);
@@ -182,7 +215,7 @@ describe('getByStatus', () => {
 
 	it('一致するデータが無い場合に空のデータが返ること', async () => {
 		const repos = new BookInfoMongoDBResource(col, new UserId('notExistData'));
-		const response = await repos.getByStatus('wish');
+		const response = await repos.getBookInfosByStatus('wish');
 
 		expect(response.length).toEqual(0);
 	});

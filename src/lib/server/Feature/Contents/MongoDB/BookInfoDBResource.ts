@@ -19,6 +19,24 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		private readonly _userId: UserId
 	) {}
 
+	async getBookInfo(id: id): Promise<BookInfoDBModel | undefined> {
+		let mongoDBModel: BookInfoDBModel | undefined;
+
+		try {
+			const cursor = await this._collection
+				.find({ userId: this._userId.value, _id: new ObjectId(id) })
+				.limit(1);
+			mongoDBModel = (await cursor.hasNext())
+				? ((await cursor.next()) as BookInfoDBModel)
+				: undefined;
+		} catch (error) {
+			console.log(error);
+			console.log('書誌データの取得に失敗しました。');
+		}
+
+		return mongoDBModel;
+	}
+
 	async getBookInfos(): Promise<BookInfoDBModel[]> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
