@@ -1,7 +1,7 @@
 import { bookInfoResponseItemMock } from '$lib/mock/Data';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
-import PageCountEdit from '$lib/client/UI/Contents/ContentModal/PageCountEdit.svelte';
+import PageCountEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageCountEdit.svelte';
 import userEvent from '@testing-library/user-event';
 
 describe('PageCountEdit', () => {

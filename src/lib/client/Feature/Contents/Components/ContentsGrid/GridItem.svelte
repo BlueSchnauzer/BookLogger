@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-	import StatusLabel from '$lib/client/UI/Contents/ContentsGrid/StatusLabel.svelte';
+	import StatusLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/StatusLabel.svelte';
 
 	export let bookInfo: BookInfo;
 	/**画面サイズが小さくなった際にテキストを非表示にするか*/

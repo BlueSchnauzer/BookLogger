@@ -1,11 +1,11 @@
 <script lang="ts">
-	import ContentsGrid from '$lib/client/UI/Contents/ContentsGrid/ContentsGrid.svelte';
+	import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
 	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
-	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
+	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import _ from 'lodash';
 	import { onMount, type ComponentType } from 'svelte';

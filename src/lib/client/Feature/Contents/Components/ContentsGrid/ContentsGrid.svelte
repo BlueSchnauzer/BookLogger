@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
+	import GridItem from '$lib/client/Feature/Contents/Components/ContentsGrid/GridItem.svelte';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';

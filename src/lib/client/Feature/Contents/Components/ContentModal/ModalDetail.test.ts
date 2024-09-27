@@ -1,4 +1,4 @@
-import ModalDetail from '$lib/client/UI/Contents/ContentModal/ModalDetail.svelte';
+import ModalDetail from '$lib/client/Feature/Contents/Components/ContentModal/ModalDetail.svelte';
 import { bookInfoResponseItemMock } from '$lib/mock/Data';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';

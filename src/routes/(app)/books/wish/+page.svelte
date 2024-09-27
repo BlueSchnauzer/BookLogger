@@ -6,7 +6,7 @@
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import PileOfBooks from '$lib/client/Shared/Icons/PileOfBooks.svelte';
 	import type { PageData } from './$types';
-	import ContentsFeature from '$lib/client/UI/Contents/ContentsFeature/ContentsFeature.svelte';
+	import ContentsFeature from '$lib/client/Feature/Contents/Components/ContentsFeature/ContentsFeature.svelte';
 
 	export let data: PageData;
 	setPathNameContext($page.url.pathname);

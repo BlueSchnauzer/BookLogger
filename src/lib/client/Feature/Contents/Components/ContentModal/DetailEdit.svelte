@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { modalToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { statusItems } from '$lib/client/Shared/Constants/MenuItems';
-	import PageCountEdit from '$lib/client/UI/Contents/ContentModal/PageCountEdit.svelte';
-	import PageHistoryEdit from '$lib/client/UI/Contents/ContentModal/PageHistoryEdit.svelte';
+	import PageCountEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageCountEdit.svelte';
+	import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageHistoryEdit.svelte';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';

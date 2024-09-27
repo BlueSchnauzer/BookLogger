@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from '@testing-library/svelte';
 import { describe, expect, it, vitest } from 'vitest';
-import ContentsGrid from '$lib/client/UI/Contents/ContentsGrid/ContentsGrid.svelte';
+import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
 import { bookInfoResponseItemsMock } from '$lib/mock/Data';
 
 describe('BookInfoGrid', () => {

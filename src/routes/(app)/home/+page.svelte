@@ -4,7 +4,7 @@
 	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import Home from '$lib/client/Shared/Icons/Home.svelte';
-	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
+	import GridItem from '$lib/client/Feature/Contents/Components/ContentsGrid/GridItem.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import _ from 'lodash';
-	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
+	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
 	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
 
 	export let data: PageData;

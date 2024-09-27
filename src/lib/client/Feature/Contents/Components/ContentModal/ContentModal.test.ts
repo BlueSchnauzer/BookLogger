@@ -1,5 +1,5 @@
 import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
+import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
 import { bookInfoResponseItemMock } from '$lib/mock/Data';
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it, vi, vitest } from 'vitest';

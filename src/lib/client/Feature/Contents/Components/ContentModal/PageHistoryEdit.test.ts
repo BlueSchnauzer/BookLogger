@@ -2,7 +2,7 @@ import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo'
 import { bookInfoResponseItemMock } from '$lib/mock/Data';
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
-import PageHistoryEdit from '$lib/client/UI/Contents/ContentModal/PageHistoryEdit.svelte';
+import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageHistoryEdit.svelte';
 
 describe('PageHistoryEdit', () => {
 	it('レンダリング', () => {
