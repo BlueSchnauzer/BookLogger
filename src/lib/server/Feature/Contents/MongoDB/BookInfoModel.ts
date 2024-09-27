@@ -1,8 +1,8 @@
-import { type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import { type BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
-import type { identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
-import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import type { identifiers } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Identifier';
+import type { pageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { getIdentifier } from '$lib/client/Shared/Helpers/GoogleBooksAPI';
 import { ObjectId } from 'mongodb';
 

@@ -1,5 +1,5 @@
 import type { bookInfoView } from '$lib/client/Application/Views/BookInfo';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 
 export interface BookInfoResponseItem {
 	entity: BookInfo;

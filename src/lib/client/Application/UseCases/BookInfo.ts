@@ -3,14 +3,17 @@ import type {
 	BookInfoResponseItem,
 	BookInfoUseCaseResult
 } from '$lib/client/Application/Interface';
-import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import {
+	convertDBModelToBookInfo,
+	type BookInfo
+} from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
-import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import type { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 import {
 	PageHistory,
 	type pageHistory
-} from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+} from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import { bookInfoView } from '$lib/client/Application/Views/BookInfo';

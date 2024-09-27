@@ -6,7 +6,7 @@
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { getDateLabel, joinAuthorNames } from '$lib/client/Feature/Contents/DataView/dataView';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 

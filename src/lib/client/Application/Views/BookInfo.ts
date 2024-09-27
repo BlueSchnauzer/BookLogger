@@ -1,5 +1,5 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import type { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 
 export const getTitleLabel = (title?: string) => (!!title ? title : 'データ無し');
 

@@ -1,5 +1,5 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 

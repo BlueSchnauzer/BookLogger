@@ -1,9 +1,9 @@
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
-import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
+import { Identifiers } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Identifier';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 import type { ObjectId } from 'mongodb';
 
 export interface BookInfo {

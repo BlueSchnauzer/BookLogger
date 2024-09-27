@@ -1,15 +1,15 @@
 import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 import { bookInfoView } from '$lib/client/Application/Views/BookInfo';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import {
 	convertResponseToBookSearch,
 	type BookSearch
 } from '$lib/client/Feature/Search/BookSearch';
-import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
+import { Identifiers } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Identifier';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 import type { books_v1 } from 'googleapis';
 
 const firstId_test = '651451ed67241f439ce8a1af';

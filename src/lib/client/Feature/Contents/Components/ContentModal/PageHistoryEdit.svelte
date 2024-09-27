@@ -2,7 +2,7 @@
 	import { getCurrentDateString } from '$lib/client/Shared/Helpers/Date';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
 	export let bookInfo: BookInfo;

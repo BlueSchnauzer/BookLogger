@@ -1,5 +1,5 @@
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import StatusLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/StatusLabel.svelte';
 import { bookInfoResponseItemMock } from '$lib/mock/Data';
 import { render } from '@testing-library/svelte';

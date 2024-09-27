@@ -1,4 +1,4 @@
-import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import type { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 

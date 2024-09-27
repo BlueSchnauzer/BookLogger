@@ -1,4 +1,4 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import {
 	bookInfoView,
 	getDateLabel,
@@ -11,7 +11,7 @@ import {
 } from '$lib/client/Application/Views/BookInfo';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 
 const handleExpectString = (actualValue: string, expectValue: string) => {
 	expect(actualValue).toBe(expectValue);

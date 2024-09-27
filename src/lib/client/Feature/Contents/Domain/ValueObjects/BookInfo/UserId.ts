@@ -1,4 +1,4 @@
-import { ValueObjectsBase } from '$lib/client/Domain/ValueObjects/ValueObjectBase';
+import { ValueObjectsBase } from '$lib/client/Feature/Contents/Domain/ValueObjects/ValueObjectBase';
 import { ValidationError } from '$lib/client/Shared/Exceptions/ValidationError';
 
 export class UserId extends ValueObjectsBase<string> {

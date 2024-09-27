@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import StatusLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/StatusLabel.svelte';
 
 	export let bookInfo: BookInfo;

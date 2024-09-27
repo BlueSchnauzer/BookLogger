@@ -1,4 +1,4 @@
-import type { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import type { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import { BooksURLs, HomeURLs } from '$lib/client/Shared/Constants/urls';
 
 export const getTitleLabel = (title?: string) => (!!title ? title : 'データ無し');

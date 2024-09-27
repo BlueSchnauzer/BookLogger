@@ -4,7 +4,7 @@
 	import CompleteBook from '$lib/client/Shared/Icons/CompleteBook.svelte';
 	import PileOfBooks from '$lib/client/Shared/Icons/PileOfBooks.svelte';
 	import Icon from '@iconify/svelte';
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import {
 		getDateLabel,
 		getMaxPageCountFromHistory,

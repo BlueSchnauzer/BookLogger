@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
 

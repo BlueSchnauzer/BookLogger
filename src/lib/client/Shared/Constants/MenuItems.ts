@@ -1,4 +1,4 @@
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import BookCase from '$lib/client/Shared/Icons/BookCase.svelte';
 import BookShelf from '$lib/client/Shared/Icons/BookShelf.svelte';
 import Home from '$lib/client/Shared/Icons/Home.svelte';

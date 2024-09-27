@@ -1,4 +1,4 @@
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import {
 	handleBookInfosDeletion,
 	handleBookInfosUpdate

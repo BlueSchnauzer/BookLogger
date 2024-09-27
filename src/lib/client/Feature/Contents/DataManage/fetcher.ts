@@ -1,10 +1,13 @@
-import { convertDBModelToBookInfo, type BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import {
+	convertDBModelToBookInfo,
+	type BookInfo
+} from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import {
 	PageHistory,
 	type pageHistory
-} from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+} from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
 import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';

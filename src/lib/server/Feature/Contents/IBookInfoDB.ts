@@ -1,6 +1,6 @@
-import type { id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import type { pageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import type { id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
+import type { pageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 
 /**DBとの書誌データの取得・保存を扱うリポジトリ

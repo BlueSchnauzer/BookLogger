@@ -7,8 +7,8 @@ import {
 	getWishBookInfoUseCase,
 	registeredBookInfoUseCases
 } from '$lib/client/Application/UseCases/BookInfo';
-import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { BookInfoAPIMock } from '$lib/mock/Fixture/index';
 import { describe, expect, it } from 'vitest';

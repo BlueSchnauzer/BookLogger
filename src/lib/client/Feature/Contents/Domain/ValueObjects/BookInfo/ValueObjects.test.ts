@@ -1,12 +1,15 @@
 import { ValidationError } from '$lib/client/Shared/Exceptions/ValidationError';
-import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
-import { Identifiers } from '$lib/client/Domain/ValueObjects/BookInfo/Identifier';
+import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
+import { Identifiers } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Identifier';
 import {
 	PageHistory,
 	type pageHistory
-} from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status, type status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+} from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import {
+	Status,
+	type status
+} from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 import { describe, expect, it } from 'vitest';
 
 describe('Id', () => {

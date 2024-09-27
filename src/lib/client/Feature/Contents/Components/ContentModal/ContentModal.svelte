@@ -5,10 +5,10 @@
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import Icon from '@iconify/svelte';
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 	import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
-	import type { status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
+	import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 
 	export let isDisplay = false;
 	export let bookInfo: BookInfo;

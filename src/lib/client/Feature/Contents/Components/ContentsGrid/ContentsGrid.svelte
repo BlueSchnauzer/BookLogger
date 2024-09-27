@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import GridItem from '$lib/client/Feature/Contents/Components/ContentsGrid/GridItem.svelte';
 	import ResizeObserver from 'resize-observer-polyfill';
 	import SimpleBar from 'simplebar';

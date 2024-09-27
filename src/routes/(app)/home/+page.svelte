@@ -13,7 +13,7 @@
 	import type { PageData } from './$types';
 	import _ from 'lodash';
 	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 
 	export let data: PageData;
 

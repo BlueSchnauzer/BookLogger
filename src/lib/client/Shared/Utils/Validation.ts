@@ -1,4 +1,4 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 
 /**日付(読んだ記録)チェック */
 export const validateReadingDate = (readingDate: string): boolean => {

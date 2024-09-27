@@ -1,6 +1,6 @@
 import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import type { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import type { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 import type { EventDispatcher } from 'svelte';
 
 export interface bookInfoClickEvent {

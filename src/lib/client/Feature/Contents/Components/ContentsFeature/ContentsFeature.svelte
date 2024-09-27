@@ -9,7 +9,7 @@
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import _ from 'lodash';
 	import { onMount, type ComponentType } from 'svelte';
-	import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;

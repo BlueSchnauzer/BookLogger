@@ -1,4 +1,4 @@
-import type { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import type { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 
 /**書誌データの配列から、文字列の日付と、ページ数を持つmapを作成する */
 export const getPageHistoryMapInCurrentWeek = (

@@ -1,8 +1,8 @@
 import * as env from '$env/static/private';
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
+import { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 import {
 	convertBookInfoToDBModel,
 	type BookInfoDBModel
