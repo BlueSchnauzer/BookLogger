@@ -1,15 +1,13 @@
-import { bookInfoOperations } from '$lib/client/Application/Operations/BookInfo';
-import { bookInfoResponseItemMock } from '$lib/mock/Data';
+import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageHistoryEdit.svelte';
+import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
-import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageHistoryEdit.svelte';
 
 describe('PageHistoryEdit', () => {
 	it('レンダリング', () => {
-		const bookInfoResponseItem = bookInfoResponseItemMock();
-		const operations = bookInfoOperations(bookInfoResponseItem.entity);
+		const bookInfo = bookInfoInterfaceMock;
 
-		render(PageHistoryEdit, { item: bookInfoResponseItem, operations });
+		render(PageHistoryEdit, { bookInfo });
 
 		expect(screen.getByText('読んだ記録')).toBeInTheDocument();
 	});

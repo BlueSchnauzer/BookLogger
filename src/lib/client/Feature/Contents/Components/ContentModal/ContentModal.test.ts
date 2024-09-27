@@ -1,14 +1,14 @@
-import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
 import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
-import { bookInfoResponseItemMock } from '$lib/mock/Data';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it, vi, vitest } from 'vitest';
 
 //dialogタグの関数がJSDomだとサポートされていない？ためスキップ
 describe.skip('ContentModal', async () => {
-	let testData: BookInfoResponseItem;
+	let bookInfo: BookInfo;
 	beforeEach(() => {
-		testData = bookInfoResponseItemMock();
+		bookInfo = bookInfoInterfaceMock;
 	});
 
 	afterEach(() => {
@@ -16,9 +16,9 @@ describe.skip('ContentModal', async () => {
 	});
 
 	it('レンダリング', () => {
-		render(ContentModal, { isDisplay: true, item: testData });
+		render(ContentModal, { isDisplay: true, bookInfo });
 
-		expect(screen.getByText(testData.entity.title)).toBeInTheDocument();
+		expect(screen.getByText(bookInfo.title)).toBeInTheDocument();
 		expect(screen.getByText('No Image')).toBeInTheDocument();
 		expect(screen.getByText('削除')).toBeInTheDocument();
 		expect(screen.getByText('編集')).toBeInTheDocument();
@@ -27,17 +27,17 @@ describe.skip('ContentModal', async () => {
 
 	it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
 		const testId = 'registeredDialog';
-		const { component } = render(ContentModal, { isDisplay: true, item: testData });
+		const { component } = render(ContentModal, { isDisplay: true, bookInfo });
 
 		expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-		await component.$set({ isDisplay: false, item: testData });
+		await component.$set({ isDisplay: false, bookInfo });
 		expect(screen.getByTestId(testId)).not.toBeVisible();
 	});
 
 	it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
 		const testId = 'registeredDialog';
-		const { component } = render(ContentModal, { isDisplay: true, item: testData });
+		const { component } = render(ContentModal, { isDisplay: true, bookInfo });
 
 		const btnClose = screen.getByTestId('btnClose');
 		const btnCancel = screen.getByText('キャンセル');
@@ -45,7 +45,7 @@ describe.skip('ContentModal', async () => {
 		await fireEvent.click(btnClose);
 		expect(screen.getByTestId(testId)).not.toBeVisible();
 
-		await component.$set({ isDisplay: true, item: testData });
+		await component.$set({ isDisplay: true, bookInfo });
 		await fireEvent.click(btnCancel);
 		expect(screen.getByTestId(testId)).not.toBeVisible();
 	});
@@ -54,7 +54,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('成功しました。', { status: 200 }));
 
-		const { component } = render(ContentModal, { isDisplay: true, item: testData });
+		const { component } = render(ContentModal, { isDisplay: true, bookInfo });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -77,7 +77,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('失敗しました', { status: 500 }));
 
-		const { component } = render(ContentModal, { isDisplay: true, item: testData });
+		const { component } = render(ContentModal, { isDisplay: true, bookInfo });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 
@@ -100,7 +100,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('成功しました。', { status: 200 }));
 
-		const { component } = render(ContentModal, { isDisplay: true, item: testData });
+		const { component } = render(ContentModal, { isDisplay: true, bookInfo });
 		const mockSuccess = vitest.fn();
 		component.$on('success', mockSuccess);
 
@@ -119,7 +119,7 @@ describe.skip('ContentModal', async () => {
 		let mockFetch = vi.spyOn(global, 'fetch');
 		mockFetch.mockImplementation(async () => new Response('失敗しました', { status: 500 }));
 
-		const { component } = render(ContentModal, { isDisplay: true, item: testData });
+		const { component } = render(ContentModal, { isDisplay: true, bookInfo });
 		const mockFailure = vitest.fn();
 		component.$on('failed', mockFailure);
 

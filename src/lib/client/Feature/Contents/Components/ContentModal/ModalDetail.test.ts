@@ -1,40 +1,37 @@
 import ModalDetail from '$lib/client/Feature/Contents/Components/ContentModal/ModalDetail.svelte';
-import { bookInfoResponseItemMock } from '$lib/mock/Data';
+import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import _ from 'lodash';
 import { describe, expect, it } from 'vitest';
 
 describe('ModalDetail', async () => {
-	const bookInfoResponseItem = bookInfoResponseItemMock();
-	//const operations = bookInfoOperations(bookInfoResponseItem.entity);
+	const bookInfo = bookInfoInterfaceMock;
 
 	//const pastDate = new Date(2023, 5, 1);
 
 	it('レンダリング', async () => {
-		render(ModalDetail, { item: bookInfoResponseItem });
+		render(ModalDetail, { bookInfo });
 
 		expect(screen.getByText('No Image')).toBeInTheDocument();
-		expect(screen.getByText(bookInfoResponseItem.entity.title!)).toBeInTheDocument();
-		expect(screen.getByText(bookInfoResponseItem.view.joinedAuthors())).toBeInTheDocument();
-		expect(screen.getByText(bookInfoResponseItem.view.getPageCountLabel())).toBeInTheDocument();
+		expect(screen.getByText(bookInfo.title!)).toBeInTheDocument();
 		expect(screen.getByText('読みたい本')).toBeInTheDocument();
 		//expect(screen.getByText(convertDate(pastDate))).toBeInTheDocument();
-		expect(screen.getByDisplayValue(bookInfoResponseItem.entity.memorandum)).toBeInTheDocument();
+		expect(screen.getByDisplayValue(bookInfo.memorandum)).toBeInTheDocument();
 	});
 
 	it('お気に入りボタンクリックで値が変更されること', async () => {
-		render(ModalDetail, { item: bookInfoResponseItem });
+		render(ModalDetail, { bookInfo });
 
 		const btnFavorite = screen.getByTestId('btnFavorite');
 		await fireEvent.click(btnFavorite);
 
-		expect(bookInfoResponseItem.entity.isFavorite).toEqual(true);
+		expect(bookInfo.isFavorite).toEqual(true);
 	});
 
 	it('ページ数を更新した際に、書誌情報の値が同期していること', async () => {
-		const clonedItem = _.cloneDeep(bookInfoResponseItem);
-		render(ModalDetail, { item: clonedItem });
+		const clonedItem = _.cloneDeep(bookInfo);
+		render(ModalDetail, { bookInfo: clonedItem });
 
 		const editButton = screen.getByRole('button', { name: 'btnEditPageCount' });
 		await fireEvent.click(editButton);
@@ -43,13 +40,13 @@ describe('ModalDetail', async () => {
 		await userEvent.clear(editField);
 		await userEvent.type(editField, '500');
 
-		expect(clonedItem.entity.pageCount).toEqual(500);
+		expect(clonedItem.pageCount).toEqual(500);
 	});
 
 	//成功しないため原因調査中
 	it.skip('ステータスを更新した際に、書誌情報の値が同期していること', async () => {
-		const clonedItem = _.cloneDeep(bookInfoResponseItem);
-		render(ModalDetail, { item: bookInfoResponseItem });
+		const clonedItem = _.cloneDeep(bookInfo);
+		render(ModalDetail, { bookInfo: clonedItem });
 
 		const select = screen.getByRole('combobox');
 		expect(select).toHaveValue('wish');
@@ -57,12 +54,12 @@ describe('ModalDetail', async () => {
 		const reading = 'reading';
 		await fireEvent.change(select, { target: { value: reading } });
 		expect(select).toHaveValue(reading);
-		expect(clonedItem.entity.status.value).toEqual(reading);
+		expect(clonedItem.status.value).toEqual(reading);
 	});
 
 	//成功しないため原因調査中
 	it.skip('読んだ記録を追加できること', async () => {
-		const { container } = render(ModalDetail, { item: bookInfoResponseItem });
+		const { container } = render(ModalDetail, { bookInfo });
 
 		const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
 		const countInput = screen.getByTestId('countInput');
@@ -78,7 +75,7 @@ describe('ModalDetail', async () => {
 	});
 
 	it('値が不正な場合に、読んだ記録を追加できないこと', async () => {
-		const { container } = render(ModalDetail, { item: bookInfoResponseItem });
+		const { container } = render(ModalDetail, { bookInfo });
 
 		const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
 		const countInput = screen.getByTestId('countInput');
@@ -93,18 +90,16 @@ describe('ModalDetail', async () => {
 		await userEvent.type(countInput, '-1');
 		await fireEvent.click(btnAdd);
 		expect(
-			screen.getByText(
-				`ページ数は1～${bookInfoResponseItem.entity.pageCount}ページで入力してください`
-			)
+			screen.getByText(`ページ数は1～${bookInfo.pageCount}ページで入力してください`)
 		).toBeInTheDocument();
 	});
 
 	it('メモ欄を更新した際に、書誌情報の値が同期していること', async () => {
-		render(ModalDetail, { item: bookInfoResponseItem });
+		render(ModalDetail, { bookInfo });
 
 		const memoInput = screen.getByTestId<HTMLInputElement>('memoInput');
 		await userEvent.type(memoInput, 'test');
 
-		expect(memoInput.value).toEqual(bookInfoResponseItem.entity.memorandum);
+		expect(memoInput.value).toEqual(bookInfo.memorandum);
 	});
 });
