@@ -2,15 +2,27 @@ import {
 	convertDBModelToBookInfo,
 	type BookInfo
 } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
-import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
-import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
+import type { id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 import {
 	PageHistory,
 	type pageHistory
 } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
-import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
+import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
+import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
+
+export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
+	const response = await fetch(`${APIRouteURLs}/${id}`);
+	const model = (await response.json()) as BookInfoDBModel;
+
+	if (!model) {
+		return undefined;
+	}
+
+	return convertDBModelToBookInfo(model);
+};
 
 export const getBookInfos = async (fetch: FetchInterface): Promise<BookInfo[]> => {
 	const response = await fetch(APIRouteURLs.bookInfo);
