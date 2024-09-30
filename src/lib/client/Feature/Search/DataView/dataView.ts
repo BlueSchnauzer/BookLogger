@@ -1,4 +1,6 @@
-export const joinUpToFiveAuthorNames = (authors: string[]) => {
+export const getTitleLabel = (title?: string) => (!!title ? title : 'データ無し');
+
+export const joinUpToFiveAuthorNames = (authors?: string[]) => {
 	if (!authors) {
 		return '';
 	}
@@ -11,7 +13,13 @@ export const joinUpToFiveAuthorNames = (authors: string[]) => {
 	}
 };
 
-export const joinAuthorNames = (authors: string[]) => authors.join(', ');
+export const joinAuthorNames = (authors?: string[]) => {
+	if (!authors) {
+		return '';
+	}
+
+	return authors.join(', ');
+};
 
 export const getPageCountLabel = (pageCount?: number) =>
 	!!pageCount ? `${pageCount}ページ` : '0ページ';

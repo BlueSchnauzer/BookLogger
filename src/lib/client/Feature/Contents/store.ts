@@ -1,9 +1,9 @@
-import type { BookInfo } from '$lib/client/Domain/Entities/BookInfo';
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
-import { Status } from '$lib/client/Domain/ValueObjects/BookInfo/Status';
-import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Helpers/Date';
-import { pushToast, modalToastTarget } from '$lib/client/Helpers/Toast';
-import { validateReadingCount, validateReadingDate } from '$lib/client/Utils/Validation';
+import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
+import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Shared/Helpers/Date';
+import { pushToast, modalToastTarget } from '$lib/client/Shared/Helpers/Toast';
+import { validateReadingCount, validateReadingDate } from '$lib/client/Shared/Utils/Validation';
 import { get, writable } from 'svelte/store';
 
 export const bookInfoStore = (bookInfo: BookInfo) => {

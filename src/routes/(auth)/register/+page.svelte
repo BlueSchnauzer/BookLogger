@@ -1,34 +1,19 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { createUserWithEmailAndPassword } from 'firebase/auth';
-	import { firebaseAuth } from '$lib/firebase.client';
+	import { registerWithEmailAndPassword } from '$lib/client/Feature/Auth/userManager';
+	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
 	import AuthMenu from '../AuthMenu.svelte';
-	import FullCoverLoader from '$lib/client/UI/Shared/Components/FullCoverLoader.svelte';
-	import { pushSuccessToast, pushErrorToast } from '$lib/client/Helpers/Toast';
-	import { mainToastTarget } from '$lib/client/Helpers/Toast';
 
 	let email: string;
 	let password: string;
 
 	//ローダーを表示する
-	let isDisplay = false;
+	let isDisplayLoader = false;
 	let success: boolean | undefined = undefined;
 
-	/**メールとパスワードでのユーザ登録処理*/
-	const registerWithEmail = async () => {
-		isDisplay = true;
-
-		try {
-			await createUserWithEmailAndPassword(firebaseAuth, email, password);
-			pushSuccessToast('登録が完了しました。', mainToastTarget);
-			goto('/login');
-		} catch (error) {
-			console.log(error);
-			pushErrorToast('登録に失敗しました。', mainToastTarget);
-			success = false;
-		}
-
-		isDisplay = false;
+	const handleRegister = async (email: string, password: string) => {
+		isDisplayLoader = true;
+		success = await registerWithEmailAndPassword('/login', email, password);
+		isDisplayLoader = false;
 	};
 </script>
 
@@ -44,7 +29,10 @@
 		</div>
 	{/if}
 	<span class="text-gray-500">※Googleアカウントがある場合は登録なしで利用できます。</span>
-	<form class="flex flex-col gap-4" on:submit|preventDefault={registerWithEmail}>
+	<form
+		class="flex flex-col gap-4"
+		on:submit|preventDefault={() => handleRegister(email, password)}
+	>
 		<span class="text-sm">メールアドレス</span>
 		<input
 			type="email"
@@ -69,4 +57,4 @@
 		</button>
 	</form>
 </div>
-<FullCoverLoader {isDisplay} />
+<FullCoverLoader isDisplay={isDisplayLoader} />

@@ -1,28 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
-	import { mainToastTarget } from '$lib/client/Helpers/Toast';
-	import { pageTitles } from '$lib/client/Static/DisplayValues';
-	import Home from '$lib/client/UI/Shared/Icons/Home.svelte';
-	import GridItem from '$lib/client/UI/Contents/ContentsGrid/GridItem.svelte';
-	import ContentHeader from '$lib/client/UI/Shared/Components/Headers/ContentHeader.svelte';
-	import ConditionModal from '$lib/client/UI/Search/ConditionModal/ConditionModal.svelte';
+	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
+	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
+	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
+	import Home from '$lib/client/Shared/Icons/Home.svelte';
+	import GridItem from '$lib/client/Feature/Contents/Components/ContentsGrid/GridItem.svelte';
+	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
+	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import type { BookInfoResponseItem } from '$lib/client/Application/Interface';
-	import type {
-		deletionBookInfoParameter,
-		updateBookInfoParameter
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Dispatcher';
-	import {
-		handleFailure,
-		handleRecentBookInfoDeletion,
-		handleRecentBookInfoUpdate
-	} from '$lib/client/Helpers/Svelte/CustomEvent/Handler';
 	import _ from 'lodash';
-	import ContentModal from '$lib/client/UI/Contents/ContentModal/ContentModal.svelte';
+	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
+	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 
 	export let data: PageData;
 
@@ -34,9 +25,9 @@
 
 	let isDisplayDetail = false;
 	let isDisplayConditionModal = false;
-	let currentItem: BookInfoResponseItem;
+	let currentItem: BookInfo;
 
-	const displayModal = (item?: BookInfoResponseItem) => {
+	const displayModal = (item?: BookInfo) => {
 		if (!item) {
 			return;
 		}
@@ -45,12 +36,12 @@
 		isDisplayDetail = true;
 	};
 
-	const handleUpdateSuccess = (event: CustomEvent<updateBookInfoParameter>) => {
-		data.recentItem = handleRecentBookInfoUpdate(currentItem, event.detail);
-	};
-	const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
-		data.recentItem = handleRecentBookInfoDeletion(currentItem, event.detail);
-	};
+	// const handleUpdateSuccess = (event: CustomEvent<updateBookInfoParameter>) => {
+	// 	data.recentBookInfo = handleRecentBookInfoUpdate(currentItem, event.detail);
+	// };
+	// const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
+	// 	data.recentBookInfo = handleRecentBookInfoDeletion(currentItem, event.detail);
+	// };
 
 	onMount(() => {
 		const chart = new Chart(countGraph, {
@@ -91,14 +82,14 @@
 			data-testid="recentbook"
 			class="flex flex-col items-center h-fit p-6 m-6 rounded-xl border-[1px] border-stone-400 bg-gray-100"
 		>
-			{#if data.recentItem}
+			{#if data.recentBookInfo}
 				<p class="text-xl m-2 text-lime-700 font-medium self-start">最近読んだ本</p>
 				<button
 					data-testid="btnRecentbook"
 					class="grid item h-96 w-72 bg-slate-50 rounded shadow-md"
-					on:click={() => displayModal(data.recentItem)}
+					on:click={() => displayModal(data.recentBookInfo)}
 				>
-					<GridItem item={data.recentItem} isResponsiveText={false} />
+					<GridItem bookInfo={data.recentBookInfo} isResponsiveText={false} />
 				</button>
 			{:else}
 				<div class="text-xl m-2 text-lime-700 font-medium">
@@ -126,13 +117,7 @@
 		</div>
 	</div>
 	{#if isDisplayDetail}
-		<ContentModal
-			bind:isDisplay={isDisplayDetail}
-			item={currentItem}
-			on:updateSuccess={handleUpdateSuccess}
-			on:deleteSuccess={handleDeletionSuccess}
-			on:failed={handleFailure}
-		/>
+		<ContentModal bind:isDisplay={isDisplayDetail} bookInfo={currentItem} />
 	{/if}
 	<div class="wrap-bottom">
 		<SvelteToast target={mainToastTarget} />

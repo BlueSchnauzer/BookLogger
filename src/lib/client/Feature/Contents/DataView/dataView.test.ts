@@ -1,4 +1,4 @@
-import { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import { expect, describe, it } from 'vitest';
 import {
 	getTitleLabel,

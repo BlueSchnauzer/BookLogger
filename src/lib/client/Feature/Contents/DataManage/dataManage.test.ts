@@ -9,7 +9,7 @@ import {
 import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
-import { Id } from '$lib/client/Domain/ValueObjects/BookInfo/Id';
+import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 
 describe('fetcher', () => {
 	BookInfoAPIMock.setGetRouteFetch('get');

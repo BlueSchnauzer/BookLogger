@@ -2,7 +2,7 @@ import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import {
 	type BookInfoDBModel,
 	convertBookInfoToDBModel
-} from '$lib/server/Domain/Entities/MongoDB/BookInfoModel';
+} from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import { json } from '@sveltejs/kit';
 import { beforeAll, vi } from 'vitest';
 

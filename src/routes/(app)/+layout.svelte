@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { LayoutData } from '../$types';
-	import SideMenuItem from '$lib/client/UI/Shared/Components/Menus/SideMenu.svelte';
-	import BottomMenuItem from '$lib/client/UI/Shared/Components/Menus/BottomMenu.svelte';
+	import SideMenuItem from '$lib/client/Shared/Components/Menus/SideMenu.svelte';
+	import BottomMenuItem from '$lib/client/Shared/Components/Menus/BottomMenu.svelte';
 
 	//export let data: LayoutData;
 </script>

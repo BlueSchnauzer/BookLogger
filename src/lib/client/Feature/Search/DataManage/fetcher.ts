@@ -2,7 +2,7 @@ import {
 	convertResponseToBookSearch,
 	type BookSearchResultListType,
 	type BookSearchResultType
-} from '$lib/client/Domain/Entities/BookSearch';
+} from '$lib/client/Feature/Search/BookSearch';
 import {
 	requestByFuzzyQuery,
 	requestByQueries

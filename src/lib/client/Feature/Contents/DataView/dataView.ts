@@ -1,4 +1,5 @@
-import type { PageHistory } from '$lib/client/Domain/ValueObjects/BookInfo/PageHistory';
+import type { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
+import { BooksURLs, HomeURLs } from '$lib/client/Shared/Constants/urls';
 
 export const getTitleLabel = (title?: string) => (!!title ? title : 'データ無し');
 
@@ -7,16 +8,16 @@ export const joinAuthorNames = (author: string[]) => author.join(', ');
 export const getPageCountLabel = (pageCount: number) =>
 	pageCount ? `${pageCount}ページ` : '0ページ';
 
-export const isDisplayableProgress = (pageCount: number, pageHistories: PageHistory[]) =>
+export const isDisplayableProgress = (pageCount: number, pageHistories?: PageHistory[]) =>
 	pageCount > 0 && !!pageHistories && pageHistories?.length > 0;
 
-export const getProgressByPercent = (pageCount: number, pageHistories: PageHistory[]) => {
+export const getProgressByPercent = (pageCount: number, pageHistories?: PageHistory[]) => {
 	const ratio = Math.trunc((getMaxPageCountFromHistory(pageHistories)! / pageCount) * 100);
 	return `${ratio.toString()}%`;
 };
 
 /**書誌データの日付を画面表示用の形式に変換する。 */
-export const getDateLabel = (date: Date, useYear = true): string => {
+export const getDateLabel = (date?: Date, useYear = true): string => {
 	if (!date) {
 		return 'データ無し';
 	}
@@ -28,20 +29,20 @@ export const getDateLabel = (date: Date, useYear = true): string => {
 
 export const getTypeForBottomLabel = (pathName: string) => {
 	switch (pathName) {
-		case '/home':
+		case HomeURLs.home:
 			return 'progress';
-		case '/books':
+		case BooksURLs.books:
 			return 'createDate';
-		case '/books/wish':
+		case BooksURLs.wish:
 			return 'createDate';
-		case '/books/reading':
+		case BooksURLs.reading:
 			return 'progress';
 		default:
 			return 'completeDate';
 	}
 };
 
-const getMaxPageCountFromHistory = (pageHistories: PageHistory[]): number | undefined => {
+export const getMaxPageCountFromHistory = (pageHistories?: PageHistory[]): number | undefined => {
 	if (!pageHistories?.length) {
 		return undefined;
 	}

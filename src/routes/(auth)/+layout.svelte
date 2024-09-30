@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mainToastTarget } from '$lib/client/Helpers/Toast';
+	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 </script>
 

@@ -1,6 +1,6 @@
-import { getTitleLabel } from '$lib/client/Application/Views/BookInfo';
 import { describe, it, expect } from 'vitest';
 import {
+	getTitleLabel,
 	joinUpToFiveAuthorNames,
 	joinAuthorNames,
 	getPageCountLabel

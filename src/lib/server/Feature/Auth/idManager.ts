@@ -1,5 +1,5 @@
-import { UserId } from '$lib/client/Domain/ValueObjects/BookInfo/UserId';
-import { firebaseAdminAuth } from '$lib/server/firebase.server';
+import { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
+import { firebaseAdminAuth } from '$lib/server/Feature/Auth/firebase';
 import { redirect } from '@sveltejs/kit';
 
 /**

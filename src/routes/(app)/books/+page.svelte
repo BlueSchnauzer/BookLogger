@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
-	import { pageTitles } from '$lib/client/Static/DisplayValues';
-	import BookCase from '$lib/client/UI/Shared/Icons/BookCase.svelte';
+	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
+	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
+	import BookCase from '$lib/client/Shared/Icons/BookCase.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import type { PageData } from './$types';
-	import ContentsFeature from '$lib/client/UI/Contents/ContentsFeature/ContentsFeature.svelte';
+	import ContentsFeature from '$lib/client/Feature/Contents/Components/ContentsFeature/ContentsFeature.svelte';
 
 	export let data: PageData;
 	setPathNameContext($page.url.pathname);
@@ -26,6 +26,6 @@
 <ContentsFeature
 	headerIcon={BookCase}
 	headerText={pageTitles.books}
-	items={data.items}
+	bookInfos={data.bookInfos}
 	isBooksRoute={true}
 />

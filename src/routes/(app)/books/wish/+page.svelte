@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { setPathNameContext } from '$lib/client/Helpers/Svelte/ContextAPI';
-	import { pageTitles } from '$lib/client/Static/DisplayValues';
-	import { emptyMessages } from '$lib/client/Static/DisplayValues';
+	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
+	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
+	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import PileOfBooks from '$lib/icons/PileOfBooks.svelte';
+	import PileOfBooks from '$lib/client/Shared/Icons/PileOfBooks.svelte';
 	import type { PageData } from './$types';
-	import ContentsFeature from '$lib/client/UI/Contents/ContentsFeature/ContentsFeature.svelte';
+	import ContentsFeature from '$lib/client/Feature/Contents/Components/ContentsFeature/ContentsFeature.svelte';
 
 	export let data: PageData;
 	setPathNameContext($page.url.pathname);
@@ -24,6 +24,6 @@
 <ContentsFeature
 	headerIcon={PileOfBooks}
 	headerText={pageTitles.wish}
-	items={data.items}
+	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.wish}
 />
