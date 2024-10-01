@@ -1,11 +1,6 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import {
-		mainToastTarget,
-		pushToastOnFailed,
-		pushToastOnSuccess
-	} from '$lib/client/Shared/Helpers/Toast';
+	import { pushToastOnFailed, pushToastOnSuccess } from '$lib/client/Shared/Helpers/Toast';
 	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
@@ -16,6 +11,7 @@
 	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
+	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;
@@ -73,9 +69,7 @@
 				onFailed={pushToastOnFailed}
 			/>
 		{/if}
-		<div class="wrap-bottom">
-			<SvelteToast target={mainToastTarget} />
-		</div>
+		<MainToast />
 	</div>
 </main>
 
@@ -92,11 +86,5 @@
 	.customScroll::-webkit-scrollbar-thumb {
 		background-color: gray;
 		border-radius: 20px;
-	}
-	.wrap-bottom {
-		--toastContainerTop: auto;
-		--toastContainerRight: auto;
-		--toastContainerBottom: 4rem;
-		--toastContainerLeft: calc(50vw - 8rem);
 	}
 </style>

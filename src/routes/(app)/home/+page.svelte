@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
-	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import Home from '$lib/client/Shared/Icons/Home.svelte';
 	import GridItem from '$lib/client/Feature/Contents/Components/ContentsGrid/GridItem.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
-	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import { toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import _ from 'lodash';
 	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 
 	export let data: PageData;
 
@@ -119,9 +119,7 @@
 	{#if isDisplayDetail}
 		<ContentModal bind:isDisplay={isDisplayDetail} bookInfo={currentItem} />
 	{/if}
-	<div class="wrap-bottom">
-		<SvelteToast target={mainToastTarget} />
-	</div>
+	<MainToast />
 </main>
 
 <style>
@@ -137,11 +135,5 @@
 	.customScroll::-webkit-scrollbar-thumb {
 		background-color: gray;
 		border-radius: 20px;
-	}
-	.wrap-bottom {
-		--toastContainerTop: auto;
-		--toastContainerRight: auto;
-		--toastContainerBottom: 4rem;
-		--toastContainerLeft: calc(50vw - 8rem);
 	}
 </style>

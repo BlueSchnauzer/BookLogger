@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { modalToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { statusItems } from '$lib/client/Shared/Constants/MenuItems';
 	import PageCountEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageCountEdit.svelte';
 	import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageHistoryEdit.svelte';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
-	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { getDateLabel, joinAuthorNames } from '$lib/client/Feature/Contents/DataView/dataView';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
+	import ModalToast from '$lib/client/Shared/Components/Toast/ModalToast.svelte';
 
 	export let bookInfo: BookInfo;
 	let store = bookInfoStore(bookInfo);
@@ -64,9 +64,7 @@
 		</div>
 	</div>
 </div>
-<div class="wrap-default">
-	<SvelteToast target={modalToastTarget} />
-</div>
+<ModalToast />
 
 <style>
 	@media not all and (min-width: 640px) {

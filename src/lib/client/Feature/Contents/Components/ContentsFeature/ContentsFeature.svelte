@@ -3,13 +3,13 @@
 	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import { mainToastTarget } from '$lib/client/Shared/Helpers/Toast';
 	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
-	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
+	import { toast } from '@zerodevx/svelte-toast';
 	import _ from 'lodash';
 	import { onMount, type ComponentType } from 'svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
+	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -67,19 +67,11 @@
 	{#if isDisplayModal}
 		<ContentModal bookInfo={currentItem} bind:isDisplay={isDisplayModal} />
 	{/if}
-	<div class="wrap-bottom">
-		<SvelteToast target={mainToastTarget} />
-	</div>
+	<MainToast />
 </main>
 
 <style>
 	.flexWidth {
 		width: calc(100% - (80px));
-	}
-	.wrap-bottom {
-		--toastContainerTop: auto;
-		--toastContainerRight: auto;
-		--toastContainerBottom: 4rem;
-		--toastContainerLeft: calc(50vw - 8rem);
 	}
 </style>
