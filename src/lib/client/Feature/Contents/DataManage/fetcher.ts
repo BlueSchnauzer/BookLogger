@@ -14,7 +14,7 @@ import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHis
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 
 export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
-	const response = await fetch(`${APIRouteURLs}/${id}`);
+	const response = await fetch(`${APIRouteURLs.bookInfo}/${id}`);
 	const model = (await response.json()) as BookInfoDBModel;
 
 	if (!model) {
