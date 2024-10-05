@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import type { PageData } from './$types';
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
-	import ModalDetail from '$lib/client/Feature/Contents/Components/ContentModal/ModalDetail.svelte';
+	import ContentDetail from '$lib/client/Feature/Contents/Components/ContentDetail/ContentDetail.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import { bookInfoInterfaceMock } from '$lib/mock/Data';
@@ -23,9 +23,9 @@
 		</button>
 	</div>
 	<span class="bg-stone-400 h-[1px]" />
-	<ModalDetail {bookInfo} />
+	<ContentDetail {bookInfo} />
 	<span class="bg-stone-400 h-[1px]" />
-	<div class="flex justify-between items-center">
+	<div class="flex justify-between items-center h-14">
 		<SecondaryButton type="button" text="削除" usage="delete" />
 		<div class="h-14 flex flex-row justify-end items-center">
 			<PrimaryButton type="button" text="編集" />
