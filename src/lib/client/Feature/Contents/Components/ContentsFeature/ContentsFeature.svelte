@@ -3,13 +3,13 @@
 	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
-	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
-	import { toast } from '@zerodevx/svelte-toast';
-	import _ from 'lodash';
-	import { onMount, type ComponentType } from 'svelte';
+	import { goto } from '$app/navigation';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
+	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
+	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
+	import { toast } from '@zerodevx/svelte-toast';
+	import { onMount, type ComponentType } from 'svelte';
 
 	/**ヘッダー用アイコン */
 	export let headerIcon: ComponentType;
@@ -35,15 +35,7 @@
 	// 	bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
 	// }
 
-	const handleClick = (bookInfo: BookInfo) => {
-		currentItem = bookInfo;
-		isDisplayModal = true;
-	};
-	// const displayModal = (item: BookInfoResponseItem) => {
-	// 	currentItem = _.cloneDeep(item);
-	// 	isDisplayModal = true;
-	// };
-
+	const handleClick = (bookId: string | undefined) => goto(`${BooksURLs.books}/${bookId}`);
 	// const handleUpdateSuccess = (bookInfo: BookInfo) => {
 	// 	bookInfos = handleBookInfosUpdate(items, event.detail, isBooksRoute);
 	// };
@@ -64,9 +56,6 @@
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	<ContentsGrid {bookInfos} {emptyMessage} {handleClick} />
-	{#if isDisplayModal}
-		<ContentModal bookInfo={currentItem} bind:isDisplay={isDisplayModal} />
-	{/if}
 	<MainToast />
 </main>
 

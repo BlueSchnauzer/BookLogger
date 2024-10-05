@@ -9,7 +9,7 @@
 	export let bookInfos: BookInfo[] | undefined;
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
-	export let handleClick: (bookInfo: BookInfo) => void;
+	export let handleClick: (bookId: string | undefined) => void;
 
 	let contentGrid: HTMLElement;
 
@@ -30,7 +30,7 @@
 				<li style="display: inherit;" title={bookInfo.title}>
 					<button
 						class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
-						on:click={() => handleClick(bookInfo)}
+						on:click={() => handleClick(bookInfo.id?.value)}
 					>
 						<GridItem {bookInfo} />
 					</button>
