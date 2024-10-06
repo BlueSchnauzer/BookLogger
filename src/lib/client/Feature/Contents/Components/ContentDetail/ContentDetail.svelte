@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { getTitleLabel } from '$lib/client/Feature/Contents/DataView/dataView';
-	import DetailEdit from '$lib/client/Feature/Contents/Components/ContentModal/DetailEdit.svelte';
-	import DetailInfo from '$lib/client/Feature/Contents/Components/ContentModal/DetailInfo.svelte';
+	import DetailEdit from '$lib/client/Feature/Contents/Components/ContentDetail/DetailEdit.svelte';
+	import DetailInfo from '$lib/client/Feature/Contents/Components/ContentDetail/DetailInfo.svelte';
 
 	export let bookInfo: BookInfo;
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { statusItems } from '$lib/client/Shared/Constants/MenuItems';
-	import PageCountEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageCountEdit.svelte';
-	import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentModal/PageHistoryEdit.svelte';
+	import PageCountEdit from '$lib/client/Feature/Contents/Components/ContentDetail/PageCountEdit.svelte';
+	import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentDetail/PageHistoryEdit.svelte';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
