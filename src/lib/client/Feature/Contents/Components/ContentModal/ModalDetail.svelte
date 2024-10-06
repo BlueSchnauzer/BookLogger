@@ -7,7 +7,7 @@
 	export let bookInfo: BookInfo;
 </script>
 
-<div class="relative flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">
+<div class="flex-1 flex max-sm:flex-col max-sm:overflow-auto detail-height customScroll">
 	<DetailInfo
 		thumbnail={bookInfo.thumbnail}
 		titleLabel={getTitleLabel(bookInfo.title)}
@@ -18,6 +18,9 @@
 </div>
 
 <style>
+	.detail-height {
+		height: calc(100% - 7rem);
+	}
 	.customScroll::-webkit-scrollbar {
 		width: 8px;
 	}

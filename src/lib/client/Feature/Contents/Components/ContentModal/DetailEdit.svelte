@@ -21,7 +21,7 @@
 </script>
 
 <div
-	class="flex flex-col flex-grow p-4 max-sm:pt-0 max-h-[486px] max-sm:overflow-unset overflow-auto customScroll"
+	class="flex flex-col flex-grow p-4 max-sm:pt-0 max-sm:overflow-unset overflow-auto customScroll"
 >
 	{#if bookInfo.title}
 		<span class="py-2 text-lg font-bold text-lime-700">{bookInfo.title}</span>
