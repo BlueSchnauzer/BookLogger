@@ -5,15 +5,15 @@
 	import ContentDetail from '$lib/client/Feature/Contents/Components/ContentDetail/ContentDetail.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
-	import { bookInfoInterfaceMock } from '$lib/mock/Data';
 
 	export let data: PageData;
-	const bookInfo = data.bookInfo ?? bookInfoInterfaceMock;
 </script>
 
-<div class="flex flex-col h-full w-full max-w-[800px] m-auto inset-0 px-3 bg-white">
+<div
+	class="flex flex-col h-full w-full max-w-[1000px] max-md:pb-16 m-auto px-3 border-x border-stone-400"
+>
 	<div class="h-14 flex flex-row justify-between items-center">
-		<span class="text-xl">詳細</span>
+		<p class="text-xl">詳細</p>
 		<button
 			type="button"
 			class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
@@ -23,7 +23,7 @@
 		</button>
 	</div>
 	<span class="bg-stone-400 h-[1px]" />
-	<ContentDetail {bookInfo} />
+	<ContentDetail bookInfo={data.bookInfo} />
 	<span class="bg-stone-400 h-[1px]" />
 	<div class="flex justify-between items-center h-14">
 		<SecondaryButton type="button" text="削除" usage="delete" />
