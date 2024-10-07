@@ -11,9 +11,9 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import _ from 'lodash';
-	import ContentModal from '$lib/client/Feature/Contents/Components/ContentModal/ContentModal.svelte';
-	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
+	import { goto } from '$app/navigation';
+	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
 	export let data: PageData;
 
@@ -23,25 +23,8 @@
 	const labels = Array.from(data.historyMap!.keys());
 	const graphData = Array.from(data.historyMap!.values());
 
-	let isDisplayDetail = false;
 	let isDisplayConditionModal = false;
-	let currentItem: BookInfo;
-
-	const displayModal = (item?: BookInfo) => {
-		if (!item) {
-			return;
-		}
-
-		currentItem = _.cloneDeep(item);
-		isDisplayDetail = true;
-	};
-
-	// const handleUpdateSuccess = (event: CustomEvent<updateBookInfoParameter>) => {
-	// 	data.recentBookInfo = handleRecentBookInfoUpdate(currentItem, event.detail);
-	// };
-	// const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
-	// 	data.recentBookInfo = handleRecentBookInfoDeletion(currentItem, event.detail);
-	// };
+	const handleClick = (bookId: string | undefined) => goto(`${BooksURLs.books}/${bookId}`);
 
 	onMount(() => {
 		const chart = new Chart(countGraph, {
@@ -87,7 +70,7 @@
 				<button
 					data-testid="btnRecentbook"
 					class="grid item h-96 w-72 bg-slate-50 rounded shadow-md"
-					on:click={() => displayModal(data.recentBookInfo)}
+					on:click={() => handleClick(data.recentBookInfo?.id?.value)}
 				>
 					<GridItem bookInfo={data.recentBookInfo} isResponsiveText={false} />
 				</button>
@@ -116,9 +99,6 @@
 			</div>
 		</div>
 	</div>
-	{#if isDisplayDetail}
-		<ContentModal bind:isDisplay={isDisplayDetail} bookInfo={currentItem} />
-	{/if}
 	<MainToast />
 </main>
 
