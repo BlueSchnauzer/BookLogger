@@ -17,11 +17,7 @@ export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
 	const response = await fetch(`${APIRouteURLs.bookInfo}/${id}`);
 	const model = (await response.json()) as BookInfoDBModel;
 
-	if (!model) {
-		return undefined;
-	}
-
-	return convertDBModelToBookInfo(model);
+	return model ? convertDBModelToBookInfo(model) : undefined;
 };
 
 export const getBookInfos = async (fetch: FetchInterface): Promise<BookInfo[]> => {
@@ -45,11 +41,7 @@ export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo
 	const response = await fetch(`${APIRouteURLs.bookInfo}?type=recent`);
 	const model = (await response.json()) as BookInfoDBModel;
 
-	if (!model) {
-		return undefined;
-	}
-
-	return convertDBModelToBookInfo(model);
+	return model ? convertDBModelToBookInfo(model) : undefined;
 };
 
 export const getHistory = async (
