@@ -23,9 +23,4 @@
 	<title>{pageTitles.books}</title>
 </svelte:head>
 
-<ContentsFeature
-	headerIcon={BookCase}
-	headerText={pageTitles.books}
-	bookInfos={data.bookInfos}
-	isBooksRoute={true}
-/>
+<ContentsFeature headerIcon={BookCase} headerText={pageTitles.books} bookInfos={data.bookInfos} />

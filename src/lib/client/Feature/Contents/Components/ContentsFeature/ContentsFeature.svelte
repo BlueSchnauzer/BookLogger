@@ -2,7 +2,6 @@
 	import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
 	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
-	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import { goto } from '$app/navigation';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
@@ -18,30 +17,14 @@
 	/**書誌データの一覧 */
 	export let bookInfos: BookInfo[] | undefined;
 	/**ライブラリ画面(/booksルート)用にレンダリングするか */
-	export let isBooksRoute = false;
-	/**絞り込み用のラベルフィルター */
-	//export let toggleFilterItems: toggleFilterItem[];
-	/**絞り込み用のドロップダウンフィルター */
-	//export let selectFilterItems: selectFilterItem[];
+	//export let isBooksRoute = false;
 	/**データ0件の時に表示するメッセージ */
 	export let emptyMessage = emptyMessages.default;
 
 	let inputValue: string;
 	let selectValue: number;
-	let isDisplayModal = false;
-	let currentItem: BookInfo;
-
-	// $: {
-	// 	bookInfos = toggleFavorite(bookInfos, toggleFilterItems[0]);
-	// }
 
 	const handleClick = (bookId: string | undefined) => goto(`${BooksURLs.books}/${bookId}`);
-	// const handleUpdateSuccess = (bookInfo: BookInfo) => {
-	// 	bookInfos = handleBookInfosUpdate(items, event.detail, isBooksRoute);
-	// };
-	// const handleDeletionSuccess = (event: CustomEvent<deletionBookInfoParameter>) => {
-	// 	items = handleBookInfosDeletion(items, event.detail);
-	// // };
 
 	onMount(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
