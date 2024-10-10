@@ -32,7 +32,7 @@ export const bookInfoStore = (bookInfo: BookInfo) => {
 			const pageHistories = bookInfo.pageHistories ? [...bookInfo.pageHistories, item] : [item];
 
 			let status = bookInfo.status;
-			if (bookInfo.status.value === 'wish' && bookInfo.pageHistories?.length === 1) {
+			if (bookInfo.status.value === 'wish' && pageHistories.length === 1) {
 				status = new Status('reading');
 				pushToast('ステータスを「読んでいる本」に変更しました。', modalToastTarget);
 			} else if (bookInfo.status.value !== 'complete' && readingCount === bookInfo.pageCount) {
