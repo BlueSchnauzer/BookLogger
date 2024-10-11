@@ -12,7 +12,7 @@
 
 	export let bookInfo: BookInfo;
 	let store = bookInfoStore(bookInfo);
-	let storedValue = $store;
+	$: storedValue = $store;
 
 	onMount(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
@@ -32,12 +32,12 @@
 		<CategoryLabel categoryText="著者" displayText={joinAuthorNames(bookInfo.author)} />
 		<CategoryLabel categoryText="登録日" displayText={getDateLabel(bookInfo.createDate)} />
 		<CategoryLabel categoryText="最終更新日" displayText={getDateLabel(bookInfo.updateDate)} />
-		<PageCountEdit bind:bookInfo />
+		<PageCountEdit {storedValue} />
 	</div>
 	<span class="py-2 text-lg font-bold">ステータス</span>
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
 		<select
-			bind:value={bookInfo.status.value}
+			bind:value={storedValue.status.value}
 			class="w-full p-2 rounded-lg border-[1px] border-stone-400"
 			on:change={store.addPageHistoryWhenComplete}
 			name="status"
@@ -49,7 +49,7 @@
 			{/each}
 		</select>
 	</div>
-	<PageHistoryEdit bind:bookInfo />
+	<PageHistoryEdit {store} {storedValue} />
 	<span class="py-2 text-lg font-bold">メモ</span>
 	<div>
 		<div class="mb-2 flex flex-col justify-start items-stretch">

@@ -5,10 +5,8 @@
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
-	export let bookInfo: BookInfo;
-
-	const store = bookInfoStore(bookInfo);
-	const storedValue = $store;
+	export let store: ReturnType<typeof bookInfoStore>;
+	export let storedValue: BookInfo;
 
 	let readingDate = getCurrentDateString();
 	let readingCount: number;
