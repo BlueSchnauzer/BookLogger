@@ -5,8 +5,11 @@
 	import ContentDetail from '$lib/client/Feature/Contents/Components/ContentDetail/ContentDetail.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
+	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
 	export let data: PageData;
+	const store = bookInfoStore(data.bookInfo);
+	const storedValue = $store;
 </script>
 
 <div
