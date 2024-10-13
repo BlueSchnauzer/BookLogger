@@ -10,9 +10,8 @@
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 	import ModalToast from '$lib/client/Shared/Components/Toast/ModalToast.svelte';
 
-	export let bookInfo: BookInfo;
-	let store = bookInfoStore(bookInfo);
-	$: storedValue = $store;
+	export let store: ReturnType<typeof bookInfoStore>;
+	export let storedValue: BookInfo;
 
 	onMount(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
@@ -23,15 +22,15 @@
 <div
 	class="flex flex-col flex-grow p-4 max-sm:pt-0 max-sm:overflow-unset overflow-auto customScroll"
 >
-	{#if bookInfo.title}
-		<span class="py-2 text-lg font-bold text-lime-700">{bookInfo.title}</span>
+	{#if storedValue.title}
+		<span class="py-2 text-lg font-bold text-lime-700">{storedValue.title}</span>
 	{:else}
 		<span class="py-2 text-lg font-bold text-gray-400">データ無し</span>
 	{/if}
 	<div class="p-3 m-2 rounded-xl border-[1px] border-stone-400 bg-gray-100">
-		<CategoryLabel categoryText="著者" displayText={joinAuthorNames(bookInfo.author)} />
-		<CategoryLabel categoryText="登録日" displayText={getDateLabel(bookInfo.createDate)} />
-		<CategoryLabel categoryText="最終更新日" displayText={getDateLabel(bookInfo.updateDate)} />
+		<CategoryLabel categoryText="著者" displayText={joinAuthorNames(storedValue.author)} />
+		<CategoryLabel categoryText="登録日" displayText={getDateLabel(storedValue.createDate)} />
+		<CategoryLabel categoryText="最終更新日" displayText={getDateLabel(storedValue.updateDate)} />
 		<PageCountEdit {storedValue} />
 	</div>
 	<span class="py-2 text-lg font-bold">ステータス</span>
@@ -55,7 +54,7 @@
 		<div class="mb-2 flex flex-col justify-start items-stretch">
 			<textarea
 				class="m-2 px-2 py-1 h-28 rounded-xl border-[1px] border-stone-400 bg-gray-100"
-				bind:value={bookInfo.memorandum}
+				bind:value={storedValue.memorandum}
 				placeholder="メモ、感想など"
 				spellcheck="true"
 				aria-label="memorandum"

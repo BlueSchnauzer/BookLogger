@@ -3,18 +3,20 @@
 	import { getTitleLabel } from '$lib/client/Feature/Contents/DataView/dataView';
 	import DetailEdit from '$lib/client/Feature/Contents/Components/ContentDetail/DetailEdit.svelte';
 	import DetailInfo from '$lib/client/Feature/Contents/Components/ContentDetail/DetailInfo.svelte';
+	import type { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
-	export let bookInfo: BookInfo;
+	export let store: ReturnType<typeof bookInfoStore>;
+	export let storedValue: BookInfo;
 </script>
 
 <div class="flex-1 flex max-sm:flex-col max-sm:overflow-auto detail-height customScroll">
 	<DetailInfo
-		thumbnail={bookInfo.thumbnail}
-		titleLabel={getTitleLabel(bookInfo.title)}
-		bind:isFavorite={bookInfo.isFavorite}
+		thumbnail={storedValue.thumbnail}
+		titleLabel={getTitleLabel(storedValue.title)}
+		bind:isFavorite={storedValue.isFavorite}
 	/>
 	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
-	<DetailEdit {bookInfo} />
+	<DetailEdit {store} {storedValue} />
 </div>
 
 <style>

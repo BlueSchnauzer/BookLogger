@@ -9,7 +9,7 @@
 
 	export let data: PageData;
 	const store = bookInfoStore(data.bookInfo);
-	const storedValue = $store;
+	$: storedValue = $store;
 </script>
 
 <div
@@ -26,7 +26,7 @@
 		</button>
 	</div>
 	<span class="bg-stone-400 h-[1px]" />
-	<ContentDetail bookInfo={data.bookInfo} />
+	<ContentDetail {store} {storedValue} />
 	<span class="bg-stone-400 h-[1px]" />
 	<div class="flex justify-between items-center h-14">
 		<SecondaryButton type="button" text="削除" usage="delete" />
