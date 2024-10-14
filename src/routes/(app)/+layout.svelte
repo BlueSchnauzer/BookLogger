@@ -2,6 +2,7 @@
 	import type { LayoutData } from '../$types';
 	import SideMenuItem from '$lib/client/Shared/Components/Menus/SideMenu.svelte';
 	import BottomMenuItem from '$lib/client/Shared/Components/Menus/BottomMenu.svelte';
+	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 
 	//export let data: LayoutData;
 </script>
@@ -10,6 +11,7 @@
 	<SideMenuItem />
 	<slot />
 	<BottomMenuItem />
+	<MainToast />
 </div>
 
 <style lang="postcss">
