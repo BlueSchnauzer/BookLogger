@@ -4,7 +4,6 @@
 	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import { goto } from '$app/navigation';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
-	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 	import { toast } from '@zerodevx/svelte-toast';
@@ -39,7 +38,6 @@
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	<ContentsGrid {bookInfos} {emptyMessage} {handleClick} />
-	<MainToast />
 </main>
 
 <style>

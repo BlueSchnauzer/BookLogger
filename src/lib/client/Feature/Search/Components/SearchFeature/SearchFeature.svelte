@@ -11,7 +11,6 @@
 	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
-	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 
 	export let searchPromise: SearchPromise;
 	export let searchProps: SearchProps;
@@ -69,7 +68,6 @@
 				onFailed={pushToastOnFailed}
 			/>
 		{/if}
-		<MainToast />
 	</div>
 </main>
 

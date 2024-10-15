@@ -5,11 +5,29 @@
 	import ContentDetail from '$lib/client/Feature/Contents/Components/ContentDetail/ContentDetail.svelte';
 	import SecondaryButton from '$lib/client/Shared/Components/SecondaryButton.svelte';
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
+	import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
+	import {
+		mainToastTarget,
+		pushErrorToast,
+		pushSuccessToast,
+		pushToastOnFailed,
+		pushToastOnSuccess
+	} from '$lib/client/Shared/Helpers/Toast';
 
 	export let data: PageData;
 	const store = bookInfoStore(data.bookInfo);
 	$: storedValue = $store;
+
+	const handleEditClick = async () => {
+		//ローダーを出す。タグが無いので入れる。
+		const { isSuccess, message } = await updateBookInfo(
+			fetch,
+			storedValue,
+			data.bookInfo.status.value
+		);
+		isSuccess ? pushToastOnSuccess(message) : pushToastOnFailed(message);
+	};
 </script>
 
 <div
@@ -31,7 +49,7 @@
 	<div class="flex justify-between items-center h-14">
 		<SecondaryButton type="button" text="削除" usage="delete" />
 		<div class="h-14 flex flex-row justify-end items-center">
-			<PrimaryButton type="button" text="編集" />
+			<PrimaryButton on:click={handleEditClick} type="button" text="編集" />
 			<SecondaryButton type="button" text="キャンセル" />
 		</div>
 	</div>

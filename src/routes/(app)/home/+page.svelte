@@ -11,7 +11,6 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import _ from 'lodash';
-	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 	import { goto } from '$app/navigation';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
@@ -99,7 +98,6 @@
 			</div>
 		</div>
 	</div>
-	<MainToast />
 </main>
 
 <style>
