@@ -7,17 +7,15 @@
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
-	import {
-		mainToastTarget,
-		pushErrorToast,
-		pushSuccessToast,
-		pushToastOnFailed,
-		pushToastOnSuccess
-	} from '$lib/client/Shared/Helpers/Toast';
+	import { afterNavigate, goto } from '$app/navigation';
+	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
 	export let data: PageData;
 	const store = bookInfoStore(data.bookInfo);
 	$: storedValue = $store;
+	let previousPage = '';
+
+	const handleHistoryBack = () => (previousPage ? goto(previousPage) : goto(BooksURLs.books));
 
 	const handleEditClick = async () => {
 		//ローダーを出す。タグが無いので入れる。
@@ -27,20 +25,22 @@
 			data.bookInfo.status.value
 		);
 		isSuccess ? pushToastOnSuccess(message) : pushToastOnFailed(message);
-	};
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
 </script>
 
 <div
 	class="flex flex-col h-full w-full max-w-[1000px] max-md:pb-16 m-auto px-3 border-x border-stone-400"
 >
-	<div class="h-14 flex flex-row justify-between items-center">
-		<p class="text-xl">詳細</p>
+	<div class="h-14 flex flex-row justify-start items-center">
 		<button
 			type="button"
 			class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
 			data-testid="btnClose"
+			on:click={handleHistoryBack}
 		>
-			<Icon icon="ph:x" width="36" height="36" color={colorStone700} />
+			<Icon icon="ph:caret-left" width="36" height="36" color={colorStone700} />
 		</button>
 	</div>
 	<span class="bg-stone-400 h-[1px]" />
@@ -48,9 +48,6 @@
 	<span class="bg-stone-400 h-[1px]" />
 	<div class="flex justify-between items-center h-14">
 		<SecondaryButton type="button" text="削除" usage="delete" />
-		<div class="h-14 flex flex-row justify-end items-center">
 			<PrimaryButton on:click={handleEditClick} type="button" text="編集" />
-			<SecondaryButton type="button" text="キャンセル" />
-		</div>
 	</div>
 </div>
