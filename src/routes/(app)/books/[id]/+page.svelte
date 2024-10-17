@@ -7,24 +7,40 @@
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
+	import { pushToastOnFailed, pushToastOnSuccess } from '$lib/client/Shared/Helpers/Toast';
+	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
+	import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
 	export let data: PageData;
 	const store = bookInfoStore(data.bookInfo);
 	$: storedValue = $store;
+
+	let isDisplay = false;
 	let previousPage = '';
 
 	const handleHistoryBack = () => (previousPage ? goto(previousPage) : goto(BooksURLs.books));
 
 	const handleEditClick = async () => {
-		//ローダーを出す。タグが無いので入れる。
+		isDisplay = true;
 		const { isSuccess, message } = await updateBookInfo(
 			fetch,
 			storedValue,
 			data.bookInfo.status.value
 		);
 		isSuccess ? pushToastOnSuccess(message) : pushToastOnFailed(message);
+		isDisplay = false;
+	};
+
+	const handleDeleteClick = async () => {
+		isDisplay = true;
+		const { isSuccess, message } = await deleteBookInfo(fetch, data.bookInfo.id!);
+		isSuccess ? pushToastOnSuccess(message) : pushToastOnFailed(message);
+
+		goto(BooksURLs.books);
+	};
+
 	afterNavigate(({ from }) => {
 		previousPage = from?.url.pathname || previousPage;
 	});
@@ -47,7 +63,8 @@
 	<ContentDetail {store} {storedValue} />
 	<span class="bg-stone-400 h-[1px]" />
 	<div class="flex justify-between items-center h-14">
-		<SecondaryButton type="button" text="削除" usage="delete" />
-			<PrimaryButton on:click={handleEditClick} type="button" text="編集" />
+		<SecondaryButton on:click={handleDeleteClick} type="button" text="削除" usage="delete" />
+		<PrimaryButton on:click={handleEditClick} type="button" text="編集" />
 	</div>
 </div>
+<FullCoverLoader {isDisplay} />
