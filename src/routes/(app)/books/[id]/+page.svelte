@@ -36,9 +36,12 @@
 	const handleDeleteClick = async () => {
 		isDisplay = true;
 		const { isSuccess, message } = await deleteBookInfo(fetch, data.bookInfo.id!);
-		isSuccess ? pushToastOnSuccess(message) : pushToastOnFailed(message);
-
-		goto(BooksURLs.books);
+		if (isSuccess) {
+			pushToastOnSuccess(message);
+			goto(BooksURLs.books);
+		} else {
+			pushToastOnFailed(message);
+		}
 	};
 
 	afterNavigate(({ from }) => {
