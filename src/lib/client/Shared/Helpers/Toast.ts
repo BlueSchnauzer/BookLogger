@@ -2,7 +2,7 @@ import { toast } from '@zerodevx/svelte-toast';
 
 //トーストは利用先でコンテナのインポート、スタイル適用とアンマウント時のpopが必要
 export const mainToastTarget = 'mainToast';
-export const modalToastTarget = 'modalToast';
+export const notificationToastTarget = 'notificationToast';
 
 /**画面右上にトーストを表示する*/
 export const pushToast = (message: string, target: string): void => {
