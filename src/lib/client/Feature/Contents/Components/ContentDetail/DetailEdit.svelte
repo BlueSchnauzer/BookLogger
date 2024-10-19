@@ -8,7 +8,7 @@
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { getDateLabel, joinAuthorNames } from '$lib/client/Feature/Contents/DataView/dataView';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
-	import ModalToast from '$lib/client/Shared/Components/Toast/ModalToast.svelte';
+	import NotificationToast from '$lib/client/Shared/Components/Toast/NotificationToast.svelte';
 
 	export let store: ReturnType<typeof bookInfoStore>;
 	export let storedValue: BookInfo;
@@ -63,7 +63,7 @@
 		</div>
 	</div>
 </div>
-<ModalToast />
+<NotificationToast />
 
 <style>
 	@media not all and (min-width: 640px) {
