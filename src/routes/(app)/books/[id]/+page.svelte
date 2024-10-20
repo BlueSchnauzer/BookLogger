@@ -7,7 +7,7 @@
 	import PrimaryButton from '$lib/client/Shared/Components/PrimaryButton.svelte';
 	import { updateBookInfo } from '$lib/client/Feature/Contents/DataManage/updater';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
-	import { pushToastOnFailed, pushToastOnSuccess } from '$lib/client/Shared/Helpers/Toast';
+	import { pushErrorToast, pushSuccessToast } from '$lib/client/Shared/Helpers/Toast';
 	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
 	import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
 	import { afterNavigate, goto } from '$app/navigation';
@@ -29,18 +29,22 @@
 			storedValue,
 			data.bookInfo.status.value
 		);
-		isSuccess ? pushToastOnSuccess(message) : pushToastOnFailed(message);
+		isSuccess ? pushSuccessToast(message) : pushErrorToast(message);
 		isDisplay = false;
 	};
 
 	const handleDeleteClick = async () => {
+		if (!window.confirm('削除してよろしいですか？')) {
+			return;
+		}
+
 		isDisplay = true;
 		const { isSuccess, message } = await deleteBookInfo(fetch, data.bookInfo.id!);
 		if (isSuccess) {
-			pushToastOnSuccess(message);
+			pushSuccessToast(message);
 			goto(BooksURLs.books);
 		} else {
-			pushToastOnFailed(message);
+			pushErrorToast(message);
 		}
 	};
 

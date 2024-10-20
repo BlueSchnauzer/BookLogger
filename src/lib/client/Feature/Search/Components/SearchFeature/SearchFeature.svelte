@@ -1,6 +1,6 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
-	import { pushToastOnFailed, pushToastOnSuccess } from '$lib/client/Shared/Helpers/Toast';
+	import { pushErrorToast, pushSuccessToast } from '$lib/client/Shared/Helpers/Toast';
 	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
@@ -64,8 +64,8 @@
 			<ItemModal
 				bookSearch={currentItem}
 				bind:isDisplay={isDisplayItem}
-				onSuccess={pushToastOnSuccess}
-				onFailed={pushToastOnFailed}
+				onSuccess={pushSuccessToast}
+				onFailed={pushErrorToast}
 			/>
 		{/if}
 	</div>

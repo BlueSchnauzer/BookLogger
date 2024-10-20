@@ -2,7 +2,7 @@ import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/Book
 import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { convertInputDateToDate, getCurrentDateString } from '$lib/client/Shared/Helpers/Date';
-import { pushToast, modalToastTarget } from '$lib/client/Shared/Helpers/Toast';
+import { pushNotificationToast } from '$lib/client/Shared/Helpers/Toast';
 import { validateReadingCount, validateReadingDate } from '$lib/client/Shared/Utils/Validation';
 import { get, writable } from 'svelte/store';
 
@@ -34,10 +34,10 @@ export const bookInfoStore = (bookInfo: BookInfo) => {
 			let status = bookInfo.status;
 			if (bookInfo.status.value === 'wish' && pageHistories.length === 1) {
 				status = new Status('reading');
-				pushToast('ステータスを「読んでいる本」に変更しました。', modalToastTarget);
+				pushNotificationToast('ステータスを「読んでいる本」に変更しました。');
 			} else if (bookInfo.status.value !== 'complete' && readingCount === bookInfo.pageCount) {
 				status = new Status('complete');
-				pushToast('ステータスを「読み終わった本」に変更しました。', modalToastTarget);
+				pushNotificationToast('ステータスを「読み終わった本」に変更しました。');
 			}
 
 			return { ...bookInfo, pageHistories, status };
@@ -67,7 +67,7 @@ export const bookInfoStore = (bookInfo: BookInfo) => {
 
 		addPageHistory(getCurrentDateString(), currentData.pageCount);
 
-		pushToast('最後のページまでの読んだ記録を追加しました。', modalToastTarget);
+		pushNotificationToast('最後のページまでの読んだ記録を追加しました。');
 	};
 
 	return { subscribe, addPageHistory, deletePageHistory, addPageHistoryWhenComplete };

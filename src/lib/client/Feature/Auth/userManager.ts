@@ -69,13 +69,13 @@ export const registerWithEmailAndPassword = async (
 
 	try {
 		await createUserWithEmailAndPassword(firebaseAuth, email, password);
-		pushSuccessToast('登録が完了しました。', mainToastTarget);
+		pushSuccessToast('登録が完了しました。');
 
 		isSuccess = true;
 		goto(redirectPath);
 	} catch (error) {
 		console.log(error);
-		pushErrorToast('登録に失敗しました。', mainToastTarget);
+		pushErrorToast('登録に失敗しました。');
 	}
 
 	return isSuccess;

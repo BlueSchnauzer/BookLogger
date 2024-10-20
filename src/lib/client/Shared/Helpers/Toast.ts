@@ -4,39 +4,26 @@ import { toast } from '@zerodevx/svelte-toast';
 export const mainToastTarget = 'mainToast';
 export const notificationToastTarget = 'notificationToast';
 
-/**画面右上にトーストを表示する*/
-export const pushToast = (message: string, target: string): void => {
-	toast.push(message, { theme: { '--toastBarBackground': '#65a30d' }, target });
-};
+const pushToast = (message: string, options: any) => toast.push(message, options);
 
-/**画面下部に正常完了用トーストを表示する*/
-export const pushSuccessToast = (message: string, target: string): void => {
-	toast.push(message, {
+export const pushNotificationToast = (message: string) =>
+	pushToast(message, {
+		theme: { '--toastBarBackground': '#65a30d' },
+		target: notificationToastTarget
+	});
+
+export const pushSuccessToast = (message: string) =>
+	pushToast(message, {
 		reversed: true,
 		intro: { y: 100 },
 		theme: { '--toastBarBackground': '#65a30d' },
-		target
+		target: mainToastTarget
 	});
-};
 
-/**画面下部に異常完了用トーストを表示する*/
-export const pushErrorToast = (message: string, target: string): void => {
-	toast.push(message, {
+export const pushErrorToast = (message: string) =>
+	pushToast(message, {
 		reversed: true,
 		intro: { y: 100 },
 		theme: { '--toastBarHeight': 0, '--toastWidth': 'auto', '--toastBackground': '#dc2626' },
-		target
+		target: mainToastTarget
 	});
-};
-
-export const pushToastOnModal = (message: string) => {
-	pushToast(message, modalToastTarget);
-};
-
-export const pushToastOnSuccess = (message: string) => {
-	pushSuccessToast(message, mainToastTarget);
-};
-
-export const pushToastOnFailed = (message: string) => {
-	pushErrorToast(message, mainToastTarget);
-};
