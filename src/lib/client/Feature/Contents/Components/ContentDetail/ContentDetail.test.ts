@@ -1,27 +1,28 @@
-import ModalDetail from '$lib/client/Feature/Contents/Components/ContentModal/ModalDetail.svelte';
+import ContentDetail from '$lib/client/Feature/Contents/Components/ContentDetail/ContentDetail.svelte';
 import { bookInfoInterfaceMock } from '$lib/mock/Data';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import _ from 'lodash';
 import { describe, expect, it } from 'vitest';
+import { bookInfoStore } from '$lib/client/Feature/Contents/store';
+import { get } from 'svelte/store';
 
 describe('ModalDetail', async () => {
 	const bookInfo = bookInfoInterfaceMock;
-
-	//const pastDate = new Date(2023, 5, 1);
+	const store = bookInfoStore(bookInfo);
+	const storedValue = get(store);
 
 	it('レンダリング', async () => {
-		render(ModalDetail, { bookInfo });
+		render(ContentDetail, { store, storedValue });
 
 		expect(screen.getByText('No Image')).toBeInTheDocument();
 		expect(screen.getByText(bookInfo.title!)).toBeInTheDocument();
 		expect(screen.getByText('読みたい本')).toBeInTheDocument();
-		//expect(screen.getByText(convertDate(pastDate))).toBeInTheDocument();
 		expect(screen.getByDisplayValue(bookInfo.memorandum)).toBeInTheDocument();
 	});
 
 	it('お気に入りボタンクリックで値が変更されること', async () => {
-		render(ModalDetail, { bookInfo });
+		render(ContentDetail, { store, storedValue });
 
 		const btnFavorite = screen.getByTestId('btnFavorite');
 		await fireEvent.click(btnFavorite);
@@ -31,7 +32,9 @@ describe('ModalDetail', async () => {
 
 	it('ページ数を更新した際に、書誌情報の値が同期していること', async () => {
 		const clonedItem = _.cloneDeep(bookInfo);
-		render(ModalDetail, { bookInfo: clonedItem });
+		const store = bookInfoStore(clonedItem);
+		const storedValue = get(store);
+		render(ContentDetail, { store, storedValue });
 
 		const editButton = screen.getByRole('button', { name: 'btnEditPageCount' });
 		await fireEvent.click(editButton);
@@ -46,7 +49,9 @@ describe('ModalDetail', async () => {
 	//成功しないため原因調査中
 	it.skip('ステータスを更新した際に、書誌情報の値が同期していること', async () => {
 		const clonedItem = _.cloneDeep(bookInfo);
-		render(ModalDetail, { bookInfo: clonedItem });
+		const store = bookInfoStore(clonedItem);
+		const storedValue = get(store);
+		render(ContentDetail, { store, storedValue });
 
 		const select = screen.getByRole('combobox');
 		expect(select).toHaveValue('wish');
@@ -59,7 +64,7 @@ describe('ModalDetail', async () => {
 
 	//成功しないため原因調査中
 	it.skip('読んだ記録を追加できること', async () => {
-		const { container } = render(ModalDetail, { bookInfo });
+		const { container } = render(ContentDetail, { store, storedValue });
 
 		const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
 		const countInput = screen.getByTestId('countInput');
@@ -75,7 +80,7 @@ describe('ModalDetail', async () => {
 	});
 
 	it('値が不正な場合に、読んだ記録を追加できないこと', async () => {
-		const { container } = render(ModalDetail, { bookInfo });
+		const { container } = render(ContentDetail, { store, storedValue });
 
 		const dateInput = container.querySelector<HTMLInputElement>('#readingDate');
 		const countInput = screen.getByTestId('countInput');
@@ -95,7 +100,7 @@ describe('ModalDetail', async () => {
 	});
 
 	it('メモ欄を更新した際に、書誌情報の値が同期していること', async () => {
-		render(ModalDetail, { bookInfo });
+		render(ContentDetail, { store, storedValue });
 
 		const memoInput = screen.getByTestId<HTMLInputElement>('memoInput');
 		await userEvent.type(memoInput, 'test');

@@ -1,11 +1,6 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import {
-		mainToastTarget,
-		pushToastOnFailed,
-		pushToastOnSuccess
-	} from '$lib/client/Shared/Helpers/Toast';
+	import { pushErrorToast, pushSuccessToast } from '$lib/client/Shared/Helpers/Toast';
 	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
@@ -69,13 +64,10 @@
 			<ItemModal
 				bookSearch={currentItem}
 				bind:isDisplay={isDisplayItem}
-				onSuccess={pushToastOnSuccess}
-				onFailed={pushToastOnFailed}
+				onSuccess={pushSuccessToast}
+				onFailed={pushErrorToast}
 			/>
 		{/if}
-		<div class="wrap-bottom">
-			<SvelteToast target={mainToastTarget} />
-		</div>
 	</div>
 </main>
 
@@ -92,11 +84,5 @@
 	.customScroll::-webkit-scrollbar-thumb {
 		background-color: gray;
 		border-radius: 20px;
-	}
-	.wrap-bottom {
-		--toastContainerTop: auto;
-		--toastContainerRight: auto;
-		--toastContainerBottom: 4rem;
-		--toastContainerLeft: calc(50vw - 8rem);
 	}
 </style>

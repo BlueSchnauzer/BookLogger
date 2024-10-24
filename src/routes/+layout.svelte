@@ -3,6 +3,7 @@
 	import NProgress from 'nprogress';
 	import 'nprogress/nprogress.css';
 	import { navigating } from '$app/stores';
+	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
 
 	NProgress.configure({
 		showSpinner: false
@@ -20,6 +21,7 @@
 </script>
 
 <slot />
+<MainToast />
 
 <style>
 	:global(#nprogress .bar) {
