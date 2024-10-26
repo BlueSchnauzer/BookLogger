@@ -39,12 +39,20 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 	async getBookInfos(): Promise<BookInfoDBModel[]> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
+		const page = 1;
+		const limit = 10;
+		const skip = (page - 1) * limit;
 
+		let totalCount = 0;
 		let mongoDBModel: BookInfoDBModel[] = [];
+		const filer = { userId: this._userId.value };
 
 		try {
+			totalCount = await this._collection.countDocuments(filer);
 			mongoDBModel = (await this._collection
-				.find({ userId: this._userId.value })
+				.find(filer)
+				.skip(skip)
+				.limit(limit)
 				.toArray()) as BookInfoDBModel[];
 		} catch (error) {
 			console.log(error);
