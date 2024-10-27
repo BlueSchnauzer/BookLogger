@@ -37,19 +37,25 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getBookInfos(): Promise<BookInfoDBModel[]> {
+	async getBookInfos(
+		page: number
+	): Promise<{ totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
-		const page = 1;
+
+		if (page < 0) {
+			return { totalCount: 0, bookInfoDBModels: [] };
+		}
+
 		const limit = 10;
 		const skip = (page - 1) * limit;
 
 		let totalCount = 0;
-		let mongoDBModel: BookInfoDBModel[] = [];
+		let mongoDBModels: BookInfoDBModel[] = [];
 		const filer = { userId: this._userId.value };
 
 		try {
 			totalCount = await this._collection.countDocuments(filer);
-			mongoDBModel = (await this._collection
+			mongoDBModels = (await this._collection
 				.find(filer)
 				.skip(skip)
 				.limit(limit)
@@ -59,7 +65,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return mongoDBModel;
+		return { totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
 	async getBookInfosByStatus(status: status): Promise<BookInfoDBModel[]> {
