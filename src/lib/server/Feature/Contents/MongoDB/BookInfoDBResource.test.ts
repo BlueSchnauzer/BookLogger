@@ -77,33 +77,59 @@ describe('getBookInfo', () => {
 });
 
 describe('getBookInfos', () => {
-	let datas: BookInfo[];
-	beforeEach(() => {
-		datas = bookInfoInterfaceMocksWithUserIds(testUserId1, testUserId2, testUserId3);
-	});
-
 	it('ユーザIDに一致するデータを取得できること', async () => {
-		const preData = await col.insertMany([
-			convertBookInfoToDBModel(datas[0]),
-			convertBookInfoToDBModel(datas[1])
-		]);
+		const preData = await col.insertMany([convertBookInfoToDBModel(bookInfoInterfaceMock)]);
 		expect(await preData.acknowledged).toBeTruthy();
 
-		const repos = new BookInfoMongoDBResource(col, datas[0].userId);
-		const response = await repos.getBookInfos();
+		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfos(1);
 
-		expect(response.length).toEqual(1);
-		expect(response[0].userId).toEqual(datas[0].userId.value);
+		expect(totalCount).toBe(1);
+		expect(bookInfoDBModels.length).toBe(1);
+		expect(bookInfoDBModels[0].userId).toBe(bookInfoInterfaceMock.userId.value);
+	});
+
+	it('page引数の指定で取得するデータのページング処理が行えること', async () => {
+		let datas: BookInfoDBModel[] = [];
+		for (let index = 0; index < 50; index++) {
+			datas.push({
+				userId: testUserId1,
+				title: `title${index}`,
+				author: [''],
+				thumbnail: '',
+				createDate: new Date(),
+				updateDate: new Date(),
+				pageCount: 0,
+				isFavorite: false,
+				status: 'wish',
+				memorandum: '',
+				isVisible: true
+			});
+		}
+		const preData = await col.insertMany(datas);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
+
+		const response = await repos.getBookInfos(1);
+		expect(response.totalCount).toBe(50);
+		expect(response.bookInfoDBModels.length).toBe(30);
+		expect(response.bookInfoDBModels[0].title).toBe(`title0`);
+
+		const nextResponse = await repos.getBookInfos(2);
+		expect(nextResponse.bookInfoDBModels.length).toBe(20);
+		expect(nextResponse.bookInfoDBModels[0].title).toBe(`title30`);
 	});
 
 	it('一致するデータが無い場合に空のデータが返ること', async () => {
-		const preData = await col.insertOne(convertBookInfoToDBModel(datas[0]));
+		const preData = await col.insertOne(convertBookInfoToDBModel(bookInfoInterfaceMock));
 		expect(await preData.acknowledged).toBeTruthy();
 
 		const repos = new BookInfoMongoDBResource(col, new UserId(testUserId2));
-		const response = await repos.getBookInfos();
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfos(1);
 
-		expect(response.length).toEqual(0);
+		expect(totalCount).toBe(0);
+		expect(bookInfoDBModels.length).toBe(0);
 	});
 });
 

@@ -46,7 +46,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			return { totalCount: 0, bookInfoDBModels: [] };
 		}
 
-		const limit = 10;
+		const limit = 30;
 		const skip = (page - 1) * limit;
 
 		let totalCount = 0;
