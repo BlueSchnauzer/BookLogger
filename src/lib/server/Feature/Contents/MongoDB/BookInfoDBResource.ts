@@ -68,20 +68,35 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return { totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
-	async getBookInfosByStatus(status: status): Promise<BookInfoDBModel[]> {
-		let mongoDBModel: BookInfoDBModel[] = [];
+	async getBookInfosByStatus(
+		page: number,
+		status: status
+	): Promise<{ totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
+		if (page < 0) {
+			return { totalCount: 0, bookInfoDBModels: [] };
+		}
+
+		const limit = 30;
+		const skip = (page - 1) * limit;
+
+		let totalCount = 0;
+		let mongoDBModels: BookInfoDBModel[] = [];
 
 		try {
 			const filter: Filter<BookInfoDBModel> = {
 				$and: [{ userId: this._userId.value }, { status: status }]
 			};
-			mongoDBModel = (await this._collection.find(filter).toArray()) as BookInfoDBModel[];
+			mongoDBModels = (await this._collection
+				.find(filter)
+				.skip(skip)
+				.limit(limit)
+				.toArray()) as BookInfoDBModel[];
 		} catch (error) {
 			console.log(error);
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return mongoDBModel;
+		return { totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
 	async getRecentBookInfo(): Promise<BookInfoDBModel | undefined> {

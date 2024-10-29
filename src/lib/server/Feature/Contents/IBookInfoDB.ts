@@ -11,7 +11,10 @@ import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookI
 export interface IBookInfoDBRepositories {
 	getBookInfo(id: id): Promise<BookInfoDBModel | undefined>;
 	getBookInfos(page: number): Promise<{ totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
-	getBookInfosByStatus(status: status): Promise<BookInfoDBModel[]>;
+	getBookInfosByStatus(
+		page: number,
+		status: status
+	): Promise<{ totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
 	getRecentBookInfo(): Promise<BookInfoDBModel | undefined>;
 	getPageHistory(): Promise<Array<pageHistory[]>>;
 	insert(bookInfo: BookInfoDBModel): Promise<Response>;
