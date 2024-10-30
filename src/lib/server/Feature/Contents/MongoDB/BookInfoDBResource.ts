@@ -46,14 +46,13 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			return { totalCount: 0, bookInfoDBModels: [] };
 		}
 
-		const limit = 30;
-		const skip = page * limit;
-
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
 		const filter = { userId: this._userId.value };
 
 		try {
+			const { limit, skip } = this.getLimitAndSkipCount(page);
+
 			totalCount = await this._collection.countDocuments(filter);
 			mongoDBModels = (await this._collection
 				.find(filter)
@@ -76,13 +75,12 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			return { totalCount: 0, bookInfoDBModels: [] };
 		}
 
-		const limit = 30;
-		const skip = page * limit;
-
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
 
 		try {
+			const { limit, skip } = this.getLimitAndSkipCount(page);
+
 			const filter: Filter<BookInfoDBModel> = {
 				$and: [{ userId: this._userId.value }, { status: status }]
 			};
@@ -244,4 +242,11 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 		return isDuplicate;
 	}
+
+	private getLimitAndSkipCount = (page: number) => {
+		const limit = 30;
+		const skip = page * limit;
+
+		return { limit, skip };
+	};
 }
