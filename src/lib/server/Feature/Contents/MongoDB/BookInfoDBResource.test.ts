@@ -12,9 +12,7 @@ import {
 	bookInfoInterfaceMock,
 	bookInfoInterfaceMocks,
 	bookInfoInterfaceMocksWithUserIds,
-	testUserId1,
-	testUserId2,
-	testUserId3
+	testUserId2
 } from '$lib/mock/Data';
 import { Collection, Db, MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
@@ -82,7 +80,7 @@ describe('getBookInfos', () => {
 		expect(await preData.acknowledged).toBeTruthy();
 
 		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
-		const { totalCount, bookInfoDBModels } = await repos.getBookInfos(1);
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfos(0);
 
 		expect(totalCount).toBe(1);
 		expect(bookInfoDBModels.length).toBe(1);
@@ -90,10 +88,11 @@ describe('getBookInfos', () => {
 	});
 
 	it('page引数の指定で取得するデータのページング処理が行えること', async () => {
+		const userId = 'pagingtest';
 		let datas: BookInfoDBModel[] = [];
 		for (let index = 0; index < 50; index++) {
 			datas.push({
-				userId: testUserId1,
+				userId,
 				title: `title${index}`,
 				author: [''],
 				thumbnail: '',
@@ -109,14 +108,14 @@ describe('getBookInfos', () => {
 		const preData = await col.insertMany(datas);
 		expect(await preData.acknowledged).toBeTruthy();
 
-		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
+		const repos = new BookInfoMongoDBResource(col, new UserId(userId));
 
-		const response = await repos.getBookInfos(1);
+		const response = await repos.getBookInfos(0);
 		expect(response.totalCount).toBe(50);
 		expect(response.bookInfoDBModels.length).toBe(30);
 		expect(response.bookInfoDBModels[0].title).toBe(`title0`);
 
-		const nextResponse = await repos.getBookInfos(2);
+		const nextResponse = await repos.getBookInfos(1);
 		expect(nextResponse.bookInfoDBModels.length).toBe(20);
 		expect(nextResponse.bookInfoDBModels[0].title).toBe(`title30`);
 	});
@@ -217,33 +216,70 @@ describe('getBookInfosByStatus', () => {
 
 	it('statusがwishで、ユーザIDに一致するデータを取得できること', async () => {
 		const repos = new BookInfoMongoDBResource(col, testDatas[0].userId);
-		const response = await repos.getBookInfosByStatus('wish');
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfosByStatus(0, 'wish');
 
-		expect(response.length).toEqual(1);
-		expect(response[0].userId).toEqual(testDatas[0].userId.value);
+		expect(totalCount).toBe(1);
+		expect(bookInfoDBModels.length).toBe(1);
+		expect(bookInfoDBModels[0].userId).toBe(testDatas[0].userId.value);
 	});
 
 	it('statusがreadingで、ユーザIDに一致するデータを取得できること', async () => {
 		const repos = new BookInfoMongoDBResource(col, testDatas[1].userId);
-		const response = await repos.getBookInfosByStatus('reading');
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfosByStatus(0, 'reading');
 
-		expect(response.length).toEqual(1);
-		expect(response[0].userId).toEqual(testDatas[1].userId.value);
+		expect(totalCount).toBe(1);
+		expect(bookInfoDBModels.length).toBe(1);
+		expect(bookInfoDBModels[0].userId).toBe(testDatas[1].userId.value);
 	});
 
 	it('statusがcompleteで、ユーザIDに一致するデータを取得できること', async () => {
 		const repos = new BookInfoMongoDBResource(col, testDatas[2].userId);
-		const response = await repos.getBookInfosByStatus('complete');
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfosByStatus(0, 'complete');
 
-		expect(response.length).toEqual(1);
-		expect(response[0].userId).toEqual(testDatas[2].userId.value);
+		expect(totalCount).toBe(1);
+		expect(bookInfoDBModels.length).toBe(1);
+		expect(bookInfoDBModels[0].userId).toBe(testDatas[2].userId.value);
+	});
+
+	it('page引数の指定で取得するデータのページング処理が行えること', async () => {
+		let datas: BookInfoDBModel[] = [];
+		const userId = 'pagingtest';
+		for (let index = 0; index < 50; index++) {
+			datas.push({
+				userId,
+				title: `title${index}`,
+				author: [''],
+				thumbnail: '',
+				createDate: new Date(),
+				updateDate: new Date(),
+				pageCount: 0,
+				isFavorite: false,
+				status: 'wish',
+				memorandum: '',
+				isVisible: true
+			});
+		}
+		const preData = await col.insertMany(datas);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, new UserId(userId));
+
+		const response = await repos.getBookInfosByStatus(0, 'wish');
+		expect(response.totalCount).toBe(50);
+		expect(response.bookInfoDBModels.length).toBe(30);
+		expect(response.bookInfoDBModels[0].title).toBe(`title0`);
+
+		const nextResponse = await repos.getBookInfosByStatus(1, 'wish');
+		expect(nextResponse.bookInfoDBModels.length).toBe(20);
+		expect(nextResponse.bookInfoDBModels[0].title).toBe(`title30`);
 	});
 
 	it('一致するデータが無い場合に空のデータが返ること', async () => {
 		const repos = new BookInfoMongoDBResource(col, new UserId('notExistData'));
-		const response = await repos.getBookInfosByStatus('wish');
+		const { totalCount, bookInfoDBModels } = await repos.getBookInfosByStatus(0, 'wish');
 
-		expect(response.length).toEqual(0);
+		expect(totalCount).toBe(0);
+		expect(bookInfoDBModels.length).toBe(0);
 	});
 });
 
