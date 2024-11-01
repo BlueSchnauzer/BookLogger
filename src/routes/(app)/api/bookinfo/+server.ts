@@ -29,21 +29,21 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 	const param = url.searchParams;
 	const getType = param.get('type');
+	const page = param.get('page');
+	const pageCount = page ? Number(page) : 0;
 
-	//クエリパラメータに応じてデータを変更
-	let mongoDBModels: BookInfoDBModel[] = [];
 	switch (getType) {
 		case 'recent':
-			const mongoDBModel = await repos.getRecentBookInfo();
-			return json(mongoDBModel ? mongoDBModel : null, { status: 200 });
+			const recentData = await repos.getRecentBookInfo();
+			return json(recentData ?? null, { status: 200 });
 		case 'wish':
 		case 'reading':
 		case 'complete':
-			mongoDBModels = await repos.getBookInfosByStatus(getType);
-			return json(mongoDBModels, { status: 200 });
+			const responseByStatus = await repos.getBookInfosByStatus(pageCount, getType);
+			return json(responseByStatus, { status: 200 });
 		default:
-			mongoDBModels = await repos.getBookInfos();
-			return json(mongoDBModels, { status: 200 });
+			const response = await repos.getBookInfos(pageCount);
+			return json(response, { status: 200 });
 	}
 };
 
