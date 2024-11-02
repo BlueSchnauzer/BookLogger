@@ -55,3 +55,10 @@ export const getHistory = async (
 
 	return getPageHistoryMapInCurrentWeek(ValueObjects);
 };
+
+const parseListResponse = async (response: Response) => {
+	return (await response.json()) as {
+		totalCount: number;
+		bookInfoDBModels: BookInfoDBModel[];
+	};
+};
