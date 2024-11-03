@@ -1,6 +1,7 @@
 import { convertInputDateToDate } from '$lib/client/Shared/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Shared/Helpers/GoogleBooksAPI';
 import { describe, expect, it } from 'vitest';
+import { createUrlWithParams } from './Urls';
 
 describe('Date', () => {
 	const year = 2024;
@@ -35,5 +36,15 @@ describe('GoogleBooksAPI', () => {
 		handleExpect(isbn13, 'ISBN_13', isbn13[0].identifier);
 		const isbn10 = [{ identifier: '4-123456-78-9', type: 'ISBN_10' }];
 		handleExpect(isbn10, 'ISBN_10', isbn10[0].identifier);
+	});
+});
+
+describe('Urls', () => {
+	it('createUrlWithParam', () => {
+		const url = '/test/slug';
+		const params = { key1: 'value1', key2: 'value2', key3: 'value3' };
+		const urlWithParam = createUrlWithParams(url, params);
+
+		expect(urlWithParam).toBe(`${url}?key1=${params.key1}&key2=${params.key2}&key3=${params.key3}`);
 	});
 });
