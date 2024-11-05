@@ -9,6 +9,7 @@ import {
 } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
+import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
@@ -20,25 +21,30 @@ export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
 	return model ? convertDBModelToBookInfo(model) : undefined;
 };
 
-export const getBookInfos = async (fetch: FetchInterface): Promise<BookInfo[]> => {
-	const response = await fetch(APIRouteURLs.bookInfo);
-	const models = (await response.json()) as BookInfoDBModel[];
+export const getBookInfos = async (fetch: FetchInterface, page: number) => {
+	const param = { page: page.toString() };
 
-	return models.map((item) => convertDBModelToBookInfo(item));
+	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
+	const { totalCount, bookInfoDBModels } = await parseListResponse(response);
+	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
+
+	return { totalCount, bookInfos };
 };
 
-export const getBookInfosByStatus = async (
-	fetch: FetchInterface,
-	status: status
-): Promise<BookInfo[]> => {
-	const response = await fetch(`${APIRouteURLs.bookInfo}?type=${status}`);
-	const models = (await response.json()) as BookInfoDBModel[];
+export const getBookInfosByStatus = async (fetch: FetchInterface, page: number, status: status) => {
+	const params = { page: page.toString(), type: status };
 
-	return models.map((item) => convertDBModelToBookInfo(item));
+	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, params));
+	const { totalCount, bookInfoDBModels } = await parseListResponse(response);
+	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
+
+	return { totalCount, bookInfos };
 };
 
 export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo | undefined> => {
-	const response = await fetch(`${APIRouteURLs.bookInfo}?type=recent`);
+	const param = { type: 'recent' };
+
+	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
 	const model = (await response.json()) as BookInfoDBModel;
 
 	return model ? convertDBModelToBookInfo(model) : undefined;
@@ -60,4 +66,4 @@ const parseListResponse = async (response: Response) =>
 	(await response.json()) as {
 		totalCount: number;
 		bookInfoDBModels: BookInfoDBModel[];
-};
+	};
