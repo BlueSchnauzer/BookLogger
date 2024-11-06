@@ -16,47 +16,51 @@ describe('fetcher', () => {
 
 	describe('getBookInfos', () => {
 		it('get', async () => {
-			const result = await getBookInfos(fetch);
+			const result = await getBookInfos(fetch, 0);
 
 			expect(result).toBeDefined();
-			expect(result.length).toBe(1);
-			expect(result[0]).toBeDefined();
+			expect(result.totalCount).toBe(1);
+			expect(result.bookInfos.length).toBe(1);
+			expect(result.bookInfos[0]).toBeDefined();
 		});
 	});
 
 	describe('getByStatus', () => {
-		BookInfoAPIMock.setGetRouteFetch('getByStatusOrRecent');
+		BookInfoAPIMock.setGetRouteFetch('getByStatus');
 
 		it('getWish', async () => {
-			const result = await getBookInfosByStatus(fetch, 'wish');
+			const result = await getBookInfosByStatus(fetch, 0, 'wish');
 
 			expect(result).toBeDefined();
-			expect(result.length).toBe(1);
-			expect(result[0]).toBeDefined();
-			expect(result[0].status.value).toBe('wish');
+			expect(result.totalCount).toBe(1);
+			expect(result.bookInfos.length).toBe(1);
+			expect(result.bookInfos[0]).toBeDefined();
+			expect(result.bookInfos[0].status.value).toBe('wish');
 		});
 
 		it('getReading', async () => {
-			const result = await getBookInfosByStatus(fetch, 'reading');
+			const result = await getBookInfosByStatus(fetch, 0, 'reading');
 
 			expect(result).toBeDefined();
-			expect(result.length).toBe(1);
-			expect(result[0]).toBeDefined();
-			expect(result[0].status.value).toBe('reading');
+			expect(result.totalCount).toBe(1);
+			expect(result.bookInfos.length).toBe(1);
+			expect(result.bookInfos[0]).toBeDefined();
+			expect(result.bookInfos[0].status.value).toBe('reading');
 		});
 
 		it('getComplete', async () => {
-			const result = await getBookInfosByStatus(fetch, 'complete');
+			const result = await getBookInfosByStatus(fetch, 0, 'complete');
 
 			expect(result).toBeDefined();
-			expect(result.length).toBe(1);
-			expect(result[0]).toBeDefined();
-			expect(result[0].status.value).toBe('complete');
+			expect(result.totalCount).toBe(1);
+			expect(result.bookInfos.length).toBe(1);
+			expect(result.bookInfos[0]).toBeDefined();
+			expect(result.bookInfos[0].status.value).toBe('complete');
 		});
 	});
 
 	describe('getRecent', () => {
-		BookInfoAPIMock.setGetRouteFetch('getByStatusOrRecent');
+		BookInfoAPIMock.setGetRouteFetch('getByRecent');
 
 		it('get', async () => {
 			const result = await getRecentBookInfo(fetch);
