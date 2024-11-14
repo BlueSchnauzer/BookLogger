@@ -19,8 +19,10 @@
 
 	let isDisplay = false;
 	let previousPage = '';
+	let search = '';
 
-	const handleHistoryBack = () => (previousPage ? goto(previousPage) : goto(BooksURLs.books));
+	const handleHistoryBack = () =>
+		previousPage ? goto(`${previousPage}${search}`) : goto(BooksURLs.books);
 
 	const handleEditClick = async () => {
 		isDisplay = true;
@@ -49,7 +51,10 @@
 	};
 
 	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
+		if (from) {
+			previousPage = from.url.pathname;
+			search = from.url.search;
+		}
 	});
 </script>
 
