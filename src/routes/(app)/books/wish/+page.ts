@@ -6,5 +6,5 @@ export const load = (async ({ fetch, url }) => {
 	const pageCount = getPageCount(url.searchParams);
 	const { totalCount, bookInfos } = await getBookInfosByStatus(fetch, pageCount, 'wish');
 
-	return { totalCount, bookInfos };
+	return { pageCount, totalCount, bookInfos };
 }) satisfies PageLoad;
