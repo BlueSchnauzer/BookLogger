@@ -49,11 +49,11 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let maxPageCount = 0;
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
+
+		const { limit, skip } = this.getLimitAndSkipCount(page);
 		const filter = { userId: this._userId.value };
 
 		try {
-			const { limit, skip } = this.getLimitAndSkipCount(page);
-
 			totalCount = await this._collection.countDocuments(filter);
 			maxPageCount = this.getMaxPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
@@ -81,12 +81,12 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
 
-		try {
-			const { limit, skip } = this.getLimitAndSkipCount(page);
+		const { limit, skip } = this.getLimitAndSkipCount(page);
+		const filter: Filter<BookInfoDBModel> = {
+			$and: [{ userId: this._userId.value }, { status: status }]
+		};
 
-			const filter: Filter<BookInfoDBModel> = {
-				$and: [{ userId: this._userId.value }, { status: status }]
-			};
+		try {
 			totalCount = await this._collection.countDocuments(filter);
 			maxPageCount = this.getMaxPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
