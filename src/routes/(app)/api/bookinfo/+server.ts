@@ -4,10 +4,8 @@ import { validatePutBookInfo } from '$lib/client/Shared/Utils/Validation';
 import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
 import {
 	convertBookInfoToDBModel,
-	convertBookSearchToDBModel,
-	type BookInfoDBModel
+	convertBookSearchToDBModel
 } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
-import { verifyAndCreateUserId } from '$lib/server/Feature/Auth/idManager';
 import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
