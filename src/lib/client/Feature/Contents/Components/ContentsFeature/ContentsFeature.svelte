@@ -15,6 +15,8 @@
 	export let headerText: string;
 	/**書誌データの一覧 */
 	export let bookInfos: BookInfo[] | undefined;
+	export let currentPageCount: number;
+	export let lastPageCount: number;
 	/**ライブラリ画面(/booksルート)用にレンダリングするか */
 	//export let isBooksRoute = false;
 	/**データ0件の時に表示するメッセージ */
@@ -49,7 +51,7 @@
 		<ContentFilters />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
-	<ContentsGrid {bookInfos} {emptyMessage} {handleClick} />
+	<ContentsGrid {bookInfos} {currentPageCount} {lastPageCount} {emptyMessage} {handleClick} />
 </main>
 
 <style>
