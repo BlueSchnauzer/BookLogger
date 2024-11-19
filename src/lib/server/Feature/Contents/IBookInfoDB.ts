@@ -12,11 +12,11 @@ export interface IBookInfoDBRepositories {
 	getBookInfo(id: id): Promise<BookInfoDBModel | undefined>;
 	getBookInfos(
 		page: number
-	): Promise<{ maxPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
+	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
 	getBookInfosByStatus(
 		page: number,
 		status: status
-	): Promise<{ maxPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
+	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
 	getRecentBookInfo(): Promise<BookInfoDBModel | undefined>;
 	getPageHistory(): Promise<Array<pageHistory[]>>;
 	insert(bookInfo: BookInfoDBModel): Promise<Response>;

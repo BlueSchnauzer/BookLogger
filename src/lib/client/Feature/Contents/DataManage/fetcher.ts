@@ -25,20 +25,20 @@ export const getBookInfos = async (fetch: FetchInterface, page: number) => {
 	const param = { page: page.toString() };
 
 	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
-	const { totalCount, maxPageCount, bookInfoDBModels } = await parseListResponse(response);
+	const { totalCount, lastPageCount, bookInfoDBModels } = await parseListResponse(response);
 	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
 
-	return { totalCount, maxPageCount, bookInfos };
+	return { totalCount, lastPageCount, bookInfos };
 };
 
 export const getBookInfosByStatus = async (fetch: FetchInterface, page: number, status: status) => {
 	const params = { page: page.toString(), type: status };
 
 	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, params));
-	const { totalCount, maxPageCount, bookInfoDBModels } = await parseListResponse(response);
+	const { totalCount, lastPageCount, bookInfoDBModels } = await parseListResponse(response);
 	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
 
-	return { totalCount, maxPageCount, bookInfos };
+	return { totalCount, lastPageCount, bookInfos };
 };
 
 export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo | undefined> => {
@@ -65,6 +65,6 @@ export const getHistory = async (
 const parseListResponse = async (response: Response) =>
 	(await response.json()) as {
 		totalCount: number;
-		maxPageCount: number;
+		lastPageCount: number;
 		bookInfoDBModels: BookInfoDBModel[];
 	};

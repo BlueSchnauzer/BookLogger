@@ -39,14 +39,14 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 	async getBookInfos(
 		page: number
-	): Promise<{ maxPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
+	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
 		if (page < 0) {
-			return { maxPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
+			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
 		}
 
-		let maxPageCount = 0;
+		let lastPageCount = 0;
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
 
@@ -55,7 +55,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 		try {
 			totalCount = await this._collection.countDocuments(filter);
-			maxPageCount = this.getMaxPageCount(totalCount, limit);
+			lastPageCount = this.getLastPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
 				.find(filter)
 				.skip(skip)
@@ -66,18 +66,18 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return { maxPageCount, totalCount, bookInfoDBModels: mongoDBModels };
+		return { lastPageCount, totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
 	async getBookInfosByStatus(
 		page: number,
 		status: status
-	): Promise<{ maxPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
+	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		if (page < 0) {
-			return { maxPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
+			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
 		}
 
-		let maxPageCount = 0;
+		let lastPageCount = 0;
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
 
@@ -88,7 +88,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 		try {
 			totalCount = await this._collection.countDocuments(filter);
-			maxPageCount = this.getMaxPageCount(totalCount, limit);
+			lastPageCount = this.getLastPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
 				.find(filter)
 				.skip(skip)
@@ -99,7 +99,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return { maxPageCount, totalCount, bookInfoDBModels: mongoDBModels };
+		return { lastPageCount, totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
 	async getRecentBookInfo(): Promise<BookInfoDBModel | undefined> {
@@ -254,5 +254,5 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return { limit, skip };
 	};
 
-	private getMaxPageCount = (totalCount: number, limit: number) => Math.ceil(totalCount / limit);
+	private getLastPageCount = (totalCount: number, limit: number) => Math.floor(totalCount / limit);
 }
