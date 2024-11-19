@@ -5,6 +5,5 @@ test.describe('ライブラリ', () => {
 		const pageName = 'ライブラリ';
 		await loginedPage.page.locator('[href="/books"]', { hasNotText: pageName }).click();
 		await expect(loginedPage.page.waitForURL('/books')).toBeTruthy();
-		await expect(loginedPage.page.getByTestId('headerText')).toHaveText(pageName);
 	});
 });

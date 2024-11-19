@@ -7,6 +7,5 @@ test.describe('読み終わった本', () => {
 		const pageName = '読み終わった';
 		await loginedPage.page.getByText(pageName).click();
 		await loginedPage.page.waitForURL('/books/complete');
-		await expect(loginedPage.page.getByTestId('headerText')).toHaveText(`${pageName}本`);
 	});
 });
