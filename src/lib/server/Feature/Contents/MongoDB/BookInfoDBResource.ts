@@ -37,37 +37,69 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getBookInfos(): Promise<BookInfoDBModel[]> {
+	async getBookInfos(
+		page: number
+	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
-		let mongoDBModel: BookInfoDBModel[] = [];
+		if (page < 0) {
+			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
+		}
+
+		let lastPageCount = 0;
+		let totalCount = 0;
+		let mongoDBModels: BookInfoDBModel[] = [];
+
+		const { limit, skip } = this.getLimitAndSkipCount(page);
+		const filter = { userId: this._userId.value };
 
 		try {
-			mongoDBModel = (await this._collection
-				.find({ userId: this._userId.value })
+			totalCount = await this._collection.countDocuments(filter);
+			lastPageCount = this.getLastPageCount(totalCount, limit);
+			mongoDBModels = (await this._collection
+				.find(filter)
+				.skip(skip)
+				.limit(limit)
 				.toArray()) as BookInfoDBModel[];
 		} catch (error) {
 			console.log(error);
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return mongoDBModel;
+		return { lastPageCount, totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
-	async getBookInfosByStatus(status: status): Promise<BookInfoDBModel[]> {
-		let mongoDBModel: BookInfoDBModel[] = [];
+	async getBookInfosByStatus(
+		page: number,
+		status: status
+	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
+		if (page < 0) {
+			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
+		}
+
+		let lastPageCount = 0;
+		let totalCount = 0;
+		let mongoDBModels: BookInfoDBModel[] = [];
+
+		const { limit, skip } = this.getLimitAndSkipCount(page);
+		const filter: Filter<BookInfoDBModel> = {
+			$and: [{ userId: this._userId.value }, { status: status }]
+		};
 
 		try {
-			const filter: Filter<BookInfoDBModel> = {
-				$and: [{ userId: this._userId.value }, { status: status }]
-			};
-			mongoDBModel = (await this._collection.find(filter).toArray()) as BookInfoDBModel[];
+			totalCount = await this._collection.countDocuments(filter);
+			lastPageCount = this.getLastPageCount(totalCount, limit);
+			mongoDBModels = (await this._collection
+				.find(filter)
+				.skip(skip)
+				.limit(limit)
+				.toArray()) as BookInfoDBModel[];
 		} catch (error) {
 			console.log(error);
 			console.log('書誌データの取得に失敗しました。');
 		}
 
-		return mongoDBModel;
+		return { lastPageCount, totalCount, bookInfoDBModels: mongoDBModels };
 	}
 
 	async getRecentBookInfo(): Promise<BookInfoDBModel | undefined> {
@@ -214,4 +246,13 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 		return isDuplicate;
 	}
+
+	private getLimitAndSkipCount = (page: number) => {
+		const limit = 30;
+		const skip = page * limit;
+
+		return { limit, skip };
+	};
+
+	private getLastPageCount = (totalCount: number, limit: number) => Math.floor(totalCount / limit);
 }

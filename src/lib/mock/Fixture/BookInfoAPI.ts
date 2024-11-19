@@ -6,7 +6,7 @@ import {
 import { json } from '@sveltejs/kit';
 import { beforeAll, vi } from 'vitest';
 
-type getType = 'get' | 'getByStatusOrRecent' | 'getPageHistory';
+type getType = 'get' | 'getByStatus' | 'getByRecent' | 'getPageHistory';
 
 /**getルートのレスポンスをbeforeAllで定義する */
 export const setGetRouteFetch = (getType: getType) => {
@@ -16,28 +16,33 @@ export const setGetRouteFetch = (getType: getType) => {
 		case 'get':
 			const getData = [convertBookInfoToDBModel(bookInfoInterfaceMock)];
 			beforeAll(() => {
-				mockFetch.mockImplementation(async () => json(getData, { status: 200 }));
+				mockFetch.mockImplementation(async () =>
+					json({ totalCount: getData.length, bookInfoDBModels: getData }, { status: 200 })
+				);
 			});
 			return getData;
-		case 'getByStatusOrRecent':
+		case 'getByStatus':
 			const requestUrl = '/api/bookinfo';
-			const statusOrRecentData = bookInfoInterfaceMocks.map((item) =>
-				convertBookInfoToDBModel(item)
-			);
+			const statusData = bookInfoInterfaceMocks.map((item) => convertBookInfoToDBModel(item));
 			beforeAll(() => {
 				mockFetch.mockImplementation(async (input) => {
 					const dataMap: { [key: string]: BookInfoDBModel | BookInfoDBModel[] } = {
-						[`${requestUrl}?type=wish`]: [statusOrRecentData[0]],
-						[`${requestUrl}?type=reading`]: [statusOrRecentData[1]],
-						[`${requestUrl}?type=complete`]: [statusOrRecentData[2]],
-						[`${requestUrl}?type=recent`]: statusOrRecentData[0]
+						[`${requestUrl}?page=0&type=wish`]: [statusData[0]],
+						[`${requestUrl}?page=0&type=reading`]: [statusData[1]],
+						[`${requestUrl}?page=0&type=complete`]: [statusData[2]]
 					};
 					return dataMap[input as string]
-						? json(dataMap[input as string], { status: 200 })
+						? json({ totalCount: 1, bookInfoDBModels: dataMap[input as string] }, { status: 200 })
 						: new Response('データが見つかりません', { status: 400 });
 				});
 			});
-			return statusOrRecentData;
+			return statusData;
+		case 'getByRecent':
+			const recentData = convertBookInfoToDBModel(bookInfoInterfaceMock);
+			beforeAll(() => {
+				mockFetch.mockImplementation(async () => json(recentData, { status: 200 }));
+			});
+			return recentData;
 		case 'getPageHistory':
 			const pageHistoryData = convertBookInfoToDBModel(bookInfoInterfaceMock);
 			beforeAll(() => {

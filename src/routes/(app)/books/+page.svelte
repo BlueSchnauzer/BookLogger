@@ -23,4 +23,10 @@
 	<title>{pageTitles.books}</title>
 </svelte:head>
 
-<ContentsFeature headerIcon={BookCase} headerText={pageTitles.books} bookInfos={data.bookInfos} />
+<ContentsFeature
+	headerIcon={BookCase}
+	currentPageCount={data.pageCount}
+	lastPageCount={data.lastPageCount}
+	headerText={pageTitles.books}
+	bookInfos={data.bookInfos}
+/>

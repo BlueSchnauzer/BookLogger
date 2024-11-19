@@ -1,5 +1,6 @@
 import { convertInputDateToDate } from '$lib/client/Shared/Helpers/Date';
 import { type industryIdentifiers, getIdentifier } from '$lib/client/Shared/Helpers/GoogleBooksAPI';
+import { createUrlWithParams, getPageCount, getParamValue } from '$lib/client/Shared/Helpers/Urls';
 import { describe, expect, it } from 'vitest';
 
 describe('Date', () => {
@@ -35,5 +36,32 @@ describe('GoogleBooksAPI', () => {
 		handleExpect(isbn13, 'ISBN_13', isbn13[0].identifier);
 		const isbn10 = [{ identifier: '4-123456-78-9', type: 'ISBN_10' }];
 		handleExpect(isbn10, 'ISBN_10', isbn10[0].identifier);
+	});
+});
+
+describe('Urls', () => {
+	it('createUrlWithParams', () => {
+		const url = '/test/slug';
+		const params = { key1: 'value1', key2: 'value2', key3: 'value3' };
+		const urlWithParams = createUrlWithParams(url, params);
+
+		expect(urlWithParams).toBe(
+			`${url}?key1=${params.key1}&key2=${params.key2}&key3=${params.key3}`
+		);
+	});
+
+	it('getParamValue', () => {
+		const param = new URLSearchParams('keyA=valueA&keyB=valueB&keyC=valueC');
+
+		expect(getParamValue(param, 'keyA')).toBe('valueA');
+		expect(getParamValue(param, 'keyB')).toBe('valueB');
+		expect(getParamValue(param, 'keyC')).toBe('valueC');
+	});
+
+	it('getPageCount', () => {
+		expect(getPageCount(new URLSearchParams('page=0'))).toBe(0);
+		expect(getPageCount(new URLSearchParams('page=100'))).toBe(100);
+		expect(getPageCount(new URLSearchParams('page=test'))).toBe(0);
+		expect(getPageCount(new URLSearchParams('key=value'))).toBe(0);
 	});
 });

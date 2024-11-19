@@ -1,11 +1,11 @@
 <script lang="ts">
-	import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
-	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
-	import ContentHeader from '$lib/client/Shared/Components/Headers/ContentHeader.svelte';
 	import { goto } from '$app/navigation';
+	import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
-	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
+	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
+	import { colorStone700, emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
+	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount, type ComponentType } from 'svelte';
 
@@ -15,6 +15,8 @@
 	export let headerText: string;
 	/**書誌データの一覧 */
 	export let bookInfos: BookInfo[] | undefined;
+	export let currentPageCount: number;
+	export let lastPageCount: number;
 	/**ライブラリ画面(/booksルート)用にレンダリングするか */
 	//export let isBooksRoute = false;
 	/**データ0件の時に表示するメッセージ */
@@ -33,11 +35,23 @@
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<ContentHeader {headerIcon} {headerText} />
+		<div class="relative">
+			<MagnifingGlass
+				style={'absolute top-3 left-2'}
+				height={16}
+				width={16}
+				color={colorStone700}
+			/>
+			<input
+				type="text"
+				placeholder="Search Books"
+				class="h-10 w-60 max-md:w-full pl-8 py-1 pr-2 rounded border border-stone-400"
+			/>
+		</div>
 		<ContentFilters />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
-	<ContentsGrid {bookInfos} {emptyMessage} {handleClick} />
+	<ContentsGrid {bookInfos} {currentPageCount} {lastPageCount} {emptyMessage} {handleClick} />
 </main>
 
 <style>

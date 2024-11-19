@@ -4,7 +4,6 @@ test.describe('ライブラリ', () => {
 	test('ライブラリ画面が表示できること', async ({ loginedPage }) => {
 		const pageName = 'ライブラリ';
 		await loginedPage.page.locator('[href="/books"]', { hasNotText: pageName }).click();
-		await expect(loginedPage.page.waitForURL('/books')).toBeTruthy();
-		await expect(loginedPage.page.getByTestId('headerText')).toHaveText(pageName);
+		await loginedPage.page.waitForURL('/books');
 	});
 });

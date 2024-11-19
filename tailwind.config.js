@@ -11,7 +11,7 @@ export default {
 			},
 			gridTemplateColumns: {
 				smBookContentAutoFit: 'repeat(auto-fit, minmax(128px, 1fr))',
-				BookContentAutoFill: 'repeat(auto-fill, minmax(200px, 1fr))'
+				BookContentAutoFill: 'repeat(auto-fill, minmax(280px, 1fr))'
 			},
 			animation: {
 				'scale-in-right': 'scale-in-right 0.3s ease   both'

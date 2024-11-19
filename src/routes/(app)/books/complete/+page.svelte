@@ -26,6 +26,8 @@
 <ContentsFeature
 	headerIcon={CompleteBook}
 	headerText={pageTitles.complete}
+	currentPageCount={data.pageCount}
+	lastPageCount={data.lastPageCount}
 	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.complete}
 />

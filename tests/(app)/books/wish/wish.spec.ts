@@ -7,6 +7,5 @@ test.describe('読みたい本', () => {
 		const pageName = '読みたい';
 		await loginedPage.page.getByText(pageName).click();
 		await loginedPage.page.waitForURL('/books/wish');
-		await expect(loginedPage.page.getByTestId('headerText')).toHaveText(`${pageName}本`);
 	});
 });

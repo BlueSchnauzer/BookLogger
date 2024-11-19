@@ -23,6 +23,8 @@
 <ContentsFeature
 	headerIcon={OpeningBook}
 	headerText={pageTitles.reading}
+	currentPageCount={data.pageCount}
+	lastPageCount={data.lastPageCount}
 	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.reading}
 />

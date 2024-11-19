@@ -5,8 +5,12 @@
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';
 	import { onMount } from 'svelte';
+	import PagingLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/PagingLabel.svelte';
+	import { afterNavigate } from '$app/navigation';
 
 	export let bookInfos: BookInfo[] | undefined;
+	export let currentPageCount: number;
+	export let lastPageCount: number;
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
 	export let handleClick: (bookId: string | undefined) => void;
@@ -15,14 +19,17 @@
 
 	onMount(() => {
 		window.ResizeObserver = ResizeObserver;
-		if (contentGrid) {
-			new SimpleBar(contentGrid, { autoHide: false });
-		}
+		contentGrid && new SimpleBar(contentGrid, { autoHide: false });
+	});
+
+	afterNavigate(() => {
+		const gridWrapper = document.querySelector('.simplebar-content-wrapper');
+		gridWrapper && (gridWrapper.scrollTop = 0);
 	});
 </script>
 
-{#if bookInfos && bookInfos.length}
-	<div bind:this={contentGrid} class="p-1 contentHeight">
+<div bind:this={contentGrid} class="flex flex-grow p-1 relative contentHeight">
+	{#if bookInfos && bookInfos.length}
 		<ul
 			class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
 		>
@@ -37,12 +44,11 @@
 				</li>
 			{/each}
 		</ul>
-	</div>
-{:else}
-	<div class="p-1 contentHeight">
+		<PagingLabel {currentPageCount} {lastPageCount} />
+	{:else}
 		<p class="px-1 font-medium text-lime-700">{@html emptyMessage}</p>
-	</div>
-{/if}
+	{/if}
+</div>
 
 <style>
 	.contentHeight {

@@ -7,7 +7,13 @@ describe('BookInfoGrid', () => {
 	const bookInfos = bookInfoInterfaceMocks;
 
 	it('レンダリング', () => {
-		render(ContentsGrid, { bookInfos, emptyMessage: '', handleClick: () => void 0 });
+		render(ContentsGrid, {
+			bookInfos,
+			emptyMessage: '',
+			currentPageCount: 0,
+			lastPageCount: 0,
+			handleClick: () => void 0
+		});
 
 		expect(screen.getByTitle(bookInfos[0].title)).toBeInTheDocument();
 		expect(screen.getByTitle(bookInfos[1].title)).toBeInTheDocument();
