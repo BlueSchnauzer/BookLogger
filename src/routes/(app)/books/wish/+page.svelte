@@ -24,6 +24,8 @@
 <ContentsFeature
 	headerIcon={PileOfBooks}
 	headerText={pageTitles.wish}
+	currentPageCount={data.pageCount}
+	lastPageCount={data.lastPageCount}
 	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.wish}
 />
