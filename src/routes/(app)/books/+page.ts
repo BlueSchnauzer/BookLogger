@@ -4,7 +4,7 @@ import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, url }) => {
 	const pageCount = getPageCount(url.searchParams);
-	const { totalCount, bookInfos } = await getBookInfos(fetch, pageCount);
+	const { totalCount, maxPageCount, bookInfos } = await getBookInfos(fetch, pageCount);
 
-	return { pageCount, totalCount, bookInfos };
+	return { pageCount, totalCount, maxPageCount, bookInfos };
 }) satisfies PageLoad;
