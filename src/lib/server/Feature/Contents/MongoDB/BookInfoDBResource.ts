@@ -6,6 +6,7 @@ import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookI
 import type { IBookInfoDBRepositories } from '$lib/server/Feature/Contents/IBookInfoDB';
 import type { bookInfosCollection } from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
 import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
+import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 
 /**MongoDBでの書誌データ操作を管理する */
 export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
@@ -38,7 +39,8 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 	}
 
 	async getBookInfos(
-		page: number
+		page: number,
+		filters?: { query?: string; order?: OrderFilters }
 	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
@@ -51,13 +53,13 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let mongoDBModels: BookInfoDBModel[] = [];
 
 		const { limit, skip } = this.getLimitAndSkipCount(page);
-		const filter = { userId: this._userId.value };
+		const conditions = { userId: this._userId.value };
 
 		try {
-			totalCount = await this._collection.countDocuments(filter);
+			totalCount = await this._collection.countDocuments(conditions);
 			lastPageCount = this.getLastPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
-				.find(filter)
+				.find(conditions)
 				.skip(skip)
 				.limit(limit)
 				.toArray()) as BookInfoDBModel[];
@@ -71,7 +73,8 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 	async getBookInfosByStatus(
 		page: number,
-		status: status
+		status: status,
+		filters?: { query?: string; order?: OrderFilters }
 	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		if (page < 0) {
 			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
@@ -82,15 +85,15 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let mongoDBModels: BookInfoDBModel[] = [];
 
 		const { limit, skip } = this.getLimitAndSkipCount(page);
-		const filter: Filter<BookInfoDBModel> = {
+		const conditions: Filter<BookInfoDBModel> = {
 			$and: [{ userId: this._userId.value }, { status: status }]
 		};
 
 		try {
-			totalCount = await this._collection.countDocuments(filter);
+			totalCount = await this._collection.countDocuments(conditions);
 			lastPageCount = this.getLastPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
-				.find(filter)
+				.find(conditions)
 				.skip(skip)
 				.limit(limit)
 				.toArray()) as BookInfoDBModel[];

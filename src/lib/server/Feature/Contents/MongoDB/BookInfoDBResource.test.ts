@@ -122,6 +122,84 @@ describe('getBookInfos', () => {
 		expect(nextResponse.bookInfoDBModels[0].title).toBe(`title30`);
 	});
 
+	it('query引数の値に部分一致する、titleまたはauthorを持つ書誌情報を取得できること', async () => {
+		const datas = bookInfoInterfaceMocks;
+		const preData = await col.insertMany([
+			convertBookInfoToDBModel(datas[0]),
+			convertBookInfoToDBModel(datas[1]),
+			convertBookInfoToDBModel(datas[2])
+		]);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
+
+		const firstRequest = await repos.getBookInfos(0, { query: 'わたしを' });
+		const secondRequest = await repos.getBookInfos(0, { query: '円城' });
+		const thirdRequest = await repos.getBookInfos(0, { query: 'テスト' });
+
+		expect(firstRequest.totalCount).toBe(1);
+		expect(firstRequest.bookInfoDBModels[0].title).toBe(datas[0].title);
+
+		expect(secondRequest.totalCount).toBe(2);
+		expect(secondRequest.bookInfoDBModels[0].title).toBe(datas[1].title);
+		expect(secondRequest.bookInfoDBModels[1].title).toBe(datas[2].title);
+
+		expect(thirdRequest.totalCount).toBe(0);
+	});
+
+	it('order引数の条件で、取得するデータの並び替えが行えること。', async () => {
+		const datas = bookInfoInterfaceMocks;
+
+		//並び替えのために最新化する
+		const date = new Date();
+		datas[0].createDate.setDate(date.getDate() + 1);
+		datas[1].createDate.setDate(date.getDate() - 1);
+		datas[2].updateDate.setDate(date.getDate() + 1);
+
+		const preData = await col.insertMany([
+			convertBookInfoToDBModel(datas[0]),
+			convertBookInfoToDBModel(datas[1]),
+			convertBookInfoToDBModel(datas[2])
+		]);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
+
+		const filteredByDesc = await repos.getBookInfos(0, { order: 'createDateDesc' });
+		const filteredByAsc = await repos.getBookInfos(0, { order: 'createDateAsc' });
+		const filteredByUpdateDate = await repos.getBookInfos(0, { order: 'updateDate' });
+
+		expect(filteredByDesc.totalCount).toBe(3);
+		expect(filteredByDesc.bookInfoDBModels[0].title).toBe(datas[0].title);
+
+		expect(filteredByAsc.totalCount).toBe(3);
+		expect(filteredByAsc.bookInfoDBModels[0].title).toBe(datas[1].title);
+
+		expect(filteredByUpdateDate.totalCount).toBe(3);
+		expect(filteredByUpdateDate.bookInfoDBModels[0].title).toBe(datas[2].title);
+	});
+
+	it('queryとorderの組み合わせ条件で、書誌データを取得できること', async () => {
+		const datas = bookInfoInterfaceMocks;
+
+		datas[2].updateDate = new Date();
+		const preData = await col.insertMany([
+			convertBookInfoToDBModel(datas[0]),
+			convertBookInfoToDBModel(datas[1]),
+			convertBookInfoToDBModel(datas[2])
+		]);
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookInfoMongoDBResource(col, bookInfoInterfaceMock.userId);
+		const filteredByConditions = await repos.getBookInfos(0, {
+			query: '円城',
+			order: 'updateDate'
+		});
+
+		expect(filteredByConditions.totalCount).toBe(2);
+		expect(filteredByConditions.bookInfoDBModels[0].title).toBe(datas[2].title);
+	});
+
 	it('一致するデータが無い場合に空のデータが返ること', async () => {
 		const preData = await col.insertOne(convertBookInfoToDBModel(bookInfoInterfaceMock));
 		expect(await preData.acknowledged).toBeTruthy();
