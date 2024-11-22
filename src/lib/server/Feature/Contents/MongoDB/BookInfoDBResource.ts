@@ -53,7 +53,15 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let mongoDBModels: BookInfoDBModel[] = [];
 
 		const { limit, skip } = this.getLimitAndSkipCount(page);
-		const conditions = { userId: this._userId.value };
+		const conditions: Filter<BookInfoDBModel> = { $and: [{ userId: this._userId.value }] };
+		if (filters?.query) {
+			conditions.$and?.push({
+				$or: [
+					{ title: { $regex: filters.query, $options: 'i' } },
+					{ author: { $regex: filters.query, $options: 'i' } }
+				]
+			});
+		}
 
 		try {
 			totalCount = await this._collection.countDocuments(conditions);
