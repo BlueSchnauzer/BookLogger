@@ -5,7 +5,7 @@ import type { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/Bo
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import type { IBookInfoDBRepositories } from '$lib/server/Feature/Contents/IBookInfoDB';
 import type { bookInfosCollection } from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
-import { ObjectId, type Filter, type UpdateFilter } from 'mongodb';
+import { ObjectId, type Filter, type SortDirection, type UpdateFilter } from 'mongodb';
 import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 
 /**MongoDBでの書誌データ操作を管理する */
@@ -63,11 +63,27 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 			});
 		}
 
+		let sortCondition: { [key in keyof BookInfoDBModel]?: SortDirection } = { createDate: -1 };
+		if (filters?.order) {
+			switch (filters.order) {
+				case 'createDateAsc':
+					sortCondition = { createDate: 1 };
+					break;
+				case 'updateDate':
+					sortCondition = { updateDate: -1 };
+					break;
+				case 'createDateDesc':
+				default:
+					break;
+			}
+		}
+
 		try {
 			totalCount = await this._collection.countDocuments(conditions);
 			lastPageCount = this.getLastPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
 				.find(conditions)
+				.sort(sortCondition)
 				.skip(skip)
 				.limit(limit)
 				.toArray()) as BookInfoDBModel[];
