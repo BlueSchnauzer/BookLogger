@@ -148,7 +148,7 @@ describe('getBookInfos', () => {
 	});
 
 	it('order引数の条件で、取得するデータの並び替えが行えること。', async () => {
-		const datas = bookInfoInterfaceMocks;
+		const datas = bookInfoInterfaceMocksWithUserIds();
 
 		//並び替えのために最新化する
 		const date = new Date();
@@ -180,9 +180,9 @@ describe('getBookInfos', () => {
 	});
 
 	it('queryとorderの組み合わせ条件で、書誌データを取得できること', async () => {
-		const datas = bookInfoInterfaceMocks;
+		const datas = bookInfoInterfaceMocksWithUserIds();
 
-		datas[2].updateDate = new Date();
+		datas[2].updateDate.setDate(new Date().getDate() + 1);
 		const preData = await col.insertMany([
 			convertBookInfoToDBModel(datas[0]),
 			convertBookInfoToDBModel(datas[1]),
