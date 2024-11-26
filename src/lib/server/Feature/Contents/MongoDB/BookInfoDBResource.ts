@@ -40,7 +40,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 
 	async getBookInfos(
 		page: number,
-		filters?: { query?: string; order?: OrderFilters }
+		options?: { status?: status; query?: string; order?: OrderFilters }
 	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
@@ -53,71 +53,14 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let mongoDBModels: BookInfoDBModel[] = [];
 
 		const { limit, skip } = this.getLimitAndSkipCount(page);
-		const conditions: Filter<BookInfoDBModel> = { $and: [{ userId: this._userId.value }] };
-		if (filters?.query) {
-			conditions.$and?.push({
-				$or: [
-					{ title: { $regex: filters.query, $options: 'i' } },
-					{ author: { $regex: filters.query, $options: 'i' } }
-				]
-			});
-		}
-
-		let sortCondition: { [key in keyof BookInfoDBModel]?: SortDirection } = { createDate: -1 };
-		if (filters?.order) {
-			switch (filters.order) {
-				case 'createDateAsc':
-					sortCondition = { createDate: 1 };
-					break;
-				case 'updateDate':
-					sortCondition = { updateDate: -1 };
-					break;
-				case 'createDateDesc':
-				default:
-					break;
-			}
-		}
+		const { filters, sort } = this.getFilterAndSortConditions(options);
 
 		try {
-			totalCount = await this._collection.countDocuments(conditions);
+			totalCount = await this._collection.countDocuments(filters);
 			lastPageCount = this.getLastPageCount(totalCount, limit);
 			mongoDBModels = (await this._collection
-				.find(conditions)
-				.sort(sortCondition)
-				.skip(skip)
-				.limit(limit)
-				.toArray()) as BookInfoDBModel[];
-		} catch (error) {
-			console.log(error);
-			console.log('書誌データの取得に失敗しました。');
-		}
-
-		return { lastPageCount, totalCount, bookInfoDBModels: mongoDBModels };
-	}
-
-	async getBookInfosByStatus(
-		page: number,
-		status: status,
-		filters?: { query?: string; order?: OrderFilters }
-	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
-		if (page < 0) {
-			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
-		}
-
-		let lastPageCount = 0;
-		let totalCount = 0;
-		let mongoDBModels: BookInfoDBModel[] = [];
-
-		const { limit, skip } = this.getLimitAndSkipCount(page);
-		const conditions: Filter<BookInfoDBModel> = {
-			$and: [{ userId: this._userId.value }, { status: status }]
-		};
-
-		try {
-			totalCount = await this._collection.countDocuments(conditions);
-			lastPageCount = this.getLastPageCount(totalCount, limit);
-			mongoDBModels = (await this._collection
-				.find(conditions)
+				.find(filters)
+				.sort(sort)
 				.skip(skip)
 				.limit(limit)
 				.toArray()) as BookInfoDBModel[];
@@ -282,4 +225,41 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 	};
 
 	private getLastPageCount = (totalCount: number, limit: number) => Math.floor(totalCount / limit);
+
+	private getFilterAndSortConditions = (options?: {
+		status?: status;
+		query?: string;
+		order?: string;
+	}) => {
+		const filters: Filter<BookInfoDBModel> = { $and: [{ userId: this._userId.value }] };
+		if (options?.status) {
+			filters.$and?.push({ status: options.status });
+		}
+
+		if (options?.query) {
+			filters.$and?.push({
+				$or: [
+					{ title: { $regex: options.query, $options: 'i' } },
+					{ author: { $regex: options.query, $options: 'i' } }
+				]
+			});
+		}
+
+		let sort: { [key in keyof BookInfoDBModel]?: SortDirection } = { createDate: -1 };
+		if (options?.order) {
+			switch (options.order) {
+				case 'createDateAsc':
+					sort = { createDate: 1 };
+					break;
+				case 'updateDate':
+					sort = { updateDate: -1 };
+					break;
+				case 'createDateDesc':
+				default:
+					break;
+			}
+		}
+
+		return { filters, sort };
+	};
 }

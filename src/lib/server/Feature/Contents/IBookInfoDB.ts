@@ -13,12 +13,7 @@ export interface IBookInfoDBRepositories {
 	getBookInfo(id: id): Promise<BookInfoDBModel | undefined>;
 	getBookInfos(
 		page: number,
-		filters?: { query?: string; order?: OrderFilters }
-	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
-	getBookInfosByStatus(
-		page: number,
-		status: status,
-		filters?: { query?: string; order?: OrderFilters }
+		options?: { status?: status; query?: string; order?: OrderFilters }
 	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
 	getRecentBookInfo(): Promise<BookInfoDBModel | undefined>;
 	getPageHistory(): Promise<Array<pageHistory[]>>;
