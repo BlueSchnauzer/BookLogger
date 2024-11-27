@@ -10,6 +10,9 @@ import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/Bo
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { verifyTokenAndCollections } from '../verification';
+import { getPageCount, getParamValue } from '$lib/client/Shared/Helpers/Urls';
+import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
+import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 
 /**書誌データを取得する
  * クエリパラメータに応じて返却するデータを変更する。
@@ -24,23 +27,17 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	const repos = new BookInfoMongoDBResource(collections?.bookInfos!, userId!);
+	const { page, type, query, order } = getSearchConditions(url.searchParams);
 
-	const param = url.searchParams;
-	const getType = param.get('type');
-	const page = param.get('page');
-	const pageCount = page ? Number(page) : 0;
-
-	switch (getType) {
+	switch (type) {
 		case 'recent':
 			const recentData = await repos.getRecentBookInfo();
 			return json(recentData ?? null, { status: 200 });
 		case 'wish':
 		case 'reading':
 		case 'complete':
-			const responseByStatus = await repos.getBookInfosByStatus(pageCount, getType);
-			return json(responseByStatus, { status: 200 });
 		default:
-			const response = await repos.getBookInfos(pageCount);
+			const response = await repos.getBookInfos(page, { status: type as status, query, order });
 			return json(response, { status: 200 });
 	}
 };
@@ -97,4 +94,13 @@ export const DELETE: RequestHandler = async ({ request, cookies }) => {
 
 	const repos = new BookInfoMongoDBResource(collections?.bookInfos!, userId!);
 	return await repos.delete(id);
+};
+
+const getSearchConditions = (params: URLSearchParams) => {
+	const page = getPageCount(params);
+	const type = getParamValue(params, 'type') ?? '';
+	const query = getParamValue(params, 'query') ?? '';
+	const order = (getParamValue(params, 'order') as OrderFilters) ?? '';
+
+	return { page, type, query, order };
 };
