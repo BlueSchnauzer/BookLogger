@@ -25,7 +25,7 @@
 
 <ContentsFeature
 	headerIcon={BookCase}
-	currentPageCount={data.pageCount}
+	currentPageCount={data.page}
 	lastPageCount={data.lastPageCount}
 	headerText={pageTitles.books}
 	bookInfos={data.bookInfos}
