@@ -1,6 +1,8 @@
 export const APIRouteURLs = {
 	auth: '/api/auth',
-	bookInfo: '/api/bookinfo'
+	bookInfo: '/api/bookinfo',
+	bookInfoRecent: '/api/bookinfo/recent',
+	bookInfoHistory: '/api/bookinfo/history'
 } as const;
 
 export const HomeURLs = {
@@ -9,9 +11,9 @@ export const HomeURLs = {
 
 export const BooksURLs = {
 	books: '/books',
-	wish: '/books/wish',
-	reading: '/books/reading',
-	complete: '/books/complete'
+	wish: '/books?status=wish',
+	reading: '/books?status=reading',
+	complete: '/books?status=complete'
 } as const;
 
 export const SearchURLs = {
