@@ -43,11 +43,15 @@ describe('Urls', () => {
 	it('createUrlWithParams', () => {
 		const url = '/test/slug';
 		const params = { key1: 'value1', key2: 'value2', key3: 'value3' };
-		const urlWithParams = createUrlWithParams(url, params);
 
-		expect(urlWithParams).toBe(
-			`${url}?key1=${params.key1}&key2=${params.key2}&key3=${params.key3}`
-		);
+		const urlByRecord = createUrlWithParams(url, params);
+
+		const searchParams = new URLSearchParams(params);
+		const urlByURLSearchParams = createUrlWithParams(url, searchParams);
+
+		const expectStr = `${url}?key1=${params.key1}&key2=${params.key2}&key3=${params.key3}`;
+		expect(urlByRecord).toBe(expectStr);
+		expect(urlByURLSearchParams).toBe(expectStr);
 	});
 
 	it('getParamValue', () => {

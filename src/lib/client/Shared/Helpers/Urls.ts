@@ -1,8 +1,17 @@
 import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
 
-export const createUrlWithParams = (url: string, params: Record<string, string>) => {
-	const searchParams = new URLSearchParams(params);
+export const createUrlWithParams = (
+	url: string,
+	params: Record<string, string> | URLSearchParams
+) => {
+	let searchParams: URLSearchParams;
+	if (params instanceof URLSearchParams) {
+		searchParams = params;
+	} else {
+		searchParams = new URLSearchParams(params);
+	}
+
 	return `${url}?${searchParams.toString()}`;
 };
 
