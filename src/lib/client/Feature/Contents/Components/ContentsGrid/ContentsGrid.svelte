@@ -8,7 +8,7 @@
 	import PagingLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/PagingLabel.svelte';
 	import { afterNavigate } from '$app/navigation';
 
-	export let bookInfos: BookInfo[] | undefined;
+	export let bookInfos: BookInfo[];
 	export let currentPageCount: number;
 	export let lastPageCount: number;
 	/**表示する本が無い場合のメッセージ*/
@@ -29,25 +29,21 @@
 </script>
 
 <div bind:this={contentGrid} class="flex flex-grow p-1 relative contentHeight">
-	{#if bookInfos && bookInfos.length}
-		<ul
-			class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
-		>
-			{#each bookInfos as bookInfo (bookInfo.id)}
-				<li style="display: inherit;" title={bookInfo.title}>
-					<button
-						class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
-						on:click={() => handleClick(bookInfo.id?.value)}
-					>
-						<GridItem {bookInfo} />
-					</button>
-				</li>
-			{/each}
-		</ul>
-		<PagingLabel {currentPageCount} {lastPageCount} />
-	{:else}
-		<p class="px-1 font-medium text-lime-700">{@html emptyMessage}</p>
-	{/if}
+	<ul
+		class="grid gap-2 grid-cols-BookContentAutoFill max-sm:grid-cols-smBookContentAutoFit max-sm:place-items-center"
+	>
+		{#each bookInfos as bookInfo (bookInfo.id)}
+			<li style="display: inherit;" title={bookInfo.title}>
+				<button
+					class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
+					on:click={() => handleClick(bookInfo.id?.value)}
+				>
+					<GridItem {bookInfo} />
+				</button>
+			</li>
+		{/each}
+	</ul>
+	<PagingLabel {currentPageCount} {lastPageCount} />
 </div>
 
 <style>

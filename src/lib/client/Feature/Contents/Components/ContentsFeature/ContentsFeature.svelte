@@ -9,10 +9,10 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount, type ComponentType } from 'svelte';
 
-	/**ヘッダー用アイコン */
-	export let headerIcon: ComponentType;
-	/**ヘッダー用テキスト */
-	export let headerText: string;
+	// /**ヘッダー用アイコン */
+	// export let headerIcon: ComponentType;
+	// /**ヘッダー用テキスト */
+	// export let headerText: string;
 	/**書誌データの一覧 */
 	export let bookInfos: BookInfo[] | undefined;
 	export let currentPageCount: number;
@@ -51,7 +51,11 @@
 		<ContentFilters />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
-	<ContentsGrid {bookInfos} {currentPageCount} {lastPageCount} {emptyMessage} {handleClick} />
+	{#if bookInfos && bookInfos.length}
+		<ContentsGrid {bookInfos} {currentPageCount} {lastPageCount} {emptyMessage} {handleClick} />
+	{:else}
+		<p class="px-1 font-medium text-lime-700">{@html emptyMessage}</p>
+	{/if}
 </main>
 
 <style>
