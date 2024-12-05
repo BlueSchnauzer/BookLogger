@@ -2,7 +2,6 @@ import { BookInfoAPIMock } from '$lib/mock/Fixture';
 import { describe, it, expect } from 'vitest';
 import {
 	getBookInfos,
-	getBookInfosByStatus,
 	getHistory,
 	getRecentBookInfo
 } from '$lib/client/Feature/Contents/DataManage/fetcher';

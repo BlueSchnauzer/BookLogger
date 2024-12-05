@@ -27,9 +27,9 @@ export const setGetRouteFetch = (getType: getType) => {
 			beforeAll(() => {
 				mockFetch.mockImplementation(async (input) => {
 					const dataMap: { [key: string]: BookInfoDBModel | BookInfoDBModel[] } = {
-						[`${requestUrl}?page=0&type=wish&query=&order=`]: [statusData[0]],
-						[`${requestUrl}?page=0&type=reading&query=&order=`]: [statusData[1]],
-						[`${requestUrl}?page=0&type=complete&query=&order=`]: [statusData[2]]
+						[`${requestUrl}?page=0&status=wish&query=&order=`]: [statusData[0]],
+						[`${requestUrl}?page=0&status=reading&query=&order=`]: [statusData[1]],
+						[`${requestUrl}?page=0&status=complete&query=&order=`]: [statusData[2]]
 					};
 					return dataMap[input as string]
 						? json({ totalCount: 1, bookInfoDBModels: dataMap[input as string] }, { status: 200 })

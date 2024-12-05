@@ -29,7 +29,7 @@ export const getBookInfos = async (
 ) => {
 	const param = {
 		page: page.toString(),
-		type: options?.status ?? '',
+		status: options?.status ?? '',
 		query: options?.query ?? '',
 		order: options?.order ?? ''
 	};
@@ -41,20 +41,8 @@ export const getBookInfos = async (
 	return { totalCount, lastPageCount, bookInfos };
 };
 
-export const getBookInfosByStatus = async (fetch: FetchInterface, page: number, status: status) => {
-	const params = { page: page.toString(), type: status };
-
-	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, params));
-	const { totalCount, lastPageCount, bookInfoDBModels } = await parseListResponse(response);
-	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
-
-	return { totalCount, lastPageCount, bookInfos };
-};
-
 export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo | undefined> => {
-	const param = { type: 'recent' };
-
-	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
+	const response = await fetch(APIRouteURLs.bookInfoRecent);
 	const model = (await response.json()) as BookInfoDBModel;
 
 	return model ? convertDBModelToBookInfo(model) : undefined;
@@ -63,7 +51,7 @@ export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo
 export const getHistory = async (
 	fetch: FetchInterface
 ): Promise<Map<string, number> | undefined> => {
-	const response = await fetch(`${APIRouteURLs.bookInfo}/history`);
+	const response = await fetch(APIRouteURLs.bookInfoHistory);
 	const pageHistory = (await response.json()) as Array<pageHistory[]>;
 	const ValueObjects = pageHistory.map((item) =>
 		item.map((pageHistory) => new PageHistory(pageHistory))
