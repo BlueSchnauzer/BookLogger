@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
-	import BookCase from '$lib/client/Shared/Icons/BookCase.svelte';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
 	import type { PageData } from './$types';
 	import ContentsFeature from '$lib/client/Feature/Contents/Components/ContentsFeature/ContentsFeature.svelte';
@@ -24,9 +23,7 @@
 </svelte:head>
 
 <ContentsFeature
-	headerIcon={BookCase}
+	bookInfos={data.bookInfos}
 	currentPageCount={data.page}
 	lastPageCount={data.lastPageCount}
-	headerText={pageTitles.books}
-	bookInfos={data.bookInfos}
 />
