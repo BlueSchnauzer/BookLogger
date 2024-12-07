@@ -8,18 +8,36 @@
 	export let lastPageCount: number;
 
 	let pathname = '';
+	let statusParam: string | null;
+	let queryParam: string | null;
+	let orderParam: string | null;
 	$: isDisabledBackward = currentPageCount === 0;
 	$: isDisabledForward = currentPageCount === lastPageCount;
 
-	const createNavigation = (pageCount: number) =>
-		goto(createUrlWithParams(pathname, { page: pageCount.toString() }));
+	const createNavigation = (pageCount: number) => {
+		statusParam?.toLowerCase().startsWith('r', 0);
+
+		const params = new URLSearchParams({ page: pageCount.toString() });
+		statusParam && params.set('status', statusParam);
+		queryParam && params.set('query', queryParam);
+		orderParam && params.set('order', orderParam);
+
+		goto(createUrlWithParams(pathname, params));
+	};
 
 	const gotoFirst = () => createNavigation(0);
 	const gotoBackward = () => createNavigation(currentPageCount - 1);
 	const gotoForward = () => createNavigation(currentPageCount + 1);
 	const gotoLast = () => createNavigation(lastPageCount);
 
-	afterNavigate(({ to }) => to && (pathname = to.url.pathname));
+	afterNavigate(({ to }) => {
+		if (to) {
+			pathname = to.url.pathname;
+			statusParam = to.url.searchParams.get('status');
+			queryParam = to.url.searchParams.get('query');
+			orderParam = to.url.searchParams.get('order');
+		}
+	});
 </script>
 
 <div
