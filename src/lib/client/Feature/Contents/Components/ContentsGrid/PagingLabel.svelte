@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { afterNavigate, goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { colorLime800 } from '$lib/client/Shared/Constants/DisplayValues';
 	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import Icon from '@iconify/svelte';
@@ -15,8 +16,6 @@
 	$: isDisabledForward = currentPageCount === lastPageCount;
 
 	const createNavigation = (pageCount: number) => {
-		statusParam?.toLowerCase().startsWith('r', 0);
-
 		const params = new URLSearchParams({ page: pageCount.toString() });
 		statusParam && params.set('status', statusParam);
 		queryParam && params.set('query', queryParam);
