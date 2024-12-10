@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { booksMenuItems } from '$lib/client/Shared/Constants/MenuItems';
 	import { BooksURLs } from '../../Constants/urls';
-	import { afterNavigate } from '$app/navigation';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	$: currentUrl = $page.url.pathname + $page.url.search;
