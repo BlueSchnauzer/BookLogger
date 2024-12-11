@@ -11,9 +11,9 @@ export const HomeURLs = {
 
 export const BooksURLs = {
 	books: '/books',
-	wish: '/books?status=wish',
-	reading: '/books?status=reading',
-	complete: '/books?status=complete'
+	wish: '/books/wish',
+	reading: '/books/reading',
+	complete: '/books/complete'
 } as const;
 
 export const SearchURLs = {
