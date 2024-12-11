@@ -22,9 +22,9 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	const repos = new BookInfoMongoDBResource(collections?.bookInfos!, userId!);
-	const { page, status, query, order } = getContentsSearchConditions(url.searchParams);
+	const { page, query, order } = getContentsSearchConditions(url.searchParams);
 
-	const bookInfos = await repos.getBookInfos(page, { status, query, order });
+	const bookInfos = await repos.getBookInfos(page, { query, order });
 	return json(bookInfos, { status: 200 });
 };
 
