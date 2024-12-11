@@ -4,7 +4,7 @@
 	import { BooksURLs } from '../../Constants/urls';
 
 	//ページ移動の度に対応したページにスタイルを当てる
-	$: currentUrl = $page.url.pathname + $page.url.search;
+	$: currentUrl = $page.url.pathname;
 </script>
 
 <div class="flex justify-between items-center">
