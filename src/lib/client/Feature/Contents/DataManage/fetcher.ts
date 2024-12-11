@@ -34,7 +34,7 @@ export const getBookInfos = async (
 		order: options?.order ?? ''
 	};
 
-	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
+	const response = await fetch(createUrlWithParams(getAPIRouteByStatus(options?.status), param));
 	const { totalCount, lastPageCount, bookInfoDBModels } = await parseListResponse(response);
 	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
 
@@ -42,7 +42,7 @@ export const getBookInfos = async (
 };
 
 export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo | undefined> => {
-	const response = await fetch(APIRouteURLs.bookInfoRecent);
+	const response = await fetch(APIRouteURLs.bookInfo.recent);
 	const model = (await response.json()) as BookInfoDBModel;
 
 	return model ? convertDBModelToBookInfo(model) : undefined;
@@ -51,13 +51,28 @@ export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo
 export const getHistory = async (
 	fetch: FetchInterface
 ): Promise<Map<string, number> | undefined> => {
-	const response = await fetch(APIRouteURLs.bookInfoHistory);
+	const response = await fetch(APIRouteURLs.bookInfo.history);
 	const pageHistory = (await response.json()) as Array<pageHistory[]>;
 	const ValueObjects = pageHistory.map((item) =>
 		item.map((pageHistory) => new PageHistory(pageHistory))
 	);
 
 	return getPageHistoryMapInCurrentWeek(ValueObjects);
+};
+
+const getAPIRouteByStatus = (status?: status) => {
+	if (!status) {
+		return APIRouteURLs.bookInfo.route;
+	}
+
+	switch (status) {
+		case 'wish':
+			return APIRouteURLs.bookInfo.wish;
+		case 'reading':
+			return APIRouteURLs.bookInfo.reading;
+		case 'complete':
+			return APIRouteURLs.bookInfo.complete;
+	}
 };
 
 const parseListResponse = async (response: Response) =>

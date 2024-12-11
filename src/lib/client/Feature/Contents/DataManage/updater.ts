@@ -10,7 +10,7 @@ export const updateBookInfo = async (
 ) => {
 	const isCompleteReading = beforeStatus !== 'complete' && bookInfo.status.value === 'complete';
 
-	const { ok: isSuccess } = await fetch(APIRouteURLs.bookInfo, {
+	const { ok: isSuccess } = await fetch(APIRouteURLs.bookInfo.route, {
 		method: 'PUT',
 		body: JSON.stringify({ bookInfo, isCompleteReading }),
 		headers: { 'Content-type': 'application/json' }
