@@ -22,10 +22,8 @@
 </svelte:head>
 
 <ContentsFeature
-	headerIcon={PileOfBooks}
-	headerText={pageTitles.wish}
-	currentPageCount={data.pageCount}
-	lastPageCount={data.lastPageCount}
 	bookInfos={data.bookInfos}
+	currentPageCount={data.page}
+	lastPageCount={data.lastPageCount}
 	emptyMessage={emptyMessages.wish}
 />

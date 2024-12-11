@@ -21,10 +21,8 @@
 </svelte:head>
 
 <ContentsFeature
-	headerIcon={OpeningBook}
-	headerText={pageTitles.reading}
-	currentPageCount={data.pageCount}
-	lastPageCount={data.lastPageCount}
 	bookInfos={data.bookInfos}
+	currentPageCount={data.page}
+	lastPageCount={data.lastPageCount}
 	emptyMessage={emptyMessages.reading}
 />

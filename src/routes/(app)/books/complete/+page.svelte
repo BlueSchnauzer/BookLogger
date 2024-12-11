@@ -24,10 +24,8 @@
 </svelte:head>
 
 <ContentsFeature
-	headerIcon={CompleteBook}
-	headerText={pageTitles.complete}
-	currentPageCount={data.pageCount}
-	lastPageCount={data.lastPageCount}
 	bookInfos={data.bookInfos}
+	currentPageCount={data.page}
+	lastPageCount={data.lastPageCount}
 	emptyMessage={emptyMessages.complete}
 />
