@@ -17,6 +17,7 @@
 	export let bookInfos: BookInfo[] | undefined;
 	export let currentPageCount: number;
 	export let lastPageCount: number;
+	export let queryValue = '';
 	/**ライブラリ画面(/booksルート)用にレンダリングするか */
 	//export let isBooksRoute = false;
 	/**データ0件の時に表示するメッセージ */
@@ -45,6 +46,7 @@
 			<input
 				type="text"
 				placeholder="Search Books"
+				bind:value={queryValue}
 				class="h-10 w-60 max-md:w-full pl-8 py-1 pr-2 rounded border border-stone-400"
 			/>
 		</div>
