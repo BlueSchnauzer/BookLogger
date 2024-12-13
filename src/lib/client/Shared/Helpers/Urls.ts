@@ -25,7 +25,7 @@ export const getPageCount = (params: URLSearchParams) => {
 export const getContentsSearchConditions = (params: URLSearchParams) => {
 	const pageCount = getPageCount(params);
 	const query = getParamValue(params, 'query') ?? '';
-	const order = getParamValue(params, 'order') as OrderFilters;
+	const order = (getParamValue(params, 'order') as OrderFilters) ?? '';
 
 	return { pageCount, query, order };
 };
