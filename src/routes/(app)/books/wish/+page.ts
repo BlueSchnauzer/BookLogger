@@ -11,5 +11,5 @@ export const load = (async ({ fetch, url }) => {
 		order
 	});
 
-	return { page: pageCount, query, order, totalCount, lastPageCount, bookInfos };
+	return { pageCount, query, order, totalCount, lastPageCount, bookInfos };
 }) satisfies PageLoad;

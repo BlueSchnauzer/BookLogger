@@ -1,14 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
 	import { emptyMessages, pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	//import type { selectFilterItem, toggleFilterItem } from '$lib/customTypes';
-	import OpeningBook from '$lib/client/Shared/Icons/OpeningBook.svelte';
-	import type { PageData } from './$types';
 	import ContentsFeature from '$lib/client/Feature/Contents/Components/ContentsFeature/ContentsFeature.svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
-	setPathNameContext($page.url.pathname);
 
 	// const toggleFilterItems: toggleFilterItem[] = [
 	// 	{ id: 1, text: 'お気に入り', type: 'favorite', isChecked: false, isVisible: true }
@@ -21,8 +17,10 @@
 </svelte:head>
 
 <ContentsFeature
-	bookInfos={data.bookInfos}
-	currentPageCount={data.page}
+	pageCount={data.pageCount}
+	query={data.query}
+	order={data.order}
 	lastPageCount={data.lastPageCount}
+	bookInfos={data.bookInfos}
 	emptyMessage={emptyMessages.reading}
 />
