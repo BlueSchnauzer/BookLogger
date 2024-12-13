@@ -6,16 +6,17 @@
 	import 'simplebar/dist/simplebar.css';
 	import { onMount } from 'svelte';
 	import PagingLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/PagingLabel.svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
+	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
 	export let bookInfos: BookInfo[];
-	export let currentPageCount: number;
+	export let pageCount: number;
 	export let lastPageCount: number;
 	/**表示する本が無い場合のメッセージ*/
 	export let emptyMessage: string;
-	export let handleClick: (bookId: string | undefined) => void;
 
 	let contentGrid: HTMLElement;
+	const handleClick = (bookId: string | undefined) => goto(`${BooksURLs.books}/${bookId}`);
 
 	onMount(() => {
 		window.ResizeObserver = ResizeObserver;
@@ -43,7 +44,7 @@
 			</li>
 		{/each}
 	</ul>
-	<PagingLabel {currentPageCount} {lastPageCount} />
+	<PagingLabel {pageCount} {lastPageCount} />
 </div>
 
 <style>
