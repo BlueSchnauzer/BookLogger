@@ -16,6 +16,7 @@
 	export let data: PageData;
 	const store = bookInfoStore(data.bookInfo);
 	$: storedValue = $store;
+	const currentStatus = $store.status.value;
 
 	let isDisplay = false;
 	let previousPage = '';
@@ -26,11 +27,7 @@
 
 	const handleEditClick = async () => {
 		isDisplay = true;
-		const { isSuccess, message } = await updateBookInfo(
-			fetch,
-			storedValue,
-			data.bookInfo.status.value
-		);
+		const { isSuccess, message } = await updateBookInfo(fetch, storedValue, currentStatus);
 		isSuccess ? pushSuccessToast(message) : pushErrorToast(message);
 		isDisplay = false;
 	};
