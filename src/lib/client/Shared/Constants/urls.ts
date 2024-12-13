@@ -1,4 +1,4 @@
-const BooksRouteURLs = {
+const BooksAPIRouteURLs = {
 	route: '/api/bookinfo',
 	wish: '/api/bookinfo/wish',
 	reading: '/api/bookinfo/reading',
@@ -9,7 +9,7 @@ const BooksRouteURLs = {
 
 export const APIRouteURLs = {
 	auth: '/api/auth',
-	bookInfo: BooksRouteURLs
+	bookInfo: BooksAPIRouteURLs
 } as const;
 
 export const HomeURLs = {
