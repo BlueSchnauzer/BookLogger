@@ -18,14 +18,14 @@ export const createUrlWithParams = (
 export const getParamValue = (params: URLSearchParams, name: string) => params.get(name);
 
 export const getPageCount = (params: URLSearchParams) => {
-	const pageCount = Number(getParamValue(params, 'page'));
+	const pageCount = Number(getParamValue(params, 'page_count'));
 	return pageCount >= 0 ? pageCount : 0;
 };
 
 export const getContentsSearchConditions = (params: URLSearchParams) => {
-	const page = getPageCount(params);
+	const pageCount = getPageCount(params);
 	const query = getParamValue(params, 'query') ?? '';
 	const order = getParamValue(params, 'order') as OrderFilters;
 
-	return { page, query, order };
+	return { pageCount, query, order };
 };

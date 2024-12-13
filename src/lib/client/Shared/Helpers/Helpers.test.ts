@@ -63,9 +63,9 @@ describe('Urls', () => {
 	});
 
 	it('getPageCount', () => {
-		expect(getPageCount(new URLSearchParams('page=0'))).toBe(0);
-		expect(getPageCount(new URLSearchParams('page=100'))).toBe(100);
-		expect(getPageCount(new URLSearchParams('page=test'))).toBe(0);
+		expect(getPageCount(new URLSearchParams('page_count=0'))).toBe(0);
+		expect(getPageCount(new URLSearchParams('page_count=100'))).toBe(100);
+		expect(getPageCount(new URLSearchParams('page_count=test'))).toBe(0);
 		expect(getPageCount(new URLSearchParams('key=value'))).toBe(0);
 	});
 });

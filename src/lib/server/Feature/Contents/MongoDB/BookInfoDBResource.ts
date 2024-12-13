@@ -39,12 +39,12 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 	}
 
 	async getBookInfos(
-		page: number,
+		pageCount: number,
 		options?: { status?: status; query?: string; order?: OrderFilters }
 	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }> {
 		//これ取れなかったらちゃんとエラーを投げるようにしないとダメだ
 
-		if (page < 0) {
+		if (pageCount < 0) {
 			return { lastPageCount: 0, totalCount: 0, bookInfoDBModels: [] };
 		}
 
@@ -52,7 +52,7 @@ export class BookInfoMongoDBResource implements IBookInfoDBRepositories {
 		let totalCount = 0;
 		let mongoDBModels: BookInfoDBModel[] = [];
 
-		const { limit, skip } = this.getLimitAndSkipCount(page);
+		const { limit, skip } = this.getLimitAndSkipCount(pageCount);
 		const { filters, sort } = this.getFilterAndSortConditions(options);
 
 		try {

@@ -6,12 +6,12 @@ export const getPathNameContext = () => getContext<string>('pathName');
 interface BooksUrlInfo {
 	pathName: string;
 	params: {
-		page: string;
+		page_count: string;
 		query: string;
 		order: string;
 	};
 }
 
-export const setBooksUrlInfo = (booksUrlInfo: BooksUrlInfo) =>
+export const setBooksUrlInfoContext = (booksUrlInfo: BooksUrlInfo) =>
 	setContext('booksUrlInfo', booksUrlInfo);
-export const getBooksUrlInfo = () => getContext<BooksUrlInfo>('booksUrlInfo');
+export const getBooksUrlInfoContext = () => getContext<BooksUrlInfo>('booksUrlInfo');

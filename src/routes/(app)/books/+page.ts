@@ -3,12 +3,12 @@ import { getContentsSearchConditions } from '$lib/client/Shared/Helpers/Urls';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, url }) => {
-	const { page, query, order } = getContentsSearchConditions(url.searchParams);
+	const { pageCount, query, order } = getContentsSearchConditions(url.searchParams);
 
-	const { totalCount, lastPageCount, bookInfos } = await getBookInfos(fetch, page, {
+	const { totalCount, lastPageCount, bookInfos } = await getBookInfos(fetch, pageCount, {
 		query,
 		order
 	});
 
-	return { page, totalCount, lastPageCount, bookInfos };
+	return { pageCount, query, order, totalCount, lastPageCount, bookInfos };
 }) satisfies PageLoad;

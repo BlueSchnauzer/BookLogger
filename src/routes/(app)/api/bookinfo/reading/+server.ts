@@ -15,8 +15,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	const repos = new BookInfoMongoDBResource(collections?.bookInfos!, userId!);
-	const { page, query, order } = getContentsSearchConditions(url.searchParams);
+	const { pageCount, query, order } = getContentsSearchConditions(url.searchParams);
 
-	const bookInfos = await repos.getBookInfos(page, { status: 'reading', query, order });
+	const bookInfos = await repos.getBookInfos(pageCount, { status: 'reading', query, order });
 	return json(bookInfos, { status: 200 });
 };

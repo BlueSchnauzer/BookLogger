@@ -3,13 +3,13 @@ import { getContentsSearchConditions, getPageCount } from '$lib/client/Shared/He
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, url }) => {
-	const { page, query, order } = getContentsSearchConditions(url.searchParams);
+	const { pageCount, query, order } = getContentsSearchConditions(url.searchParams);
 
-	const { totalCount, lastPageCount, bookInfos } = await getBookInfos(fetch, page, {
+	const { totalCount, lastPageCount, bookInfos } = await getBookInfos(fetch, pageCount, {
 		status: 'complete',
 		query,
 		order
 	});
 
-	return { page, totalCount, lastPageCount, bookInfos };
+	return { pageCount, query, order, totalCount, lastPageCount, bookInfos };
 }) satisfies PageLoad;

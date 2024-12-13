@@ -24,11 +24,11 @@ export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
 
 export const getBookInfos = async (
 	fetch: FetchInterface,
-	page: number,
+	pageCount: number,
 	options?: { status?: status; query?: string; order?: OrderFilters }
 ) => {
 	const param = {
-		page: page.toString(),
+		page_count: pageCount.toString(),
 		status: options?.status ?? '',
 		query: options?.query ?? '',
 		order: options?.order ?? ''
