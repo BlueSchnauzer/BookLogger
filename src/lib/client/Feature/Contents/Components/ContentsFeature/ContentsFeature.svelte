@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { afterNavigate, goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
 	import { colorStone700, emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
-	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 	import {
 		setBooksUrlInfoContext,
 		setPathNameContext
 	} from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
+	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { onMount, type ComponentType } from 'svelte';
+	import { onMount } from 'svelte';
 
 	export let pageCount: number;
 	export let query: string;
@@ -37,12 +37,8 @@
 		}
 	});
 
-	const handleInputChange = () => {
-		// const params = new URLSearchParams({ page: '', query: queryValue });
-		// statusParam && params.set('status', statusParam);
-		// orderParam && params.set('order', orderParam);
-		// goto(createUrlWithParams(pathname, params));
-	};
+	const handleInputChange = () =>
+		goto(createUrlWithParams($page.url.pathname, { page_count: '0', query, order }));
 
 	onMount(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
