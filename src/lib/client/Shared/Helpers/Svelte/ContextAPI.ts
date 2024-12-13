@@ -6,7 +6,6 @@ export const getPathNameContext = () => getContext<string>('pathName');
 interface BooksUrlInfo {
 	pathName: string;
 	page: string;
-	status: string;
 	query: string;
 	order: string;
 }
