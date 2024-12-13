@@ -16,7 +16,7 @@ import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookI
 import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 
 export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
-	const response = await fetch(`${APIRouteURLs.bookInfo}/${id}`);
+	const response = await fetch(`${APIRouteURLs.bookInfo.route}/${id}`);
 	const model = (await response.json()) as BookInfoDBModel;
 
 	return model ? convertDBModelToBookInfo(model) : undefined;
