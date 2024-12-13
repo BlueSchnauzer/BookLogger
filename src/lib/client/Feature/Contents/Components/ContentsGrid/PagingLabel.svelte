@@ -1,42 +1,26 @@
 <script lang="ts">
-	import { afterNavigate, goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import { colorLime800 } from '$lib/client/Shared/Constants/DisplayValues';
+	import { getBooksUrlInfoContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
 	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import Icon from '@iconify/svelte';
 
-	export let currentPageCount: number;
+	export let pageCount: number;
 	export let lastPageCount: number;
 
-	let pathname = '';
-	let statusParam: string | null;
-	let queryParam: string | null;
-	let orderParam: string | null;
-	$: isDisabledBackward = currentPageCount === 0;
-	$: isDisabledForward = currentPageCount === lastPageCount;
+	const urlInfo = getBooksUrlInfoContext();
+	$: isDisabledBackward = pageCount === 0;
+	$: isDisabledForward = pageCount === lastPageCount;
 
 	const createNavigation = (pageCount: number) => {
-		const params = new URLSearchParams({ page: pageCount.toString() });
-		statusParam && params.set('status', statusParam);
-		queryParam && params.set('query', queryParam);
-		orderParam && params.set('order', orderParam);
-
-		goto(createUrlWithParams(pathname, params));
+		urlInfo.params.page_count = String(pageCount);
+		goto(createUrlWithParams(urlInfo.pathName, { ...urlInfo.params }));
 	};
 
 	const gotoFirst = () => createNavigation(0);
-	const gotoBackward = () => createNavigation(currentPageCount - 1);
-	const gotoForward = () => createNavigation(currentPageCount + 1);
+	const gotoBackward = () => createNavigation(pageCount - 1);
+	const gotoForward = () => createNavigation(pageCount + 1);
 	const gotoLast = () => createNavigation(lastPageCount);
-
-	afterNavigate(({ to }) => {
-		if (to) {
-			pathname = to.url.pathname;
-			statusParam = to.url.searchParams.get('status');
-			queryParam = to.url.searchParams.get('query');
-			orderParam = to.url.searchParams.get('order');
-		}
-	});
 </script>
 
 <div
@@ -54,7 +38,7 @@ border border-stone-300 shadow-md"
 		<Icon icon="ph:caret-left" width="32" height="32" color={colorLime800} />
 	</button>
 	<div class="flex px-4">
-		<p>{currentPageCount + 1}</p>
+		<p>{pageCount + 1}</p>
 		<p class="mx-2">/</p>
 		<p>{lastPageCount + 1}</p>
 	</div>
