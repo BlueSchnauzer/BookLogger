@@ -11,6 +11,7 @@
 	} from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
 	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
+	import Icon from '@iconify/svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { onMount } from 'svelte';
 
@@ -47,8 +48,8 @@
 </script>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
-	<div class="pl-2 pr-3 pt-1.5 h-24 flex flex-col justify-between">
-		<div class="relative">
+	<div class="px-2 pt-1.5 h-24 flex flex-col justify-between">
+		<div class="relative flex">
 			<MagnifingGlass
 				style={'absolute top-3 left-2'}
 				height={16}
@@ -62,6 +63,9 @@
 				on:change={handleInputChange}
 				class="h-10 w-60 max-md:w-full pl-8 py-1 pr-2 rounded border border-stone-400"
 			/>
+			<div class="pl-2 flex items-center" role="button">
+				<Icon class="hover:bg-stone-300 rounded" icon="ph:sort-ascending" width="32" height="32" />
+			</div>
 		</div>
 		<ContentFilters />
 	</div>
