@@ -1,3 +1,4 @@
+import { APIRouteURLs, BooksURLs } from '$lib/client/Shared/Constants/urls';
 import { bookInfoInterfaceMock, bookInfoInterfaceMocks } from '$lib/mock/Data';
 import {
 	type BookInfoDBModel,
@@ -22,14 +23,13 @@ export const setGetRouteFetch = (getType: getType) => {
 			});
 			return getData;
 		case 'getByStatus':
-			const requestUrl = '/api/bookinfo';
 			const statusData = bookInfoInterfaceMocks.map((item) => convertBookInfoToDBModel(item));
 			beforeAll(() => {
 				mockFetch.mockImplementation(async (input) => {
 					const dataMap: { [key: string]: BookInfoDBModel | BookInfoDBModel[] } = {
-						[`${requestUrl}?page=0&status=wish&query=&order=`]: [statusData[0]],
-						[`${requestUrl}?page=0&status=reading&query=&order=`]: [statusData[1]],
-						[`${requestUrl}?page=0&status=complete&query=&order=`]: [statusData[2]]
+						[`${APIRouteURLs.bookInfo.wish}?page_count=0&query=&order=`]: [statusData[0]],
+						[`${APIRouteURLs.bookInfo.reading}?page_count=0&query=&order=`]: [statusData[1]],
+						[`${APIRouteURLs.bookInfo.complete}?page_count=0&query=&order=`]: [statusData[2]]
 					};
 					return dataMap[input as string]
 						? json({ totalCount: 1, bookInfoDBModels: dataMap[input as string] }, { status: 200 })

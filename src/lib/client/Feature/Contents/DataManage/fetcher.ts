@@ -29,7 +29,6 @@ export const getBookInfos = async (
 ) => {
 	const param = {
 		page_count: pageCount.toString(),
-		status: options?.status ?? '',
 		query: options?.query ?? '',
 		order: options?.order ?? ''
 	};
