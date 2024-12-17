@@ -6,6 +6,22 @@
 	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import Icon from '@iconify/svelte';
+import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
+
+	const orderFilterItems: { displayName: string; orderFilter: OrderFilters }[] = [
+		{
+			displayName: '登録日降順',
+			orderFilter: 'createDateDesc'
+		},
+		{
+			displayName: '登録日昇順',
+			orderFilter: 'createDateAsc'
+		},
+		{
+			displayName: '更新日順',
+			orderFilter: 'updateDate'
+		}
+	];
 
 	const urlInfo = getBooksUrlInfoContext();
 	const handleInputChange = () => {
