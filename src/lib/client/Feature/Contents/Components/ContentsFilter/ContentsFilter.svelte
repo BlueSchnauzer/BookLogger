@@ -24,6 +24,8 @@ import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
 	];
 
 	const urlInfo = getBooksUrlInfoContext();
+	let isDisplayOrderMenu = false;
+
 	const handleInputChange = () => {
 		urlInfo.params.page_count = '0';
 		goto(createUrlWithParams($page.url.pathname, { ...urlInfo.params }));
@@ -39,7 +41,28 @@ import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
 		on:change={handleInputChange}
 		class="h-10 w-60 max-md:w-full pl-8 py-1 pr-2 rounded border border-stone-400"
 	/>
-	<div class="pl-2 flex items-center" role="button">
-		<Icon class="hover:bg-stone-300 rounded" icon="ph:sort-ascending" width="32" height="32" />
+	<div class="relative pl-2 flex items-center">
+		<!-- svelte-ignore a11y-interactive-supports-focus -->
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div role="button" on:click={() => (isDisplayOrderMenu = !isDisplayOrderMenu)}>
+			<Icon icon="ph:sort-ascending" class="hover:bg-stone-300 rounded" width="32" height="32" />
+		</div>
+		{#if isDisplayOrderMenu}
+			<ul
+				class="absolute bg-vellum border border-stone-400 w-40 py-2 top-11 right-0 shadow-lg rounded-md z-10"
+			>
+				{#each orderFilterItems as item}
+					<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<li
+						role="button"
+						class="py-2 px-4 hover:bg-stone-300 duration-150"
+						on:click={() => handleOrderClick(item.orderFilter)}
+					>
+						{item.displayName}
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</div>
 </div>
