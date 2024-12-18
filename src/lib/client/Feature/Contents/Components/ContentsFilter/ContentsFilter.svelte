@@ -6,7 +6,8 @@
 	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import Icon from '@iconify/svelte';
-import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
+	import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
+	import { onMount } from 'svelte';
 
 	const orderFilterItems: { displayName: string; orderFilter: OrderFilters }[] = [
 		{
@@ -25,11 +26,29 @@ import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
 
 	const urlInfo = getBooksUrlInfoContext();
 	let isDisplayOrderMenu = false;
+	let listButton: HTMLDivElement;
 
 	const handleInputChange = () => {
 		urlInfo.params.page_count = '0';
 		goto(createUrlWithParams($page.url.pathname, { ...urlInfo.params }));
 	};
+
+	const handleOrderClick = (orderFilter: OrderFilters) => {
+		urlInfo.params.page_count = '0';
+		urlInfo.params.order = orderFilter;
+		goto(createUrlWithParams($page.url.pathname, { ...urlInfo.params }));
+	};
+
+	onMount(() => {
+		const hiddenOrderMenu = (event: MouseEvent) => {
+			if (listButton && !listButton.contains(event.target as Node)) {
+				isDisplayOrderMenu = false;
+			}
+		};
+		document.addEventListener('click', hiddenOrderMenu);
+
+		return () => document.removeEventListener('click', hiddenOrderMenu);
+	});
 </script>
 
 <div class="relative flex">
@@ -44,7 +63,11 @@ import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
 	<div class="relative pl-2 flex items-center">
 		<!-- svelte-ignore a11y-interactive-supports-focus -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div role="button" on:click={() => (isDisplayOrderMenu = !isDisplayOrderMenu)}>
+		<div
+			role="button"
+			bind:this={listButton}
+			on:click={() => (isDisplayOrderMenu = !isDisplayOrderMenu)}
+		>
 			<Icon icon="ph:sort-ascending" class="hover:bg-stone-300 rounded" width="32" height="32" />
 		</div>
 		{#if isDisplayOrderMenu}
