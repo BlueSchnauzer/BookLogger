@@ -9,16 +9,19 @@
 	import { type OrderFilters } from '$lib/client/Feature/Contents/interface';
 	import { onMount } from 'svelte';
 
-	const orderFilterItems: { displayName: string; orderFilter: OrderFilters }[] = [
+	const orderFilterItems: { icon: string; displayName: string; orderFilter: OrderFilters }[] = [
 		{
-			displayName: '登録日降順',
+			icon: 'ph:sort-ascending',
+			displayName: '登録日が新しい順',
 			orderFilter: 'createDateDesc'
 		},
 		{
-			displayName: '登録日昇順',
+			icon: 'ph:sort-descending',
+			displayName: '登録日が古い順',
 			orderFilter: 'createDateAsc'
 		},
 		{
+			icon: 'ph:clock-clockwise',
 			displayName: '更新日順',
 			orderFilter: 'updateDate'
 		}
@@ -58,7 +61,7 @@
 		placeholder="Search Books"
 		bind:value={urlInfo.params.query}
 		on:change={handleInputChange}
-		class="h-10 w-60 max-md:w-full pl-8 py-1 pr-2 rounded border border-stone-400"
+		class="h-10 w-80 max-md:w-full pl-8 py-1 pr-2 rounded border border-stone-400"
 	/>
 	<div class="relative pl-2 flex items-center">
 		<!-- svelte-ignore a11y-interactive-supports-focus -->
@@ -79,10 +82,11 @@
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<li
 						role="button"
-						class="py-2 px-4 hover:bg-stone-300 duration-150"
+						class="flex gap-2 py-2 px-4 hover:bg-stone-300 duration-150"
 						on:click={() => handleOrderClick(item.orderFilter)}
 					>
-						{item.displayName}
+						<Icon icon={item.icon} width="24" height="24" />
+						<span>{item.displayName}</span>
 					</li>
 				{/each}
 			</ul>
