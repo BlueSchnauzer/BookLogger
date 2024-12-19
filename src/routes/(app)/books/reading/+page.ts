@@ -1,14 +1,15 @@
-import { getBookInfosByStatus } from '$lib/client/Feature/Contents/DataManage/fetcher';
-import { getPageCount } from '$lib/client/Shared/Helpers/Urls';
+import { getBookInfos } from '$lib/client/Feature/Contents/DataManage/fetcher';
+import { getContentsSearchConditions, getPageCount } from '$lib/client/Shared/Helpers/Urls';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, url }) => {
-	const pageCount = getPageCount(url.searchParams);
-	const { totalCount, lastPageCount, bookInfos } = await getBookInfosByStatus(
-		fetch,
-		pageCount,
-		'reading'
-	);
+	const { pageCount, query, order } = getContentsSearchConditions(url.searchParams);
 
-	return { pageCount, totalCount, lastPageCount, bookInfos };
+	const { totalCount, lastPageCount, bookInfos } = await getBookInfos(fetch, pageCount, {
+		status: 'reading',
+		query,
+		order
+	});
+
+	return { pageCount, query, order, totalCount, lastPageCount, bookInfos };
 }) satisfies PageLoad;

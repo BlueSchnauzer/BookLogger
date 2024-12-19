@@ -3,7 +3,7 @@ import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
 export const createBookInfo = async (fetch: FetchInterface, bookSearch: BookSearch) => {
-	const { ok: isSuccess, status } = await fetch(APIRouteURLs.bookInfo, {
+	const { ok: isSuccess, status } = await fetch(APIRouteURLs.bookInfo.route, {
 		method: 'POST',
 		body: JSON.stringify(bookSearch),
 		headers: { 'Content-type': 'application/json' }

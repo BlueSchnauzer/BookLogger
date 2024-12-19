@@ -10,9 +10,8 @@ describe('BookInfoGrid', () => {
 		render(ContentsGrid, {
 			bookInfos,
 			emptyMessage: '',
-			currentPageCount: 0,
-			lastPageCount: 0,
-			handleClick: () => void 0
+			pageCount: 0,
+			lastPageCount: 0
 		});
 
 		expect(screen.getByTitle(bookInfos[0].title)).toBeInTheDocument();

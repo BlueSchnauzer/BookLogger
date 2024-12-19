@@ -1,6 +1,7 @@
 import type { id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 import type { pageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';
+import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 
 /**DBとの書誌データの取得・保存を扱うリポジトリ
@@ -11,11 +12,8 @@ import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookI
 export interface IBookInfoDBRepositories {
 	getBookInfo(id: id): Promise<BookInfoDBModel | undefined>;
 	getBookInfos(
-		page: number
-	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
-	getBookInfosByStatus(
 		page: number,
-		status: status
+		options?: { status?: status; query?: string; order?: OrderFilters }
 	): Promise<{ lastPageCount: number; totalCount: number; bookInfoDBModels: BookInfoDBModel[] }>;
 	getRecentBookInfo(): Promise<BookInfoDBModel | undefined>;
 	getPageHistory(): Promise<Array<pageHistory[]>>;

@@ -4,8 +4,7 @@
 	import { BooksURLs } from '../../Constants/urls';
 
 	//ページ移動の度に対応したページにスタイルを当てる
-	let pathName: string;
-	$: pathName = $page.url.pathname;
+	$: currentUrl = $page.url.pathname;
 </script>
 
 <div class="flex justify-between items-center">
@@ -14,7 +13,7 @@
 			<li
 				class="h-11 px-2 whitespace-nowrap
 				{item.ref === BooksURLs.books ? 'border-x' : 'border-r'} 
-				{item.ref === pathName
+				{item.ref === currentUrl
 					? 'bg-vellum text-lime-700 font-medium border-t-[3px] border-t-lime-700'
 					: 'border-b'}
 				border-t border-stone-500 bg-stone-300

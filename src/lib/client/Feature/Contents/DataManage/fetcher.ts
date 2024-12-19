@@ -13,28 +13,27 @@ import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 import { getPageHistoryMapInCurrentWeek } from '$lib/client/Shared/Utils/PageHistory';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
+import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 
 export const getBookInfoById = async (fetch: FetchInterface, id: id) => {
-	const response = await fetch(`${APIRouteURLs.bookInfo}/${id}`);
+	const response = await fetch(`${APIRouteURLs.bookInfo.route}/${id}`);
 	const model = (await response.json()) as BookInfoDBModel;
 
 	return model ? convertDBModelToBookInfo(model) : undefined;
 };
 
-export const getBookInfos = async (fetch: FetchInterface, page: number) => {
-	const param = { page: page.toString() };
+export const getBookInfos = async (
+	fetch: FetchInterface,
+	pageCount: number,
+	options?: { status?: status; query?: string; order?: OrderFilters }
+) => {
+	const param = {
+		page_count: pageCount.toString(),
+		query: options?.query ?? '',
+		order: options?.order ?? ''
+	};
 
-	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
-	const { totalCount, lastPageCount, bookInfoDBModels } = await parseListResponse(response);
-	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
-
-	return { totalCount, lastPageCount, bookInfos };
-};
-
-export const getBookInfosByStatus = async (fetch: FetchInterface, page: number, status: status) => {
-	const params = { page: page.toString(), type: status };
-
-	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, params));
+	const response = await fetch(createUrlWithParams(getAPIRouteByStatus(options?.status), param));
 	const { totalCount, lastPageCount, bookInfoDBModels } = await parseListResponse(response);
 	const bookInfos = bookInfoDBModels.map((item) => convertDBModelToBookInfo(item));
 
@@ -42,9 +41,7 @@ export const getBookInfosByStatus = async (fetch: FetchInterface, page: number, 
 };
 
 export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo | undefined> => {
-	const param = { type: 'recent' };
-
-	const response = await fetch(createUrlWithParams(APIRouteURLs.bookInfo, param));
+	const response = await fetch(APIRouteURLs.bookInfo.recent);
 	const model = (await response.json()) as BookInfoDBModel;
 
 	return model ? convertDBModelToBookInfo(model) : undefined;
@@ -53,13 +50,28 @@ export const getRecentBookInfo = async (fetch: FetchInterface): Promise<BookInfo
 export const getHistory = async (
 	fetch: FetchInterface
 ): Promise<Map<string, number> | undefined> => {
-	const response = await fetch(`${APIRouteURLs.bookInfo}/history`);
+	const response = await fetch(APIRouteURLs.bookInfo.history);
 	const pageHistory = (await response.json()) as Array<pageHistory[]>;
 	const ValueObjects = pageHistory.map((item) =>
 		item.map((pageHistory) => new PageHistory(pageHistory))
 	);
 
 	return getPageHistoryMapInCurrentWeek(ValueObjects);
+};
+
+const getAPIRouteByStatus = (status?: status) => {
+	if (!status) {
+		return APIRouteURLs.bookInfo.route;
+	}
+
+	switch (status) {
+		case 'wish':
+			return APIRouteURLs.bookInfo.wish;
+		case 'reading':
+			return APIRouteURLs.bookInfo.reading;
+		case 'complete':
+			return APIRouteURLs.bookInfo.complete;
+	}
 };
 
 const parseListResponse = async (response: Response) =>

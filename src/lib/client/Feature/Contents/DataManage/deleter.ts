@@ -3,7 +3,7 @@ import { APIRouteURLs } from '$lib/client/Shared/Constants/urls';
 import type { FetchInterface } from '$lib/client/Shared/interface';
 
 export const deleteBookInfo = async (fetch: FetchInterface, id: Id) => {
-	const { ok: isSuccess } = await fetch(APIRouteURLs.bookInfo, {
+	const { ok: isSuccess } = await fetch(APIRouteURLs.bookInfo.route, {
 		method: 'DELETE',
 		body: JSON.stringify(id.value),
 		headers: { 'Content-type': 'application/json' }

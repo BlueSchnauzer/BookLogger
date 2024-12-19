@@ -43,11 +43,15 @@ describe('Urls', () => {
 	it('createUrlWithParams', () => {
 		const url = '/test/slug';
 		const params = { key1: 'value1', key2: 'value2', key3: 'value3' };
-		const urlWithParams = createUrlWithParams(url, params);
 
-		expect(urlWithParams).toBe(
-			`${url}?key1=${params.key1}&key2=${params.key2}&key3=${params.key3}`
-		);
+		const urlByRecord = createUrlWithParams(url, params);
+
+		const searchParams = new URLSearchParams(params);
+		const urlByURLSearchParams = createUrlWithParams(url, searchParams);
+
+		const expectStr = `${url}?key1=${params.key1}&key2=${params.key2}&key3=${params.key3}`;
+		expect(urlByRecord).toBe(expectStr);
+		expect(urlByURLSearchParams).toBe(expectStr);
 	});
 
 	it('getParamValue', () => {
@@ -59,9 +63,9 @@ describe('Urls', () => {
 	});
 
 	it('getPageCount', () => {
-		expect(getPageCount(new URLSearchParams('page=0'))).toBe(0);
-		expect(getPageCount(new URLSearchParams('page=100'))).toBe(100);
-		expect(getPageCount(new URLSearchParams('page=test'))).toBe(0);
+		expect(getPageCount(new URLSearchParams('page_count=0'))).toBe(0);
+		expect(getPageCount(new URLSearchParams('page_count=100'))).toBe(100);
+		expect(getPageCount(new URLSearchParams('page_count=test'))).toBe(0);
 		expect(getPageCount(new URLSearchParams('key=value'))).toBe(0);
 	});
 });

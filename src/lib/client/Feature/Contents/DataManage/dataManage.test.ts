@@ -2,7 +2,6 @@ import { BookInfoAPIMock } from '$lib/mock/Fixture';
 import { describe, it, expect } from 'vitest';
 import {
 	getBookInfos,
-	getBookInfosByStatus,
 	getHistory,
 	getRecentBookInfo
 } from '$lib/client/Feature/Contents/DataManage/fetcher';
@@ -12,9 +11,8 @@ import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter'
 import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 
 describe('fetcher', () => {
-	BookInfoAPIMock.setGetRouteFetch('get');
-
 	describe('getBookInfos', () => {
+		BookInfoAPIMock.setGetRouteFetch('get');
 		it('get', async () => {
 			const result = await getBookInfos(fetch, 0);
 
@@ -23,39 +21,39 @@ describe('fetcher', () => {
 			expect(result.bookInfos.length).toBe(1);
 			expect(result.bookInfos[0]).toBeDefined();
 		});
-	});
 
-	describe('getByStatus', () => {
-		BookInfoAPIMock.setGetRouteFetch('getByStatus');
+		describe('get by status', () => {
+			BookInfoAPIMock.setGetRouteFetch('getByStatus');
 
-		it('getWish', async () => {
-			const result = await getBookInfosByStatus(fetch, 0, 'wish');
+			it('getWish', async () => {
+				const result = await getBookInfos(fetch, 0, { status: 'wish' });
 
-			expect(result).toBeDefined();
-			expect(result.totalCount).toBe(1);
-			expect(result.bookInfos.length).toBe(1);
-			expect(result.bookInfos[0]).toBeDefined();
-			expect(result.bookInfos[0].status.value).toBe('wish');
-		});
+				expect(result).toBeDefined();
+				expect(result.totalCount).toBe(1);
+				expect(result.bookInfos.length).toBe(1);
+				expect(result.bookInfos[0]).toBeDefined();
+				expect(result.bookInfos[0].status.value).toBe('wish');
+			});
 
-		it('getReading', async () => {
-			const result = await getBookInfosByStatus(fetch, 0, 'reading');
+			it('getReading', async () => {
+				const result = await getBookInfos(fetch, 0, { status: 'reading' });
 
-			expect(result).toBeDefined();
-			expect(result.totalCount).toBe(1);
-			expect(result.bookInfos.length).toBe(1);
-			expect(result.bookInfos[0]).toBeDefined();
-			expect(result.bookInfos[0].status.value).toBe('reading');
-		});
+				expect(result).toBeDefined();
+				expect(result.totalCount).toBe(1);
+				expect(result.bookInfos.length).toBe(1);
+				expect(result.bookInfos[0]).toBeDefined();
+				expect(result.bookInfos[0].status.value).toBe('reading');
+			});
 
-		it('getComplete', async () => {
-			const result = await getBookInfosByStatus(fetch, 0, 'complete');
+			it('getComplete', async () => {
+				const result = await getBookInfos(fetch, 0, { status: 'complete' });
 
-			expect(result).toBeDefined();
-			expect(result.totalCount).toBe(1);
-			expect(result.bookInfos.length).toBe(1);
-			expect(result.bookInfos[0]).toBeDefined();
-			expect(result.bookInfos[0].status.value).toBe('complete');
+				expect(result).toBeDefined();
+				expect(result.totalCount).toBe(1);
+				expect(result.bookInfos.length).toBe(1);
+				expect(result.bookInfos[0]).toBeDefined();
+				expect(result.bookInfos[0].status.value).toBe('complete');
+			});
 		});
 	});
 

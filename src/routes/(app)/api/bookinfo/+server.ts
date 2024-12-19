@@ -1,19 +1,17 @@
 import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
+import { getContentsSearchConditions } from '$lib/client/Shared/Helpers/Urls';
 import { validatePutBookInfo } from '$lib/client/Shared/Utils/Validation';
-import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
+import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
 import {
 	convertBookInfoToDBModel,
 	convertBookSearchToDBModel
 } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
-import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
+import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
 import { json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
 import { verifyTokenAndCollections } from '../verification';
+import type { RequestHandler } from './$types';
 
-/**書誌データを取得する
- * クエリパラメータに応じて返却するデータを変更する。
- */
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const { userId, response } = await verifyTokenAndCollections(
 		cookies.get('idToken')!,
@@ -24,25 +22,10 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	const repos = new BookInfoMongoDBResource(collections?.bookInfos!, userId!);
+	const { pageCount, query, order } = getContentsSearchConditions(url.searchParams);
 
-	const param = url.searchParams;
-	const getType = param.get('type');
-	const page = param.get('page');
-	const pageCount = page ? Number(page) : 0;
-
-	switch (getType) {
-		case 'recent':
-			const recentData = await repos.getRecentBookInfo();
-			return json(recentData ?? null, { status: 200 });
-		case 'wish':
-		case 'reading':
-		case 'complete':
-			const responseByStatus = await repos.getBookInfosByStatus(pageCount, getType);
-			return json(responseByStatus, { status: 200 });
-		default:
-			const response = await repos.getBookInfos(pageCount);
-			return json(response, { status: 200 });
-	}
+	const bookInfos = await repos.getBookInfos(pageCount, { query, order });
+	return json(bookInfos, { status: 200 });
 };
 
 /**DBに書誌データを保存する */
