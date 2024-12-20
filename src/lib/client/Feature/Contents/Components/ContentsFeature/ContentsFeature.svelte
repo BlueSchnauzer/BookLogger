@@ -3,7 +3,7 @@
 	import ContentsFilter from '$lib/client/Feature/Contents/Components/ContentsFilter/ContentsFilter.svelte';
 	import ContentsGrid from '$lib/client/Feature/Contents/Components/ContentsGrid/ContentsGrid.svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
-	import ContentFilters from '$lib/client/Shared/Components/Headers/ContentFilters.svelte';
+	import ContentsMenu from '$lib/client/Feature/Contents/Components/ContentsMenu/ContentsMenu.svelte';
 	import { emptyMessages } from '$lib/client/Shared/Constants/DisplayValues';
 	import {
 		setBooksUrlInfoContext,
@@ -39,7 +39,7 @@
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
 	<div class="px-2 pt-1.5 h-24 flex flex-col justify-between">
 		<ContentsFilter />
-		<ContentFilters />
+		<ContentsMenu />
 	</div>
 	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	{#if bookInfos && bookInfos.length}

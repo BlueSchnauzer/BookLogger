@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { booksMenuItems } from '$lib/client/Shared/Constants/MenuItems';
-	import { BooksURLs } from '../../Constants/urls';
+	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
 	//ページ移動の度に対応したページにスタイルを当てる
 	$: currentUrl = $page.url.pathname;
