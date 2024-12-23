@@ -23,10 +23,10 @@ export const mainMenuItems: mainMenuItem[] = [
 ];
 
 export const booksMenuItems: menuItem[] = [
-	{ ref: BooksURLs.books, name: '全ての本' },
-	{ ref: BooksURLs.wish, name: '読みたい' },
-	{ ref: BooksURLs.reading, name: '読んでいる' },
-	{ ref: BooksURLs.complete, name: '読み終わった' }
+	{ ref: BooksURLs.books, name: 'All' },
+	{ ref: BooksURLs.wish, name: 'Wish' },
+	{ ref: BooksURLs.reading, name: 'Reading' },
+	{ ref: BooksURLs.complete, name: 'Complete' }
 ];
 
 interface statusItem {
