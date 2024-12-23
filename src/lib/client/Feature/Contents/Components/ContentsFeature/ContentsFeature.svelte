@@ -37,11 +37,10 @@
 </script>
 
 <main class="flex-1 my-2 max-md:pb-16 flexWidth">
-	<div class="px-2 pt-1.5 h-24 flex flex-col justify-between">
+	<div class="px-2 mb-2 h-24 flex flex-col justify-between">
 		<ContentsFilter />
 		<ContentsMenu />
 	</div>
-	<div class="mx-2 mb-1 bg-stone-400 h-[1px] xl:block" />
 	{#if bookInfos && bookInfos.length}
 		<ContentsGrid {bookInfos} {pageCount} {lastPageCount} {emptyMessage} />
 	{:else}
