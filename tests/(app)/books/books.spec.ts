@@ -1,9 +1,11 @@
-import { test, expect } from '../../fixtures/loginAndLogout';
+import { BooksURLs } from '$lib/client/Shared/Constants/urls';
+import { test } from '../../fixtures/loginAndLogout';
 
 test.describe('ライブラリ', () => {
 	test('ライブラリ画面が表示できること', async ({ loginedPage }) => {
-		const pageName = 'ライブラリ';
-		await loginedPage.page.locator('[href="/books"]', { hasNotText: pageName }).click();
-		await loginedPage.page.waitForURL('/books');
+		await loginedPage.page
+			.locator(`[href="${BooksURLs.books}"]`, { hasNotText: 'ライブラリ' })
+			.click();
+		await loginedPage.page.waitForURL(BooksURLs.books);
 	});
 });
