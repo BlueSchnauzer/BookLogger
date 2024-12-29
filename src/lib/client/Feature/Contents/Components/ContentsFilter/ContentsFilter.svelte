@@ -75,7 +75,7 @@
 		</div>
 		{#if isDisplayOrderMenu}
 			<ul
-				class="absolute bg-vellum border border-stone-400 w-48 py-2 top-11 right-0 shadow-lg rounded-md z-10"
+				class="absolute bg-vellum border border-stone-400 w-56 py-2 top-11 right-0 shadow-lg rounded-md z-10"
 			>
 				{#each orderFilterItems as item}
 					<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
