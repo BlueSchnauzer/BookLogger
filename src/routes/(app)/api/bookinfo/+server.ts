@@ -7,7 +7,7 @@ import {
 	convertBookInfoToDBModel,
 	convertBookSearchToDBModel
 } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
-import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
+import collections from '$lib/server/Shared/Helpers/MongoDBHelper';
 import { json } from '@sveltejs/kit';
 import { verifyTokenAndCollections } from '../verification';
 import type { RequestHandler } from './$types';

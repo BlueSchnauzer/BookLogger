@@ -4,7 +4,7 @@ import type { status } from '$lib/client/Feature/Contents/Domain/ValueObjects/Bo
 import type { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import type { IBookInfoDBRepositories } from '$lib/server/Feature/Contents/IBookInfoDB';
-import type { bookInfosCollection } from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
+import type { bookInfosCollection } from '$lib/server/Shared/Helpers/MongoDBHelper';
 import { ObjectId, type Filter, type SortDirection, type UpdateFilter } from 'mongodb';
 import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 

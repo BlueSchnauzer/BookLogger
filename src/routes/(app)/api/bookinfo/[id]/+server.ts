@@ -1,5 +1,5 @@
 import type { RequestHandler } from '../../bookinfo/$types';
-import collections from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
+import collections from '$lib/server/Shared/Helpers/MongoDBHelper';
 import { BookInfoMongoDBResource } from '$lib/server/Feature/Contents/MongoDB/BookInfoDBResource';
 import { json } from '@sveltejs/kit';
 import { verifyTokenAndCollections } from '../../verification';
