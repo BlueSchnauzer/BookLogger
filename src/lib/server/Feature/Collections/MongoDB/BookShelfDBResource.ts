@@ -29,12 +29,10 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getBookShelves(options: { query?: string; order?: OrderFilters }): Promise<{
-		lastPageCount: number;
-		totalCount: number;
-		bookShelfDBModels: BookShelfDBModel[];
-	}> {
-		throw new Error('Method not implemented.');
+	async getBookShelves(options: {
+		query?: string;
+		order?: OrderFilters;
+	}): Promise<BookShelfDBModel[]> {
 	}
 
 	async insert(bookShelf: BookShelfDBModel): Promise<Response> {
