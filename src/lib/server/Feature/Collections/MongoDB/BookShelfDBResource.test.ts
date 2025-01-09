@@ -55,7 +55,17 @@ describe('getBookShelf', () => {
 });
 
 describe('getBookShelves', () => {
-	it('ユーザIDに一致するデータを取得できること', () => {});
+	it('ユーザIDに一致するデータを取得できること', async () => {
+		const testData = bookShelfInterfaceMock;
+		const preData = await collection.insertOne(convertBookShelfToDBModel(testData));
+		expect(await preData.acknowledged).toBeTruthy();
+
+		const repos = new BookShelfMongoDBResource(collection, new UserId(testUserId1));
+		const response = await repos.getBookShelves({});
+		expect(response).toBeDefined();
+		expect(response.length).toBe(1);
+		expect(response[0].userId).toEqual(testUserId1);
+	});
 	it('一致するデータが無い場合に空のデータが返ること', () => {});
 
 	describe('queryもしくはorderの値に一致するデータを取得できること', () => {
