@@ -76,8 +76,14 @@ describe('getBookShelves', () => {
 });
 
 describe('insert', () => {
-	it('書棚情報を保存できること', () => {});
-	it('データが不正(同じ_idで作成済み)な場合にエラーステータスが返ってくること', () => {});
+	it('書棚情報を保存できること', async () => {
+		const testData = bookShelfInterfaceMock;
+		const repos = new BookShelfMongoDBResource(collection, testData.userId);
+		const response = await repos.insert(convertBookShelfToDBModel(testData));
+
+		expect(response).toBeDefined();
+		expect(response.status).toBe(201);
+	});
 });
 
 describe('update', () => {
