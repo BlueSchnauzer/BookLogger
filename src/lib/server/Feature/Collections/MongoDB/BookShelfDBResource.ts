@@ -80,7 +80,19 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 	};
 
 	async insert(bookShelf: BookShelfDBModel): Promise<Response> {
-		throw new Error('Method not implemented.');
+		let response = new Response('書棚データの作成に失敗しました。', { status: 400 });
+
+		try {
+			const result = await this._collection?.insertOne(bookShelf);
+			if (result?.acknowledged) {
+				response = new Response('書棚データの作成に成功しました。', { status: 201 });
+			}
+		} catch (error) {
+			console.log(error);
+			response = new Response('書棚データの作成に失敗しました。', { status: 500 });
+		}
+
+		return response;
 	}
 
 	async update(bookShelf: BookShelfDBModel): Promise<Response> {
