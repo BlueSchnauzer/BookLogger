@@ -87,7 +87,17 @@ describe('insert', () => {
 });
 
 describe('update', () => {
-	it('書棚情報を更新できること', () => {});
+	it('書棚情報を更新できること', async () => {
+		const testData = bookShelfInterfaceMock;
+		const preData = await collection.insertOne(convertBookShelfToDBModel(testData));
+		expect(preData.acknowledged).toBeTruthy();
+
+		const repos = new BookShelfMongoDBResource(collection, testData.userId);
+		const response = await repos.update(convertBookShelfToDBModel(testData));
+
+		expect(response).toBeDefined();
+		expect(response.status).toBe(200);
+	});
 	it('更新対象が見つからない場合にエラーステータスが返ってくること', () => {});
 });
 
