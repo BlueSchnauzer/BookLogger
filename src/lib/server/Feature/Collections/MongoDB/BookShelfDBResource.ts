@@ -2,7 +2,7 @@ import type { id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookIn
 import type { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 import type { OrderFilters } from '$lib/client/Feature/Contents/interface';
 import type { bookShelvesCollection } from '$lib/server/Shared/Helpers/MongoDBHelper';
-import { ObjectId, type Filter, type SortDirection } from 'mongodb';
+import { ObjectId, type Filter, type SortDirection, type UpdateFilter } from 'mongodb';
 import type { IBookShelfDBRepositories } from '../IBookShelfDB';
 import type { BookShelfDBModel } from './BookShelfModel';
 
@@ -96,7 +96,35 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 	}
 
 	async update(bookShelf: BookShelfDBModel): Promise<Response> {
-		throw new Error('Method not implemented.');
+		let response = new Response('書誌データの更新に失敗しました。', { status: 400 });
+
+		try {
+			const updateFilter = {
+				$currentDate: {
+					updateDate: true
+				},
+				$set: {
+					shelfName: bookShelf.shelfName,
+					contentsIds: bookShelf.contentsIds
+				}
+			} as UpdateFilter<BookShelfDBModel>;
+
+			const result = await this._collection.updateOne(
+				{ _id: new ObjectId(bookShelf._id) },
+				updateFilter
+			);
+
+			if (result?.matchedCount === 0) {
+				return response;
+			} else if (result?.acknowledged) {
+				response = new Response('書誌データの更新に成功しました。', { status: 200 });
+			}
+		} catch (error) {
+			console.log(error);
+			response = new Response('書棚データの更新に失敗しました。', { status: 500 });
+		}
+
+		return response;
 	}
 
 	async delete(id: id): Promise<Response> {
