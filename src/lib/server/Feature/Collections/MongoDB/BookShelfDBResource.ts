@@ -128,6 +128,21 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 	}
 
 	async delete(id: id): Promise<Response> {
-		throw new Error('Method not implemented.');
+		let response = new Response('書棚データの削除に失敗しました。', { status: 400 });
+
+		try {
+			const result = await this._collection.deleteOne({
+				_id: new ObjectId(id)
+			});
+
+			if (result?.acknowledged) {
+				response = new Response('書棚データの削除に成功しました。', { status: 200 });
+			}
+		} catch (error) {
+			console.log(error);
+			response = new Response('書棚データの削除に失敗しました。', { status: 500 });
+		}
+
+		return response;
 	}
 }
