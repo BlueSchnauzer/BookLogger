@@ -135,7 +135,7 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 				_id: new ObjectId(id)
 			});
 
-			if (result?.acknowledged) {
+			if (result && result.deletedCount) {
 				response = new Response('書棚データの削除に成功しました。', { status: 200 });
 			}
 		} catch (error) {
