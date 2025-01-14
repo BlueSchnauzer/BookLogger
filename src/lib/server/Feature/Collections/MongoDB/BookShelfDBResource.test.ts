@@ -98,10 +98,33 @@ describe('update', () => {
 		expect(response).toBeDefined();
 		expect(response.status).toBe(200);
 	});
-	it('更新対象が見つからない場合にエラーステータスが返ってくること', () => {});
+	it('更新対象が見つからない場合にエラーステータスが返ってくること', async () => {
+		const testData = bookShelfInterfaceMock;
+		const repos = new BookShelfMongoDBResource(collection, testData.userId);
+		const response = await repos.update(convertBookShelfToDBModel(testData));
+
+		expect(response).toBeDefined();
+		expect(response.status).toBe(400);
+	});
 });
 
 describe('delete', () => {
-	it('書棚情報を削除できること', () => {});
-	it('削除対象が見つからない場合にエラーステータスが返ってくること', () => {});
+	it('書棚情報を削除できること', async () => {
+		const testData = bookShelfInterfaceMock;
+		const preData = await collection.insertOne(convertBookShelfToDBModel(testData));
+		expect(preData.acknowledged).toBeTruthy();
+
+		const repos = new BookShelfMongoDBResource(collection, testData.userId);
+		const response = await repos.delete(testData.id?.value!);
+
+		expect(response).toBeDefined();
+		expect(response.status).toBe(200);
+	});
+	it('削除対象が見つからない場合にエラーステータスが返ってくること', async () => {
+		const repos = new BookShelfMongoDBResource(collection, new UserId(testUserId1));
+		const response = await repos.delete(new ObjectId().toHexString());
+
+		expect(response).toBeDefined();
+		expect(response.status).toBe(400);
+	});
 });
