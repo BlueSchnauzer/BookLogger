@@ -26,6 +26,34 @@ export const bookShelfInterfaceMock: BookShelf = {
 	contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
 };
 
+/**書棚データEntityのテストデータ(1件) */
+export const bookShelfInterfaceMocks: BookShelf[] = [
+	{
+		id: new Id(firstId_test),
+		userId: new UserId(testUserId1),
+		shelfName: 'testShelfA',
+		createDate: new Date(),
+		updateDate: new Date(),
+		contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+	},
+	{
+		id: new Id(secondId_test),
+		userId: new UserId(testUserId1),
+		shelfName: 'testShelfB',
+		createDate: new Date(),
+		updateDate: new Date(),
+		contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+	},
+	{
+		id: new Id(thirdId_test),
+		userId: new UserId(testUserId1),
+		shelfName: 'testShelfC',
+		createDate: new Date(),
+		updateDate: new Date(),
+		contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+	}
+];
+
 /**書誌データEntityのテストデータ(1件) */
 export const bookInfoInterfaceMock: BookInfo = {
 	id: new Id(firstId_test),
