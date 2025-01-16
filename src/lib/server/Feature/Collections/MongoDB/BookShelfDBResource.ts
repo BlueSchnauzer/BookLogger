@@ -29,7 +29,7 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 		return mongoDBModel;
 	}
 
-	async getBookShelves(options: {
+	async getBookShelves(options?: {
 		query?: string;
 		order?: OrderFilters;
 	}): Promise<BookShelfDBModel[]> {
@@ -54,10 +54,7 @@ export class BookShelfMongoDBResource implements IBookShelfDBRepositories {
 		const filters: Filter<BookShelfDBModel> = { $and: [{ userId: this._userId.value }] };
 		if (options?.query) {
 			filters.$and?.push({
-				$or: [
-					{ title: { $regex: options.query, $options: 'i' } },
-					{ author: { $regex: options.query, $options: 'i' } }
-				]
+				$or: [{ shelfName: { $regex: options.query, $options: 'i' } }]
 			});
 		}
 
