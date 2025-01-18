@@ -7,7 +7,7 @@ import {
 	type BookShelfDBModel
 } from '$lib/server/Feature/Collections/MongoDB/BookShelfModel';
 import { bookShelfInterfaceMock, bookShelfInterfaceMocks, testUserId1 } from '$lib/mock/Data';
-import { BookShelfMongoDBResource } from './BookShelfDBResource';
+import { BookShelfMongoDBResource } from '$lib/server/Feature/Collections/MongoDB/BookShelfDBResource';
 import { UserId } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/UserId';
 
 //共通で使用する接続データと、その初期化・破棄用の処理
