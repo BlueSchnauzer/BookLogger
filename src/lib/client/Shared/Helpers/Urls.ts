@@ -29,3 +29,10 @@ export const getContentsSearchConditions = (params: URLSearchParams) => {
 
 	return { pageCount, query, order };
 };
+
+export const getCollectionsSearchConditions = (params: URLSearchParams) => {
+	const query = getParamValue(params, 'query') ?? '';
+	const order = (getParamValue(params, 'order') as OrderFilters) ?? '';
+
+	return { query, order };
+};

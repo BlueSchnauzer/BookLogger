@@ -1,3 +1,4 @@
+import type { BookShelf } from '$lib/client/Feature/Collections/Domain/Entities/BookShelf';
 import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import { Id } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Id';
 import { Identifiers } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Identifier';
@@ -14,6 +15,44 @@ const thirdId_test = '651451ed67241f439ce8a1b1';
 export const testUserId1 = 'testUserId1';
 export const testUserId2 = 'testUserId2';
 export const testUserId3 = 'testUserId3';
+
+/**書棚データEntityのテストデータ(1件) */
+export const bookShelfInterfaceMock: BookShelf = {
+	id: new Id(firstId_test),
+	userId: new UserId(testUserId1),
+	shelfName: 'testShelf',
+	createDate: new Date(),
+	updateDate: new Date(),
+	contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+};
+
+/**書棚データEntityのテストデータ(1件) */
+export const bookShelfInterfaceMocks: BookShelf[] = [
+	{
+		id: new Id(firstId_test),
+		userId: new UserId(testUserId1),
+		shelfName: 'testShelfA',
+		createDate: new Date(),
+		updateDate: new Date(),
+		contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+	},
+	{
+		id: new Id(secondId_test),
+		userId: new UserId(testUserId1),
+		shelfName: 'testShelfB',
+		createDate: new Date(),
+		updateDate: new Date(),
+		contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+	},
+	{
+		id: new Id(thirdId_test),
+		userId: new UserId(testUserId1),
+		shelfName: 'testShelfC',
+		createDate: new Date(),
+		updateDate: new Date(),
+		contentsIds: [new Id(secondId_test), new Id(thirdId_test)]
+	}
+];
 
 /**書誌データEntityのテストデータ(1件) */
 export const bookInfoInterfaceMock: BookInfo = {

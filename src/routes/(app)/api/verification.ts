@@ -1,5 +1,5 @@
 import { verifyAndCreateUserId } from '$lib/server/Feature/Auth/idManager';
-import type { collections } from '$lib/server/Feature/Contents/MongoDB/MongoDBHelper';
+import type { collections } from '$lib/server/Shared/Helpers/MongoDBHelper';
 
 export const verifyTokenAndCollections = async (idToken: string, collections: collections) => {
 	const userId = await verifyAndCreateUserId(idToken);

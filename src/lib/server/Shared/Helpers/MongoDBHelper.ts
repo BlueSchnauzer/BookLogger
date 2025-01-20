@@ -1,10 +1,10 @@
 import * as env from '$env/static/private';
 import * as mongoDB from 'mongodb';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
-import type BookShelf from '$lib/server/Feature/Contents/MongoDB/BookShelfModel';
+import type { BookShelfDBModel } from '$lib/server/Feature/Collections/MongoDB/BookShelfModel';
 
 export type bookInfosCollection = mongoDB.Collection<BookInfoDBModel>;
-export type bookShelvesCollection = mongoDB.Collection<BookShelf>;
+export type bookShelvesCollection = mongoDB.Collection<BookShelfDBModel>;
 
 export type collections = {
 	bookInfos?: bookInfosCollection;
@@ -33,7 +33,7 @@ async function connectToDatabase(): Promise<collections | undefined> {
 		const bookInfosCollection = db.collection<BookInfoDBModel>(env.BOOKINFOS_COLLECTION_NAME);
 		collections.bookInfos = bookInfosCollection;
 
-		const bookShelvesCollection = db.collection<BookShelf>(env.BOOKSHELVES_COLLECTION_NAME);
+		const bookShelvesCollection = db.collection<BookShelfDBModel>(env.BOOKSHELVES_COLLECTION_NAME);
 		collections.bookShelves = bookShelvesCollection;
 
 		console.log(`Successfully connected to database: ${db.databaseName}.`);
