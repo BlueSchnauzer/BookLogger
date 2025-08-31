@@ -1,7 +1,14 @@
+# バージョン管理
+.git
+.gitignore
+
+# 開発環境関連
 .svelte-kit
 .vercel
 .vscode
-Licenses
 node_modules
 playwright-report
 test-results
+
+# その他
+Licenses
