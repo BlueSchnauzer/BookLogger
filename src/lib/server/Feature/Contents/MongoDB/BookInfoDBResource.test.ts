@@ -1,4 +1,4 @@
-import * as env from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 import { PageHistory } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/PageHistory';
 import { Status } from '$lib/client/Feature/Contents/Domain/ValueObjects/BookInfo/Status';

@@ -1,6 +1,6 @@
 import { MongoClient, type Db, type Collection, ObjectId } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import * as env from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
 	convertBookShelfToDBModel,

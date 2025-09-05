@@ -1,4 +1,4 @@
-import * as env from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import * as mongoDB from 'mongodb';
 import type { BookInfoDBModel } from '$lib/server/Feature/Contents/MongoDB/BookInfoModel';
 import type { BookShelfDBModel } from '$lib/server/Feature/Collections/MongoDB/BookShelfModel';
