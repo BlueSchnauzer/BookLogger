@@ -9,8 +9,17 @@
 node_modules
 playwright-report
 test-results
+.eslintignore
+.eslintrc.cjs
+.npmrc
+.prettierignore
+.prettierrc
+playwright.config.test
 
 # その他
 Dockerfile
+.dockerignore
 Licenses
 README.md
+**/.env
+CLAUDE.md
