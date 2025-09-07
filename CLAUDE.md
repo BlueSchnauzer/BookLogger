@@ -28,6 +28,7 @@ BookLoggerは、ユーザーが書籍を検索・登録し、読書の進捗を�
 ### Docker
 - ビルド: `docker build -t booklogger .`
 - 実行: `docker run -p 3000:3000 booklogger`
+- Docker Compose: `docker-compose up --build`
 
 ## アーキテクチャ
 
@@ -38,7 +39,7 @@ BookLoggerは、ユーザーが書籍を検索・登録し、読書の進捗を�
 - **データベース**: MongoDB
 - **外部API**: Google Books API
 - **テスト**: Vitest (ユニット), Testing Library, Playwright (E2E)
-- **デプロイ**: Vercel
+- **デプロイ**: Node.js環境 (Docker対応)
 
 ### ディレクトリ構成
 
@@ -97,8 +98,13 @@ src/
 ### 環境設定
 - 環境変数用の`.env`ファイルを使用（Firebase設定、MongoDB接続、APIキー）
 - Firebase、MongoDB、Google Books API統合に必要な環境変数
+- Docker環境では、ビルド時とランタイム時の環境変数を適切に管理
+- パブリック環境変数（`PUBLIC_`プレフィックス）はビルド時に設定
+- プライベート環境変数はランタイム時にも利用可能
 
 ## デプロイ
-- GitHubからの自動デプロイでVercelにデプロイ
+- Node.js環境でのデプロイに対応（`@sveltejs/adapter-node`を使用）
+- Docker環境での実行をサポート
+- マルチステージDockerビルドで最適化されたプロダクションイメージを作成
+- `docker-compose.yml`で環境変数管理とサービス起動を簡素化
 - ビルドとテスト自動化のためのGitHub Actions CI/CD
-- `svelte.config.js`でVercelアダプターを設定
