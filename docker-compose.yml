@@ -21,7 +21,7 @@ services:
         - DB_NAME=${DB_NAME}
         - BOOKINFOS_COLLECTION_NAME=${BOOKINFOS_COLLECTION_NAME}
         - BOOKSHELVES_COLLECTION_NAME=${BOOKSHELVES_COLLECTION_NAME}
-    image: booklogger-app
+    image: booklogger
     ports:
       - "3000:3000"
     # env_file:
