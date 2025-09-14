@@ -1,0 +1,25 @@
+# バージョン管理
+.git
+.gitignore
+
+# 開発環境関連
+.svelte-kit
+.vercel
+.vscode
+node_modules
+playwright-report
+test-results
+.eslintignore
+.eslintrc.cjs
+.npmrc
+.prettierignore
+.prettierrc
+playwright.config.test
+
+# その他
+Dockerfile
+.dockerignore
+Licenses
+README.md
+**/.env
+CLAUDE.md
