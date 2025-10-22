@@ -1,3 +1,3 @@
 terraform
 
-`terraform -var-file=./terraform.tfvars plan`
+`terraform plan -var-file=./terraform.tfvars`
