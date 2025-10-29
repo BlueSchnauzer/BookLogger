@@ -13,3 +13,8 @@ variable "region" {
   type = string
   default = "ap-northeast-1"
 }
+
+variable "image_version" {
+  description = "The version of the application image to deploy"
+  type        = string
+}
