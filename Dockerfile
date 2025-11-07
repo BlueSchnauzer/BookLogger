@@ -13,8 +13,11 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/build ./build/
-COPY --from=builder /app/node_modules ./node_modules/
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 svelte
+
+COPY --from=builder --chown=nextjs:svelte /app/build ./build/
+COPY --from=builder --chown=nextjs:svelte /app/node_modules ./node_modules/
 COPY package.json .
 
 EXPOSE 3000
