@@ -16,8 +16,8 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 svelte
 
-COPY --from=builder --chown=nextjs:svelte /app/build ./build/
-COPY --from=builder --chown=nextjs:svelte /app/node_modules ./node_modules/
+COPY --from=builder --chown=svelte:nodejs /app/build ./build/
+COPY --from=builder --chown=svelte:nodejs /app/node_modules ./node_modules/
 COPY package.json .
 
 EXPOSE 3000
