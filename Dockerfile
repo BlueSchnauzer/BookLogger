@@ -22,6 +22,8 @@ COPY --from=builder --chown=svelte:nodejs /app/build ./build/
 COPY --from=builder --chown=svelte:nodejs /app/node_modules ./node_modules/
 COPY package.json .
 
+USER svelte
+
 EXPOSE 3000
 ENV NODE_ENV=production
 
