@@ -14,6 +14,7 @@ RUN npm prune --production
 FROM base AS runner
 
 WORKDIR /app
+ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 svelte
@@ -25,6 +26,5 @@ COPY package.json .
 USER svelte
 
 EXPOSE 3000
-ENV NODE_ENV=production
 
 CMD ["node", "build"]
