@@ -13,3 +13,11 @@ variable "image_name" {
 variable "image_version" {
   type = string
 }
+
+variable "cpu" {
+  type    = number
+}
+
+variable "memory" {
+  type    = number
+}
