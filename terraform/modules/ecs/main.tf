@@ -2,8 +2,10 @@
 resource "aws_ecs_task_definition" "this" {
   family                = "${var.appname}-${var.environment}"
   container_definitions = jsondecode([{
-    name: var.appname
-    image: "${var.image_name}:${var.image_version}"
+    name = var.appname
+    image = "${var.image_name}:${var.image_version}"
+    cpu = var.cpu
+    memory = var.memory
   }]
   )
     
