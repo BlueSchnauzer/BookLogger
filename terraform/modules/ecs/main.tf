@@ -6,6 +6,7 @@ resource "aws_ecs_task_definition" "this" {
     image = "${var.image_name}:${var.image_version}"
     cpu = var.cpu
     memory = var.memory
+    essential = true
   }]
   )
     
