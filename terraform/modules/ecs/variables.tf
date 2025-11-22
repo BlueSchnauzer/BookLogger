@@ -15,9 +15,9 @@ variable "image_version" {
 }
 
 variable "cpu" {
-  type    = number
+  type = number
 }
 
 variable "memory" {
-  type    = number
+  type = number
 }
