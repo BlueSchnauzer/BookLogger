@@ -25,3 +25,11 @@ variable "cpu" {
 variable "memory" {
   type = number
 }
+
+variable "container_port" {
+  type = number
+}
+
+variable "host_port" {
+  type = number
+}
