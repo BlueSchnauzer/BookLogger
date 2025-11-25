@@ -7,8 +7,15 @@ resource "aws_ecs_task_definition" "this" {
     cpu       = var.cpu
     memory    = var.memory
     essential = true
-    }]
-  )
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = "/ecs/${var.appname}-${var.environment}"
+        "awslogs-region"        = var.aws_region
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
+  }])
 
   tags = {
     Application = var.appname
