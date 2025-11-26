@@ -7,6 +7,10 @@ resource "aws_ecs_task_definition" "this" {
     cpu       = var.cpu
     memory    = var.memory
     essential = true
+    portMappings = [{
+      containerPort = var.container_port
+      hostPort      = var.host_port
+    }]
     logConfiguration = {
       logDriver = "awslogs"
       options = {
