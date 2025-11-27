@@ -1,3 +1,17 @@
+# https://registry.terraform.io/providers/hashicorp/aws/6.7.0/docs/resources/ecs_cluster
+resource "aws_ecs_cluster" "this" {
+  name = "${var.appname}-${var.environment}"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+  tags = {
+    Application = var.appname
+    Environment = var.environment
+  }
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
 resource "aws_ecs_task_definition" "this" {
   family = "${var.appname}-${var.environment}"
