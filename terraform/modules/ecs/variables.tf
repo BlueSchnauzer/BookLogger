@@ -33,3 +33,7 @@ variable "container_port" {
 variable "host_port" {
   type = number
 }
+
+variable "desired_count" {
+  type = number
+}
