@@ -1,6 +1,6 @@
 # https://registry.terraform.io/providers/hashicorp/aws/6.7.0/docs/resources/ecs_cluster
 resource "aws_ecs_cluster" "this" {
-  name = "${var.appname}-${var.environment}"
+  name = local.name
 
   setting {
     name  = "containerInsights"
@@ -14,7 +14,7 @@ resource "aws_ecs_cluster" "this" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
 resource "aws_ecs_task_definition" "this" {
-  family = "${var.appname}-${var.environment}"
+  family = local.name
   container_definitions = jsondecode([{
     name      = var.appname
     image     = "${var.image_name}:${var.image_version}"
@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "this" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service
 resource "aws_ecs_service" "this" {
-  name            = "${var.appname}-${var.environment}"
+  name            = local.name
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = var.desired_count
