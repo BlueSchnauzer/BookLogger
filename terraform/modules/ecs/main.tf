@@ -58,3 +58,8 @@ resource "aws_ecs_service" "this" {
     Environment = var.environment
   }
 }
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
+resource "aws_lb" "this" {
+  name = local.name
+}
