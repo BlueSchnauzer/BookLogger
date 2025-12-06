@@ -49,3 +49,7 @@ variable "security_group_ids" {
 variable "assign_public_ip" {
   type = bool
 }
+
+variable "lb_security_group_ids" {
+  type = list(string)
+}
