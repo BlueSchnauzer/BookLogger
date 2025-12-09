@@ -1,3 +1,8 @@
+variable "aws_region" {
+  type    = string
+  default = "ap-northeast-1"
+}
+
 variable "appname" {
   description = "The name of the application"
   type        = string
@@ -10,8 +15,8 @@ variable "environment" {
 
 variable "region" {
   description = "The AWS region to deploy the resources in"
-  type = string
-  default = "ap-northeast-1"
+  type        = string
+  default     = "ap-northeast-1"
 }
 
 variable "image_version" {
