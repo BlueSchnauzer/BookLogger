@@ -6,10 +6,6 @@ resource "aws_ecs_cluster" "this" {
     name  = "containerInsights"
     value = "enabled"
   }
-  tags = {
-    Application = var.appname
-    Environment = var.environment
-  }
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
@@ -34,11 +30,6 @@ resource "aws_ecs_task_definition" "this" {
       }
     }
   }])
-
-  tags = {
-    Application = var.appname
-    Environment = var.environment
-  }
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service
@@ -53,10 +44,6 @@ resource "aws_ecs_service" "this" {
     security_groups  = var.security_group_ids
     assign_public_ip = var.assign_public_ip
   }
-  tags = {
-    Application = var.appname
-    Environment = var.environment
-  }
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
@@ -66,8 +53,4 @@ resource "aws_lb" "this" {
   load_balancer_type = "application"
   security_groups    = var.lb_security_group_ids
   subnets            = var.subnet_ids
-  tags = {
-    Application = var.appname
-    Environment = var.environment
-  }
 }
