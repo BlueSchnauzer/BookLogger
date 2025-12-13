@@ -57,3 +57,11 @@ variable "lb_security_group_ids" {
 variable "lb_is_public" {
   type = bool
 }
+
+variable "lb_listener_port" {
+  type = number
+}
+
+variable "lb_listener_protocol" {
+  type = string
+}
