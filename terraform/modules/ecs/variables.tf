@@ -65,3 +65,7 @@ variable "lb_listener_port" {
 variable "lb_listener_protocol" {
   type = string
 }
+
+variable "vpc_id" {
+  type = string
+}
