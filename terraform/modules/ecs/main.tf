@@ -54,3 +54,18 @@ resource "aws_lb" "this" {
   security_groups    = var.lb_security_group_ids
   subnets            = var.subnet_ids
 }
+resource "aws_lb_target_group" "this" {
+  name     = local.name
+  port     = var.container_port
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    path                = "/health-check"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200-399"
+  }
+}
