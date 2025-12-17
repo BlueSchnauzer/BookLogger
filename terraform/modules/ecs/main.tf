@@ -54,6 +54,8 @@ resource "aws_lb" "this" {
   security_groups    = var.lb_security_group_ids
   subnets            = var.subnet_ids
 }
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
 resource "aws_lb_target_group" "this" {
   name     = local.name
   port     = var.container_port
