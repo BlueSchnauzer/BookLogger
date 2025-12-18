@@ -55,6 +55,17 @@ resource "aws_lb" "this" {
   subnets            = var.subnet_ids
 }
 
+resource "aws_lb_listener" "this" {
+  load_balancer_arn = aws_lb.this.arn
+  port              = var.lb_listener_port
+  protocol          = var.lb_listener_protocol
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this.arn
+  }
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
 resource "aws_lb_target_group" "this" {
   name     = local.name
