@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "this" {
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        "awslogs-group"         = "/ecs/${var.appname}-${var.environment}"
+        "awslogs-group"         = "/ecs/${local.name}"
         "awslogs-region"        = var.aws_region
         "awslogs-stream-prefix" = "ecs"
       }
@@ -82,3 +82,4 @@ resource "aws_lb_target_group" "this" {
     matcher             = "200"
   }
 }
+
