@@ -12,7 +12,7 @@ resource "aws_ecs_cluster" "this" {
 resource "aws_ecs_task_definition" "this" {
   family = local.name
   container_definitions = jsondecode([{
-    name      = var.appname
+    name      = local.name
     image     = "${var.image_name}:${var.image_version}"
     cpu       = var.cpu
     memory    = var.memory
