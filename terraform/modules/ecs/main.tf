@@ -75,8 +75,8 @@ resource "aws_lb_target_group" "this" {
 
   health_check {
     path                = "/health-check"
-    interval            = 30
-    timeout             = 5
+    interval            = 15
+    timeout             = 10
     healthy_threshold   = 2
     unhealthy_threshold = 2
     matcher             = "200"
