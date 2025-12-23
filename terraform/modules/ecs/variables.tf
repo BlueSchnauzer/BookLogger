@@ -42,6 +42,10 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "lb_access_logs_bucket" {
+  type = string
+}
+
 variable "security_group_ids" {
   type = list(string)
 }
