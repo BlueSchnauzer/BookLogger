@@ -53,6 +53,11 @@ resource "aws_lb" "this" {
   load_balancer_type = "application"
   security_groups    = var.lb_security_group_ids
   subnets            = var.subnet_ids
+  access_logs {
+    bucket  = var.lb_access_logs_bucket
+    prefix  = local.name
+    enabled = true
+  }
 }
 
 resource "aws_lb_listener" "this" {
@@ -82,4 +87,3 @@ resource "aws_lb_target_group" "this" {
     matcher             = "200"
   }
 }
-
