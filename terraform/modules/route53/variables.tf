@@ -18,3 +18,8 @@ variable "record_ttl" {
   type        = number
   default     = 300
 }
+
+variable "record_values" {
+  description = "The values for the DNS record."
+  type        = list(string)
+}
