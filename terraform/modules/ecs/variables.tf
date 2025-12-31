@@ -1,3 +1,4 @@
+// General variables for ECS module
 variable "aws_region" {
   type = string
 }
@@ -10,6 +11,7 @@ variable "environment" {
   type = string
 }
 
+//
 variable "image_name" {
   type = string
 }
