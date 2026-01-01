@@ -11,6 +11,17 @@ variable "environment" {
   type = string
 }
 
+//ECS Task Definition variables
+variable "cpu" {
+  type = number
+}
+
+variable "memory" {
+  type = number
+}
+
+
+
 //
 variable "image_name" {
   type = string
@@ -18,14 +29,6 @@ variable "image_name" {
 
 variable "image_version" {
   type = string
-}
-
-variable "cpu" {
-  type = number
-}
-
-variable "memory" {
-  type = number
 }
 
 variable "container_port" {
