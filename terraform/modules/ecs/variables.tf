@@ -20,7 +20,9 @@ variable "memory" {
   type = number
 }
 
-
+variable "container_name" {
+  type = string
+}
 
 //
 variable "image_name" {
