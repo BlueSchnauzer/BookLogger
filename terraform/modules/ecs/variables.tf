@@ -24,6 +24,16 @@ variable "container_name" {
   type = string
 }
 
+// Load Balancer variables
+variable "subnet_ids" {
+  type = list(string)
+}
+
+variable "lb_security_group_ids" {
+  type = list(string)
+}
+
+
 //
 variable "image_name" {
   type = string
@@ -45,9 +55,6 @@ variable "desired_count" {
   type = number
 }
 
-variable "subnet_ids" {
-  type = list(string)
-}
 
 variable "lb_access_logs_bucket" {
   type = string
@@ -59,10 +66,6 @@ variable "security_group_ids" {
 
 variable "assign_public_ip" {
   type = bool
-}
-
-variable "lb_security_group_ids" {
-  type = list(string)
 }
 
 variable "lb_is_public" {
