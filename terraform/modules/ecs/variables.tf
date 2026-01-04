@@ -33,6 +33,18 @@ variable "lb_security_group_ids" {
   type = list(string)
 }
 
+//Load Balancer Target Group variables
+variable "container_port" {
+  type = number
+}
+
+variable "vpc_id" {
+  type = string
+}
+
+variable "container_health_port" {
+  type = string
+}
 
 //
 variable "image_name" {
@@ -41,10 +53,6 @@ variable "image_name" {
 
 variable "image_version" {
   type = string
-}
-
-variable "container_port" {
-  type = number
 }
 
 variable "host_port" {
@@ -80,6 +88,3 @@ variable "lb_listener_protocol" {
   type = string
 }
 
-variable "vpc_id" {
-  type = string
-}
