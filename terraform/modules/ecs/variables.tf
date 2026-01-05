@@ -46,6 +46,15 @@ variable "container_health_port" {
   type = string
 }
 
+// Load Balancer Listener variables
+variable "lb_ssl_policy" {
+  type = string
+}
+
+variable "lb_certificate_arn" {
+  type = string
+}
+
 //
 variable "image_name" {
   type = string
