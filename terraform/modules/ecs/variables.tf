@@ -55,6 +55,11 @@ variable "lb_certificate_arn" {
   type = string
 }
 
+// ECS Service variables
+variable "desired_count" {
+  type = number
+}
+
 //
 variable "image_name" {
   type = string
@@ -65,10 +70,6 @@ variable "image_version" {
 }
 
 variable "host_port" {
-  type = number
-}
-
-variable "desired_count" {
   type = number
 }
 
