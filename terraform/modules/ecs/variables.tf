@@ -60,6 +60,14 @@ variable "desired_count" {
   type = number
 }
 
+// Route53 variables
+variable "lb_host_zone" {
+  type = string
+}
+variable "lb_sub_domain" {
+  type = string
+}
+
 //
 variable "image_name" {
   type = string
