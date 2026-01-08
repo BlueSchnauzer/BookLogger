@@ -47,6 +47,14 @@ variable "container_health_port" {
 }
 
 // Load Balancer Listener variables
+variable "lb_listener_port" {
+  type = number
+}
+
+variable "lb_listener_protocol" {
+  type = string
+}
+
 variable "lb_ssl_policy" {
   type = string
 }
@@ -96,13 +104,5 @@ variable "assign_public_ip" {
 
 variable "lb_is_public" {
   type = bool
-}
-
-variable "lb_listener_port" {
-  type = number
-}
-
-variable "lb_listener_protocol" {
-  type = string
 }
 
