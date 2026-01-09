@@ -20,6 +20,14 @@ variable "memory" {
   type = number
 }
 
+variable "image_name" {
+  type = string
+}
+
+variable "image_version" {
+  type = string
+}
+
 variable "container_name" {
   type = string
 }
@@ -77,13 +85,6 @@ variable "lb_sub_domain" {
 }
 
 //
-variable "image_name" {
-  type = string
-}
-
-variable "image_version" {
-  type = string
-}
 
 variable "host_port" {
   type = number
