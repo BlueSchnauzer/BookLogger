@@ -20,6 +20,10 @@ variable "memory" {
   type = number
 }
 
+variable "execution_role_arn" {
+  type = string
+}
+
 variable "image_name" {
   type = string
 }
