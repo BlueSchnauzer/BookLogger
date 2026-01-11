@@ -45,6 +45,10 @@ variable "lb_security_group_ids" {
   type = list(string)
 }
 
+variable "lb_access_logs_bucket" {
+  type = string
+}
+
 //Load Balancer Target Group variables
 variable "container_port" {
   type = number
@@ -94,10 +98,6 @@ variable "host_port" {
   type = number
 }
 
-
-variable "lb_access_logs_bucket" {
-  type = string
-}
 
 variable "security_group_ids" {
   type = list(string)
