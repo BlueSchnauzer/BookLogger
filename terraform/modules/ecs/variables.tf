@@ -36,6 +36,14 @@ variable "container_name" {
   type = string
 }
 
+variable "container_port" {
+  type = number
+}
+
+variable "host_port" {
+  type = number
+}
+
 // Load Balancer variables
 variable "subnet_ids" {
   type = list(string)
@@ -50,10 +58,6 @@ variable "lb_access_logs_bucket" {
 }
 
 //Load Balancer Target Group variables
-variable "container_port" {
-  type = number
-}
-
 variable "vpc_id" {
   type = string
 }
@@ -93,10 +97,6 @@ variable "lb_sub_domain" {
 }
 
 //
-
-variable "host_port" {
-  type = number
-}
 
 
 variable "security_group_ids" {
