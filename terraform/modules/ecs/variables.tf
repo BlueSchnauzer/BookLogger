@@ -88,6 +88,10 @@ variable "desired_count" {
   type = number
 }
 
+variable "security_group_ids" {
+  type = list(string)
+}
+
 // Route53 variables
 variable "lb_host_zone" {
   type = string
@@ -95,19 +99,3 @@ variable "lb_host_zone" {
 variable "lb_sub_domain" {
   type = string
 }
-
-//
-
-
-variable "security_group_ids" {
-  type = list(string)
-}
-
-variable "assign_public_ip" {
-  type = bool
-}
-
-variable "lb_is_public" {
-  type = bool
-}
-
