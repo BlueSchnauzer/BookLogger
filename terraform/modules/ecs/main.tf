@@ -11,6 +11,19 @@ resource "aws_ecs_cluster" "this" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
 resource "aws_ecs_task_definition" "this" {
   family = local.name
+
+  //要チェック
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.cpu
+  memory                   = var.memory
+  execution_role_arn       = var.execution_role_arn
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+
   container_definitions = jsondecode([{
     name      = local.name
     image     = "${var.image_name}:${var.image_version}"
