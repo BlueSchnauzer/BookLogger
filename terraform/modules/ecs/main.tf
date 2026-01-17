@@ -31,13 +31,26 @@ resource "aws_ecs_task_definition" "this" {
     memory    = var.memory
     essential = true
     portMappings = [{
+      name          = "${var.container_name}-${var.container_port}-tcp" //要チェック
       containerPort = var.container_port
       hostPort      = var.host_port
+      //要チェック
+      protocol    = "tcp"
+      appProtocol = "HTTP"
     }]
+    environment       = []
+    environtmentFiles = []
+    mountPoints       = []
+    volumesFrom       = []
+    secrets           = []
+    ulimits           = [] //要チェック
     logConfiguration = {
       logDriver = "awslogs"
       options = {
         "awslogs-group"         = "/ecs/${local.name}"
+        "mode"                  = "non-blocking"
+        "awslogs-create-group"  = "true"
+        "maximum-buffer-size"   = "4MB"
         "awslogs-region"        = var.aws_region
         "awslogs-stream-prefix" = "ecs"
       }
