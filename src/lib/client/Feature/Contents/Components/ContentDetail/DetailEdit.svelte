@@ -59,7 +59,7 @@
 				spellcheck="true"
 				aria-label="memorandum"
 				data-testid="memoInput"
-			/>
+			></textarea>
 		</div>
 	</div>
 </div>
