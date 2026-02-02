@@ -26,7 +26,7 @@ window.getComputedStyle = (elt: Element, pseudoElt?: string | null) => {
 			getPropertyValue: () => '',
 			width: '0px',
 			height: '0px'
-		} as CSSStyleDeclaration;
+		} as unknown as CSSStyleDeclaration;
 	}
 	return originalGetComputedStyle(elt);
 };
