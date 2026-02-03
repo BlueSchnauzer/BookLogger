@@ -14,7 +14,7 @@
 		<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
 			<span
 				class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent"
-			/>
+			></span>
 		</div>
 	{:then response}
 		{#if response.items}

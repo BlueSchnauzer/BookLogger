@@ -53,9 +53,9 @@
 		Googleアカウントでログイン
 	</button>
 	<div class="flex justify-center items-center">
-		<div class="w-7 bg-stone-400 min-h-[1px]" />
+		<div class="w-7 bg-stone-400 min-h-[1px]"></div>
 		<span class="px-2">OR</span>
-		<div class="w-7 bg-stone-400 min-h-[1px]" />
+		<div class="w-7 bg-stone-400 min-h-[1px]"></div>
 	</div>
 	<form
 		class="flex flex-col gap-4"

@@ -54,7 +54,7 @@
 		</div>
 		<ConditionModal bind:isDisplay={isDisplayConditionModal} />
 	</div>
-	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
+	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block"></div>
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
 		<ResultList searchType={searchProps.searchType} {reactiveSearchPromise} {handleClick} />
 		<div class="flex justify-center py-2">

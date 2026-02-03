@@ -43,9 +43,9 @@
 				<Icon icon="ph:x" width="36" height="36" color={colorStone700} />
 			</button>
 		</div>
-		<span class="bg-stone-400 h-[1px]" />
+		<span class="bg-stone-400 h-[1px]"></span>
 		<ItemDetail {bookSearch} />
-		<span class="bg-stone-400 h-[1px]" />
+		<span class="bg-stone-400 h-[1px]"></span>
 		<div class="h-14 flex flex-row justify-end items-center">
 			<PrimaryButton type="button" text="登録" on:click={handlePostRequest} />
 			<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />

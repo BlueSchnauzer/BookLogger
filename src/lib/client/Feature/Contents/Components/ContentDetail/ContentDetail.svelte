@@ -15,7 +15,7 @@
 		titleLabel={getTitleLabel(storedValue.title)}
 		bind:isFavorite={storedValue.isFavorite}
 	/>
-	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
+	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden"></span>
 	<DetailEdit {store} {storedValue} />
 </div>
 

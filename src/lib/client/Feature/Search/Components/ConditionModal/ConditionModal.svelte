@@ -53,7 +53,7 @@
 					<Icon icon="ph:x" width="36" height="36" color={colorStone700} />
 				</button>
 			</div>
-			<span class="bg-stone-400 h-[1px]" />
+			<span class="bg-stone-400 h-[1px]"></span>
 			<div class="flex-1">
 				<div class="p-2">
 					{#if formError}
@@ -80,7 +80,7 @@
 					>
 						<div class="flex items-center flex-grow">
 							<span class="ml-1 text-sm text-gray-600">詳細条件</span>
-							<span class="h-[1px] flex-grow mx-2 bg-gray-400" />
+							<span class="h-[1px] flex-grow mx-2 bg-gray-400"></span>
 						</div>
 						<Icon
 							icon="ph:caret-up-light"
@@ -128,7 +128,7 @@
 				</ul>
 				<input type="hidden" value="0" name="page" aria-label="name" />
 			</div>
-			<span class="bg-stone-400 h-[1px]" />
+			<span class="bg-stone-400 h-[1px]"></span>
 			<div class="h-14 flex flex-row justify-end items-center">
 				<PrimaryButton type="submit" text="検索" />
 				<SecondaryButton type="button" text="キャンセル" on:click={closeModal} />

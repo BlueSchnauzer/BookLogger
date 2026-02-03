@@ -68,9 +68,9 @@
 			<Icon icon="ph:caret-left" width="36" height="36" color={colorStone700} />
 		</button>
 	</div>
-	<span class="bg-stone-400 h-[1px]" />
+	<span class="bg-stone-400 h-[1px]"></span>
 	<ContentDetail {store} {storedValue} />
-	<span class="bg-stone-400 h-[1px]" />
+	<span class="bg-stone-400 h-[1px]"></span>
 	<div class="flex justify-between items-center h-14">
 		<SecondaryButton on:click={handleDeleteClick} type="button" text="削除" usage="delete" />
 		<PrimaryButton on:click={handleEditClick} type="button" text="編集" />
