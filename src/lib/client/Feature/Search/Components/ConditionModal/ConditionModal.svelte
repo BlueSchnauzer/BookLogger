@@ -39,7 +39,7 @@
 </script>
 
 <ModalBase bind:isDisplay isCloseByOutsideClick={true}>
-	<form {action} on:submit={(e) => handleSubmit(e)}>
+	<form {action} onsubmit={(e) => handleSubmit(e)}>
 		<div
 			class="z-40 flex flex-col fixed w-4/5 h-4/5 max-w-[700px] max-h-[500px] m-auto inset-0 px-3 bg-vellum rounded-lg"
 		>
@@ -47,7 +47,7 @@
 				<span class="text-xl">検索して登録する</span>
 				<button
 					type="button"
-					on:click={closeModal}
+					onclick={closeModal}
 					class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
 				>
 					<Icon icon="ph:x" width="36" height="36" color={colorStone700} />
@@ -76,7 +76,7 @@
 						class="mt-3 flex items-center w-full"
 						type="button"
 						data-testid="btnDisplayDetailQueries"
-						on:click={() => (isShowDetailQueries = !isShowDetailQueries)}
+						onclick={() => (isShowDetailQueries = !isShowDetailQueries)}
 					>
 						<div class="flex items-center flex-grow">
 							<span class="ml-1 text-sm text-gray-600">詳細条件</span>
@@ -131,7 +131,7 @@
 			<span class="bg-stone-400 h-[1px]"></span>
 			<div class="h-14 flex flex-row justify-end items-center">
 				<PrimaryButton type="submit" text="検索" />
-				<SecondaryButton type="button" text="キャンセル" on:click={closeModal} />
+				<SecondaryButton type="button" text="キャンセル" onclick={closeModal} />
 			</div>
 		</div>
 	</form>

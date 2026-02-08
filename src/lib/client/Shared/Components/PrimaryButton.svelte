@@ -1,22 +1,20 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	interface Props {
+		type: 'button' | 'submit';
+		text?: string;
+		isUseMargin?: boolean;
+		onclick?: () => void;
+	}
 
-	export let type: 'button' | 'submit';
-	export let text = '';
-	export let isUseMargin = true;
-
-	const dispatch = createEventDispatcher();
-	const handleClick = () => {
-		dispatch('click');
-	};
+	let { type, text = '', isUseMargin = true, onclick }: Props = $props();
 </script>
 
 <button
 	{type}
-	class="w-24 h-8 {isUseMargin ? 'mr-1' : ''} 
+	class="w-24 h-8 {isUseMargin ? 'mr-1' : ''}
 	bg-lime-700 text-gray-50 rounded duration-150 hover:bg-lime-600"
 	title={text}
-	on:click={handleClick}
+	{onclick}
 >
 	{text}
 </button>

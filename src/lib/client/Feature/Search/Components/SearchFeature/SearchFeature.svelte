@@ -48,7 +48,7 @@
 				type="button"
 				text="検索条件"
 				isUseMargin={false}
-				on:click={() => (isDisplayConditionModal = !isDisplayConditionModal)}
+				onclick={() => (isDisplayConditionModal = !isDisplayConditionModal)}
 			/>
 			<PagingLabel {searchProps} {resultCount} {isLoading} />
 		</div>

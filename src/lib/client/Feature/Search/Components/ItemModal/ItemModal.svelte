@@ -36,7 +36,7 @@
 			<span class="text-xl">書籍登録</span>
 			<button
 				type="button"
-				on:click={closeModalAndLoader}
+				onclick={closeModalAndLoader}
 				class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
 				data-testid="btnClose"
 			>
@@ -47,8 +47,8 @@
 		<ItemDetail {bookSearch} />
 		<span class="bg-stone-400 h-[1px]"></span>
 		<div class="h-14 flex flex-row justify-end items-center">
-			<PrimaryButton type="button" text="登録" on:click={handlePostRequest} />
-			<SecondaryButton type="button" text="キャンセル" on:click={closeModalAndLoader} />
+			<PrimaryButton type="button" text="登録" onclick={handlePostRequest} />
+			<SecondaryButton type="button" text="キャンセル" onclick={closeModalAndLoader} />
 		</div>
 	</div>
 </ModalBase>

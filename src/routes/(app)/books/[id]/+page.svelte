@@ -72,8 +72,8 @@
 	<ContentDetail {store} {storedValue} />
 	<span class="bg-stone-400 h-[1px]"></span>
 	<div class="flex justify-between items-center h-14">
-		<SecondaryButton on:click={handleDeleteClick} type="button" text="削除" usage="delete" />
-		<PrimaryButton on:click={handleEditClick} type="button" text="編集" />
+		<SecondaryButton onclick={handleDeleteClick} type="button" text="削除" usage="delete" />
+		<PrimaryButton onclick={handleEditClick} type="button" text="編集" />
 	</div>
 </div>
 <FullCoverLoader {isDisplay} />
