@@ -23,7 +23,7 @@ services:
         - BOOKSHELVES_COLLECTION_NAME=${BOOKSHELVES_COLLECTION_NAME}
     image: booklogger
     ports:
-      - "3000:3000"
+      - '3000:3000'
     # env_file:
     #   - .env
     environment:

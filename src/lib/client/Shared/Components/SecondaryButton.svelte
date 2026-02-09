@@ -14,7 +14,7 @@
 	class="w-24 h-8 border rounded duration-150 bg-gray-50 hover:bg-gray-100
 	{usage === 'cancel' ? ' text-lime-700 border-lime-700' : 'text-red-600 border-red-600'}"
 	title={text}
-	onclick={onclick}
+	{onclick}
 >
 	{text}
 </button>
