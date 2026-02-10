@@ -1,30 +1,29 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { logout } from '$lib/client/Feature/Auth/userManager';
 	import { colorStone200 } from '$lib/client/Shared/Constants/DisplayValues';
 	import { mainMenuItems } from '$lib/client/Shared/Constants/MenuItems';
 	import Icon from '@iconify/svelte';
 
 	//ページ移動の度に対応したページにスタイルを当てる
-	let pathName: string;
-	$: pathName = $page.url.pathname;
+	const pathName = $derived(page.url.pathname);
 </script>
 
 <nav class="flex flex-col max-md:hidden m-2 w-20 rounded-xl shadow-2xl bg-stone-700">
 	<div class="flex flex-col flex-grow justify-between pb-2">
 		<ul class="flex flex-col flex-1 justify-center items-center">
-			{#each mainMenuItems as data (data.icon)}
+			{#each mainMenuItems as { icon: IconComponent, ref, name } (IconComponent)}
 				<li class="group flex relative h-14 duration-300 border-transparent">
 					<a
-						href={data.ref}
+						href={ref}
 						class="flex flex-1 group items-center rounded-md
 						after:content-[''] after:hover:block
 						after:absolute after:top-2 after:left-0
 						after:h-2.5 after:w-2.5 after:rounded-full after:bg-lime-600
-						{data.ref === pathName ? 'after:block' : 'after:hidden'}"
+						{ref === pathName ? 'after:block' : 'after:hidden'}"
 					>
 						<div class=" h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
-							<svelte:component this={data.icon} color={colorStone200} />
+							<IconComponent color={colorStone200} />
 						</div>
 					</a>
 					<div
@@ -35,7 +34,7 @@
 						<span
 							class="bg-stone-300 border-l border-b border-stone-700 absolute left-[-5px] top-1/2 -z-10 h-2 w-2 -translate-y-1/2 rotate-45"
 						></span>
-						<span class="text-stone-700">{data.name}</span>
+						<span class="text-stone-700">{name}</span>
 					</div>
 				</li>
 			{/each}
@@ -45,7 +44,7 @@
 				data-testid="btnLogoutInSide"
 				title="ログアウト"
 				class="flex group items-center rounded-md"
-				on:click={logout}
+				onclick={logout}
 			>
 				<div class="w-9 h-9 m-0.5 p-1.5 rounded-lg bg-stone-600">
 					<Icon icon="ph:sign-out-bold" width="24" height="24" color={colorStone200} />

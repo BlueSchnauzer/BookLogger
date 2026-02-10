@@ -1,9 +1,11 @@
 <script lang="ts">
-	export let isDisplay = false;
+	interface Props {
+		isDisplay?: boolean;
+	}
+
+	let { isDisplay = false }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	data-testid="layerZ30"
 	class="z-30 absolute top-0 left-0 w-full h-full bg-opacity-20 bg-black
