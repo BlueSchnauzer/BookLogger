@@ -1,26 +1,38 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import type { Snippet } from 'svelte';
 
-	export let isDisplay = false;
-	export let isDisplayLoader = false;
-	/**モダール外をクリックした際にモーダルを閉じる場合に使用*/
-	export let isCloseByOutsideClick = false;
+	interface Props {
+		isDisplay?: boolean;
+		isDisplayLoader?: boolean;
+		/**モダール外をクリックした際にモーダルを閉じる場合に使用*/
+		isCloseByOutsideClick?: boolean;
+		children?: Snippet;
+	}
+
+	let {
+		isDisplay = $bindable(false),
+		isDisplayLoader = $bindable(false),
+		isCloseByOutsideClick = false,
+		children
+	}: Props = $props();
 
 	let dialog: HTMLDialogElement;
 
-	$: if (dialog && isDisplay) {
-		dialog.showModal();
-	} else if (dialog) {
-		dialog.close();
-	}
+	$effect(() => {
+		if (dialog && isDisplay) {
+			dialog.showModal();
+		} else if (dialog) {
+			dialog.close();
+		}
+	});
 
 	/**Escキーでモーダルを閉じた際に、変数を併せて変更する*/
 	const cancelModal = () => {
 		isDisplay = false;
 	};
 
-	onMount(() => {
-		if (!isCloseByOutsideClick) {
+	$effect(() => {
+		if (!isCloseByOutsideClick || !dialog) {
 			return;
 		}
 
@@ -32,19 +44,19 @@
 			}
 		};
 
-		dialog.addEventListener('click', (e) => closeModalFromContainer(e));
-		return dialog.removeEventListener('click', (e) => closeModalFromContainer(e));
+		dialog.addEventListener('click', closeModalFromContainer);
+		return () => dialog.removeEventListener('click', closeModalFromContainer);
 	});
 </script>
 
-<dialog bind:this={dialog} on:cancel={cancelModal}>
+<dialog bind:this={dialog} oncancel={cancelModal}>
 	{#if isDisplayLoader}
 		<div class="fixed m-auto inset-0 flex flex-1 justify-center items-center">
 			<span
 				class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"
 			></span>
 		</div>
-	{:else}
-		<slot />
+	{:else if children}
+		{@render children()}
 	{/if}
 </dialog>
