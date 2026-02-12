@@ -7,7 +7,11 @@
 	} from '$lib/client/Feature/Search/DataView/dataView';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 
-	export let bookSearch: BookSearch;
+	interface Props {
+		bookSearch: BookSearch;
+	}
+
+	let { bookSearch }: Props = $props();
 </script>
 
 <div class="flex-1 flex max-sm:flex-col max-h-[486px] max-sm:overflow-auto customScroll">

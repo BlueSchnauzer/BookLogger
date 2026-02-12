@@ -1,8 +1,12 @@
 <script lang="ts">
-	export let value: string;
-	export let name: string;
-	export let disabled: boolean;
-	export let formError: boolean;
+	interface Props {
+		value: string;
+		name: string;
+		disabled: boolean;
+		formError: boolean;
+	}
+
+	let { value = $bindable(), name, disabled, formError = $bindable() }: Props = $props();
 
 	/**インプットタグでのEnterを無効化*/
 	const preventSubmit = (e: KeyboardEvent) => {
@@ -20,6 +24,6 @@
 	aria-label={name}
 	type="text"
 	size="30"
-	on:keypress={(e) => preventSubmit(e)}
+	onkeypress={(e) => preventSubmit(e)}
 	{disabled}
 />

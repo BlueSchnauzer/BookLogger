@@ -6,14 +6,18 @@
 	} from '$lib/client/Feature/Search/DataView/dataView';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 
-	export let bookSearch: BookSearch;
-	export let handleClick: (bookSearch: BookSearch) => void;
+	interface Props {
+		bookSearch: BookSearch;
+		handleClick: (bookSearch: BookSearch) => void;
+	}
+
+	let { bookSearch, handleClick }: Props = $props();
 </script>
 
 <li class="flex">
 	<button
 		class="p-2 my-2 flex flex-auto bg-gray-100 rounded-lg shadow-md"
-		on:click={() => handleClick(bookSearch)}
+		onclick={() => handleClick(bookSearch)}
 	>
 		{#if bookSearch.thumbnail}
 			<img

@@ -7,15 +7,19 @@
 	import Icon from '@iconify/svelte';
 	import { SearchURLs } from '$lib/client/Shared/Constants/urls';
 
-	export let isLoading = false;
-	export let searchType: SearchType;
-	export let searchConditions: SearchConditions;
-	export let pageCount: number;
-	export let direction: 'backward' | 'forward';
-	export let onSubmit: (event: SubmitEvent) => void;
+	interface Props {
+		isLoading?: boolean;
+		searchType: SearchType;
+		searchConditions: SearchConditions;
+		pageCount: number;
+		direction: 'backward' | 'forward';
+		onSubmit: (event: SubmitEvent) => void;
+	}
+
+	let { isLoading = false, searchType, searchConditions, pageCount = $bindable(), direction, onSubmit }: Props = $props();
 </script>
 
-<form action={SearchURLs.search} class="flex justify-center" on:submit={onSubmit}>
+<form action={SearchURLs.search} class="flex justify-center" onsubmit={onSubmit}>
 	<button
 		class="hover:bg-stone-300 rounded"
 		type="submit"
