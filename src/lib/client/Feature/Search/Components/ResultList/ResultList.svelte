@@ -4,9 +4,13 @@
 	import ListItem from '$lib/client/Feature/Search/Components/ResultList/ListItem.svelte';
 	import type { SearchType } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 
-	export let reactiveSearchPromise: SearchPromise;
-	export let searchType: SearchType;
-	export let handleClick: (bookSearch: BookSearch) => void;
+	interface Props {
+		reactiveSearchPromise: SearchPromise;
+		searchType: SearchType;
+		handleClick: (bookSearch: BookSearch) => void;
+	}
+
+	let { reactiveSearchPromise, searchType, handleClick }: Props = $props();
 </script>
 
 {#if searchType !== 'none'}

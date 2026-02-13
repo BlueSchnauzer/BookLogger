@@ -7,15 +7,19 @@
 	import Icon from '@iconify/svelte';
 	import { SearchURLs } from '$lib/client/Shared/Constants/urls';
 
-	export let isDisplay = false;
-	export let action = SearchURLs.search;
-	let isShowDetailQueries = false;
-	let formError = false;
+	interface Props {
+		isDisplay?: boolean;
+		action?: string;
+	}
 
-	let query = '';
-	let bookTitle = '';
-	let author = '';
-	let isbn = '';
+	let { isDisplay = $bindable(false), action = SearchURLs.search }: Props = $props();
+	let isShowDetailQueries = $state(false);
+	let formError = $state(false);
+
+	let query = $state('');
+	let bookTitle = $state('');
+	let author = $state('');
+	let isbn = $state('');
 
 	const closeModal = () => {
 		formError = false;

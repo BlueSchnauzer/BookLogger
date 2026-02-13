@@ -12,27 +12,31 @@
 	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 
-	export let searchPromise: SearchPromise;
-	export let searchProps: SearchProps;
+	interface Props {
+		searchPromise: SearchPromise;
+		searchProps: SearchProps;
+	}
 
-	let isDisplayConditionModal = searchProps.searchType === 'none';
-	let resultCount = 0;
-	let isLoading = false;
+	let { searchPromise, searchProps }: Props = $props();
 
-	let currentItem: BookSearch;
-	let isDisplayItem = false;
+	let isDisplayConditionModal = $state(searchProps.searchType === 'none');
+	let resultCount = $state(0);
+	let isLoading = $state(false);
 
-	let reactiveSearchPromise: SearchPromise;
-	$: {
-		//再検索時に再実行されるようreactive化
-		reactiveSearchPromise = async () => {
+	let currentItem: BookSearch | undefined = $state(undefined);
+	let isDisplayItem = $state(false);
+
+	//再検索時に再実行されるようreactive化
+	const reactiveSearchPromise: SearchPromise = $derived.by(() => {
+		const currentPromise = searchPromise;
+		return async () => {
 			isLoading = true;
-			const result = await searchPromise();
+			const result = await currentPromise();
 			isLoading = false;
 			resultCount = result.totalCount;
 			return result;
 		};
-	}
+	});
 
 	const handleClick = (bookSearch: BookSearch) => {
 		currentItem = bookSearch;
@@ -60,7 +64,7 @@
 		<div class="flex justify-center py-2">
 			<PagingLabel {searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>
-		{#if isDisplayItem}
+		{#if isDisplayItem && currentItem}
 			<ItemModal
 				bookSearch={currentItem}
 				bind:isDisplay={isDisplayItem}

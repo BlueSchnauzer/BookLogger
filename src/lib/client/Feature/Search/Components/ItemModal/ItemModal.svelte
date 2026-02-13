@@ -8,11 +8,15 @@
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 	import { createBookInfo } from '$lib/client/Feature/Search/DataManage/creater';
 
-	export let isDisplay = false;
-	export let bookSearch: BookSearch;
-	export let onSuccess: (message: string) => void;
-	export let onFailed: (message: string) => void;
-	let isDisplayLoader = false;
+	interface Props {
+		isDisplay?: boolean;
+		bookSearch: BookSearch;
+		onSuccess: (message: string) => void;
+		onFailed: (message: string) => void;
+	}
+
+	let { isDisplay = $bindable(false), bookSearch, onSuccess, onFailed }: Props = $props();
+	let isDisplayLoader = $state(false);
 
 	const closeModalAndLoader = () => {
 		isDisplay = false;
