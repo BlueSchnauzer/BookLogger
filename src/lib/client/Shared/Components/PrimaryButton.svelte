@@ -1,12 +1,12 @@
 <script lang="ts">
 	interface Props {
 		type: 'button' | 'submit';
-		text?: string;
+		text: string;
 		isUseMargin?: boolean;
 		onclick?: () => void;
 	}
 
-	let { type, text = '', isUseMargin = true, onclick }: Props = $props();
+	let { type, text, isUseMargin = true, onclick }: Props = $props();
 </script>
 
 <button

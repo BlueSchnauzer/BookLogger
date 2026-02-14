@@ -9,13 +9,13 @@
 	import { createBookInfo } from '$lib/client/Feature/Search/DataManage/creater';
 
 	interface Props {
-		isDisplay?: boolean;
+		isDisplay: boolean;
 		bookSearch: BookSearch;
 		onSuccess: (message: string) => void;
 		onFailed: (message: string) => void;
 	}
 
-	let { isDisplay = $bindable(false), bookSearch, onSuccess, onFailed }: Props = $props();
+	let { isDisplay = $bindable(), bookSearch, onSuccess, onFailed }: Props = $props();
 	let isDisplayLoader = $state(false);
 
 	const closeModalAndLoader = () => {

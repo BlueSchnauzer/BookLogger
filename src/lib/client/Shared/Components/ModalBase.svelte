@@ -2,15 +2,15 @@
 	import type { Snippet } from 'svelte';
 
 	interface Props {
-		isDisplay?: boolean;
+		isDisplay: boolean;
 		isDisplayLoader?: boolean;
 		/**モダール外をクリックした際にモーダルを閉じる場合に使用*/
 		isCloseByOutsideClick?: boolean;
-		children?: Snippet;
+		children: Snippet;
 	}
 
 	let {
-		isDisplay = $bindable(false),
+		isDisplay = $bindable(),
 		isDisplayLoader = $bindable(false),
 		isCloseByOutsideClick = false,
 		children
@@ -56,7 +56,7 @@
 				class="animate-spin w-20 h-20 border-6 border-lime-600 rounded-full border-t-transparent"
 			></span>
 		</div>
-	{:else if children}
+	{:else}
 		{@render children()}
 	{/if}
 </dialog>

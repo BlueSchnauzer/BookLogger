@@ -8,7 +8,7 @@
 	import { SearchURLs } from '$lib/client/Shared/Constants/urls';
 
 	interface Props {
-		isLoading?: boolean;
+		isLoading: boolean;
 		searchType: SearchType;
 		searchConditions: SearchConditions;
 		pageCount: number;
@@ -16,7 +16,7 @@
 		onSubmit: (event: SubmitEvent) => void;
 	}
 
-	let { isLoading = false, searchType, searchConditions, pageCount = $bindable(), direction, onSubmit }: Props = $props();
+	let { isLoading, searchType, searchConditions, pageCount = $bindable(), direction, onSubmit }: Props = $props();
 </script>
 
 <form action={SearchURLs.search} class="flex justify-center" onsubmit={onSubmit}>

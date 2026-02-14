@@ -4,12 +4,12 @@
 
 	interface Props {
 		searchProps: SearchProps;
-		isLoading?: boolean;
+		isLoading: boolean;
 		resultCount: number;
 		isBottom?: boolean;
 	}
 
-	let { searchProps, isLoading = false, resultCount, isBottom = false }: Props = $props();
+	let { searchProps, isLoading, resultCount, isBottom = false }: Props = $props();
 
 	/**前のページへ再リクエスト*/
 	const pagingBackward = (e: SubmitEvent) => {

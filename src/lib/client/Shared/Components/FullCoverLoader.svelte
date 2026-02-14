@@ -1,9 +1,9 @@
 <script lang="ts">
 	interface Props {
-		isDisplay?: boolean;
+		isDisplay: boolean;
 	}
 
-	let { isDisplay = false }: Props = $props();
+	let { isDisplay }: Props = $props();
 </script>
 
 <div

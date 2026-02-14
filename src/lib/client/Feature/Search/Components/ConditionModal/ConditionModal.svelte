@@ -8,11 +8,11 @@
 	import { SearchURLs } from '$lib/client/Shared/Constants/urls';
 
 	interface Props {
-		isDisplay?: boolean;
+		isDisplay: boolean;
 		action?: string;
 	}
 
-	let { isDisplay = $bindable(false), action = SearchURLs.search }: Props = $props();
+	let { isDisplay = $bindable(), action = SearchURLs.search }: Props = $props();
 	let isShowDetailQueries = $state(false);
 	let formError = $state(false);
 

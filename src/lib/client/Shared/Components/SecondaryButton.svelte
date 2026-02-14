@@ -1,12 +1,12 @@
 <script lang="ts">
 	interface Props {
 		type: 'button' | 'submit';
-		text?: string;
+		text: string;
 		usage?: 'cancel' | 'delete';
-		onclick?: () => void;
+		onclick: () => void;
 	}
 
-	let { type, text = '', usage = 'cancel', onclick }: Props = $props();
+	let { type, text, usage = 'cancel', onclick }: Props = $props();
 </script>
 
 <button

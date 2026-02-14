@@ -101,16 +101,16 @@ describe('PrimalyButton', () => {
 
 describe('SecondaryButton', () => {
 	it('レンダリング', () => {
-		const { unmount } = render(SecondaryButton, { type: 'button', text: 'button' });
+		const { unmount } = render(SecondaryButton, { type: 'button', text: 'button', onclick: () => {} });
 		expect(screen.getByText('button')).toBeInTheDocument();
 		unmount();
 
-		render(SecondaryButton, { type: 'submit', text: 'submit' });
+		render(SecondaryButton, { type: 'submit', text: 'submit', onclick: () => {} });
 		expect(screen.getByText('submit')).toBeInTheDocument();
 	});
 
 	it('クリックイベントを検知できること', async () => {
-		render(SecondaryButton, { type: 'button', text: 'button' });
+		render(SecondaryButton, { type: 'button', text: 'button', onclick: () => {} });
 		const btn = screen.getByText('button');
 
 		// Svelte 5ではコンポーネントのイベントはDOMイベントとして発火される
