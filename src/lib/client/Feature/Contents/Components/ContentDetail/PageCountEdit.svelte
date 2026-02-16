@@ -3,9 +3,13 @@
 	import { colorStone700 } from '$lib/client/Shared/Constants/DisplayValues';
 	import Icon from '@iconify/svelte';
 
-	export let storedValue: BookInfo;
+	interface Props {
+		storedValue: BookInfo;
+	}
 
-	let isEditPageCount = false;
+	let { storedValue }: Props = $props();
+
+	let isEditPageCount = $state(false);
 </script>
 
 <div class="mb-2 flex flex-col justify-start items-stretch">
@@ -32,7 +36,7 @@
 			aria-label="btnEditPageCount"
 			title="ページ数を編集する"
 			class="p-1 mr-1 rounded-full hover:bg-stone-300"
-			on:click={() => (isEditPageCount = !isEditPageCount)}
+			onclick={() => (isEditPageCount = !isEditPageCount)}
 		>
 			<Icon icon="mdi:pencil-plus-outline" width="24" height="24" color={colorStone700} />
 		</button>

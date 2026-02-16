@@ -5,16 +5,20 @@
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
-	export let store: ReturnType<typeof bookInfoStore>;
-	export let storedValue: BookInfo;
+	interface Props {
+		store: ReturnType<typeof bookInfoStore>;
+		storedValue: BookInfo;
+	}
 
-	let readingDate = getCurrentDateString();
-	let readingCount: number;
+	let { store, storedValue }: Props = $props();
 
-	let pageHistoryValidation: { isError: boolean; errorMessage?: string } = {
+	let readingDate = $state(getCurrentDateString());
+	let readingCount = $state<number>(undefined as unknown as number);
+
+	let pageHistoryValidation = $state<{ isError: boolean; errorMessage?: string }>({
 		isError: false,
 		errorMessage: ''
-	};
+	});
 
 	const handleAddPageHistory = () => {
 		pageHistoryValidation = store.addPageHistory(readingDate, readingCount);
@@ -37,7 +41,7 @@
 							type="button"
 							aria-label="btnDeletePageHistory"
 							class="p-1 mr-1 rounded-full hover:bg-stone-300"
-							on:click={() => store.deletePageHistory(pageHistory.value.id)}
+							onclick={() => store.deletePageHistory(pageHistory.value.id)}
 						>
 							<Icon icon="ph:x" width="24" height="24" color={colorStone700} />
 						</button>
@@ -82,7 +86,7 @@
 	<div class="mb-2 text-right">
 		<button
 			class="h-8 px-2.5 py-1 mx-0.5 text-stone-700 bg-stone-300 border border-stone-700 duration-150 hover:bg-stone-200 rounded-full"
-			on:click={handleAddPageHistory}
+			onclick={handleAddPageHistory}
 			data-testid="btnAdd"
 		>
 			追加
