@@ -4,21 +4,24 @@
 	import ResizeObserver from 'resize-observer-polyfill';
 	import SimpleBar from 'simplebar';
 	import 'simplebar/dist/simplebar.css';
-	import { onMount } from 'svelte';
 	import PagingLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/PagingLabel.svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
 
-	export let bookInfos: BookInfo[];
-	export let pageCount: number;
-	export let lastPageCount: number;
-	/**表示する本が無い場合のメッセージ*/
-	export let emptyMessage: string;
+	interface Props {
+		bookInfos: BookInfo[];
+		pageCount: number;
+		lastPageCount: number;
+		/**表示する本が無い場合のメッセージ*/
+		emptyMessage: string;
+	}
+
+	let { bookInfos, pageCount, lastPageCount, emptyMessage }: Props = $props();
 
 	let contentGrid: HTMLElement;
 	const handleClick = (bookId: string | undefined) => goto(`${BooksURLs.books}/${bookId}`);
 
-	onMount(() => {
+	$effect(() => {
 		window.ResizeObserver = ResizeObserver;
 		contentGrid && new SimpleBar(contentGrid, { autoHide: false });
 	});
@@ -37,7 +40,7 @@
 			<li style="display: inherit;" title={bookInfo.title}>
 				<button
 					class="grid h-80 max-sm:w-[128px] max-sm:h-[182px] bg-gray-100 rounded shadow-md"
-					on:click={() => handleClick(bookInfo.id?.value)}
+					onclick={() => handleClick(bookInfo.id?.value)}
 				>
 					<GridItem {bookInfo} />
 				</button>
