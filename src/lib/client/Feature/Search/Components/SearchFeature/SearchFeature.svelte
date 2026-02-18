@@ -11,6 +11,7 @@
 	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
+	import { untrack } from 'svelte';
 
 	interface Props {
 		searchPromise: SearchPromise;
@@ -19,7 +20,7 @@
 
 	let { searchPromise, searchProps }: Props = $props();
 
-	let isDisplayConditionModal = $state(searchProps.searchType === 'none');
+	let isDisplayConditionModal = $state(untrack(() => searchProps.searchType === 'none'));
 	let resultCount = $state(0);
 	let isLoading = $state(false);
 

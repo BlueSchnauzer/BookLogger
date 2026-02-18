@@ -10,6 +10,7 @@
 		setPathNameContext
 	} from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { untrack } from 'svelte';
 
 	interface Props {
 		pageCount: number;
@@ -24,14 +25,14 @@
 	let { pageCount, query, order, bookInfos, lastPageCount, emptyMessage = emptyMessages.default }: Props = $props();
 
 	setPathNameContext(page.url.pathname);
-	setBooksUrlInfoContext({
+	setBooksUrlInfoContext(untrack(() => ({
 		pathName: page.url.pathname,
 		params: {
 			page_count: String(pageCount),
 			query,
 			order
 		}
-	});
+	})));
 
 	$effect(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
