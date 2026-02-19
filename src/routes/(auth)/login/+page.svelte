@@ -2,15 +2,14 @@
 	import { login } from '$lib/client/Feature/Auth/userManager';
 	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { onDestroy, onMount } from 'svelte';
 	import AuthMenu from '../AuthMenu.svelte';
 	import { HomeURLs } from '$lib/client/Shared/Constants/urls';
 
-	let email: string;
-	let password: string;
+	let email = $state('');
+	let password = $state('');
 
-	let isDisplayLoader = false;
-	let success: boolean | undefined = undefined;
+	let isDisplayLoader = $state(false);
+	let success = $state<boolean | undefined>(undefined);
 	let btnGoogleLogin: HTMLButtonElement;
 	let btnEmailLogin: HTMLButtonElement;
 
@@ -20,14 +19,12 @@
 		isDisplayLoader = false;
 	};
 
-	onMount(async () => {
+	$effect(() => {
 		btnGoogleLogin.disabled = false;
 		btnEmailLogin.disabled = false;
-	});
 
-	onDestroy(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
-		toast.pop(0);
+		return () => toast.pop(0);
 	});
 </script>
 
@@ -48,7 +45,7 @@
 		aria-label="btnGoogleLogin"
 		type="submit"
 		class="w-60 self-center px-8 py-2 rounded duration-100 text-white bg-sky-600 hover:bg-sky-700"
-		on:click={() => handleLogin('google')}
+		onclick={() => handleLogin('google')}
 	>
 		Googleアカウントでログイン
 	</button>
@@ -59,7 +56,7 @@
 	</div>
 	<form
 		class="flex flex-col gap-4"
-		on:submit|preventDefault={() => handleLogin('email', email, password)}
+		onsubmit={(e) => { e.preventDefault(); handleLogin('email', email, password); }}
 	>
 		<span class="text-sm">メールアドレス</span>
 		<input

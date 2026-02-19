@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	//ログイン、登録画面の切り替えを行うヘッダー
 
 	//ページ移動の度に対応したページにスタイルを当てる
-	let pathName: string;
-	$: pathName = $page.url.pathname;
+	const pathName = $derived(page.url.pathname);
 </script>
 
 <div class="flex">

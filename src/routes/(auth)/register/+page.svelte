@@ -3,12 +3,12 @@
 	import FullCoverLoader from '$lib/client/Shared/Components/FullCoverLoader.svelte';
 	import AuthMenu from '../AuthMenu.svelte';
 
-	let email: string;
-	let password: string;
+	let email = $state('');
+	let password = $state('');
 
 	//ローダーを表示する
-	let isDisplayLoader = false;
-	let success: boolean | undefined = undefined;
+	let isDisplayLoader = $state(false);
+	let success = $state<boolean | undefined>(undefined);
 
 	const handleRegister = async (email: string, password: string) => {
 		isDisplayLoader = true;
@@ -31,7 +31,7 @@
 	<span class="text-gray-500">※Googleアカウントがある場合は登録なしで利用できます。</span>
 	<form
 		class="flex flex-col gap-4"
-		on:submit|preventDefault={() => handleRegister(email, password)}
+		onsubmit={(e) => { e.preventDefault(); handleRegister(email, password); }}
 	>
 		<span class="text-sm">メールアドレス</span>
 		<input
