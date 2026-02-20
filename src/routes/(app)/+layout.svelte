@@ -1,14 +1,18 @@
 <script lang="ts">
-	import type { LayoutData } from '../$types';
+	import type { Snippet } from 'svelte';
 	import SideMenuItem from '$lib/client/Shared/Components/Menus/SideMenu.svelte';
 	import BottomMenuItem from '$lib/client/Shared/Components/Menus/BottomMenu.svelte';
 
-	//export let data: LayoutData;
+	interface Props {
+		children: Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <div class="flex w-screen h-screen overflow-hidden">
 	<SideMenuItem />
-	<slot />
+	{@render children()}
 	<BottomMenuItem />
 </div>
 

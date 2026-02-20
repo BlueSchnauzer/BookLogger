@@ -12,15 +12,16 @@
 	import { deleteBookInfo } from '$lib/client/Feature/Contents/DataManage/deleter';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
+	import { untrack } from 'svelte';
 
-	export let data: PageData;
-	const store = bookInfoStore(data.bookInfo);
-	$: storedValue = $store;
+	let { data }: { data: PageData } = $props();
+	const store = bookInfoStore(untrack(() => data.bookInfo));
+	const storedValue = $derived($store);
 	const currentStatus = $store.status.value;
 
-	let isDisplay = false;
-	let previousPage = '';
-	let search = '';
+	let isDisplay = $state(false);
+	let previousPage = $state('');
+	let search = $state('');
 
 	const handleHistoryBack = () =>
 		previousPage ? goto(`${previousPage}${search}`) : goto(BooksURLs.books);
@@ -63,7 +64,7 @@
 			type="button"
 			class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-300"
 			data-testid="btnClose"
-			on:click={handleHistoryBack}
+			onclick={handleHistoryBack}
 		>
 			<Icon icon="ph:caret-left" width="36" height="36" color={colorStone700} />
 		</button>

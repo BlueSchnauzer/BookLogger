@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 	import SearchFeature from '$lib/client/Feature/Search/Components/SearchFeature/SearchFeature.svelte';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 </script>
 
 <svelte:head>
