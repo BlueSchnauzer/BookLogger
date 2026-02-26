@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { booksMenuItems } from '$lib/client/Shared/Constants/MenuItems';
 
 	//ページ移動の度に対応したページにスタイルを当てる
-	$: currentUrl = $page.url.pathname;
+	const currentUrl = $derived(page.url.pathname);
 </script>
 
 <ul class="flex justify-evenly">

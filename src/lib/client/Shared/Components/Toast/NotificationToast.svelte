@@ -1,4 +1,4 @@
-<script src="ts">
+<script lang="ts">
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { notificationToastTarget } from '$lib/client/Shared/Helpers/Toast';
 </script>

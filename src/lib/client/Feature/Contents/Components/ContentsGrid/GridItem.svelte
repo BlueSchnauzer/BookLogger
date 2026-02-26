@@ -2,9 +2,13 @@
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import StatusLabel from '$lib/client/Feature/Contents/Components/ContentsGrid/StatusLabel.svelte';
 
-	export let bookInfo: BookInfo;
-	/**画面サイズが小さくなった際にテキストを非表示にするか*/
-	export let isResponsiveText = true;
+	interface Props {
+		bookInfo: BookInfo;
+		/**画面サイズが小さくなった際にテキストを非表示にするか*/
+		isResponsiveText?: boolean;
+	}
+
+	let { bookInfo, isResponsiveText = true }: Props = $props();
 </script>
 
 {#if bookInfo.thumbnail}

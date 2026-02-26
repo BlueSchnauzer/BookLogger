@@ -5,8 +5,12 @@
 	import DetailInfo from '$lib/client/Feature/Contents/Components/ContentDetail/DetailInfo.svelte';
 	import type { bookInfoStore } from '$lib/client/Feature/Contents/store';
 
-	export let store: ReturnType<typeof bookInfoStore>;
-	export let storedValue: BookInfo;
+	interface Props {
+		store: ReturnType<typeof bookInfoStore>;
+		storedValue: BookInfo;
+	}
+
+	let { store, storedValue }: Props = $props();
 </script>
 
 <div class="flex-1 flex max-sm:flex-col max-sm:overflow-auto detail-height customScroll">
@@ -15,7 +19,7 @@
 		titleLabel={getTitleLabel(storedValue.title)}
 		bind:isFavorite={storedValue.isFavorite}
 	/>
-	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden" />
+	<span class="my-4 bg-stone-400 min-w-[1px] max-sm:hidden"></span>
 	<DetailEdit {store} {storedValue} />
 </div>
 

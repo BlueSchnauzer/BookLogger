@@ -13,10 +13,13 @@
 		isDisplayableProgress
 	} from '$lib/client/Feature/Contents/DataView/dataView';
 
-	export let bookInfo: BookInfo;
+	interface Props {
+		bookInfo: BookInfo;
+		/**画面サイズが小さくなった際にテキストを非表示にするか*/
+		isResponsiveText?: boolean;
+	}
 
-	/**画面サイズが小さくなった際にテキストを非表示にするか*/
-	export let isResponsiveText = true;
+	let { bookInfo, isResponsiveText = true }: Props = $props();
 
 	const pathName = getPathNameContext();
 	const bottomLabelType = getTypeForBottomLabel(pathName);

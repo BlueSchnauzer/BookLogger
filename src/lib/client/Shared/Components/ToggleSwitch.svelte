@@ -1,8 +1,12 @@
 <script lang="ts">
-	export let id: number;
-	export let text: string;
-	export let isVisible = true;
-	export let isChecked = false;
+	interface Props {
+		id: number;
+		text: string;
+		isVisible?: boolean;
+		isChecked?: boolean;
+	}
+
+	let { id, text, isVisible = true, isChecked = $bindable(false) }: Props = $props();
 </script>
 
 <div class="flex {isVisible ? '' : 'hidden'}">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { setPathNameContext } from '$lib/client/Shared/Helpers/Svelte/ContextAPI';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import Home from '$lib/client/Shared/Icons/Home.svelte';
@@ -8,32 +8,32 @@
 	import ConditionModal from '$lib/client/Feature/Search/Components/ConditionModal/ConditionModal.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { Chart } from 'chart.js/auto';
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import _ from 'lodash';
 	import { goto } from '$app/navigation';
 	import { BooksURLs } from '$lib/client/Shared/Constants/urls';
+	import { untrack } from 'svelte';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	setPathNameContext($page.url.pathname);
+	setPathNameContext(page.url.pathname);
 
 	let countGraph: HTMLCanvasElement;
-	const labels = Array.from(data.historyMap!.keys());
-	const graphData = Array.from(data.historyMap!.values());
+	const labels = Array.from(untrack(() => data.historyMap!.keys()));
+	const graphData = Array.from(untrack(() => data.historyMap!.values()));
 
-	let isDisplayConditionModal = false;
+	let isDisplayConditionModal = $state(false);
 	const handleClick = (bookId: string | undefined) => goto(`${BooksURLs.books}/${bookId}`);
 
-	onMount(() => {
+	$effect(() => {
 		const chart = new Chart(countGraph, {
 			type: 'bar',
 			data: {
-				labels,
+				labels: untrack(() => labels),
 				datasets: [
 					{
 						label: 'ページ数',
-						data: graphData,
+						data: untrack(() => graphData),
 						backgroundColor: '#65a30d',
 						borderRadius: 10
 					}
@@ -58,7 +58,7 @@
 	<div class="pl-2 pr-3 pt-1.5 h-14 flex flex-col justify-between">
 		<ContentHeader headerIcon={Home} headerText={pageTitles.home} />
 	</div>
-	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block" />
+	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block"></div>
 	<div class="flex max-lg:flex-col p-1 homeContentHeight overflow-y-auto customScroll">
 		<div
 			data-testid="recentbook"
@@ -69,7 +69,7 @@
 				<button
 					data-testid="btnRecentbook"
 					class="grid item h-96 w-72 bg-slate-50 rounded shadow-md"
-					on:click={() => handleClick(data.recentBookInfo?.id?.value)}
+					onclick={() => handleClick(data.recentBookInfo?.id?.value)}
 				>
 					<GridItem bookInfo={data.recentBookInfo} isResponsiveText={false} />
 				</button>
@@ -80,7 +80,7 @@
 				</div>
 				<button
 					class="px-8 py-2 rounded duration-100 text-white bg-lime-600 hover:bg-lime-700"
-					on:click={() => (isDisplayConditionModal = !isDisplayConditionModal)}
+					onclick={() => (isDisplayConditionModal = !isDisplayConditionModal)}
 				>
 					検索する
 				</button>

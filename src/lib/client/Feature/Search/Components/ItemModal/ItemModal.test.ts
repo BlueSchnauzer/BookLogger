@@ -1,6 +1,6 @@
 import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 import { bookSearchInterfaceMock } from '$lib/mock/Data';
-import { fireEvent, render, screen } from '@testing-library/svelte';
+import { fireEvent, render, screen, type RenderResult } from '@testing-library/svelte';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 //dialogタグの関数がJSDomだとサポートされていない？ためスキップ
@@ -30,7 +30,7 @@ describe.skip('ContentModal', async () => {
 
 	it('isDisplayがFaulthyな場合に非表示に変わること', async () => {
 		const testId = 'layerZ30';
-		const { component } = render(ItemModal, {
+		const { rerender } = render(ItemModal, {
 			isDisplay: true,
 			bookSearch,
 			onSuccess,
@@ -39,13 +39,13 @@ describe.skip('ContentModal', async () => {
 
 		expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-		await component.$set({ isDisplay: false, bookSearch });
+		await rerender({ isDisplay: false, bookSearch, onSuccess, onFailed });
 		expect(screen.getByTestId(testId)).toHaveClass('hidden');
 	});
 
 	it('閉じる・キャンセルボタンクリックで非表示に変わること', async () => {
 		const testId = 'layerZ30';
-		const { component } = render(ItemModal, {
+		const { rerender } = render(ItemModal, {
 			isDisplay: true,
 			bookSearch,
 			onSuccess,
@@ -58,7 +58,7 @@ describe.skip('ContentModal', async () => {
 		await fireEvent.click(btnClose);
 		expect(screen.getByTestId(testId)).toHaveClass('hidden');
 
-		await component.$set({ isDisplay: true, bookSearch });
+		await rerender({ isDisplay: true, bookSearch, onSuccess, onFailed });
 		await fireEvent.click(btnCancel);
 		expect(screen.getByTestId(testId)).toHaveClass('hidden');
 	});

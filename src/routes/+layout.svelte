@@ -2,25 +2,32 @@
 	import '../app.css';
 	import NProgress from 'nprogress';
 	import 'nprogress/nprogress.css';
-	import { navigating } from '$app/stores';
+	import { navigating } from '$app/state';
 	import MainToast from '$lib/client/Shared/Components/Toast/MainToast.svelte';
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		children: Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	NProgress.configure({
 		showSpinner: false
 	});
 
-	$: {
+	$effect(() => {
 		//ページ移動中にプログレスを表示する
-		if ($navigating) {
+		if (navigating) {
 			NProgress.start();
 		}
-		if (!$navigating) {
+		if (!navigating) {
 			NProgress.done();
 		}
-	}
+	});
 </script>
 
-<slot />
+{@render children()}
 <MainToast />
 
 <style>

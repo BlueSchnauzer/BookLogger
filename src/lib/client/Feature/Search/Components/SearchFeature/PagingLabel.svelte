@@ -1,12 +1,15 @@
 <script lang="ts">
 	import FormLabel from '$lib/client/Feature/Search/Components/SearchFeature/FormLabel.svelte';
 	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
-	import { onMount } from 'svelte';
 
-	export let searchProps: SearchProps;
-	export let isLoading = false;
-	export let resultCount: number;
-	export let isBottom = false;
+	interface Props {
+		searchProps: SearchProps;
+		isLoading: boolean;
+		resultCount: number;
+		isBottom?: boolean;
+	}
+
+	let { searchProps, isLoading, resultCount, isBottom = false }: Props = $props();
 
 	/**前のページへ再リクエスト*/
 	const pagingBackward = (e: SubmitEvent) => {

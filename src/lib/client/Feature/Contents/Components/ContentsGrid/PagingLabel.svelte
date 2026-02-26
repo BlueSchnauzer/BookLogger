@@ -5,12 +5,16 @@
 	import { createUrlWithParams } from '$lib/client/Shared/Helpers/Urls';
 	import Icon from '@iconify/svelte';
 
-	export let pageCount: number;
-	export let lastPageCount: number;
+	interface Props {
+		pageCount: number;
+		lastPageCount: number;
+	}
+
+	let { pageCount, lastPageCount }: Props = $props();
 
 	const urlInfo = getBooksUrlInfoContext();
-	$: isDisabledBackward = pageCount === 0;
-	$: isDisabledForward = pageCount === lastPageCount;
+	const isDisabledBackward = $derived(pageCount === 0);
+	const isDisabledForward = $derived(pageCount === lastPageCount);
 
 	const createNavigation = (pageCount: number) => {
 		urlInfo.params.page_count = String(pageCount);
@@ -30,11 +34,11 @@ border border-stone-300 shadow-md"
 	<button
 		class="hover:bg-stone-300 rounded-full"
 		disabled={isDisabledBackward}
-		on:click={gotoFirst}
+		onclick={gotoFirst}
 	>
 		<Icon icon="ph:caret-line-left" width="32" height="32" color={colorLime800} />
 	</button>
-	<button class="hover:bg-stone-300 rounded" disabled={isDisabledBackward} on:click={gotoBackward}>
+	<button class="hover:bg-stone-300 rounded" disabled={isDisabledBackward} onclick={gotoBackward}>
 		<Icon icon="ph:caret-left" width="32" height="32" color={colorLime800} />
 	</button>
 	<div class="flex px-4">
@@ -42,10 +46,10 @@ border border-stone-300 shadow-md"
 		<p class="mx-2">/</p>
 		<p>{lastPageCount + 1}</p>
 	</div>
-	<button class="hover:bg-stone-300 rounded" disabled={isDisabledForward} on:click={gotoForward}>
+	<button class="hover:bg-stone-300 rounded" disabled={isDisabledForward} onclick={gotoForward}>
 		<Icon icon="ph:caret-right" width="32" height="32" color={colorLime800} />
 	</button>
-	<button class="hover:bg-stone-300 rounded" disabled={isDisabledForward} on:click={gotoLast}>
+	<button class="hover:bg-stone-300 rounded" disabled={isDisabledForward} onclick={gotoLast}>
 		<Icon icon="ph:caret-line-right" width="32" height="32" color={colorLime800} />
 	</button>
 </div>

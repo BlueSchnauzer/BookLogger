@@ -4,9 +4,13 @@
 	import ListItem from '$lib/client/Feature/Search/Components/ResultList/ListItem.svelte';
 	import type { SearchType } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 
-	export let reactiveSearchPromise: SearchPromise;
-	export let searchType: SearchType;
-	export let handleClick: (bookSearch: BookSearch) => void;
+	interface Props {
+		reactiveSearchPromise: SearchPromise;
+		searchType: SearchType;
+		handleClick: (bookSearch: BookSearch) => void;
+	}
+
+	let { reactiveSearchPromise, searchType, handleClick }: Props = $props();
 </script>
 
 {#if searchType !== 'none'}
@@ -14,7 +18,7 @@
 		<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
 			<span
 				class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent"
-			/>
+			></span>
 		</div>
 	{:then response}
 		{#if response.items}

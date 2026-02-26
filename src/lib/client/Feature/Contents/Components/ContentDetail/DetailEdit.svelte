@@ -4,16 +4,19 @@
 	import PageHistoryEdit from '$lib/client/Feature/Contents/Components/ContentDetail/PageHistoryEdit.svelte';
 	import CategoryLabel from '$lib/client/Shared/Components/CategoryLabel.svelte';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { onMount } from 'svelte';
 	import type { BookInfo } from '$lib/client/Feature/Contents/Domain/Entities/BookInfo';
 	import { getDateLabel, joinAuthorNames } from '$lib/client/Feature/Contents/DataView/dataView';
 	import { bookInfoStore } from '$lib/client/Feature/Contents/store';
 	import NotificationToast from '$lib/client/Shared/Components/Toast/NotificationToast.svelte';
 
-	export let store: ReturnType<typeof bookInfoStore>;
-	export let storedValue: BookInfo;
+	interface Props {
+		store: ReturnType<typeof bookInfoStore>;
+		storedValue: BookInfo;
+	}
 
-	onMount(() => {
+	let { store, storedValue }: Props = $props();
+
+	$effect(() => {
 		//アンマウント時にトーストが表示されていれば削除する。
 		return () => toast.pop(0);
 	});
@@ -38,7 +41,7 @@
 		<select
 			bind:value={storedValue.status.value}
 			class="w-full p-2 rounded-lg border-[1px] border-stone-400"
-			on:change={store.addPageHistoryWhenComplete}
+			onchange={store.addPageHistoryWhenComplete}
 			name="status"
 			id="statusSelect"
 			data-testid="statusSelect"
@@ -59,7 +62,7 @@
 				spellcheck="true"
 				aria-label="memorandum"
 				data-testid="memoInput"
-			/>
+			></textarea>
 		</div>
 	</div>
 </div>

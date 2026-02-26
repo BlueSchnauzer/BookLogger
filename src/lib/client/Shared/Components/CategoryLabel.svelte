@@ -1,6 +1,10 @@
 <script lang="ts">
-	export let categoryText: string;
-	export let displayText: string | undefined;
+	interface Props {
+		categoryText: string;
+		displayText: string | undefined;
+	}
+
+	let { categoryText, displayText }: Props = $props();
 </script>
 
 <div class="mb-2 flex flex-col justify-start items-stretch">

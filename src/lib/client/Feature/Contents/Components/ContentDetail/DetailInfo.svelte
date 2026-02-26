@@ -1,9 +1,13 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
-	export let thumbnail: string;
-	export let titleLabel: string;
-	export let isFavorite: boolean;
+	interface Props {
+		thumbnail: string;
+		titleLabel: string;
+		isFavorite: boolean;
+	}
+
+	let { thumbnail, titleLabel, isFavorite = $bindable() }: Props = $props();
 </script>
 
 <div class="flex flex-col flex-shrink-0 p-4 max-sm:p-0 pt-6 max-sm:pt-4 min-w-44">
@@ -27,7 +31,7 @@
 		<button
 			id="btnFavorite"
 			class="flex items-center"
-			on:click={() => (isFavorite = !isFavorite)}
+			onclick={() => (isFavorite = !isFavorite)}
 			data-testid="btnFavorite"
 		>
 			{#if isFavorite}
