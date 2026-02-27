@@ -1,7 +1,6 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { pushErrorToast, pushSuccessToast } from '$lib/client/Shared/Helpers/Toast';
-	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import PagingLabel from '$lib/client/Feature/Search/Components/SearchFeature//PagingLabel.svelte';
@@ -12,13 +11,15 @@
 	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 	import { untrack } from 'svelte';
+	import { searchByFuzzyQuery, searchByQueries } from '$lib/client/Feature/Search/DataManage/fetcher';
+
+	const maxResults = 10;
 
 	interface Props {
-		searchPromise: SearchPromise;
 		searchProps: SearchProps;
 	}
 
-	let { searchPromise, searchProps }: Props = $props();
+	let { searchProps }: Props = $props();
 
 	let isDisplayConditionModal = $state(untrack(() => searchProps.searchType === 'none'));
 	let resultCount = $state(0);
@@ -33,9 +34,21 @@
 	);
 
 	$effect(() => {
-		if (searchProps.searchType === 'none') return;
+		const { searchType, searchConditions, startIndex } = searchProps;
+		if (searchType === 'none') return;
+
 		isLoading = true;
-		searchResultPromise = searchPromise().then((result) => {
+		const p = searchType === 'fuzzy'
+			? searchByFuzzyQuery(searchConditions.query!, maxResults, startIndex)
+			: searchByQueries(
+				searchConditions.bookTitle ?? '',
+				searchConditions.author ?? '',
+				searchConditions.isbn ?? '',
+				maxResults,
+				startIndex
+			);
+
+		searchResultPromise = p.then((result) => {
 			isLoading = false;
 			resultCount = result.totalCount;
 			return result;
