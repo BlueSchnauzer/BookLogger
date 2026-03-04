@@ -1,7 +1,6 @@
 <script lang="ts">
 	import MagnifingGlass from '$lib/client/Shared/Icons/MagnifingGlass.svelte';
 	import { pushErrorToast, pushSuccessToast } from '$lib/client/Shared/Helpers/Toast';
-	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import type { SearchProps } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 	import { pageTitles } from '$lib/client/Shared/Constants/DisplayValues';
 	import PagingLabel from '$lib/client/Feature/Search/Components/SearchFeature//PagingLabel.svelte';
@@ -12,13 +11,15 @@
 	import ItemModal from '$lib/client/Feature/Search/Components/ItemModal/ItemModal.svelte';
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
 	import { untrack } from 'svelte';
+	import { searchByFuzzyQuery, searchByQueries } from '$lib/client/Feature/Search/DataManage/fetcher';
+
+	const maxResults = 10;
 
 	interface Props {
-		searchPromise: SearchPromise;
 		searchProps: SearchProps;
 	}
 
-	let { searchPromise, searchProps }: Props = $props();
+	let { searchProps }: Props = $props();
 
 	let isDisplayConditionModal = $state(untrack(() => searchProps.searchType === 'none'));
 	let resultCount = $state(0);
@@ -27,16 +28,34 @@
 	let currentItem: BookSearch | undefined = $state(undefined);
 	let isDisplayItem = $state(false);
 
-	//再検索時に再実行されるようreactive化
-	const reactiveSearchPromise: SearchPromise = $derived.by(() => {
-		const currentPromise = searchPromise;
-		return async () => {
-			isLoading = true;
-			const result = await currentPromise();
+	type SearchResult = { totalCount: number; items: BookSearch[] | undefined };
+	let searchResultPromise: Promise<SearchResult> = $state(
+		Promise.resolve({ totalCount: 0, items: undefined })
+	);
+
+	$effect(() => {
+		const { searchType, searchConditions, startIndex } = searchProps;
+		if (searchType === 'none') return;
+
+		isLoading = true;
+		const p = searchType === 'fuzzy'
+			? searchByFuzzyQuery(searchConditions.query!, maxResults, startIndex)
+			: searchByQueries(
+				searchConditions.bookTitle ?? '',
+				searchConditions.author ?? '',
+				searchConditions.isbn ?? '',
+				maxResults,
+				startIndex
+			);
+
+		searchResultPromise = p.then((result) => {
 			isLoading = false;
 			resultCount = result.totalCount;
 			return result;
-		};
+		}).catch((err) => {
+			isLoading = false;
+			throw err;
+		});
 	});
 
 	const handleClick = (bookSearch: BookSearch) => {
@@ -61,7 +80,7 @@
 	</div>
 	<div class="mx-2 my-1 bg-stone-400 h-[1px] xl:block"></div>
 	<div class="flex flex-col p-1 contentHeight overflow-auto customScroll">
-		<ResultList searchType={searchProps.searchType} {reactiveSearchPromise} {handleClick} />
+		<ResultList searchType={searchProps.searchType} {searchResultPromise} {handleClick} />
 		<div class="flex justify-center py-2">
 			<PagingLabel {searchProps} {resultCount} {isLoading} isBottom={true} />
 		</div>

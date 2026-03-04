@@ -1,20 +1,19 @@
 <script lang="ts">
 	import type { BookSearch } from '$lib/client/Feature/Search/BookSearch';
-	import type { SearchPromise } from '$lib/client/Feature/Search/interface';
 	import ListItem from '$lib/client/Feature/Search/Components/ResultList/ListItem.svelte';
 	import type { SearchType } from '$lib/client/Feature/Search/Components/SearchFeature/Interface';
 
 	interface Props {
-		reactiveSearchPromise: SearchPromise;
+		searchResultPromise: Promise<{ totalCount: number; items: BookSearch[] | undefined }>;
 		searchType: SearchType;
 		handleClick: (bookSearch: BookSearch) => void;
 	}
 
-	let { reactiveSearchPromise, searchType, handleClick }: Props = $props();
+	let { searchResultPromise, searchType, handleClick }: Props = $props();
 </script>
 
 {#if searchType !== 'none'}
-	{#await reactiveSearchPromise()}
+	{#await searchResultPromise}
 		<div data-testid="searchLoader" class="flex flex-1 justify-center items-center">
 			<span
 				class="animate-spin w-14 h-14 border-4 border-lime-600 rounded-full border-t-transparent"

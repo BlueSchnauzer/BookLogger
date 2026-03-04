@@ -18,10 +18,9 @@
 
 	$effect(() => {
 		//ページ移動中にプログレスを表示する
-		if (navigating) {
+		if (navigating.to) {
 			NProgress.start();
-		}
-		if (!navigating) {
+		} else {
 			NProgress.done();
 		}
 	});
